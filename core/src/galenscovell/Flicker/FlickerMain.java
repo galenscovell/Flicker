@@ -1,27 +1,22 @@
-package galenscovell.Flicker;
 
-import com.badlogic.gdx.ApplicationAdapter;
+/**
+ * FLICKERMAIN CLASS
+ * Provides main entry for application.
+ */
+
+package galenscovell.flicker;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class FlickerMain extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+import galenscovell.screens.GameScreen;
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
+
+public class FlickerMain extends Game {
+
+    @Override
+    public void create () {
+        Gdx.app.log("Flicker", "created");
+        setScreen(new GameScreen());
+    }
 }
