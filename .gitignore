@@ -1,0 +1,6 @@
+*.class
+*.gradle
+*.bat
+*.properties
+gradle
+gradlew
