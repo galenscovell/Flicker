@@ -12,7 +12,7 @@ public class Constants {
     private Constants() { }
 
     // Width/height of application window (in pixels)
-    public static final int WINDOW_X = 960;
+    public static final int WINDOW_X = 980;
     public static final int WINDOW_Y = 600;
 
     // Width/height of world (in pixels)
@@ -32,7 +32,7 @@ public class Constants {
     // Renders per second = Framerate
     // Logic updates per second = Framerate / Timestep
     public static final int FRAMERATE = 60;
-    public static final int TIMESTEP = 4;
+    public static final int TIMESTEP = 10;
 
     // Number of smoothing passes during world generation
     public static final int WORLD_SMOOTHING_PASSES = 6;
