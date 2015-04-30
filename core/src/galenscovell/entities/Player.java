@@ -7,10 +7,14 @@
 
 package galenscovell.entities;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import galenscovell.graphics.SpriteSheet;
+
 
 public class Player {
     private int x, y, prevX, prevY, currentX, currentY;
     public int size;
+    public Sprite sprite;
 
 
     public Player(int x, int y, int size) {
@@ -21,6 +25,9 @@ public class Player {
         this.currentX = x;
         this.currentY = y;
         this.size = size;
+
+        SpriteSheet sheet = SpriteSheet.charsheet;
+        this.sprite = new Sprite(sheet.getSprite(0));
     }
 
     public void setPosition(int newX, int newY) {
