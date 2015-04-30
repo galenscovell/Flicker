@@ -6,29 +6,20 @@
 
 package galenscovell.logic;
 
-import com.badlogic.gdx.math.Rectangle;
-
-import java.util.List;
-
+import galenscovell.entities.Player;
 import galenscovell.util.Constants;
 
 
 public class Updater {
-    private List<Rectangle> objects;
+    private Player player;
 
 
-    public Updater(List<Rectangle> objects) {
-        this.objects = objects;
+    public Updater(Player player) {
+        this.player = player;
     }
 
-    public void update(float delta) {
-        for (Rectangle rect : objects) {
-            rect.x++;
-            if (rect.x > Constants.WINDOW_X) {
-                rect.x = 0;
-            }
-        }
-
+    public void update(float delta, int[] input) {
+        player.move(input[0] * 48, input[1] * 48);
     }
 
 }

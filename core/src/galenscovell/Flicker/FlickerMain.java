@@ -16,7 +16,6 @@ public class FlickerMain extends Game {
 
     @Override
     public void create () {
-        Gdx.app.log("Flicker", "created");
         setScreen(new GameScreen());
     }
 }
