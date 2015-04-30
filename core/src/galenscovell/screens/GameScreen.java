@@ -6,19 +6,19 @@
 
 package galenscovell.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-
 import galenscovell.entities.Player;
 import galenscovell.logic.Renderer;
 import galenscovell.logic.Updater;
 import galenscovell.logic.World;
 import galenscovell.util.Constants;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+
 
 public class GameScreen implements Screen {
-    private Player player;
+    private Player playerInstance;
     private World world;
     private Renderer renderer;
     private Updater updater;
@@ -28,12 +28,9 @@ public class GameScreen implements Screen {
 
 
     public GameScreen() {
-        this.player = new Player(48, 48, 48);
+        this.playerInstance = new Player(48, 48);
 
-        this.world = new World();
-        this.renderer = new Renderer(player);
-        this.updater = new Updater(player);
-
+        createNewLevel();
         this.updateAccumulator = 0;
     }
 
@@ -78,6 +75,20 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    private void createNewLevel() {
+        this.world = new World();
+        this.renderer = new Renderer(playerInstance, world.getTiles());
+        this.updater = new Updater(playerInstance);
+
+        int smoothTicks = Constants.WORLD_SMOOTHING_PASSES;
+        while (smoothTicks > 0) {
+            world.update();
+            smoothTicks--;
+        }
+
+        world.optimizeLayout();
     }
 
     private int[] checkMovement() {

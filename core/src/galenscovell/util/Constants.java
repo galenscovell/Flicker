@@ -16,8 +16,8 @@ public class Constants {
     public static final int WINDOW_Y = 600;
 
     // Width/height of world (in pixels)
-    public static final int WORLD_WIDTH = 4800;
-    public static final int WORLD_HEIGHT = 4800;
+    public static final int WORLD_WIDTH = 480;
+    public static final int WORLD_HEIGHT = 480;
 
     // Tile square dimensions (in pixels)
     public static final int TILESIZE = 48;
