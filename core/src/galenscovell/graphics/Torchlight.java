@@ -2,7 +2,6 @@
 /**
  * TORCHLIGHT CLASS
  * Handles torchlight effect surrounding player.
- * TODO: Make torchlight follow Player's currentX/currentY for smoothness
  */
 
 package galenscovell.graphics;
@@ -47,19 +46,21 @@ public class Torchlight {
     }
 
     private void drawLight(SpriteBatch spriteBatch, int minX, int maxX, int minY, int maxY) {
+        // Keep record of batch color before setting lighting transparency
+        Color c = new Color(spriteBatch.getColor());
         // Fill alpha over Tile depending on lightMap value
         for (int x = 0; x < lightMap[0].length; x++) {
             for (int y = 0; y < lightMap.length; y++) {
                 if (!(x < minX || x > maxX || y < minY || y > maxY)) {
-                    Color c = new Color(spriteBatch.getColor());
                     spriteBatch.setColor(0.0f, 0.0f, 0.0f, 1.0f - lightMap[y][x]);
                     spriteBatch.draw(rect, x * tileSize, y * tileSize, tileSize, tileSize);
-                    spriteBatch.setColor(c);
                 }
                 // Reset each value for next frame
                 lightMap[y][x] = 0.0f;
             }
         }
+        // Return batch color to original
+        spriteBatch.setColor(c);
     }
 
     private void castLight(int row, float startSlope, float endSlope, int xx, int xy, int yx, int yy) {
