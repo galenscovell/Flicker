@@ -7,7 +7,6 @@
 package galenscovell.flicker;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 
 import galenscovell.screens.GameScreen;
 

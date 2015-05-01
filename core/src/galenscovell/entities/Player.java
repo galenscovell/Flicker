@@ -7,19 +7,26 @@
 
 package galenscovell.entities;
 
-import galenscovell.graphics.SpriteSheet;
-import galenscovell.logic.Point;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import galenscovell.graphics.Pickaxe;
+import galenscovell.graphics.SpriteSheet;
+
+import galenscovell.logic.Point;
 
 
 public class Player {
     private int x, y, prevX, prevY, currentX, currentY;
     private int spriteFrame, waitFrames;
+
     public Sprite sprite;
     private Sprite[] currentSet;
     private Sprite[] upSprites, downSprites, leftSprites, rightSprites;
+
     private boolean attacking;
+    private Pickaxe pickaxe;
+    private boolean pickaxePrepared;
 
 
     public Player(int x, int y) {
@@ -31,7 +38,6 @@ public class Player {
         this.currentY = y;
 
         SpriteSheet sheet = SpriteSheet.charsheet;
-
         this.upSprites = new Sprite[4];
         this.downSprites = new Sprite[4];
         this.leftSprites = new Sprite[4];
@@ -49,6 +55,8 @@ public class Player {
         this.sprite = currentSet[0];
         this.spriteFrame = 0;
         this.waitFrames = 20;
+
+        this.pickaxe = new Pickaxe();
     }
 
     public void setPosition(int newX, int newY) {
@@ -131,6 +139,39 @@ public class Player {
         }
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
+    }
+
+    public void attack(SpriteBatch spriteBatch, double interpolation, int tileSize) {
+        if (!pickaxePrepared) {
+            String dir = " ";
+            if (currentSet == upSprites) {
+                dir = "up";
+            } else if (currentSet == downSprites) {
+                dir = "down";
+            } else if (currentSet == leftSprites) {
+                dir = "left";
+            } else if (currentSet == rightSprites) {
+                dir = "right";
+            }
+            pickaxe.setDirection(dir);
+            pickaxe.setPosition(currentX, currentY);
+            pickaxePrepared = true;
+            pickaxe.resetFrame();
+        }
+
+        int pickaxeFrame = pickaxe.getFrame();
+        if (pickaxeFrame <= 3) {
+            pickaxe.draw(spriteBatch, tileSize, 0);
+        } else if (pickaxeFrame > 3 && pickaxeFrame < 6) {
+            pickaxe.draw(spriteBatch, tileSize, 1);
+        } else if (pickaxeFrame > 5 && pickaxeFrame < 17) {
+            pickaxe.draw(spriteBatch, tileSize, 2);
+        } else if (pickaxeFrame == 18) {
+            pickaxePrepared = false;
+            toggleAttack();
+            return;
+        }
+        pickaxe.incrementFrame();
     }
 
     private void animate(Sprite[] currentSet) {

@@ -9,6 +9,9 @@ package galenscovell.logic;
 import galenscovell.entities.Dead;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
+
+import galenscovell.inanimates.Inanimate;
+
 import galenscovell.util.Constants;
 
 import java.util.List;
@@ -20,6 +23,7 @@ public class Updater {
     private int tileSize;
     private Map<Integer, Tile> tiles;
     private Player player;
+    private Inanimate stairs;
 
 
     public Updater(Map<Integer, Tile> tiles) {
@@ -27,7 +31,7 @@ public class Updater {
         this.tileSize = Constants.TILESIZE;
     }
 
-    public void update(int[] input, boolean movePressed, boolean attacking, boolean interacting, List<Entity> entities, List<Dead> deadList) {
+    public void update(int[] input, boolean movePressed, boolean attacking, boolean interacting, List<Entity> entities, List<Dead> deadList, List<Inanimate> inanimates) {
         if (attacking && !player.isAttacking()) {
             player.toggleAttack();
         }
@@ -41,14 +45,42 @@ public class Updater {
                 entityMove(entity);
             }
         }
+
+        if (interacting && !playerInteract(inanimates)) {
+            System.out.println("There doesn't appear to be anything here.");
+        }
     }
 
     public void setPlayer(Player playerInstance) {
         this.player = playerInstance;
     }
 
+    public void setStairs(List<Inanimate> inanimates) {
+        for (Inanimate inanimate : inanimates) {
+            if (inanimate.getType().equals("Stairs")) {
+                this.stairs = inanimate;
+            }
+        }
+    }
+
+    public boolean playerDescends() {
+        return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
+    }
+
     public void deconstruct() {
         tiles = null;
+    }
+
+    private boolean playerInteract(List<Inanimate> inanimates) {
+        Point facingPoint = player.getFacingPoint(tileSize);
+        Tile facingTile = findTile(facingPoint.x, facingPoint.y);
+        for (Inanimate inanimate : inanimates) {
+            if (inanimate.getX() == facingTile.x && inanimate.getY() == facingTile.y) {
+                inanimate.interact(facingTile);
+                return true;
+            }
+        }
+        return false;
     }
 
     private void playerAttack(List<Entity> entities, List<Dead> deadList) {

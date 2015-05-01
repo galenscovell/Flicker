@@ -15,11 +15,14 @@ import galenscovell.entities.Dead;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.entities.Salamander;
+
 import galenscovell.graphics.Fog;
 import galenscovell.graphics.Torchlight;
+
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
+
 import galenscovell.util.Constants;
 
 import java.util.ArrayList;
@@ -110,6 +113,10 @@ public class Renderer {
                     entity.toggleInView();
                 }
             }
+        }
+
+        if (player.isAttacking()) {
+            player.attack(spriteBatch, interpolation, tileSize);
         }
 
         spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);

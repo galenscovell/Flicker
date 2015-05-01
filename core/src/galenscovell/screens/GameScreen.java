@@ -27,7 +27,6 @@ public class GameScreen implements Screen {
     private int updateAccumulator;
 
     private boolean movePressed;
-    private boolean spaceReleased, eReleased;
 
 
     public GameScreen() {
@@ -41,8 +40,16 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         // Player movement and entity logic
         if (updateAccumulator > Constants.TIMESTEP) {
-            updater.update(checkMovement(), movePressed, spaceReleased, eReleased, renderer.getEntityList(), renderer.getDeadList());
+            updater.update(checkMovement(), movePressed, Gdx.input.isKeyPressed(Input.Keys.SPACE), Gdx.input.isKeyPressed(Input.Keys.E), renderer.getEntityList(), renderer.getDeadList(), renderer.getInanimateList());
             updateAccumulator = 0;
+
+            if (updater.playerDescends()) {
+                renderer.deconstruct();
+                updater.deconstruct();
+                world.deconstruct();
+                System.gc(); // Suggest garbage collection on null references
+                createNewLevel();
+            }
         }
 
         // Graphics rendering
@@ -94,6 +101,7 @@ public class GameScreen implements Screen {
         world.optimizeLayout();
         renderer.assembleLevel(playerInstance);
         updater.setPlayer(playerInstance);
+        updater.setStairs(renderer.getInanimateList());
     }
 
     private int[] checkMovement() {
