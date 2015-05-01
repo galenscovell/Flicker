@@ -15,6 +15,11 @@ import galenscovell.entities.Dead;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.entities.Salamander;
+import galenscovell.graphics.Fog;
+import galenscovell.graphics.Torchlight;
+import galenscovell.inanimates.Door;
+import galenscovell.inanimates.Inanimate;
+import galenscovell.inanimates.Stairs;
 import galenscovell.util.Constants;
 
 import java.util.ArrayList;
@@ -27,8 +32,11 @@ public class Renderer {
     private Map<Integer, Tile> tiles;
     private List<Entity> entities;
     private List<Dead> deadList;
+    private List<Inanimate> inanimates;
 
     private Player player;
+    private Fog fog;
+    private Torchlight torchlight;
 
     private OrthographicCamera viewport;
     private SpriteBatch spriteBatch;
@@ -45,6 +53,9 @@ public class Renderer {
         this.tiles = tiles;
         this.entities = new ArrayList<Entity>();
         this.deadList = new ArrayList<Dead>();
+        this.inanimates = new ArrayList<Inanimate>();
+
+        this.fog = new Fog();
     }
 
 
@@ -71,6 +82,14 @@ public class Renderer {
             }
         }
 
+        for (Inanimate inanimate : inanimates) {
+            // Inanimate [x, y] are in Tiles, convert to pixels
+            if (inViewport(inanimate.getX() * tileSize, inanimate.getY() * tileSize)) {
+                spriteBatch.draw(inanimate.getSprite(), inanimate.getX() * tileSize, inanimate.getY() * tileSize, tileSize, tileSize);
+                torchlight.updateResistanceMap(inanimate.getX(), inanimate.getY(), inanimate.isBlocking());
+            }
+        }
+
         for (Entity entity : entities) {
             // Entity [x, y] are in pixels
             if (inViewport(entity.getX(), entity.getY())) {
@@ -94,6 +113,8 @@ public class Renderer {
         }
 
         spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
+        torchlight.findFOV(spriteBatch, player, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize);
+        fog.render(spriteBatch);
         spriteBatch.end();
     }
 
@@ -105,14 +126,54 @@ public class Renderer {
         return deadList;
     }
 
+    public List<Inanimate> getInanimateList() {
+        return inanimates;
+    }
+
     public void assembleLevel(Player player) {
+        placeInanimates();
+        createResistanceMap();
         placePlayer(player);
     }
 
     public void deconstruct() {
         entities = null;
         deadList = null;
+        inanimates = null;
         tiles = null;
+    }
+
+    private void placeInanimates() {
+        for (Tile tile : tiles.values()) {
+            if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
+                if (tile.getBitmask() == 1010) {
+                    inanimates.add(new Door(tile.x, tile.y, 0));
+                    tile.toggleBlocking();
+                    tile.toggleOccupied();
+                } else if (tile.getBitmask() == 101) {
+                    inanimates.add(new Door(tile.x, tile.y, 1));
+                    tile.toggleBlocking();
+                    tile.toggleOccupied();
+                }
+            }
+        }
+
+        Tile stairTile = findRandomTile();
+        inanimates.add(new Stairs(stairTile.x, stairTile.y));
+    }
+
+    private void createResistanceMap() {
+        float[][] resistanceMap = new float[Constants.TILE_ROWS][Constants.TILE_COLUMNS];
+        for (Tile tile : tiles.values()) {
+            float resistance;
+            if (tile.isPerimeter() || tile.isBlocking()) {
+                resistance = 2.0f;
+            } else {
+                resistance = 0.0f;
+            }
+            resistanceMap[tile.y][tile.x] = resistance;
+        }
+        this.torchlight = new Torchlight(tileSize, resistanceMap);
     }
 
     private void placePlayer(Player playerInstance) {
