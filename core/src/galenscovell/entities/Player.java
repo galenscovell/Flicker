@@ -8,6 +8,7 @@
 package galenscovell.entities;
 
 import galenscovell.graphics.SpriteSheet;
+import galenscovell.logic.Point;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -18,6 +19,7 @@ public class Player {
     public Sprite sprite;
     private Sprite[] currentSet;
     private Sprite[] upSprites, downSprites, leftSprites, rightSprites;
+    private boolean attacking;
 
 
     public Player(int x, int y) {
@@ -74,6 +76,32 @@ public class Player {
         return currentY;
     }
 
+    public Point getFacingPoint(int tileSize) {
+        int tileX = x / tileSize;
+        int tileY = y / tileSize;
+        if (currentSet == upSprites) {
+            return new Point(tileX, tileY - 1);
+        } else if (currentSet == downSprites) {
+            return new Point(tileX, tileY + 1);
+        } else if (currentSet == leftSprites) {
+            return new Point(tileX - 1, tileY);
+        } else {
+            return new Point(tileX + 1, tileY);
+        }
+    }
+
+    public boolean isAttacking() {
+        return attacking;
+    }
+
+    public void toggleAttack() {
+        if (attacking) {
+            attacking = false;
+        } else {
+            attacking = true;
+        }
+    }
+
     public void turn(int dx, int dy) {
         if (dy < 0) {
             currentSet = upSprites;
@@ -93,7 +121,7 @@ public class Player {
         y += dy;
     }
 
-    public void draw(double interpolation) {
+    public void interpolate(double interpolation) {
         animate(currentSet);
         // When interpolation is 1, movement animation is complete
         if (interpolation == 1.0) {

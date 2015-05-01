@@ -26,6 +26,9 @@ public class GameScreen implements Screen {
     private double interpolation;
     private int updateAccumulator;
 
+    private boolean movePressed;
+    private boolean spaceReleased, eReleased;
+
 
     public GameScreen() {
         this.playerInstance = new Player(48, 48);
@@ -38,7 +41,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         // Player movement and entity logic
         if (updateAccumulator > Constants.TIMESTEP) {
-            updater.update(delta, checkMovement());
+            updater.update(checkMovement(), movePressed, spaceReleased, eReleased, renderer.getEntityList(), renderer.getDeadList());
             updateAccumulator = 0;
         }
 
@@ -79,8 +82,8 @@ public class GameScreen implements Screen {
 
     private void createNewLevel() {
         this.world = new World();
-        this.renderer = new Renderer(playerInstance, world.getTiles());
-        this.updater = new Updater(playerInstance);
+        this.renderer = new Renderer(world.getTiles());
+        this.updater = new Updater(world.getTiles());
 
         int smoothTicks = Constants.WORLD_SMOOTHING_PASSES;
         while (smoothTicks > 0) {
@@ -89,6 +92,8 @@ public class GameScreen implements Screen {
         }
 
         world.optimizeLayout();
+        renderer.assembleLevel(playerInstance);
+        updater.setPlayer(playerInstance);
     }
 
     private int[] checkMovement() {
@@ -96,12 +101,18 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             direction[1]--;
+            movePressed = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             direction[1]++;
+            movePressed = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             direction[0]--;
+            movePressed = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             direction[0]++;
+            movePressed = true;
+        } else {
+            movePressed = false;
         }
         return direction;
     }
