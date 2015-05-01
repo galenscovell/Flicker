@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import galenscovell.entities.Dead;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.entities.Salamander;
@@ -34,7 +33,6 @@ import java.util.Random;
 public class Renderer {
     private Map<Integer, Tile> tiles;
     private List<Entity> entities;
-    private List<Dead> deadList;
     private List<Inanimate> inanimates;
 
     private Player player;
@@ -55,7 +53,6 @@ public class Renderer {
 
         this.tiles = tiles;
         this.entities = new ArrayList<Entity>();
-        this.deadList = new ArrayList<Dead>();
         this.inanimates = new ArrayList<Inanimate>();
 
         this.fog = new Fog();
@@ -75,13 +72,6 @@ public class Renderer {
             // Tile [x, y] are in Tiles, convert to pixels
             if (inViewport(tile.x * tileSize, tile.y * tileSize)) {
                 spriteBatch.draw(tile.sprite, tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
-            }
-        }
-
-        for (Dead dead : deadList) {
-            // Dead [x, y] are in Tiles, convert to pixels
-            if (inViewport(dead.getX() * tileSize, dead.getY() * tileSize)) {
-                spriteBatch.draw(dead.sprite, dead.x * tileSize, dead.y * tileSize, tileSize, tileSize);
             }
         }
 
@@ -120,7 +110,8 @@ public class Renderer {
         }
 
         spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
-        torchlight.findFOV(spriteBatch, player, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize);
+        torchlight.findFOV(player, tileSize);
+        torchlight.drawLight(spriteBatch, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize, tileSize);
         fog.render(spriteBatch);
         spriteBatch.end();
     }
@@ -129,9 +120,6 @@ public class Renderer {
         return entities;
     }
 
-    public List<Dead> getDeadList() {
-        return deadList;
-    }
 
     public List<Inanimate> getInanimateList() {
         return inanimates;
@@ -145,7 +133,6 @@ public class Renderer {
 
     public void deconstruct() {
         entities = null;
-        deadList = null;
         inanimates = null;
         tiles = null;
     }
@@ -172,19 +159,17 @@ public class Renderer {
     private void createResistanceMap() {
         float[][] resistanceMap = new float[Constants.TILE_ROWS][Constants.TILE_COLUMNS];
         for (Tile tile : tiles.values()) {
-            float resistance;
             if (tile.isPerimeter() || tile.isBlocking()) {
-                resistance = 2.0f;
+                resistanceMap[tile.y][tile.x] = 2.0f;
             } else {
-                resistance = 0.0f;
+                resistanceMap[tile.y][tile.x] = 0.0f;
             }
-            resistanceMap[tile.y][tile.x] = resistance;
         }
-        this.torchlight = new Torchlight(tileSize, resistanceMap);
+        this.torchlight = new Torchlight(resistanceMap);
     }
 
     private void placePlayer(Player playerInstance) {
-        int placements = 2;
+        int placements = 5;
         boolean playerPlaced = false;
         while (placements > 0) {
             Tile tile = findRandomTile();
@@ -231,10 +216,6 @@ public class Renderer {
     }
 
     private boolean inViewport(int x, int y) {
-        if ((x + tileSize) >= minCamX && x <= maxCamX && (y + tileSize) >= minCamY && y <= maxCamY) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((x + tileSize) >= minCamX && x <= maxCamX && (y + tileSize) >= minCamY && y <= maxCamY);
     }
 }

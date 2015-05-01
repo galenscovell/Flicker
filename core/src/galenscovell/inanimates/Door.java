@@ -14,9 +14,9 @@ import galenscovell.logic.Tile;
 
 
 public class Door implements Inanimate {
-    private int x, y, tileSize;
+    private int x, y;
+    private Sprite sprite;
     private Sprite[] sprites;
-    public Sprite sprite;
     private boolean blocking;
 
 
@@ -45,6 +45,10 @@ public class Door implements Inanimate {
         return "Door";
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     public void interact(Tile tile) {
         if (blocking) {
             this.sprite = sprites[1];
@@ -61,9 +65,5 @@ public class Door implements Inanimate {
 
     public boolean isBlocking() {
         return blocking;
-    }
-
-    public Sprite getSprite() {
-        return sprite;
     }
 }

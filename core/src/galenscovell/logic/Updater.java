@@ -6,10 +6,10 @@
 
 package galenscovell.logic;
 
-import galenscovell.entities.Dead;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 
+import galenscovell.inanimates.Dead;
 import galenscovell.inanimates.Inanimate;
 
 import galenscovell.util.Constants;
@@ -31,14 +31,14 @@ public class Updater {
         this.tileSize = Constants.TILESIZE;
     }
 
-    public void update(int[] input, boolean movePressed, boolean attacking, boolean interacting, List<Entity> entities, List<Dead> deadList, List<Inanimate> inanimates) {
+    public void update(int[] input, boolean movePressed, boolean attacking, boolean interacting, List<Entity> entities, List<Inanimate> inanimates) {
         if (attacking && !player.isAttacking()) {
             player.toggleAttack();
         }
 
         if (playerMove(input[0], input[1]) || movePressed || attacking) {
             if (player.isAttacking()) {
-                playerAttack(entities, deadList);
+                playerAttack(entities, inanimates);
             }
 
             for (Entity entity : entities) {
@@ -83,7 +83,7 @@ public class Updater {
         return false;
     }
 
-    private void playerAttack(List<Entity> entities, List<Dead> deadList) {
+    private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
         Point attackedTile = player.getFacingPoint(tileSize);
         Entity hitEntity = null;
 
@@ -97,7 +97,7 @@ public class Updater {
 
         if (hitEntity != null) {
             entities.remove(hitEntity);
-            deadList.add(new Dead(attackedTile.x, attackedTile.y));
+            inanimates.add(new Dead(attackedTile.x, attackedTile.y));
         }
     }
 

@@ -13,9 +13,9 @@ import galenscovell.logic.Tile;
 
 
 public class Stairs implements Inanimate {
-    private int x, y, tileSize;
+    private int x, y;
+    private Sprite sprite;
     private boolean blocking;
-    public Sprite sprite;
 
 
     public Stairs(int x, int y) {
@@ -40,15 +40,15 @@ public class Stairs implements Inanimate {
         return "Stairs";
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     public void interact(Tile tile) {
 
     }
 
     public boolean isBlocking() {
         return blocking;
-    }
-
-    public Sprite getSprite() {
-        return sprite;
     }
 }

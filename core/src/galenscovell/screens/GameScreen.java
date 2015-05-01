@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         // Player movement and entity logic
         if (updateAccumulator > Constants.TIMESTEP) {
-            updater.update(checkMovement(), movePressed, Gdx.input.isKeyPressed(Input.Keys.SPACE), Gdx.input.isKeyPressed(Input.Keys.E), renderer.getEntityList(), renderer.getDeadList(), renderer.getInanimateList());
+            updater.update(checkMovement(), movePressed, Gdx.input.isKeyPressed(Input.Keys.SPACE), Gdx.input.isKeyPressed(Input.Keys.E), renderer.getEntityList(), renderer.getInanimateList());
             updateAccumulator = 0;
 
             if (updater.playerDescends()) {

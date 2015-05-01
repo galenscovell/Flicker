@@ -1,7 +1,7 @@
 
 /**
  * INANIMATE INTERFACE
- * All inanimates have getX(), getY(), interact() and getSprite().
+ * All inanimates have interact(), getType(), isBlocking(), getSprite() and getX()/getY().
  */
 
 package galenscovell.inanimates;
