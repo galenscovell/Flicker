@@ -15,25 +15,24 @@ import galenscovell.entities.Player;
 
 
 public class Torchlight {
-    private int tileSize, radius, startX, startY;
+    private int radius, startX, startY;
     private int[][] mult;
     private float[][] resistanceMap;
     private float[][] lightMap;
     private Texture rect = new Texture(Gdx.files.internal("textures/blank.png"));
 
 
-    public Torchlight(int tileSize, float[][] resistanceMap) {
-        this.tileSize = tileSize;
+    public Torchlight(float[][] resistanceMap) {
         this.radius = 5;
         this.mult = new int[][]{{1, 0, 0, -1, -1, 0, 0, 1},
-                {0, 1, -1, 0, 0, -1, 1, 0},
-                {0, 1, 1, 0, 0, -1, -1, 0},
-                {1, 0, 0, 1, -1, 0, 0, -1}};
+                                {0, 1, -1, 0, 0, -1, 1, 0},
+                                {0, 1, 1, 0, 0, -1, -1, 0},
+                                {1, 0, 0, 1, -1, 0, 0, -1}};
         this.resistanceMap = resistanceMap;
         this.lightMap = new float[resistanceMap.length][resistanceMap[0].length];
     }
 
-    public void findFOV(SpriteBatch spriteBatch, Player player, int minX, int maxX, int minY, int maxY) {
+    public void findFOV(Player player, int tileSize) {
         startX = player.getCurrentX() / tileSize;
         startY = player.getCurrentY() / tileSize;
         lightMap[startY][startX] = 1.0f;
@@ -41,11 +40,9 @@ public class Torchlight {
         for (int i = 0; i < 8; i++) {
             castLight(1, 1.0f, 0.0f, mult[0][i], mult[1][i], mult[2][i], mult[3][i]);
         }
-
-        drawLight(spriteBatch, minX, maxX, minY, maxY);
     }
 
-    private void drawLight(SpriteBatch spriteBatch, int minX, int maxX, int minY, int maxY) {
+    public void drawLight(SpriteBatch spriteBatch, int minX, int maxX, int minY, int maxY, int tileSize) {
         // Keep record of batch color before setting lighting transparency
         Color c = new Color(spriteBatch.getColor());
         // Fill alpha over Tile depending on lightMap value
@@ -55,7 +52,7 @@ public class Torchlight {
                     spriteBatch.setColor(0.0f, 0.0f, 0.0f, 1.0f - lightMap[y][x]);
                     spriteBatch.draw(rect, x * tileSize, y * tileSize, tileSize, tileSize);
                 }
-                // Reset each value for next frame
+                // Reset all values for next frame
                 lightMap[y][x] = 0.0f;
             }
         }
@@ -113,12 +110,10 @@ public class Torchlight {
     }
 
     public void updateResistanceMap(int x, int y, boolean blocking) {
-        float value;
         if (blocking) {
-            value = 2.0f;
+            resistanceMap[y][x] = 2.0f;
         } else {
-            value = 0.0f;
+            resistanceMap[y][x] = 0.0f;
         }
-        resistanceMap[y][x] = value;
     }
 }
