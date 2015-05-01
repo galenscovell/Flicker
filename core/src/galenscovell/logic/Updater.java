@@ -36,7 +36,7 @@ public class Updater {
             player.toggleAttack();
         }
 
-        if (playerMove(input[0], input[1]) || movePressed || attacking) {
+        if ((playerMove(input[0], input[1]) || movePressed || attacking)) {
             if (player.isAttacking()) {
                 playerAttack(entities, inanimates);
             }
@@ -110,17 +110,19 @@ public class Updater {
         int playerX = (player.getX() / tileSize);
         int playerY = (player.getY() / tileSize);
 
-        Tile nextTile = findTile(playerX + dx, playerY + dy);
-        if (nextTile.isFloor() && !nextTile.isOccupied()) {
-            Tile currentTile = findTile(playerX, playerY);
-            currentTile.toggleOccupied();
-            player.move(dx * tileSize, dy * tileSize);
-            nextTile.toggleOccupied();
-            return true;
-        } else {
-            player.turn(dx, dy);
+        if (player.turn(dx * tileSize, dy * tileSize)) {
             return false;
+        } else {
+            Tile nextTile = findTile(playerX + dx, playerY + dy);
+            if (nextTile.isFloor() && !nextTile.isOccupied()) {
+                Tile currentTile = findTile(playerX, playerY);
+                currentTile.toggleOccupied();
+                player.move(dx * tileSize, dy * tileSize);
+                nextTile.toggleOccupied();
+                return true;
+            }
         }
+        return false;
     }
 
     private void entityMove(Entity entity) {

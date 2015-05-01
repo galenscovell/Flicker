@@ -15,6 +15,8 @@ import galenscovell.graphics.SpriteSheet;
 
 import galenscovell.logic.Point;
 
+import java.lang.invoke.VolatileCallSite;
+
 
 public class Player {
     private int x, y, prevX, prevY, currentX, currentY;
@@ -110,23 +112,40 @@ public class Player {
         }
     }
 
-    public void turn(int dx, int dy) {
+    public boolean turn(int dx, int dy) {
         if (dy < 0) {
-            currentSet = upSprites;
+            if (currentSet != upSprites) {
+                currentSet = upSprites;
+                return true;
+            }
         } else if (dy > 0) {
-            currentSet = downSprites;
+            if (currentSet != downSprites) {
+                currentSet = downSprites;
+                return true;
+            }
         } else if (dx < 0) {
-            currentSet = leftSprites;
+            if (currentSet != leftSprites) {
+                currentSet = leftSprites;
+                return true;
+            }
         } else if (dx > 0) {
-            currentSet = rightSprites;
+            if (currentSet != rightSprites) {
+                currentSet = rightSprites;
+                return true;
+            }
         }
+        return false;
     }
 
     public void move(int dx, int dy) {
-        turn(dx, dy);
         animate(currentSet);
         x += dx;
         y += dy;
+    }
+
+    public void occupyTile(int newX, int newY) {
+        this.x = newX;
+        this.y = newY;
     }
 
     public void interpolate(double interpolation) {
