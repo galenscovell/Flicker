@@ -105,21 +105,16 @@ public class Player {
         }
     }
 
-    public boolean turn(int dx, int dy) {
+    public void turn(int dx, int dy) {
         if (dy < 0 && currentSet != upSprites) {
             currentSet = upSprites;
-            return true;
         } else if (dy > 0 && currentSet != downSprites) {
             currentSet = downSprites;
-            return true;
         } else if (dx < 0 && currentSet != leftSprites) {
             currentSet = leftSprites;
-            return true;
         } else if (dx > 0 && currentSet != rightSprites) {
             currentSet = rightSprites;
-            return true;
         }
-        return false;
     }
 
     public void move(int dx, int dy) {

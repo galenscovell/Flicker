@@ -44,10 +44,11 @@ public class Updater {
 
         if (movePressed) {
             if (!player.isAttacking()) {
-                playerMove(input[0], input[1]);
-            }
-            for (Entity entity : entities) {
-                entityMove(entity);
+                if (playerMove(input[0], input[1])) {
+                    for (Entity entity : entities) {
+                        entityMove(entity);
+                    }
+                }
             }
         }
     }
@@ -99,20 +100,19 @@ public class Updater {
         }
     }
 
-    private void playerMove(int dx, int dy) {
-        if (player.turn(dx, dy)) {
-            return;
-        } else {
-            int playerX = (player.getX() / tileSize);
-            int playerY = (player.getY() / tileSize);
-            Tile nextTile = findTile(playerX + dx, playerY + dy);
-            if (nextTile.isFloor() && !nextTile.isOccupied()) {
-                Tile currentTile = findTile(playerX, playerY);
-                currentTile.toggleOccupied();
-                player.move(dx * tileSize, dy * tileSize);
-                nextTile.toggleOccupied();
-            }
+    private boolean playerMove(int dx, int dy) {
+        player.turn(dx, dy);
+        int playerX = (player.getX() / tileSize);
+        int playerY = (player.getY() / tileSize);
+        Tile nextTile = findTile(playerX + dx, playerY + dy);
+        if (nextTile.isFloor() && !nextTile.isOccupied()) {
+            Tile currentTile = findTile(playerX, playerY);
+            currentTile.toggleOccupied();
+            player.move(dx * tileSize, dy * tileSize);
+            nextTile.toggleOccupied();
+            return true;
         }
+        return false;
     }
 
     private void entityMove(Entity entity) {
