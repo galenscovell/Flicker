@@ -6,56 +6,59 @@
 
 package galenscovell.screens;
 
-import galenscovell.entities.Player;
-import galenscovell.logic.Renderer;
-import galenscovell.logic.Updater;
-import galenscovell.logic.World;
-import galenscovell.util.Constants;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 
+import galenscovell.entities.Player;
+
+import galenscovell.logic.Renderer;
+import galenscovell.logic.Updater;
+import galenscovell.logic.World;
+
+import galenscovell.util.Constants;
+
 
 public class GameScreen implements Screen {
     private Player playerInstance;
+    private HudDisplay hud;
+
     private World world;
     private Renderer renderer;
     private Updater updater;
 
-    private double interpolation;
-    private int updateAccumulator;
-
     private boolean movePressed;
+
+    private double interpolation;
+    private int accumulator = 0;
 
 
     public GameScreen() {
-        this.playerInstance = new Player(48, 48);
-
+        this.playerInstance = new Player();
+        this.hud = new HudDisplay();
         createNewLevel();
-        this.updateAccumulator = 0;
     }
 
     @Override
     public void render(float delta) {
         // Player movement and entity logic
-        if (updateAccumulator > Constants.TIMESTEP) {
-            updater.update(checkMovement(), movePressed, Gdx.input.isKeyPressed(Input.Keys.SPACE), Gdx.input.isKeyPressed(Input.Keys.E), renderer.getEntityList(), renderer.getInanimateList());
-            updateAccumulator = 0;
+        if (accumulator > Constants.TIMESTEP) {
+            updater.update(checkMovement(), movePressed, renderer.getEntityList(), renderer.getInanimateList());
+            accumulator = 0;
+        }
 
-            if (updater.playerDescends()) {
-                renderer.deconstruct();
-                updater.deconstruct();
-                world.deconstruct();
-                System.gc(); // Suggest garbage collection on null references
-                createNewLevel();
-            }
+        if (updater.playerDescends()) {
+            this.renderer = null;
+            this.updater = null;
+            this.world = null;
+            System.gc(); // Suggest garbage collection on null references
+            createNewLevel();
         }
 
         // Graphics rendering
-        interpolation = (double) updateAccumulator / Constants.TIMESTEP;
+        interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation);
-        updateAccumulator++;
+        accumulator++;
     }
 
     @Override
@@ -84,13 +87,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        this.dispose();
     }
 
     private void createNewLevel() {
         this.world = new World();
-        this.renderer = new Renderer(world.getTiles());
-        this.updater = new Updater(world.getTiles());
+        this.renderer = new Renderer(world.getTiles(), hud);
+        this.updater = new Updater(world.getTiles(), hud);
 
         int smoothTicks = Constants.WORLD_SMOOTHING_PASSES;
         while (smoothTicks > 0) {
@@ -105,24 +108,29 @@ public class GameScreen implements Screen {
     }
 
     private int[] checkMovement() {
-        int[] direction = new int[2];
+        int[] playerInput = new int[3];
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            direction[1]--;
+            playerInput[1]--;
             movePressed = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            direction[1]++;
+            playerInput[1]++;
             movePressed = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            direction[0]--;
+            playerInput[0]--;
             movePressed = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            direction[0]++;
+            playerInput[0]++;
             movePressed = true;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+            playerInput[2]++;
+            movePressed = false;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            playerInput[2]--;
+            movePressed = false;
         } else {
             movePressed = false;
         }
-        return direction;
+        return playerInput;
     }
-
 }

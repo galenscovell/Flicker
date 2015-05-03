@@ -31,14 +31,7 @@ public class Player {
     private boolean pickaxePrepared;
 
 
-    public Player(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.prevX = x;
-        this.prevY = y;
-        this.currentX = x;
-        this.currentY = y;
-
+    public Player() {
         SpriteSheet sheet = SpriteSheet.charsheet;
         this.upSprites = new Sprite[4];
         this.downSprites = new Sprite[4];
@@ -56,7 +49,7 @@ public class Player {
         this.currentSet = downSprites;
         this.sprite = currentSet[0];
         this.spriteFrame = 0;
-        this.waitFrames = 20;
+        this.waitFrames = 15;
 
         this.pickaxe = new Pickaxe();
     }
@@ -113,26 +106,18 @@ public class Player {
     }
 
     public boolean turn(int dx, int dy) {
-        if (dy < 0) {
-            if (currentSet != upSprites) {
-                currentSet = upSprites;
-                return true;
-            }
-        } else if (dy > 0) {
-            if (currentSet != downSprites) {
-                currentSet = downSprites;
-                return true;
-            }
-        } else if (dx < 0) {
-            if (currentSet != leftSprites) {
-                currentSet = leftSprites;
-                return true;
-            }
-        } else if (dx > 0) {
-            if (currentSet != rightSprites) {
-                currentSet = rightSprites;
-                return true;
-            }
+        if (dy < 0 && currentSet != upSprites) {
+            currentSet = upSprites;
+            return true;
+        } else if (dy > 0 && currentSet != downSprites) {
+            currentSet = downSprites;
+            return true;
+        } else if (dx < 0 && currentSet != leftSprites) {
+            currentSet = leftSprites;
+            return true;
+        } else if (dx > 0 && currentSet != rightSprites) {
+            currentSet = rightSprites;
+            return true;
         }
         return false;
     }
@@ -143,21 +128,15 @@ public class Player {
         y += dy;
     }
 
-    public void occupyTile(int newX, int newY) {
-        this.x = newX;
-        this.y = newY;
-    }
-
     public void interpolate(double interpolation) {
         animate(currentSet);
-        // When interpolation is 1, movement animation is complete
-        if (interpolation == 1.0) {
-            prevX = x;
-            prevY = y;
-            return;
-        }
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+        if (currentX == x && currentY == y) {
+            prevX = x;
+            prevY = y;
+        }
     }
 
     public void attack(SpriteBatch spriteBatch, double interpolation, int tileSize) {

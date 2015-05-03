@@ -12,6 +12,8 @@ import galenscovell.entities.Player;
 import galenscovell.inanimates.Dead;
 import galenscovell.inanimates.Inanimate;
 
+import galenscovell.screens.HudDisplay;
+
 import galenscovell.util.Constants;
 
 import java.util.List;
@@ -21,33 +23,32 @@ import java.util.Random;
 
 public class Updater {
     private int tileSize;
+    private HudDisplay hud;
     private Map<Integer, Tile> tiles;
     private Player player;
     private Inanimate stairs;
 
 
-    public Updater(Map<Integer, Tile> tiles) {
+    public Updater(Map<Integer, Tile> tiles, HudDisplay hud) {
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
+        this.hud = hud;
     }
 
-    public void update(int[] input, boolean movePressed, boolean attacking, boolean interacting, List<Entity> entities, List<Inanimate> inanimates) {
-        if (attacking && !player.isAttacking()) {
-            player.toggleAttack();
+    public void update(int[] input, boolean movePressed, List<Entity> entities, List<Inanimate> inanimates) {
+        if (input[2] == 1) {
+            playerInteract(inanimates);
+        } else if (input[2] == -1 && !player.isAttacking()) {
+            playerAttack(entities, inanimates);
         }
 
-        if ((playerMove(input[0], input[1]) || movePressed || attacking)) {
-            if (player.isAttacking()) {
-                playerAttack(entities, inanimates);
+        if (movePressed) {
+            if (!player.isAttacking()) {
+                playerMove(input[0], input[1]);
             }
-
             for (Entity entity : entities) {
                 entityMove(entity);
             }
-        }
-
-        if (interacting && !playerInteract(inanimates)) {
-            System.out.println("There doesn't appear to be anything here.");
         }
     }
 
@@ -67,23 +68,20 @@ public class Updater {
         return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
     }
 
-    public void deconstruct() {
-        tiles = null;
-    }
-
-    private boolean playerInteract(List<Inanimate> inanimates) {
+    private void playerInteract(List<Inanimate> inanimates) {
         Point facingPoint = player.getFacingPoint(tileSize);
         Tile facingTile = findTile(facingPoint.x, facingPoint.y);
         for (Inanimate inanimate : inanimates) {
             if (inanimate.getX() == facingTile.x && inanimate.getY() == facingTile.y) {
                 inanimate.interact(facingTile);
-                return true;
+                return;
             }
         }
-        return false;
+        System.out.println("There doesn't appear to be anything here.");
     }
 
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
+        player.toggleAttack();
         Point attackedTile = player.getFacingPoint(tileSize);
         Entity hitEntity = null;
 
@@ -101,28 +99,20 @@ public class Updater {
         }
     }
 
-    private boolean playerMove(int dx, int dy) {
-        // Prevent movement during player attack animation
-        if (player.isAttacking() || (dx == 0 && dy == 0)) {
-            return false;
-        }
-
-        int playerX = (player.getX() / tileSize);
-        int playerY = (player.getY() / tileSize);
-
-        if (player.turn(dx * tileSize, dy * tileSize)) {
-            return false;
+    private void playerMove(int dx, int dy) {
+        if (player.turn(dx, dy)) {
+            return;
         } else {
+            int playerX = (player.getX() / tileSize);
+            int playerY = (player.getY() / tileSize);
             Tile nextTile = findTile(playerX + dx, playerY + dy);
             if (nextTile.isFloor() && !nextTile.isOccupied()) {
                 Tile currentTile = findTile(playerX, playerY);
                 currentTile.toggleOccupied();
                 player.move(dx * tileSize, dy * tileSize);
                 nextTile.toggleOccupied();
-                return true;
             }
         }
-        return false;
     }
 
     private void entityMove(Entity entity) {
@@ -141,8 +131,6 @@ public class Updater {
 
     private void entityPassiveMove(Entity entity) {
         Random generator = new Random();
-        int entityX = (entity.getX() / tileSize);
-        int entityY = (entity.getY() / tileSize);
         int dx = 0;
         int dy = 0;
 
@@ -153,6 +141,8 @@ public class Updater {
             dy += generator.nextInt(3) - 1;
         }
 
+        int entityX = (entity.getX() / tileSize);
+        int entityY = (entity.getY() / tileSize);
         Tile nextTile = findTile(entityX + dx, entityY + dy);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
             // If possible, move to new Tile and set old Tile as unoccupied
@@ -229,11 +219,6 @@ public class Updater {
     }
 
     private Tile findTile(int x, int y) {
-        int key = x * Constants.TILE_COLUMNS + y;
-        if (tiles.containsKey(key)) {
-            return tiles.get(key);
-        } else {
-            return null;
-        }
+        return tiles.get(x * Constants.TILE_COLUMNS + y);
     }
 }

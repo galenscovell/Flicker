@@ -23,7 +23,7 @@ public class Torchlight {
 
 
     public Torchlight(float[][] resistanceMap) {
-        this.radius = 5;
+        this.radius = 6;
         this.mult = new int[][]{{1, 0, 0, -1, -1, 0, 0, 1},
                                 {0, 1, -1, 0, 0, -1, 1, 0},
                                 {0, 1, 1, 0, 0, -1, -1, 0},

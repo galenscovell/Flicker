@@ -5,6 +5,8 @@
 
 package galenscovell.entities;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import galenscovell.graphics.SpriteSheet;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -33,7 +35,7 @@ public class Creature implements Entity {
         this.currentY = y;
 
         this.spriteNumber = 0;
-        this.waitFrames = 20;
+        this.waitFrames = 15;
         this.moveTime = 0;
     }
 
@@ -57,18 +59,31 @@ public class Creature implements Entity {
 
     public void interpolate(double interpolation) {
         animate(currentSet);
-        // When interpolation is 1, movement animation is complete
-        if (interpolation == 1) {
-            prevX = x;
-            prevY = y;
-            return;
-        }
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+        if (currentX == x && currentY == y) {
+            prevX = x;
+            prevY = y;
+        }
     }
 
     public void attack(double interpolation, Player player) {
-        isAttacking = false;
+        int diffX = player.getX() - x;
+        int diffY = player.getY() - y;
+        if (diffX > 0) {
+            currentSet = rightSprites;
+        } else if (diffX < 0) {
+            currentSet = leftSprites;
+        }
+        animate(currentSet);
+        currentX = (int) (prevX + (diffX * interpolation));
+        currentY = (int) (prevY + (diffY * interpolation));
+
+        // Attack animation only covers half of player's tile
+        if (interpolation >= 0.6) {
+            toggleAttacking();
+        }
     }
 
     public int getX() {

@@ -22,6 +22,8 @@ import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
 
+import galenscovell.screens.HudDisplay;
+
 import galenscovell.util.Constants;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class Renderer {
     private List<Entity> entities;
     private List<Inanimate> inanimates;
 
+    private HudDisplay hud;
     private Player player;
     private Fog fog;
     private Torchlight torchlight;
@@ -45,7 +48,7 @@ public class Renderer {
     private float minCamX, minCamY, maxCamX, maxCamY;
 
 
-    public Renderer(Map<Integer, Tile> tiles) {
+    public Renderer(Map<Integer, Tile> tiles, HudDisplay hud) {
         this.tileSize = Constants.TILESIZE;
         this.viewport = new OrthographicCamera(Constants.WINDOW_X, Constants.WINDOW_Y);
         viewport.setToOrtho(true, Constants.WINDOW_X, Constants.WINDOW_Y);
@@ -56,6 +59,7 @@ public class Renderer {
         this.inanimates = new ArrayList<Inanimate>();
 
         this.fog = new Fog();
+        this.hud = hud;
     }
 
 
@@ -89,17 +93,14 @@ public class Renderer {
                 entity.interpolate(interpolation);
                 if (entity.isAttacking()) {
                     entity.attack(interpolation, player);
-                } else {
-                    spriteBatch.draw(entity.getSprite(), entity.getCurrentX(), entity.getCurrentY(), tileSize, tileSize);
                 }
+                spriteBatch.draw(entity.getSprite(), entity.getCurrentX(), entity.getCurrentY(), tileSize, tileSize);
 
                 int diffX = Math.abs(player.getX() / tileSize - entity.getX() / tileSize);
                 int diffY = Math.abs(player.getY() / tileSize - entity.getY() / tileSize);
                 if (!entity.isInView() && (diffX + diffY <= entity.getSightRange())) {
-                    System.out.println("In LOS, Diff: " + diffX + ", " + diffY);
                     entity.toggleInView();
                 } else if (entity.isInView() && (diffX + diffY > entity.getSightRange())) {
-                    System.out.println("Out of LOS, Diff: " + diffX + ", " + diffY);
                     entity.toggleInView();
                 }
             }
@@ -108,18 +109,19 @@ public class Renderer {
         if (player.isAttacking()) {
             player.attack(spriteBatch, interpolation, tileSize);
         }
-
         spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
+
         torchlight.findFOV(player, tileSize);
         torchlight.drawLight(spriteBatch, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize, tileSize);
+
         fog.render(spriteBatch);
+        hud.render();
         spriteBatch.end();
     }
 
     public List<Entity> getEntityList() {
         return entities;
     }
-
 
     public List<Inanimate> getInanimateList() {
         return inanimates;
@@ -129,12 +131,6 @@ public class Renderer {
         placeInanimates();
         createResistanceMap();
         placePlayer(player);
-    }
-
-    public void deconstruct() {
-        entities = null;
-        inanimates = null;
-        tiles = null;
     }
 
     private void placeInanimates() {
@@ -151,7 +147,6 @@ public class Renderer {
                 }
             }
         }
-
         Tile stairTile = findRandomTile();
         inanimates.add(new Stairs(stairTile.x, stairTile.y));
     }
@@ -189,7 +184,6 @@ public class Renderer {
     private Tile findRandomTile() {
         Random random = new Random();
         boolean found = false;
-
         while (!found) {
             int choiceX = random.nextInt(Constants.TILE_COLUMNS);
             int choiceY = random.nextInt(Constants.TILE_ROWS);
