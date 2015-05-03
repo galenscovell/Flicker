@@ -29,9 +29,8 @@ public class Constants {
     // Height of HUD (in pixels)
     public static final int HUD_HEIGHT = TILESIZE * 2;
 
-    // Renders per second = Framerate
+    // Renders per second = Framerate (Libgdx renders ~60/s)
     // Logic updates per second = Framerate / Timestep
-    public static final int FRAMERATE = 60;
     public static final float TIMESTEP = 10;
 
     // Number of smoothing passes during world generation

@@ -10,12 +10,10 @@ package galenscovell.entities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import galenscovell.graphics.Pickaxe;
 import galenscovell.graphics.SpriteSheet;
+import galenscovell.graphics.Weapon;
 
 import galenscovell.logic.Point;
-
-import java.lang.invoke.VolatileCallSite;
 
 
 public class Player {
@@ -27,8 +25,8 @@ public class Player {
     private Sprite[] upSprites, downSprites, leftSprites, rightSprites;
 
     private boolean attacking;
-    private Pickaxe pickaxe;
-    private boolean pickaxePrepared;
+    private Weapon weapon;
+    private boolean weaponPrepared;
 
 
     public Player() {
@@ -51,7 +49,7 @@ public class Player {
         this.spriteFrame = 0;
         this.waitFrames = 15;
 
-        this.pickaxe = new Pickaxe();
+        this.weapon = new Weapon();
     }
 
     public void setPosition(int newX, int newY) {
@@ -135,7 +133,7 @@ public class Player {
     }
 
     public void attack(SpriteBatch spriteBatch, double interpolation, int tileSize) {
-        if (!pickaxePrepared) {
+        if (!weaponPrepared) {
             String dir = " ";
             if (currentSet == upSprites) {
                 dir = "up";
@@ -146,25 +144,25 @@ public class Player {
             } else if (currentSet == rightSprites) {
                 dir = "right";
             }
-            pickaxe.setDirection(dir);
-            pickaxe.setPosition(currentX, currentY);
-            pickaxePrepared = true;
-            pickaxe.resetFrame();
+            weapon.setDirection(dir);
+            weapon.setPosition(currentX, currentY);
+            weaponPrepared = true;
+            weapon.resetFrame();
         }
 
-        int pickaxeFrame = pickaxe.getFrame();
-        if (pickaxeFrame <= 3) {
-            pickaxe.draw(spriteBatch, tileSize, 0);
-        } else if (pickaxeFrame > 3 && pickaxeFrame < 6) {
-            pickaxe.draw(spriteBatch, tileSize, 1);
-        } else if (pickaxeFrame > 5 && pickaxeFrame < 17) {
-            pickaxe.draw(spriteBatch, tileSize, 2);
-        } else if (pickaxeFrame == 18) {
-            pickaxePrepared = false;
+        int weaponFrame = weapon.getFrame();
+        if (weaponFrame <= 3) {
+            weapon.draw(spriteBatch, tileSize, 0);
+        } else if (weaponFrame > 3 && weaponFrame < 6) {
+            weapon.draw(spriteBatch, tileSize, 1);
+        } else if (weaponFrame > 5 && weaponFrame < 17) {
+            weapon.draw(spriteBatch, tileSize, 2);
+        } else if (weaponFrame == 18) {
+            weaponPrepared = false;
             toggleAttack();
             return;
         }
-        pickaxe.incrementFrame();
+        weapon.incrementFrame();
     }
 
     private void animate(Sprite[] currentSet) {

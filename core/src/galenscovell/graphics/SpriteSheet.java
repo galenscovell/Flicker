@@ -19,6 +19,7 @@ public class SpriteSheet {
 
     public static SpriteSheet charsheet = new SpriteSheet("textures/charsheet.png", 16);
     public static SpriteSheet tilesheet = new SpriteSheet("textures/tilesheet.png", 16);
+    public static SpriteSheet fxsheet = new SpriteSheet("textures/fxsheet.png", 16);
 
 
     public SpriteSheet(String path, int spriteSize) {

@@ -1,7 +1,8 @@
 
 /**
- * PICKAXE CLASS
- * Handles loading of pickaxe sprites for attack animations.
+ * WEAPON CLASS
+ * Handles loading of weapon sprites for attack animations.
+ * TODO: Make this Animation based rather than sprite-based.
  */
 
 package galenscovell.graphics;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import galenscovell.graphics.SpriteSheet;
 
 
-public class Pickaxe {
+public class Weapon {
     private int x, y, playerX, playerY;
     private Sprite sprite;
     private Sprite[] currentSet;
@@ -20,28 +21,28 @@ public class Pickaxe {
     private int frame;
 
 
-    public Pickaxe() {
-        SpriteSheet sheet = SpriteSheet.charsheet;
+    public Weapon() {
+        SpriteSheet sheet = SpriteSheet.fxsheet;
         this.upSprites = new Sprite[3];
         this.downSprites = new Sprite[3];
         this.leftSprites = new Sprite[3];
         this.rightSprites = new Sprite[3];
 
-        upSprites[0] = new Sprite(sheet.getSprite(67));
-        upSprites[1] = new Sprite(sheet.getSprite(68));
-        upSprites[2] = new Sprite(sheet.getSprite(64));
+        upSprites[0] = new Sprite(sheet.getSprite(5));
+        upSprites[1] = new Sprite(sheet.getSprite(4));
+        upSprites[2] = new Sprite(sheet.getSprite(3));
 
-        downSprites[0] = new Sprite(sheet.getSprite(65));
-        downSprites[1] = new Sprite(sheet.getSprite(69));
-        downSprites[2] = new Sprite(sheet.getSprite(66));
+        downSprites[0] = new Sprite(sheet.getSprite(35));
+        downSprites[1] = new Sprite(sheet.getSprite(36));
+        downSprites[2] = new Sprite(sheet.getSprite(37));
 
-        leftSprites[0] = new Sprite(sheet.getSprite(64));
-        leftSprites[1] = new Sprite(sheet.getSprite(70));
-        leftSprites[2] = new Sprite(sheet.getSprite(65));
+        leftSprites[0] = new Sprite(sheet.getSprite(3));
+        leftSprites[1] = new Sprite(sheet.getSprite(19));
+        leftSprites[2] = new Sprite(sheet.getSprite(35));
 
-        rightSprites[0] = new Sprite(sheet.getSprite(66));
-        rightSprites[1] = new Sprite(sheet.getSprite(71));
-        rightSprites[2] = new Sprite(sheet.getSprite(67));
+        rightSprites[0] = new Sprite(sheet.getSprite(37));
+        rightSprites[1] = new Sprite(sheet.getSprite(21));
+        rightSprites[2] = new Sprite(sheet.getSprite(5));
     }
 
     public int getFrame() {
@@ -127,3 +128,4 @@ public class Pickaxe {
         }
     }
 }
+
