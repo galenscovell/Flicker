@@ -35,20 +35,24 @@ public class Updater {
         this.hud = hud;
     }
 
-    public void update(int[] input, boolean movePressed, List<Entity> entities, List<Inanimate> inanimates) {
-        if (input[2] == 1) {
-            playerInteract(inanimates);
-        } else if (input[2] == -1 && !player.isAttacking()) {
-            playerAttack(entities, inanimates);
+    public void update(int[] input, boolean moving, boolean acting, List<Entity> entities, List<Inanimate> inanimates) {
+        if (acting) {
+            if (input[2] == 1) {
+                playerInteract(inanimates);
+            } else if (input[2] == -1 && !player.isAttacking()) {
+                playerAttack(entities, inanimates);
+            }
         }
 
-        if (movePressed) {
+        if (moving) {
             if (!player.isAttacking()) {
-                if (playerMove(input[0], input[1])) {
-                    for (Entity entity : entities) {
-                        entityMove(entity);
-                    }
-                }
+                playerMove(input[0], input[1]);
+            }
+        }
+
+        if (moving || acting) {
+            for (Entity entity : entities) {
+                entityMove(entity);
             }
         }
     }
@@ -100,7 +104,7 @@ public class Updater {
         }
     }
 
-    private boolean playerMove(int dx, int dy) {
+    private void playerMove(int dx, int dy) {
         player.turn(dx, dy);
         int playerX = (player.getX() / tileSize);
         int playerY = (player.getY() / tileSize);
@@ -110,9 +114,7 @@ public class Updater {
             currentTile.toggleOccupied();
             player.move(dx * tileSize, dy * tileSize);
             nextTile.toggleOccupied();
-            return true;
         }
-        return false;
     }
 
     private void entityMove(Entity entity) {

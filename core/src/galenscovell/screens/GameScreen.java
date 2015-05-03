@@ -27,7 +27,8 @@ public class GameScreen implements Screen {
     private Renderer renderer;
     private Updater updater;
 
-    private boolean movePressed;
+    private boolean moving;
+    private boolean acting;
 
     private double interpolation;
     private int accumulator = 0;
@@ -42,8 +43,12 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Player movement and entity logic
-        if (accumulator > Constants.TIMESTEP) {
-            updater.update(checkMovement(), movePressed, renderer.getEntityList(), renderer.getInanimateList());
+        // Scan for input at framerate until input found, then switch to logic updates
+        if (!moving && !acting) {
+            updater.update(checkMovement(), moving, acting, renderer.getEntityList(), renderer.getInanimateList());
+            accumulator = 0;
+        } else if (accumulator > Constants.TIMESTEP) {
+            updater.update(checkMovement(), moving, acting, renderer.getEntityList(), renderer.getInanimateList());
             accumulator = 0;
         }
 
@@ -112,24 +117,31 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             playerInput[1]--;
-            movePressed = true;
+            moving = true;
+            acting = false;
         } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             playerInput[1]++;
-            movePressed = true;
+            moving = true;
+            acting = false;
         } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             playerInput[0]--;
-            movePressed = true;
+            moving = true;
+            acting = false;
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             playerInput[0]++;
-            movePressed = true;
+            moving = true;
+            acting = false;
         } else if (Gdx.input.isKeyPressed(Input.Keys.E)) {
             playerInput[2]++;
-            movePressed = false;
+            moving = false;
+            acting = true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             playerInput[2]--;
-            movePressed = false;
+            moving = false;
+            acting = true;
         } else {
-            movePressed = false;
+            moving = false;
+            acting = false;
         }
         return playerInput;
     }
