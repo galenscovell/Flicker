@@ -106,31 +106,27 @@ public class Updater {
     }
 
     private void playerMove(int dx, int dy) {
-        player.turn(dx, dy);
         int playerX = (player.getX() / tileSize);
         int playerY = (player.getY() / tileSize);
         Tile nextTile = findTile(playerX + dx, playerY + dy);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
             Tile currentTile = findTile(playerX, playerY);
             currentTile.toggleOccupied();
-            player.move(dx * tileSize, dy * tileSize);
+            player.move(dx * tileSize, dy * tileSize, true);
             nextTile.toggleOccupied();
             player.toggleMovement();
+        } else {
+            player.move(dx, dy, false);
         }
     }
 
     private void entityMove(Entity entity) {
-        if (entity.isMoveTime()) {
-            if (entity.isInView()) {
-                entityAggressiveMove(entity);
-            } else {
-                entityPassiveMove(entity);
-            }
-            entity.resetMoveTime();
+        if (entity.isInView()) {
+            entityAggressiveMove(entity);
         } else {
-            entity.incrementMoveTime();
+            entityPassiveMove(entity);
         }
-
+        entity.toggleMovement();
     }
 
     private void entityPassiveMove(Entity entity) {
@@ -171,7 +167,7 @@ public class Updater {
         boolean left = false;
         boolean right = false;
 
-        // If entity is horizontally or vertically aligned with and adjacent to Player, attack
+        // Attack if horizontally or vertically aligned with and adjacent to Player
         if ((diffX == 0 && (diffY == 1 || diffY == -1)) || (diffY == 0 && (diffX == 1 || diffX == -1))) {
             entityAttack(entity);
         }
@@ -219,7 +215,7 @@ public class Updater {
     }
 
     private void entityAttack(Entity entity) {
-        entity.toggleAttacking();
+        entity.toggleAttack();
     }
 
     private Tile findTile(int x, int y) {

@@ -43,6 +43,10 @@ public class Torchlight {
     }
 
     public void drawLight(SpriteBatch spriteBatch, int minX, int maxX, int minY, int maxY, int tileSize) {
+        minX /= tileSize;
+        minY /= tileSize;
+        maxX /= tileSize;
+        maxY /= tileSize;
         // Keep record of batch color before setting lighting transparency
         Color c = new Color(spriteBatch.getColor());
         // Fill alpha over Tile depending on lightMap value

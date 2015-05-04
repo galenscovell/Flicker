@@ -1,8 +1,6 @@
 
 /**
  * ENTITY INTERFACE
- * All entities move(), interpolate(), attack(), and getX()/getY()
- * They also utilize toggleInView(), isInView() and have movement/attack accessors.
  */
 
 package galenscovell.entities;
@@ -11,21 +9,24 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
 public interface Entity {
-    public void move(int dx, int dy, boolean possible);
-    public void interpolate(double interpolation);
-    public void attack(double interpolation, Player player);
     public Sprite getSprite();
 
+    public void setPosition(int newX, int newY);
     public int getX();
     public int getY();
     public int getCurrentX();
     public int getCurrentY();
+
     public void toggleInView();
     public boolean isInView();
-    public boolean isAttacking();
-    public void toggleAttacking();
-    public boolean isMoveTime();
-    public void resetMoveTime();
-    public void incrementMoveTime();
     public int getSightRange();
+
+    public void toggleMovement();
+    public void move(int dx, int dy, boolean possible);
+    public void turn(int dx, int dy);
+    public void interpolate(double interpolation);
+
+    public boolean isAttacking();
+    public void toggleAttack();
+    public void attack(double interpolation, Entity entity);
 }

@@ -6,15 +6,15 @@
 
 package galenscovell.entities;
 
-import galenscovell.graphics.SpriteSheet;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
+
+import galenscovell.graphics.SpriteSheet;
 
 
 public class Salamander extends Creature {
 
-    public Salamander(int x, int y) {
-        super(x, y);
+    public Salamander() {
+        super();
         setSprites();
         setStats();
     }

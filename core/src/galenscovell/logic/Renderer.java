@@ -106,13 +106,12 @@ public class Renderer {
         }
 
         if (player.isAttacking()) {
-            player.attack(interpolation, tileSize);
+            player.attack(interpolation, null);
         }
-
-        spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
+        spriteBatch.draw(player.getSprite(), player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
 
         torchlight.findFOV(player, tileSize);
-        torchlight.drawLight(spriteBatch, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize, tileSize);
+        torchlight.drawLight(spriteBatch, (int) minCamX, (int) maxCamX, (int) minCamY, (int) maxCamY, tileSize);
 
         fog.render(spriteBatch);
         hud.render();
@@ -130,7 +129,7 @@ public class Renderer {
     public void assembleLevel(Player player) {
         placeInanimates();
         createResistanceMap();
-        placePlayer(player);
+        placeEntities(player);
     }
 
     private void placeInanimates() {
@@ -163,13 +162,15 @@ public class Renderer {
         this.torchlight = new Torchlight(resistanceMap);
     }
 
-    private void placePlayer(Player playerInstance) {
+    private void placeEntities(Player playerInstance) {
         int placements = 5;
         boolean playerPlaced = false;
         while (placements > 0) {
             Tile tile = findRandomTile();
             if (playerPlaced) {
-                entities.add(new Salamander(tile.x * tileSize, tile.y * tileSize));
+                Entity salamander = new Salamander();
+                salamander.setPosition(tile.x * tileSize, tile.y * tileSize);
+                entities.add(salamander);
                 tile.toggleOccupied();
             } else {
                 this.player = playerInstance;

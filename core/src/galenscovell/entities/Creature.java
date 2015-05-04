@@ -5,85 +5,34 @@
 
 package galenscovell.entities;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import galenscovell.graphics.SpriteSheet;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import galenscovell.graphics.SpriteSheet;
 
 
 public class Creature implements Entity {
-    private int x, y, prevX, prevY, currentX, currentY;
-    private int spriteNumber, waitFrames;
-    private boolean inView;
-    private boolean isAttacking;
+    protected int x, y, prevX, prevY, currentX, currentY;
+    protected boolean inView, moving, attacking;
 
-    public Sprite sprite;
+    protected Sprite sprite;
     protected Sprite[] currentSet;
     protected Sprite[] leftSprites, rightSprites;
 
     protected int speed, strength, sightRange;
-    private int moveTime;
 
-
-    public Creature(int x, int y) {
-        this.prevX = x;
-        this.prevY = y;
-        this.x = x;
-        this.y = y;
-        this.currentX = x;
-        this.currentY = y;
-
-        this.spriteNumber = 0;
-        this.waitFrames = 15;
-        this.moveTime = 0;
-    }
 
     public Sprite getSprite() {
         return sprite;
     }
 
-    public void move(int dx, int dy, boolean possible) {
-        if (dx < 0) {
-            currentSet = leftSprites;
-        } else if (dx > 0) {
-            currentSet = rightSprites;
-        }
-
-        if (possible) {
-            animate();
-            x += dx;
-            y += dy;
-        }
-    }
-
-    public void interpolate(double interpolation) {
-        animate();
-        currentX = (int) (prevX + ((x - prevX) * interpolation));
-        currentY = (int) (prevY + ((y - prevY) * interpolation));
-
-        if (currentX == x && currentY == y) {
-            prevX = x;
-            prevY = y;
-        }
-    }
-
-    public void attack(double interpolation, Player player) {
-        int diffX = player.getX() - x;
-        int diffY = player.getY() - y;
-        if (diffX > 0) {
-            currentSet = rightSprites;
-        } else if (diffX < 0) {
-            currentSet = leftSprites;
-        }
-        animate();
-        currentX = (int) (prevX + (diffX * interpolation));
-        currentY = (int) (prevY + (diffY * interpolation));
-
-        // Attack animation only covers half of player's tile
-        if (interpolation >= 0.6) {
-            toggleAttacking();
-        }
+    public void setPosition(int newX, int newY) {
+        prevX = newX;
+        prevY = newY;
+        x = newX;
+        y = newY;
+        currentX = newX;
+        currentY = newY;
     }
 
     public int getX() {
@@ -118,40 +67,84 @@ public class Creature implements Entity {
         return inView;
     }
 
+    public void toggleMovement() {
+        if (moving) {
+            moving = false;
+        } else {
+            moving = true;
+        }
+    }
+
+    public void move(int dx, int dy, boolean possible) {
+        turn(dx, dy);
+        if (possible) {
+            x += dx;
+            y += dy;
+        }
+    }
+
+    public void turn(int dx, int dy) {
+        if (dx < 0 && currentSet != leftSprites) {
+            currentSet = leftSprites;
+        } else if (dx > 0 && currentSet != rightSprites) {
+            currentSet = rightSprites;
+        }
+    }
+
+    public void interpolate(double interpolation) {
+        currentX = (int) (prevX + ((x - prevX) * interpolation));
+        currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+        if (currentX == x && currentY == y) {
+            prevX = x;
+            prevY = y;
+            moving = false;
+        }
+
+        if (moving) {
+            animate(interpolation);
+        } else {
+            sprite = currentSet[0];
+            return;
+        }
+    }
+
     public boolean isAttacking() {
-        return isAttacking;
+        return attacking;
     }
 
-    public void toggleAttacking() {
-        if (isAttacking) {
-            isAttacking = false;
+    public void toggleAttack() {
+        if (attacking) {
+            attacking = false;
         } else {
-            isAttacking = true;
+            attacking = true;
         }
     }
 
-    public boolean isMoveTime() {
-        return moveTime == speed;
-    }
-
-    public void resetMoveTime() {
-        moveTime = 0;
-    }
-
-    public void incrementMoveTime() {
-        moveTime++;
-    }
-
-    private void animate() {
-        if (waitFrames == 0) {
-            spriteNumber++;
-            waitFrames = 20;
-            if (spriteNumber > 1) {
-                spriteNumber = 0;
-            }
-        } else {
-            waitFrames--;
+    public void attack(double interpolation, Entity entity) {
+        int diffX = entity.getX() - x;
+        int diffY = entity.getY() - y;
+        if (diffX > 0) {
+            currentSet = rightSprites;
+        } else if (diffX < 0) {
+            currentSet = leftSprites;
         }
-        sprite = currentSet[spriteNumber];
+        currentX = (int) (prevX + (diffX * interpolation));
+        currentY = (int) (prevY + (diffY * interpolation));
+
+        // Attack animation only covers half of player's tile
+        if (interpolation >= 0.6) {
+            toggleAttack();
+        }
+    }
+
+    public void animate(double interpolation) {
+        if (interpolation == 0.1) {
+            sprite = currentSet[1];
+        } else if (interpolation == 0.9) {
+            sprite = currentSet[0];
+        } else {
+            return;
+        }
     }
 }
