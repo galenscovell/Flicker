@@ -18,7 +18,7 @@ import galenscovell.logic.Point;
 
 public class Player {
     private int x, y, prevX, prevY, currentX, currentY;
-    private int spriteFrame, waitFrames;
+    private boolean moving, step;
 
     public Sprite sprite;
     private Sprite[] currentSet;
@@ -31,13 +31,13 @@ public class Player {
 
     public Player() {
         SpriteSheet sheet = SpriteSheet.charsheet;
-        this.upSprites = new Sprite[4];
-        this.downSprites = new Sprite[4];
-        this.leftSprites = new Sprite[4];
-        this.rightSprites = new Sprite[4];
+        this.upSprites = new Sprite[3];
+        this.downSprites = new Sprite[3];
+        this.leftSprites = new Sprite[3];
+        this.rightSprites = new Sprite[3];
 
         // Populate sprite animation sets
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             upSprites[i] = new Sprite(sheet.getSprite(i + 48));
             downSprites[i] = new Sprite(sheet.getSprite(i));
             leftSprites[i] = new Sprite(sheet.getSprite(i + 16));
@@ -46,10 +46,10 @@ public class Player {
 
         this.currentSet = downSprites;
         this.sprite = currentSet[0];
-        this.spriteFrame = 0;
-        this.waitFrames = 15;
 
-        this.weapon = new Weapon();
+        this.weapon = new Weapon("dagger");
+        this.step = false;
+        this.moving = false;
     }
 
     public void setPosition(int newX, int newY) {
@@ -116,23 +116,36 @@ public class Player {
     }
 
     public void move(int dx, int dy) {
-        animate(currentSet);
         x += dx;
         y += dy;
     }
 
-    public void interpolate(double interpolation) {
-        animate(currentSet);
-        currentX = (int) (prevX + ((x - prevX) * interpolation));
-        currentY = (int) (prevY + ((y - prevY) * interpolation));
-
-        if (currentX == x && currentY == y) {
-            prevX = x;
-            prevY = y;
+    public void toggleMovement() {
+        if (moving) {
+            moving = false;
+        } else {
+            moving = true;
         }
     }
 
-    public void attack(SpriteBatch spriteBatch, double interpolation, int tileSize) {
+    public void interpolate(double interpolation) {
+        if (moving) {
+            animate(interpolation);
+            currentX = (int) (prevX + ((x - prevX) * interpolation));
+            currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+            if (currentX == x && currentY == y) {
+                prevX = x;
+                prevY = y;
+                moving = false;
+            }
+        } else {
+            sprite = currentSet[0];
+            return;
+        }
+    }
+
+    public void attack(SpriteBatch spriteBatch, int tileSize) {
         if (!weaponPrepared) {
             String dir = " ";
             if (currentSet == upSprites) {
@@ -144,37 +157,32 @@ public class Player {
             } else if (currentSet == rightSprites) {
                 dir = "right";
             }
-            weapon.setDirection(dir);
-            weapon.setPosition(currentX, currentY);
+            weapon.setPosition(dir, tileSize, x, y);
             weaponPrepared = true;
-            weapon.resetFrame();
         }
 
-        int weaponFrame = weapon.getFrame();
-        if (weaponFrame <= 3) {
-            weapon.draw(spriteBatch, tileSize, 0);
-        } else if (weaponFrame > 3 && weaponFrame < 6) {
-            weapon.draw(spriteBatch, tileSize, 1);
-        } else if (weaponFrame > 5 && weaponFrame < 17) {
-            weapon.draw(spriteBatch, tileSize, 2);
-        } else if (weaponFrame == 18) {
+        if (weapon.isDrawn()) {
+            weapon.draw(spriteBatch, tileSize);
+        } else {
             weaponPrepared = false;
-            toggleAttack();
+            attacking = false;
             return;
         }
-        weapon.incrementFrame();
     }
 
-    private void animate(Sprite[] currentSet) {
-        if (waitFrames == 0) {
-            spriteFrame++;
-            waitFrames = 20;
-            if (spriteFrame > 3) {
-                spriteFrame = 0;
+    private void animate(double interpolation) {
+        if (interpolation == 0.1) {
+            if (step) {
+                sprite = currentSet[2];
+                step = false;
+            } else {
+                sprite = currentSet[1];
+                step = true;
             }
+        } else if (interpolation == 0.9) {
+            sprite = currentSet[0];
         } else {
-            waitFrames--;
+            return;
         }
-        sprite = currentSet[spriteFrame];
     }
 }

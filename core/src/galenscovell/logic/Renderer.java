@@ -68,7 +68,6 @@ public class Renderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         player.interpolate(interpolation);
-
         findCameraBounds();
         spriteBatch.begin();
 
@@ -106,10 +105,10 @@ public class Renderer {
             }
         }
 
-        if (player.isAttacking()) {
-            player.attack(spriteBatch, interpolation, tileSize);
-        }
         spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
+        if (player.isAttacking()) {
+            player.attack(spriteBatch, tileSize);
+        }
 
         torchlight.findFOV(player, tileSize);
         torchlight.drawLight(spriteBatch, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize, tileSize);

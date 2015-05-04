@@ -114,6 +114,7 @@ public class Updater {
             currentTile.toggleOccupied();
             player.move(dx * tileSize, dy * tileSize);
             nextTile.toggleOccupied();
+            player.toggleMovement();
         }
     }
 

@@ -2,11 +2,11 @@
 /**
  * WEAPON CLASS
  * Handles loading of weapon sprites for attack animations.
- * TODO: Make this Animation based rather than sprite-based.
  */
 
 package galenscovell.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -14,117 +14,64 @@ import galenscovell.graphics.SpriteSheet;
 
 
 public class Weapon {
-    private int x, y, playerX, playerY;
+    private int x, y;
     private Sprite sprite;
-    private Sprite[] currentSet;
-    private Sprite[] upSprites, downSprites, leftSprites, rightSprites;
-    private int frame;
+    private Sprite[] sprites;
+    private float stateTime;
+    private boolean drawn;
 
 
-    public Weapon() {
+    public Weapon(String type) {
         SpriteSheet sheet = SpriteSheet.fxsheet;
-        this.upSprites = new Sprite[3];
-        this.downSprites = new Sprite[3];
-        this.leftSprites = new Sprite[3];
-        this.rightSprites = new Sprite[3];
 
-        upSprites[0] = new Sprite(sheet.getSprite(5));
-        upSprites[1] = new Sprite(sheet.getSprite(4));
-        upSprites[2] = new Sprite(sheet.getSprite(3));
-
-        downSprites[0] = new Sprite(sheet.getSprite(35));
-        downSprites[1] = new Sprite(sheet.getSprite(36));
-        downSprites[2] = new Sprite(sheet.getSprite(37));
-
-        leftSprites[0] = new Sprite(sheet.getSprite(3));
-        leftSprites[1] = new Sprite(sheet.getSprite(19));
-        leftSprites[2] = new Sprite(sheet.getSprite(35));
-
-        rightSprites[0] = new Sprite(sheet.getSprite(37));
-        rightSprites[1] = new Sprite(sheet.getSprite(21));
-        rightSprites[2] = new Sprite(sheet.getSprite(5));
-    }
-
-    public int getFrame() {
-        return frame;
-    }
-
-    public void incrementFrame() {
-        frame++;
-    }
-
-    public void resetFrame() {
-        frame = 0;
-    }
-
-    public void setDirection(String dir) {
-        if (dir.equals("up")) {
-            currentSet = upSprites;
-        } else if (dir.equals("down")) {
-            currentSet = downSprites;
-        } else if (dir.equals("left")) {
-            currentSet = leftSprites;
-        } else if (dir.equals("right")) {
-            currentSet = rightSprites;
+        int i = 0;
+        if (type.equals("dagger")) {
+            i = 0;
+        } else if (type.equals("TODO")) {
+            i = 3;
         }
+
+        this.sprites = new Sprite[4];
+        sprites[0] = new Sprite(sheet.getSprite(i + 0));
+        sprites[1] = new Sprite(sheet.getSprite(i + 1));
+        sprites[2] = new Sprite(sheet.getSprite(i + 2));
+        sprites[3] = new Sprite(sheet.getSprite(i + 3));
+
+        this.stateTime = 0.0f;
+
     }
 
-    public void setPosition(int playerX, int playerY) {
-        this.playerX = playerX;
-        this.playerY = playerY;
+    public boolean isDrawn() {
+        return drawn;
     }
 
-    public void draw(SpriteBatch spriteBatch, int tileSize, int frame) {
-        findCoords(frame, tileSize);
-        spriteBatch.draw(currentSet[frame], x, y, tileSize, tileSize);
-    }
-
-    private void findCoords(int frame, int tileSize) {
-        int halfTile = tileSize / 2;
-        int quarterTile = tileSize / 4;
+    public void setPosition(String dir, int tileSize, int playerX, int playerY) {
         this.x = playerX;
         this.y = playerY;
 
-        if (currentSet == upSprites) {
-            if (frame == 0) {
-                x += halfTile;
-                y -= quarterTile;
-            } else if (frame == 1) {
-                y -= halfTile;
-            } else {
-                x -= halfTile;
-                y -= quarterTile;
-            }
-        } else if (currentSet == downSprites) {
-            if (frame == 0) {
-                x -= halfTile;
-                y += quarterTile;
-            } else if (frame == 1) {
-                y += halfTile;
-            } else {
-                x += halfTile;
-                y += quarterTile;
-            }
-        } else if (currentSet == leftSprites) {
-            if (frame == 0) {
-                x -= quarterTile;
-                y -= halfTile;
-            } else if (frame == 1) {
-                x -= halfTile;
-            } else {
-                x -= quarterTile;
-                y += halfTile;
-            }
-        } else if (currentSet == rightSprites) {
-            if (frame == 0) {
-                x += quarterTile;
-                y += halfTile;
-            } else if (frame == 1) {
-                x += halfTile;
-            } else {
-                x += quarterTile;
-                y -= halfTile;
-            }
+        if (dir.equals("up")) {
+            this.sprite = sprites[0];
+            y -= tileSize / 3;
+        } else if (dir.equals("down")) {
+            this.sprite = sprites[1];
+            y += tileSize / 3;
+        } else if (dir.equals("left")) {
+            this.sprite = sprites[2];
+            x -= tileSize / 4;
+        } else if (dir.equals("right")) {
+            this.sprite = sprites[3];
+            x += tileSize / 4;
+        }
+        drawn = true;
+    }
+
+    public void draw(SpriteBatch spriteBatch, int tileSize) {
+        spriteBatch.draw(sprite, x, y, tileSize, tileSize);
+        stateTime += Gdx.graphics.getDeltaTime();
+
+        if (stateTime >= 0.5) {
+            drawn = false;
+            stateTime = 0.0f;
         }
     }
 }
