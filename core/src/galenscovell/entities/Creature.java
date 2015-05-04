@@ -51,14 +51,14 @@ public class Creature implements Entity {
         }
 
         if (possible) {
-            animate(currentSet);
+            animate();
             x += dx;
             y += dy;
         }
     }
 
     public void interpolate(double interpolation) {
-        animate(currentSet);
+        animate();
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
 
@@ -76,7 +76,7 @@ public class Creature implements Entity {
         } else if (diffX < 0) {
             currentSet = leftSprites;
         }
-        animate(currentSet);
+        animate();
         currentX = (int) (prevX + (diffX * interpolation));
         currentY = (int) (prevY + (diffY * interpolation));
 
@@ -142,7 +142,7 @@ public class Creature implements Entity {
         moveTime++;
     }
 
-    private void animate(Sprite[] currentSet) {
+    private void animate() {
         if (waitFrames == 0) {
             spriteNumber++;
             waitFrames = 20;

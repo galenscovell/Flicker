@@ -33,8 +33,8 @@ public class Torchlight {
     }
 
     public void findFOV(Player player, int tileSize) {
-        startX = player.getCurrentX() / tileSize;
-        startY = player.getCurrentY() / tileSize;
+        startX = player.getX() / tileSize;
+        startY = player.getY() / tileSize;
         lightMap[startY][startX] = 1.0f;
 
         for (int i = 0; i < 8; i++) {

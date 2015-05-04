@@ -88,6 +88,7 @@ public class Updater {
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
         player.toggleAttack();
         Point attackedTile = player.getFacingPoint(tileSize);
+        player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);
         Entity hitEntity = null;
 
         for (Entity entity : entities) {

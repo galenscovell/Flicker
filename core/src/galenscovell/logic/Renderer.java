@@ -105,10 +105,11 @@ public class Renderer {
             }
         }
 
-        spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
         if (player.isAttacking()) {
-            player.attack(spriteBatch, tileSize);
+            player.attack(interpolation, tileSize);
         }
+
+        spriteBatch.draw(player.sprite, player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
 
         torchlight.findFOV(player, tileSize);
         torchlight.drawLight(spriteBatch, (int) minCamX / tileSize, (int) maxCamX / tileSize, (int) minCamY / tileSize, (int) maxCamY / tileSize, tileSize);

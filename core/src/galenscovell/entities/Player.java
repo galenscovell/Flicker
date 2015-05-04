@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.graphics.SpriteSheet;
-import galenscovell.graphics.Weapon;
 
 import galenscovell.logic.Point;
 
@@ -25,8 +24,7 @@ public class Player {
     private Sprite[] upSprites, downSprites, leftSprites, rightSprites;
 
     private boolean attacking;
-    private Weapon weapon;
-    private boolean weaponPrepared;
+    private int atkX, atkY;
 
 
     public Player() {
@@ -47,7 +45,6 @@ public class Player {
         this.currentSet = downSprites;
         this.sprite = currentSet[0];
 
-        this.weapon = new Weapon("dagger");
         this.step = false;
         this.moving = false;
     }
@@ -129,44 +126,37 @@ public class Player {
     }
 
     public void interpolate(double interpolation) {
+        currentX = (int) (prevX + ((x - prevX) * interpolation));
+        currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+        if (currentX == x && currentY == y) {
+            prevX = x;
+            prevY = y;
+            moving = false;
+        }
+
         if (moving) {
             animate(interpolation);
-            currentX = (int) (prevX + ((x - prevX) * interpolation));
-            currentY = (int) (prevY + ((y - prevY) * interpolation));
-
-            if (currentX == x && currentY == y) {
-                prevX = x;
-                prevY = y;
-                moving = false;
-            }
         } else {
             sprite = currentSet[0];
             return;
         }
     }
 
-    public void attack(SpriteBatch spriteBatch, int tileSize) {
-        if (!weaponPrepared) {
-            String dir = " ";
-            if (currentSet == upSprites) {
-                dir = "up";
-            } else if (currentSet == downSprites) {
-                dir = "down";
-            } else if (currentSet == leftSprites) {
-                dir = "left";
-            } else if (currentSet == rightSprites) {
-                dir = "right";
-            }
-            weapon.setPosition(dir, tileSize, x, y);
-            weaponPrepared = true;
-        }
+    public void setAttackingCoords(int atkX, int atkY) {
+        this.atkX = atkX;
+        this.atkY = atkY;
+    }
 
-        if (weapon.isDrawn()) {
-            weapon.draw(spriteBatch, tileSize);
-        } else {
-            weaponPrepared = false;
-            attacking = false;
-            return;
+    public void attack(double interpolation, int tileSize) {
+        sprite = currentSet[2];
+        int diffX = x - atkX;
+        int diffY = y - atkY;
+        currentX = (int) (prevX - (diffX * interpolation));
+        currentY = (int) (prevY - (diffY * interpolation));
+
+        if (interpolation >= 0.4) {
+            toggleAttack();
         }
     }
 
