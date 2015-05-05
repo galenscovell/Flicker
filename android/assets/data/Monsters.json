@@ -1,0 +1,62 @@
+[
+  {
+    "type": "Newt",
+    "sprite_location": 80,
+    "hp": [6,8],
+    "vision": 5,
+    "evade": 0,
+    "defense": 1,
+    "attacks": 1,
+    "damage": [1,4],
+    "poison": 0,
+    "curse": 0,
+    "petrify": 0,
+    "silence": 0,
+    "desc": "A salamander youngling. Cute."
+  },
+  {
+    "type": "Juvenile Salamander",
+    "sprite_location": 84,
+    "hp": [10,12],
+    "vision": 5,
+    "evade": 1,
+    "defense": 1,
+    "attacks": 1,
+    "damage": [3,6],
+    "poison": 0,
+    "curse": 0,
+    "petrify": 0,
+    "silence": 0,
+    "desc": "A juvenile salamander. Starting to get less cute."
+  },
+  {
+    "type": "Adult Salamander",
+    "sprite_location": 88,
+    "hp": [14,16],
+    "vision": 5,
+    "evade": 2,
+    "defense": 2,
+    "attacks": 2,
+    "damage": [3,6],
+    "poison": 1,
+    "curse": 0,
+    "petrify": 0,
+    "silence": 0,
+    "desc": "An adult salamander. Having molted juvenile skin, it glows respendlent emerald."
+  },
+  {
+    "type": "Elder Salamander",
+    "sprite_location": 92,
+    "hp": [18,22],
+    "vision": 5,
+    "evade": 2,
+    "defense": 3,
+    "attacks": 2,
+    "damage": [5,8],
+    "poison": 2,
+    "curse": 0,
+    "petrify": 0,
+    "silence": 0,
+    "desc": "An elder salamander. What are they feeding these things?"
+  }
+]

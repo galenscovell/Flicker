@@ -28,5 +28,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gdx-1.5.6" level="project" />
     <orderEntry type="library" exported="" name="gdx-box2d-1.5.6" level="project" />
+    <orderEntry type="library" name="gson-2.3.1" level="project" />
   </component>
 </module>

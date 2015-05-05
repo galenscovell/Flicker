@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.entities.Entity;
+import galenscovell.entities.Monster;
 import galenscovell.entities.Player;
-import galenscovell.entities.Spawner;
 
 import galenscovell.graphics.Fog;
 import galenscovell.graphics.Torchlight;
@@ -25,6 +25,7 @@ import galenscovell.inanimates.Stairs;
 import galenscovell.screens.HudDisplay;
 
 import galenscovell.util.Constants;
+import galenscovell.util.MonsterParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,10 +169,9 @@ public class Renderer {
         while (placements > 0) {
             Tile tile = findRandomTile();
             if (playerPlaced) {
-                Spawner spawner = new Spawner();
-//                Entity salamander = new Salamander();
-//                salamander.setPosition(tile.x * tileSize, tile.y * tileSize);
-//                entities.add(salamander);
+                MonsterParser.spawn();
+//                monster.setPosition(tile.x * tileSize, tile.y * tileSize);
+//                entities.add(monster);
 //                tile.toggleOccupied();
             } else {
                 this.player = playerInstance;
