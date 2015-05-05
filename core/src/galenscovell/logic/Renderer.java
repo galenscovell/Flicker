@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
-import galenscovell.entities.Salamander;
+import galenscovell.entities.Spawner;
 
 import galenscovell.graphics.Fog;
 import galenscovell.graphics.Torchlight;
@@ -163,15 +163,16 @@ public class Renderer {
     }
 
     private void placeEntities(Player playerInstance) {
-        int placements = 5;
+        int placements = 2;
         boolean playerPlaced = false;
         while (placements > 0) {
             Tile tile = findRandomTile();
             if (playerPlaced) {
-                Entity salamander = new Salamander();
-                salamander.setPosition(tile.x * tileSize, tile.y * tileSize);
-                entities.add(salamander);
-                tile.toggleOccupied();
+                Spawner spawner = new Spawner();
+//                Entity salamander = new Salamander();
+//                salamander.setPosition(tile.x * tileSize, tile.y * tileSize);
+//                entities.add(salamander);
+//                tile.toggleOccupied();
             } else {
                 this.player = playerInstance;
                 player.setPosition(tile.x * tileSize, tile.y * tileSize);
