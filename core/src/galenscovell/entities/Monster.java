@@ -1,7 +1,7 @@
 
 /**
  * MONSTER CLASS
- * Utilizes MonsterParser to create entities based on JSON data.
+ * Utilizes MonsterParser to create Creatures based on JSON data.
  */
 
 package galenscovell.entities;
@@ -15,22 +15,15 @@ import java.util.Random;
 
 public class Monster extends Creature {
     private String type;
-    private int hp;
-    private int sprite_location;
-    private int vision;
-    private int evade;
-    private int defense;
-    private int attacks;
-    private int damage;
-    private int poison;
-    private int curse;
-    private int petrify;
-    private int silence;
     private String desc;
+    private int spriteLocation, hp, vision, speed, evade, defense, attacks, damage, poison;
 
 
     public Monster() {
         super();
+    }
+
+    public void setup() {
         setSprites();
         setFlags();
         setStats();
@@ -38,7 +31,17 @@ public class Monster extends Creature {
 
     @Override
     public String toString() {
-        return "Type: " + type + "\n\tSprite: " + sprite_location + "\n\tHP: " + hp + "\n\tSight range: " + vision + "\n\tEvade: " + evade + "\n\tDefense: " + defense + "\n\tAttacks: " + attacks + "\n\tDamage: " + damage + "\n\tPoison: " + poison + "\n\tCurse: " + curse + "\n\tPetrify: " + petrify + "\n\tSilence: " + silence + "\n\tDesc: " + desc;
+        return "Type: " + type +
+                "\n\tDesc: " + desc +
+                "\n\tSprite: " + spriteLocation +
+                "\n\tHP: " + hp +
+                "\n\tVision: " + vision +
+                "\n\tMoves per 10 turns: " + (10 / speed) +
+                "\n\tEvade: " + evade +
+                "\n\tDefense: " + defense +
+                "\n\tAttacks: " + attacks +
+                "\n\tDamage: " + damage +
+                "\n\tPoison: " + poison;
     }
 
     private void setStats() {
@@ -50,54 +53,47 @@ public class Monster extends Creature {
         int flagChance = random.nextInt(100);
         if (flagChance > 80) {
             int flag = random.nextInt(5);
-            switch (flag) {
-                case 0:
-                    // TOUGH
-                    hp += 4;
-                    defense += 4;
-                    desc += " Looks tough.";
-                    break;
-                case 1:
-                    // AGILE
-                    evade += 2;
-                    attacks++;
-                    damage--;
-                    desc += " Looks agile.";
-                    break;
-                case 2:
-                    // HEAVYHITTER
-                    damage += 4;
-                    desc += " Wouldn't want to be hit by this one.";
-                    break;
-                case 3:
-                    // SCOUT
-                    vision++;
-                    evade++;
-                    desc += " Seems aware of its surroundings.";
-                    break;
-                case 4:
-                    // CAPABLE
-                    hp += 2;
-                    defense++;
-                    evade++;
-                    damage++;
-                    desc += " Seems confident.";
-                    break;
+            if (flag == 0) {
+                // TOUGH
+                hp += 4;
+                defense += 4;
+                desc += " Looks like it can take a beating.";
+            } else if (flag == 1) {
+                // AGILE
+                evade += 2;
+                attacks++;
+                damage--;
+                desc += " Looks agile.";
+            } else if (flag == 2) {
+                // HEAVYHITTER
+                damage += 4;
+                desc += " Wouldn't want to be hit by this one.";
+            } else if (flag == 3) {
+                // WOUNDED
+                hp -= 2;
+                vision++;
+                desc += " Has some cuts and bruises.";
+            } else {
+                // CAPABLE
+                hp += 2;
+                defense += 2;
+                evade += 2;
+                damage++;
+                desc += " Seems confident.";
             }
         }
     }
 
     private void setSprites() {
-        // TODO: JSON numbers all == 0?
-        System.out.println(sprite_location);
+        System.out.println(spriteLocation);
         SpriteSheet sheet = SpriteSheet.charsheet;
         leftSprites = new Sprite[2];
         rightSprites = new Sprite[2];
 
         // Populate sprite animation sets
         for (int i = 0; i < 2; i++) {
-            leftSprites[i] = new Sprite(sheet.getSprite(i + sprite_location));
-            rightSprites[i] = new Sprite(sheet.getSprite(i + sprite_location));
+            leftSprites[i] = new Sprite(sheet.getSprite(i + spriteLocation));
+            rightSprites[i] = new Sprite(sheet.getSprite(i + (spriteLocation + 2)));
         }
 
         currentSet = leftSprites;

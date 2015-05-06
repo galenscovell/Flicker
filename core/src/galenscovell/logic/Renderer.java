@@ -164,7 +164,7 @@ public class Renderer {
 
     private void placeEntities(Player playerInstance) {
         MonsterParser monsterParser = new MonsterParser();
-        int placements = 2;
+        int placements = 4;
         boolean playerPlaced = false;
         while (placements > 0) {
             Tile tile = findRandomTile();
