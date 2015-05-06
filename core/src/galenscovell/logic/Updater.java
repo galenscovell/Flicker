@@ -168,8 +168,9 @@ public class Updater {
         boolean right = false;
 
         // Attack if horizontally or vertically aligned with and adjacent to Player
-        if ((diffX == 0 && (diffY == 1 || diffY == -1)) || (diffY == 0 && (diffX == 1 || diffX == -1))) {
+        if ((diffX == 0 && Math.abs(diffY) == 1) || (diffY == 0 && Math.abs(diffX) == 1)) {
             entityAttack(entity);
+            return;
         }
 
         Tile upTile = findTile(entityX, entityY - 1);
@@ -193,25 +194,29 @@ public class Updater {
         Random generator = new Random();
         int choice = generator.nextInt(2);
 
-        Tile currentTile = findTile(entityX, entityY);
+        Tile movedTile = null;
         if (choice == 0 && up) {
-            currentTile.toggleOccupied();
             dy--;
-            upTile.toggleOccupied();
+            movedTile = upTile;
         } else if (choice == 0 && down) {
-            currentTile.toggleOccupied();
             dy++;
-            downTile.toggleOccupied();
+            movedTile = downTile;
         } else if (choice == 1 && left) {
-            currentTile.toggleOccupied();
             dx--;
-            leftTile.toggleOccupied();
+            movedTile = leftTile;
         } else if (choice == 1 && right) {
-            currentTile.toggleOccupied();
             dx++;
-            rightTile.toggleOccupied();
+            movedTile = rightTile;
         }
-        entity.move(dx * tileSize, dy * tileSize, true);
+
+        if (movedTile != null) {
+            Tile currentTile = findTile(entityX, entityY);
+            currentTile.toggleOccupied();
+            entity.move(dx * tileSize, dy * tileSize, true);
+            movedTile.toggleOccupied();
+        } else {
+            return;
+        }
     }
 
     private void entityAttack(Entity entity) {

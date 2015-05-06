@@ -129,7 +129,11 @@ public class Renderer {
     public void assembleLevel(Player player) {
         placeInanimates();
         createResistanceMap();
-        placeEntities(player);
+        placePlayer(player);
+        MonsterParser monsterParser = new MonsterParser();
+        for (int i = 0; i < 5; i++) {
+            placeEntities(monsterParser);
+        }
     }
 
     private void placeInanimates() {
@@ -162,25 +166,20 @@ public class Renderer {
         this.torchlight = new Torchlight(resistanceMap);
     }
 
-    private void placeEntities(Player playerInstance) {
-        MonsterParser monsterParser = new MonsterParser();
-        int placements = 4;
-        boolean playerPlaced = false;
-        while (placements > 0) {
-            Tile tile = findRandomTile();
-            if (playerPlaced) {
-                Entity monster = monsterParser.spawn();
-                monster.setPosition(tile.x * tileSize, tile.y * tileSize);
-                entities.add(monster);
-                tile.toggleOccupied();
-            } else {
-                this.player = playerInstance;
-                player.setPosition(tile.x * tileSize, tile.y * tileSize);
-                tile.toggleOccupied();
-                playerPlaced = true;
-            }
-            placements--;
-        }
+    private void placePlayer(Player playerInstance) {
+        Tile randomTile = findRandomTile();
+        this.player = playerInstance;
+        player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
+        randomTile.toggleOccupied();
+    }
+
+    private void placeEntities(MonsterParser parser) {
+        Tile randomTile = findRandomTile();
+        Entity monster = parser.spawn(4);
+        monster.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
+        System.out.println(monster);
+        entities.add(monster);
+        randomTile.toggleOccupied();
     }
 
     private Tile findRandomTile() {

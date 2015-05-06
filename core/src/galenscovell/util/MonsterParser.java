@@ -14,6 +14,7 @@ import com.google.gson.JsonParser;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,11 +23,10 @@ import galenscovell.entities.Monster;
 
 
 public class MonsterParser {
-    private List<Monster> monsterList;
 
 
-    public MonsterParser() {;
-        this.monsterList = new ArrayList<Monster>();
+    private List<Monster> createMonsterList() {
+        List<Monster> monsterList = new ArrayList<Monster>();
         JsonParser parser = new JsonParser();
         Gson gson = new Gson();
         try {
@@ -36,19 +36,27 @@ public class MonsterParser {
                 Monster monster = gson.fromJson(mElement, Monster.class);
                 monsterList.add(monster);
             }
-
             reader.close();
         } catch (IOException ie) {
             ie.printStackTrace();
         }
+        return monsterList;
     }
 
-    public Monster spawn() {
+    public Monster spawn(int level) {
+        List<Monster> monsterList = createMonsterList();
         Random random = new Random();
-        int selection = random.nextInt(monsterList.size());
-        Monster selected = monsterList.get(selection);
-        selected.setup();
-        System.out.println(selected);
-        return selected;
+        boolean found = false;
+        while (!found) {
+            int selection = random.nextInt(monsterList.size());
+            Monster selected = monsterList.get(selection);
+            if (selected.getLevel() <= level) {
+                selected.setup();
+                found = true;
+                System.out.println(selected);
+                return selected;
+            }
+        }
+        return null;
     }
 }

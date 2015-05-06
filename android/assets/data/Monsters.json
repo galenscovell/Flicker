@@ -2,9 +2,10 @@
   {
     "type": "Newt",
     "desc": "A salamander youngling. Cute.",
+    "level": 1,
     "spriteLocation": 80,
     "hp": 6,
-    "vision": 5,
+    "vision": 4,
     "speed": 4,
     "evade": 0,
     "defense": 1,
@@ -15,6 +16,7 @@
   {
     "type": "Juvenile Salamander",
     "desc": "A juvenile salamander. Starting to get less cute.",
+    "level": 2,
     "spriteLocation": 84,
     "hp": 10,
     "vision": 5,
@@ -28,10 +30,11 @@
   {
     "type": "Adult Salamander",
     "desc": "An adult salamander. Having shed its juvenile skin, it glows respendlent emerald.",
+    "level": 3,
     "spriteLocation": 88,
     "hp": 14,
     "vision": 5,
-    "speed": 5,
+    "speed": 3,
     "evade": 2,
     "defense": 2,
     "attacks": 2,
@@ -41,14 +44,15 @@
   {
     "type": "Elder Salamander",
     "desc": "An elder salamander. What are they feeding these things?",
+    "level": 4,
     "spriteLocation": 92,
-    "hp": 20,
+    "hp": 18,
     "vision": 5,
-    "speed": 5,
+    "speed": 2,
     "evade": 2,
     "defense": 3,
     "attacks": 2,
-    "damage": 6,
+    "damage": 5,
     "poison": 2
   }
 ]

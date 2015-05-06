@@ -16,11 +16,16 @@ import java.util.Random;
 public class Monster extends Creature {
     private String type;
     private String desc;
-    private int spriteLocation, hp, vision, speed, evade, defense, attacks, damage, poison;
+    private int level, spriteLocation, hp, vision, evade, defense, attacks, damage, poison;
+    private double speed;
 
 
     public Monster() {
         super();
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public void setup() {
@@ -36,7 +41,7 @@ public class Monster extends Creature {
                 "\n\tSprite: " + spriteLocation +
                 "\n\tHP: " + hp +
                 "\n\tVision: " + vision +
-                "\n\tMoves per 10 turns: " + (10 / speed) +
+                "\n\tSpeed (moves per turn): " + (1.0f / speed) +
                 "\n\tEvade: " + evade +
                 "\n\tDefense: " + defense +
                 "\n\tAttacks: " + attacks +
@@ -65,19 +70,20 @@ public class Monster extends Creature {
                 damage--;
                 desc += " Looks agile.";
             } else if (flag == 2) {
-                // HEAVYHITTER
+                // BRUISER
                 damage += 4;
                 desc += " Wouldn't want to be hit by this one.";
             } else if (flag == 3) {
                 // WOUNDED
                 hp -= 2;
                 vision++;
+                speed -= 1.0f;
                 desc += " Has some cuts and bruises.";
             } else {
                 // CAPABLE
                 hp += 2;
-                defense += 2;
                 evade += 2;
+                defense += 2;
                 damage++;
                 desc += " Seems confident.";
             }
@@ -85,7 +91,6 @@ public class Monster extends Creature {
     }
 
     private void setSprites() {
-        System.out.println(spriteLocation);
         SpriteSheet sheet = SpriteSheet.charsheet;
         leftSprites = new Sprite[2];
         rightSprites = new Sprite[2];
