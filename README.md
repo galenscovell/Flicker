@@ -8,12 +8,13 @@ Full-fledged graphical roguelike coded in Java with Libgdx/OpenGL. Work in progr
 <b>Current Features:</b>
 ======
 <b>Mechanics</b>
-* Endless procedurally generated caves/dungeons with persistent Player across levels
-* Viewport rendering with camera centered on Player
+* Procedurally generated caves/dungeons with persistent Player across levels
+* Viewport rendering with orthographic camera centered on Player
 * Efficient game-loop with clear separation of rendering and logic
-* Smooth key-binding input free of delays
-* Turn-based movement/combat dependent on Player and Entity attributes
+* Smooth player input free of delays
+* Turn-based gameplay
 * Entity passive and aggressive behaviors
+* JSON data deserialization for procedurally spawned entities and items with unique attributes
 * Clean package organization utilizing interfaces, inheritance and DRY principles
 
 <b>Graphics</b>
