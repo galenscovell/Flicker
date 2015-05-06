@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.entities.Entity;
-import galenscovell.entities.Monster;
 import galenscovell.entities.Player;
 
 import galenscovell.graphics.Fog;
@@ -164,15 +163,16 @@ public class Renderer {
     }
 
     private void placeEntities(Player playerInstance) {
+        MonsterParser monsterParser = new MonsterParser();
         int placements = 2;
         boolean playerPlaced = false;
         while (placements > 0) {
             Tile tile = findRandomTile();
             if (playerPlaced) {
-                MonsterParser.spawn();
-//                monster.setPosition(tile.x * tileSize, tile.y * tileSize);
-//                entities.add(monster);
-//                tile.toggleOccupied();
+                Entity monster = monsterParser.spawn();
+                monster.setPosition(tile.x * tileSize, tile.y * tileSize);
+                entities.add(monster);
+                tile.toggleOccupied();
             } else {
                 this.player = playerInstance;
                 player.setPosition(tile.x * tileSize, tile.y * tileSize);

@@ -28,13 +28,13 @@ public class Dead implements Inanimate {
         Random random = new Random();
         int choice = random.nextInt(4);
         if (choice == 0) {
-            this.sprite = new Sprite(sheet.getSprite(144));
+            this.sprite = new Sprite(sheet.getSprite(64));
         } else if (choice == 1) {
-            this.sprite = new Sprite(sheet.getSprite(145));
+            this.sprite = new Sprite(sheet.getSprite(65));
         } else if (choice == 2) {
-            this.sprite = new Sprite(sheet.getSprite(146));
+            this.sprite = new Sprite(sheet.getSprite(66));
         } else {
-            this.sprite = new Sprite(sheet.getSprite(147));
+            this.sprite = new Sprite(sheet.getSprite(67));
         }
 
         this.blocking = false;

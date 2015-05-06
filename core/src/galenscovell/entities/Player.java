@@ -27,8 +27,6 @@ public class Player extends Creature {
     }
 
     private void setStats() {
-        speed = 2;
-        strength = 2;
         sightRange = 5;
     }
 

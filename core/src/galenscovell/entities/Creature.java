@@ -19,7 +19,7 @@ public class Creature implements Entity {
     protected Sprite[] currentSet;
     protected Sprite[] leftSprites, rightSprites;
 
-    protected int speed, strength, sightRange;
+    protected int sightRange;
 
 
     public Sprite getSprite() {
