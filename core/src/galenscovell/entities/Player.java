@@ -89,14 +89,15 @@ public class Player extends Creature {
         currentX = (int) (prevX - (diffX * interpolation));
         currentY = (int) (prevY - (diffY * interpolation));
 
-        if (interpolation >= 0.4) {
+        // Attack animation only covers small portion of target's tile
+        if (interpolation > 0.3) {
             toggleAttack();
         }
     }
 
     @Override
     public void animate(double interpolation) {
-        if (interpolation == 0.1) {
+        if (interpolation > 0.1 && interpolation < 0.2) {
             if (step) {
                 sprite = currentSet[2];
                 step = false;
@@ -104,7 +105,7 @@ public class Player extends Creature {
                 sprite = currentSet[1];
                 step = true;
             }
-        } else if (interpolation == 0.9) {
+        } else if (interpolation > 0.8) {
             sprite = currentSet[0];
         } else {
             return;

@@ -16,8 +16,7 @@ import java.util.Random;
 public class Monster extends Creature {
     private String type;
     private String desc;
-    private int level, spriteLocation, hp, vision, evade, defense, attacks, damage, poison;
-    private double speed;
+    private int level, spriteLocation, hp, vision, speed, evade, defense, attacks, damage, poison;
 
 
     public Monster() {
@@ -41,7 +40,7 @@ public class Monster extends Creature {
                 "\n\tSprite: " + spriteLocation +
                 "\n\tHP: " + hp +
                 "\n\tVision: " + vision +
-                "\n\tSpeed (moves per turn): " + (1.0f / speed) +
+                "\n\tSpeed (waited turns before action): " + speed +
                 "\n\tEvade: " + evade +
                 "\n\tDefense: " + defense +
                 "\n\tAttacks: " + attacks +
@@ -51,6 +50,7 @@ public class Monster extends Creature {
 
     private void setStats() {
         sightRange = vision;
+        movementRequirement = speed;
     }
 
     private void setFlags() {

@@ -20,6 +20,8 @@ public class Creature implements Entity {
     protected Sprite[] leftSprites, rightSprites;
 
     protected int sightRange;
+    protected int movementRequirement;
+    private int moveTimer;
 
 
     public Sprite getSprite() {
@@ -65,6 +67,15 @@ public class Creature implements Entity {
 
     public boolean isInView() {
         return inView;
+    }
+
+    public boolean movementTimer() {
+        if (moveTimer == movementRequirement) {
+            moveTimer = 0;
+            return true;
+        }
+        moveTimer++;
+        return false;
     }
 
     public void toggleMovement() {
@@ -132,16 +143,16 @@ public class Creature implements Entity {
         currentX = (int) (prevX + (diffX * interpolation));
         currentY = (int) (prevY + (diffY * interpolation));
 
-        // Attack animation only covers half of player's tile
-        if (interpolation >= 0.6) {
+        // Attack animation only covers small portion of target's tile
+        if (interpolation > 0.3) {
             toggleAttack();
         }
     }
 
     public void animate(double interpolation) {
-        if (interpolation == 0.1) {
+        if (interpolation > 0.1 && interpolation < 0.2) {
             sprite = currentSet[1];
-        } else if (interpolation == 0.9) {
+        } else if (interpolation > 0.6) {
             sprite = currentSet[0];
         } else {
             return;

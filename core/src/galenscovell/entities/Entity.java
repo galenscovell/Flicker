@@ -21,6 +21,7 @@ public interface Entity {
     public boolean isInView();
     public int getSightRange();
 
+    public boolean movementTimer();
     public void toggleMovement();
     public void move(int dx, int dy, boolean possible);
     public void turn(int dx, int dy);

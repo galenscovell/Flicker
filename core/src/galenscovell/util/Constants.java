@@ -31,7 +31,7 @@ public class Constants {
 
     // Renders per second = Framerate (Libgdx renders ~60/s)
     // Logic updates per second = Framerate / Timestep
-    public static final float TIMESTEP = 20;
+    public static final float TIMESTEP = 15;
 
     // Number of smoothing passes during world generation
     public static final int WORLD_SMOOTHING_PASSES = 6;

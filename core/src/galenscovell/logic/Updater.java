@@ -52,7 +52,9 @@ public class Updater {
 
         if (moving || acting) {
             for (Entity entity : entities) {
-                entityMove(entity);
+                if (entity.movementTimer()) {
+                    entityMove(entity);
+                }
             }
         }
     }
