@@ -56,7 +56,7 @@ public class Monster extends Creature {
     private void setFlags() {
         Random random = new Random();
         int flagChance = random.nextInt(100);
-        if (flagChance > 80) {
+        if (flagChance > 90) {
             int flag = random.nextInt(5);
             if (flag == 0) {
                 // TOUGH
@@ -68,7 +68,7 @@ public class Monster extends Creature {
                 evade += 2;
                 attacks++;
                 damage--;
-                desc += " Looks agile.";
+                desc += " Appears agile.";
             } else if (flag == 2) {
                 // BRUISER
                 damage += 4;
@@ -79,7 +79,7 @@ public class Monster extends Creature {
                 vision++;
                 speed -= 1.0f;
                 desc += " Has some cuts and bruises.";
-            } else {
+            } else if (flag == 4) {
                 // CAPABLE
                 hp += 2;
                 evade += 2;

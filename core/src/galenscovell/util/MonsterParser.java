@@ -50,7 +50,7 @@ public class MonsterParser {
         while (!found) {
             int selection = random.nextInt(monsterList.size());
             Monster selected = monsterList.get(selection);
-            if (selected.getLevel() <= level) {
+            if (selected.getLevel() == level || selected.getLevel() == (level - 1)) {
                 selected.setup();
                 found = true;
                 System.out.println(selected);

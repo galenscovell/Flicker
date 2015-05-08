@@ -134,6 +134,7 @@ public class Renderer {
         for (int i = 0; i < 5; i++) {
             placeEntities(monsterParser);
         }
+        monsterParser = null;
     }
 
     private void placeInanimates() {
@@ -175,7 +176,7 @@ public class Renderer {
 
     private void placeEntities(MonsterParser parser) {
         Tile randomTile = findRandomTile();
-        Entity monster = parser.spawn(4);
+        Entity monster = parser.spawn(2);
         monster.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
         System.out.println(monster);
         entities.add(monster);
