@@ -13,7 +13,7 @@ import galenscovell.graphics.SpriteSheet;
 
 public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
-    protected boolean inView, moving, attacking;
+    protected boolean inView, attacking;
 
     protected Sprite sprite;
     protected Sprite[] currentSet;
@@ -22,6 +22,7 @@ public class Creature implements Entity {
     protected int sightRange;
     protected int movementRequirement;
     private int moveTimer;
+    private int animateFrames;
 
 
     public Sprite getSprite() {
@@ -78,14 +79,6 @@ public class Creature implements Entity {
         return false;
     }
 
-    public void toggleMovement() {
-        if (moving) {
-            moving = false;
-        } else {
-            moving = true;
-        }
-    }
-
     public void move(int dx, int dy, boolean possible) {
         turn(dx, dy);
         if (possible) {
@@ -103,20 +96,13 @@ public class Creature implements Entity {
     }
 
     public void interpolate(double interpolation) {
+        animate(interpolation);
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
 
         if (currentX == x && currentY == y) {
             prevX = x;
             prevY = y;
-            moving = false;
-        }
-
-        if (moving) {
-            animate(interpolation);
-        } else {
-            sprite = currentSet[0];
-            return;
         }
     }
 
@@ -133,8 +119,9 @@ public class Creature implements Entity {
     }
 
     public void attack(double interpolation, Entity entity) {
-        int diffX = entity.getX() - x;
-        int diffY = entity.getY() - y;
+        // Entities except for Player have 'homing' attacks for consistency
+        int diffX = entity.getCurrentX() - x;
+        int diffY = entity.getCurrentY() - y;
         if (diffX > 0) {
             currentSet = rightSprites;
         } else if (diffX < 0) {
@@ -150,12 +137,15 @@ public class Creature implements Entity {
     }
 
     public void animate(double interpolation) {
-        if (interpolation > 0.1 && interpolation < 0.2) {
-            sprite = currentSet[1];
-        } else if (interpolation > 0.6) {
-            sprite = currentSet[0];
+        if (animateFrames == 15) {
+            if (sprite == currentSet[0]) {
+                sprite = currentSet[1];
+            } else {
+                sprite = currentSet[0];
+            }
+            animateFrames = 0;
         } else {
-            return;
+            animateFrames++;
         }
     }
 }

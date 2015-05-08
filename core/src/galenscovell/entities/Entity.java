@@ -22,7 +22,6 @@ public interface Entity {
     public int getSightRange();
 
     public boolean movementTimer();
-    public void toggleMovement();
     public void move(int dx, int dy, boolean possible);
     public void turn(int dx, int dy);
     public void interpolate(double interpolation);

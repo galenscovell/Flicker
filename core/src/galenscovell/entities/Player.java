@@ -15,7 +15,7 @@ import galenscovell.logic.Point;
 
 
 public class Player extends Creature {
-    private boolean step;
+    private boolean step, interacting;
     private Sprite[] upSprites, downSprites, leftSprites, rightSprites;
     private int atkX, atkY;
 
@@ -76,6 +76,30 @@ public class Player extends Creature {
         }
     }
 
+    public void toggleInteracting() {
+        if (interacting) {
+            interacting = false;
+        } else {
+            interacting = true;
+        }
+    }
+
+    public void interpolate(double interpolation) {
+        // Disable movement animation during interactions
+        if (!interacting) {
+            animate(interpolation);
+        } else if (interacting && interpolation > 0.1) {
+            toggleInteracting();
+        }
+        currentX = (int) (prevX + ((x - prevX) * interpolation));
+        currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+        if (currentX == x && currentY == y) {
+            prevX = x;
+            prevY = y;
+        }
+    }
+
     public void setAttackingCoords(int atkX, int atkY) {
         this.atkX = atkX;
         this.atkY = atkY;
@@ -107,7 +131,6 @@ public class Player extends Creature {
             }
         } else if (interpolation > 0.8) {
             sprite = currentSet[0];
-        } else {
             return;
         }
     }
