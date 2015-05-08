@@ -57,10 +57,11 @@ public class DungeonBuilder implements Builder {
                     continue;
                 }
                 // Find perimeter tiles
-                if (x == -roomSize || x == roomSize || y == -roomSize || y == roomSize) {
+                if (Math.abs(x) == roomSize || Math.abs(y) == roomSize) {
                     // If point is corner of room, do not use as corridor entry point
-                    if ((x == -roomSize && y == -roomSize) || (x == -roomSize && y == roomSize) || (x == roomSize && y == -roomSize) || (x == roomSize && y == roomSize)) {
-                        grid[sumY][sumX].state = 1;
+                    if (Math.abs(x) == roomSize && Math.abs(y) == roomSize) {
+                        // Uncomment to make rooms have square corners
+                        // grid[sumY][sumX].state = 1;
                         continue;
                     }
                     perimeterPoints.add(new Point(sumX, sumY));

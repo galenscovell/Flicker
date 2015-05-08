@@ -48,6 +48,10 @@ public class Tile {
         return state == 3;
     }
 
+    public boolean isWater() {
+        return state == 4;
+    }
+
     public boolean isOccupied() {
         return occupied;
     }
