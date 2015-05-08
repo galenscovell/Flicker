@@ -22,14 +22,12 @@ import galenscovell.util.Constants;
 public class GameScreen implements Screen {
     private Player playerInstance;
     private HudDisplay hud;
-
     private World world;
     private Renderer renderer;
     private Updater updater;
 
     private boolean moving;
     private boolean acting;
-
     private double interpolation;
     private int accumulator = 0;
 
@@ -97,8 +95,8 @@ public class GameScreen implements Screen {
 
     private void createNewLevel() {
         this.world = new World();
-        this.renderer = new Renderer(world.getTiles(), hud);
-        this.updater = new Updater(world.getTiles(), hud);
+        this.renderer = new Renderer(world.getTiles());
+        this.updater = new Updater(world.getTiles());
 
         int smoothTicks = Constants.WORLD_SMOOTHING_PASSES;
         while (smoothTicks > 0) {
@@ -110,6 +108,8 @@ public class GameScreen implements Screen {
         renderer.assembleLevel(playerInstance);
         updater.setPlayer(playerInstance);
         updater.setStairs(renderer.getInanimateList());
+        renderer.setHud(hud);
+        updater.setHud(hud);
     }
 
     private int[] checkMovement() {

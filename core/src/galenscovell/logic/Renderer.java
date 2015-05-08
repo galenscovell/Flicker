@@ -48,10 +48,10 @@ public class Renderer {
     private float minCamX, minCamY, maxCamX, maxCamY;
 
 
-    public Renderer(Map<Integer, Tile> tiles, HudDisplay hud) {
+    public Renderer(Map<Integer, Tile> tiles) {
         this.tileSize = Constants.TILESIZE;
-        this.viewport = new OrthographicCamera(Constants.WINDOW_X, Constants.WINDOW_Y);
-        viewport.setToOrtho(true, Constants.WINDOW_X, Constants.WINDOW_Y);
+        this.viewport = new OrthographicCamera(Constants.GAME_WIDTH, Constants.WINDOW_Y);
+        viewport.setToOrtho(true, Constants.GAME_WIDTH, Constants.WINDOW_Y);
         this.spriteBatch = new SpriteBatch();
 
         this.tiles = tiles;
@@ -59,6 +59,9 @@ public class Renderer {
         this.inanimates = new ArrayList<Inanimate>();
 
         this.fog = new Fog();
+    }
+
+    public void setHud(HudDisplay hud) {
         this.hud = hud;
     }
 
@@ -69,6 +72,9 @@ public class Renderer {
 
         player.interpolate(interpolation);
         findCameraBounds();
+
+        // Set rendering area for batch (this line splits the game from the HUD)
+        Gdx.gl.glViewport(0, 0, Constants.GAME_WIDTH, Constants.WINDOW_Y);
         spriteBatch.begin();
 
         for (Tile tile : tiles.values()) {
@@ -114,6 +120,8 @@ public class Renderer {
         torchlight.drawLight(spriteBatch, (int) minCamX, (int) maxCamX, (int) minCamY, (int) maxCamY, tileSize);
 
         fog.render(spriteBatch);
+
+        Gdx.gl.glViewport(Constants.GAME_WIDTH, 0, Constants.HUD_WIDTH, Constants.WINDOW_Y);
         hud.render();
         spriteBatch.end();
     }

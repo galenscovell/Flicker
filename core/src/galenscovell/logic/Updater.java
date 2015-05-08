@@ -29,9 +29,12 @@ public class Updater {
     private Inanimate stairs;
 
 
-    public Updater(Map<Integer, Tile> tiles, HudDisplay hud) {
+    public Updater(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
+    }
+
+    public void setHud(HudDisplay hud) {
         this.hud = hud;
     }
 
@@ -76,6 +79,7 @@ public class Updater {
     }
 
     private void playerInteract(List<Inanimate> inanimates) {
+        player.toggleInteracting();
         Point facingPoint = player.getFacingPoint(tileSize);
         Tile facingTile = findTile(facingPoint.x, facingPoint.y);
         for (Inanimate inanimate : inanimates) {
@@ -116,7 +120,6 @@ public class Updater {
             currentTile.toggleOccupied();
             player.move(dx * tileSize, dy * tileSize, true);
             nextTile.toggleOccupied();
-            player.toggleMovement();
         } else {
             player.move(dx, dy, false);
         }
@@ -128,7 +131,6 @@ public class Updater {
         } else {
             entityPassiveMove(entity);
         }
-        entity.toggleMovement();
     }
 
     private void entityPassiveMove(Entity entity) {
