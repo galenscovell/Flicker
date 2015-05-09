@@ -50,8 +50,8 @@ public class Renderer {
 
     public Renderer(Map<Integer, Tile> tiles) {
         this.tileSize = Constants.TILESIZE;
-        this.viewport = new OrthographicCamera(Constants.GAME_WIDTH, Constants.WINDOW_Y);
-        viewport.setToOrtho(true, Constants.GAME_WIDTH, Constants.WINDOW_Y);
+        this.viewport = new OrthographicCamera(Constants.WINDOW_X, Constants.GAME_HEIGHT);
+        viewport.setToOrtho(true, Constants.WINDOW_X, Constants.GAME_HEIGHT);
         this.spriteBatch = new SpriteBatch();
 
         this.tiles = tiles;
@@ -74,7 +74,7 @@ public class Renderer {
         findCameraBounds();
 
         // Set rendering area for batch (this line splits the game from the HUD)
-        Gdx.gl.glViewport(0, 0, Constants.GAME_WIDTH, Constants.WINDOW_Y);
+        Gdx.gl.glViewport(0, 0, Constants.WINDOW_X, Constants.GAME_HEIGHT);
         spriteBatch.begin();
 
         for (Tile tile : tiles.values()) {
@@ -121,7 +121,7 @@ public class Renderer {
 
         fog.render(spriteBatch);
 
-        Gdx.gl.glViewport(Constants.GAME_WIDTH, 0, Constants.HUD_WIDTH, Constants.WINDOW_Y);
+        Gdx.gl.glViewport(0, Constants.GAME_HEIGHT, Constants.WINDOW_X, Constants.HUD_HEIGHT);
         hud.render();
         spriteBatch.end();
     }
