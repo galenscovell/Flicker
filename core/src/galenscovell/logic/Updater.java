@@ -84,11 +84,11 @@ public class Updater {
         Tile facingTile = findTile(facingPoint.x, facingPoint.y);
         for (Inanimate inanimate : inanimates) {
             if (inanimate.getX() == facingTile.x && inanimate.getY() == facingTile.y) {
-                inanimate.interact(facingTile);
+                hud.addToLog(inanimate.interact(facingTile));
                 return;
             }
         }
-        System.out.println("There doesn't appear to be anything here.");
+        hud.addToLog("There doesn't appear to be anything here.");
     }
 
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {

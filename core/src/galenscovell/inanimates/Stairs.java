@@ -44,8 +44,8 @@ public class Stairs implements Inanimate {
         return sprite;
     }
 
-    public void interact(Tile tile) {
-
+    public String interact(Tile tile) {
+        return "The stairs descend deeper.";
     }
 
     public boolean isBlocking() {

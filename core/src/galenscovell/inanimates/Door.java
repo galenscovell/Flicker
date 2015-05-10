@@ -49,17 +49,19 @@ public class Door implements Inanimate {
         return sprite;
     }
 
-    public void interact(Tile tile) {
+    public String interact(Tile tile) {
         if (blocking) {
             this.sprite = sprites[1];
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = false;
+            return "The door creaks open.";
         } else {
             this.sprite = sprites[0];
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = true;
+            return "You close the door.";
         }
     }
 

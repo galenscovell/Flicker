@@ -16,15 +16,18 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+
 import galenscovell.util.Constants;
 
 
 public class HudDisplay {
     private Stage stage;
+    private Label eventLog;
+    private int eventLines = 1;
 
 
     public HudDisplay() {
@@ -33,36 +36,48 @@ public class HudDisplay {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 12;
-        BitmapFont retroFont = fontGenerator.generateFont(parameter);
+        BitmapFont retroFontLarge = fontGenerator.generateFont(parameter);
+        parameter.size = 10;
+        BitmapFont retroFontSmall = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
-        Label.LabelStyle retroStyle = new Label.LabelStyle(retroFont, Color.WHITE);
+
+        Label.LabelStyle retroStyleLarge = new Label.LabelStyle(retroFontLarge, Color.WHITE);
+        Label.LabelStyle retroStyleSmall = new Label.LabelStyle(retroFontSmall, Color.WHITE);
+
         NinePatchDrawable bgImage = new NinePatchDrawable(getNinePatch("ui/hudBack.9.png"));
         NinePatchDrawable barBg = new NinePatchDrawable(getNinePatch("ui/bar.9.png"));
 
         // Init main HUD layout
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        mainTable.pad(10, 10, 10, 10);
+        mainTable.pad(4, 8, 4, 8);
         mainTable.setBackground(bgImage);
 
 
 
         // Health section of HUD (top)
         Table healthTable = new Table();
-        healthTable.setBackground(bgImage);
+        healthTable.pad(8, 6, 8, 0);
 
-        Label healthLabel = new Label("HEALTH", retroStyle);
-        healthLabel.setAlignment(Align.right);
-        healthTable.add(healthLabel).top().fill();
-        healthTable.row();
+        Label healthLabel = new Label("HEALTH", retroStyleLarge);
+        healthLabel.setAlignment(Align.left);
+        healthTable.add(healthLabel).fill();
 
         Table healthBar = new Table();
         healthBar.setBackground(barBg);
-        healthTable.add(healthBar).width(Constants.WINDOW_X / 4).height(20);
-
+        healthTable.add(healthBar).width(Constants.WINDOW_X / 6).height(30).expand();
         healthTable.row();
+
+        Label manaLabel = new Label("MANA", retroStyleLarge);
+        manaLabel.setAlignment(Align.left);
+        healthTable.add(manaLabel).fill();
+
+        Table manaBar = new Table();
+        manaBar.setBackground(barBg);
+        healthTable.add(manaBar).width(Constants.WINDOW_X / 6).height(30).expand();
+
         healthTable.pack();
-        mainTable.add(healthTable).left().height(120).expand();
+        mainTable.add(healthTable).left().height(80).width(Constants.WINDOW_X / 4).expand();
 
 
 
@@ -70,23 +85,23 @@ public class HudDisplay {
         Table eventTable = new Table();
         eventTable.setBackground(bgImage);
 
-        Label eventLabel = new Label("EVENT LOG", retroStyle);
-        eventLabel.setAlignment(Align.right);
-        eventTable.add(eventLabel).top().fill();
+        this.eventLog = new Label("Events will be displayed here.", retroStyleSmall);
+        eventLog.setWrap(true);
+        eventTable.add(eventLog).height(80).width(460).fill().expand();
+
         eventTable.pack();
-        mainTable.add(eventTable).width(Constants.WINDOW_X / 2).expand();
+        mainTable.add(eventTable).height(80).width(Constants.WINDOW_X / 2).expand();
 
 
 
         // Options section of HUD (bottom)
         Table optionsTable = new Table();
-        optionsTable.setBackground(bgImage);
 
-        Label optionsLabel = new Label("OPTIONS", retroStyle);
+        Label optionsLabel = new Label("OPTIONS", retroStyleLarge);
         optionsLabel.setAlignment(Align.right);
         optionsTable.add(optionsLabel).top().fill();
         optionsTable.pack();
-        mainTable.add(optionsTable).right().width(Constants.WINDOW_X / 5).expand();
+        mainTable.add(optionsTable).right().height(80).width(Constants.WINDOW_X / 5).expand();
 
 
 
@@ -97,6 +112,18 @@ public class HudDisplay {
 
     public void render() {
         stage.draw();
+    }
+
+    public void addToLog(String text) {
+        if (eventLines == 4) {
+            eventLog.setText(text);
+            eventLines = 1;
+        } else {
+            StringBuilder currentText = eventLog.getText();
+            String newText = currentText + "\n" + text;
+            eventLog.setText(newText);
+            eventLines++;
+        }
     }
 
     private NinePatch getNinePatch(String fname) {

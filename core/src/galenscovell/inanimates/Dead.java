@@ -56,8 +56,8 @@ public class Dead implements Inanimate {
         return sprite;
     }
 
-    public void interact(Tile tile) {
-        System.out.println("A corpse lies here.");
+    public String interact(Tile tile) {
+        return "A corpse lies here.";
     }
 
     public boolean isBlocking() {
