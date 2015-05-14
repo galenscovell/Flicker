@@ -4,10 +4,10 @@
 *.bat
 *.class
 *.idea
+*.iml
 *.gradle
 *.pro
 *.properties
-*.iml
 
 
 # Ignored directory names
