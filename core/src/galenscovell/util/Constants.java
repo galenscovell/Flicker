@@ -12,18 +12,18 @@ public class Constants {
     private Constants() { }
 
     // Width/height of application window (in pixels)
-    public static final int WINDOW_X = 992;
-    public static final int WINDOW_Y = 608;
+    public static final int WINDOW_X = 800;
+    public static final int WINDOW_Y = 480;
 
     // Width of HUD (in pixels)
-    public static final int HUD_HEIGHT = 96;
+    public static final int HUD_HEIGHT = 100;
 
     // Width of game screen (in pixels)
     public static final int GAME_HEIGHT = WINDOW_Y - HUD_HEIGHT;
 
     // Width/height of world (in pixels)
-    public static final int WORLD_WIDTH = 3200;
-    public static final int WORLD_HEIGHT = 3200;
+    public static final int WORLD_WIDTH = 800;
+    public static final int WORLD_HEIGHT = 800;
 
     // Tile square dimensions (in pixels)
     public static final int TILESIZE = 32;

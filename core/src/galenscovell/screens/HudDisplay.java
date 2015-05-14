@@ -28,10 +28,12 @@ public class HudDisplay {
     private Stage stage;
     private Label eventLog;
     private int eventLines = 1;
+    private final int height = Constants.HUD_HEIGHT;
+    private final int width = Constants.WINDOW_X;
 
 
     public HudDisplay() {
-        this.stage = new Stage(new ExtendViewport(Constants.WINDOW_X, Constants.HUD_HEIGHT, Constants.WINDOW_X, Constants.HUD_HEIGHT));
+        this.stage = new Stage(new ExtendViewport(width, height, width, height));
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -65,7 +67,7 @@ public class HudDisplay {
 
         Table healthBar = new Table();
         healthBar.setBackground(barBg);
-        healthTable.add(healthBar).width(Constants.WINDOW_X / 6).height(30).expand();
+        healthTable.add(healthBar).width(width / 7).height(height / 3).expand();
         healthTable.row();
 
         Label manaLabel = new Label("MANA", retroStyleLarge);
@@ -74,10 +76,10 @@ public class HudDisplay {
 
         Table manaBar = new Table();
         manaBar.setBackground(barBg);
-        healthTable.add(manaBar).width(Constants.WINDOW_X / 6).height(30).expand();
+        healthTable.add(manaBar).width(width / 7).height(height / 3).expand();
 
         healthTable.pack();
-        mainTable.add(healthTable).left().height(80).width(Constants.WINDOW_X / 4).expand();
+        mainTable.add(healthTable).left().height(height - (height / 6)).width(width / 4).expand();
 
 
 
@@ -87,10 +89,10 @@ public class HudDisplay {
 
         this.eventLog = new Label("Events will be displayed here.", retroStyleSmall);
         eventLog.setWrap(true);
-        eventTable.add(eventLog).height(80).width(460).fill().expand();
+        eventTable.add(eventLog).height(height - (height / 6)).fill().expand();
 
         eventTable.pack();
-        mainTable.add(eventTable).height(80).width(Constants.WINDOW_X / 2).expand();
+        mainTable.add(eventTable).height(height - (height / 6)).width(width / 2).expand();
 
 
 
@@ -101,7 +103,7 @@ public class HudDisplay {
         optionsLabel.setAlignment(Align.right);
         optionsTable.add(optionsLabel).top().fill();
         optionsTable.pack();
-        mainTable.add(optionsTable).right().height(80).width(Constants.WINDOW_X / 5).expand();
+        mainTable.add(optionsTable).right().height(height).width(width / 5).expand();
 
 
 

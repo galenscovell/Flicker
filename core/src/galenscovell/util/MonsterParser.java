@@ -6,14 +6,15 @@
 
 package galenscovell.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +31,11 @@ public class MonsterParser {
         JsonParser parser = new JsonParser();
         Gson gson = new Gson();
         try {
-            InputStreamReader reader = new InputStreamReader(new FileInputStream("data/monsters.json"));
+            BufferedReader reader = Gdx.files.internal("data/monsters.json").reader(1024);
             JsonArray mArray = parser.parse(reader).getAsJsonArray();
             for (JsonElement mElement : mArray) {
                 Monster monster = gson.fromJson(mElement, Monster.class);
+                System.out.println(monster);
                 monsterList.add(monster);
             }
             reader.close();

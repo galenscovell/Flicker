@@ -1,8 +1,17 @@
+
+# Ignored file extensions
+
+*.bat
 *.class
 *.idea
 *.gradle
-*.bat
+*.pro
 *.properties
+*.iml
+
+
+# Ignored directory names
+
 build
 gradle
 gradlew
