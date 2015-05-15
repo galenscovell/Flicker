@@ -3,7 +3,7 @@
 Flicker-libgdx
 ======
 
-Full-fledged graphical roguelike coded in Java with Libgdx/OpenGL. Work in progress with numerous features added daily.
+Flicker is a graphical roguelike game for Android and Desktop that is coded in Java with Libgdx. It's currently a Work in progress with numerous features added regularly.
 
 <b>Current Features:</b>
 ======
@@ -18,6 +18,7 @@ Full-fledged graphical roguelike coded in Java with Libgdx/OpenGL. Work in progr
 * Clean package organization utilizing interfaces, inheritance and DRY principles
 
 <b>Graphics</b>
+* Scaling graphics for accurate display on all device resolutions.
 * Sprites: loading and rendering, animation, linear interpolation
 * Torchlight: recursive shadowcasting for dynamic field-of-view
 * Transparency effects: slow-moving fog, field-of-view brightness fall-off
