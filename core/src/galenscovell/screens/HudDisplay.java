@@ -29,7 +29,7 @@ public class HudDisplay {
     private Label eventLog;
     private int eventLines = 1;
     private final int height = Constants.HUD_HEIGHT;
-    private final int width = Constants.WINDOW_X;
+    private final int width = Gdx.graphics.getWidth();
 
 
     public HudDisplay() {
@@ -37,9 +37,9 @@ public class HudDisplay {
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 12;
+        parameter.size = 11;
         BitmapFont retroFontLarge = fontGenerator.generateFont(parameter);
-        parameter.size = 10;
+        parameter.size = 9;
         BitmapFont retroFontSmall = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
@@ -117,7 +117,7 @@ public class HudDisplay {
     }
 
     public void addToLog(String text) {
-        if (eventLines == 4) {
+        if (eventLines == 3) {
             eventLog.setText(text);
             eventLines = 1;
         } else {

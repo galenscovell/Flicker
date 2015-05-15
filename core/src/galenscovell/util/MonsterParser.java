@@ -31,7 +31,7 @@ public class MonsterParser {
         JsonParser parser = new JsonParser();
         Gson gson = new Gson();
         try {
-            BufferedReader reader = Gdx.files.internal("data/monsters.json").reader(1024);
+            BufferedReader reader = Gdx.files.internal("monsters.json").reader(1024);
             JsonArray mArray = parser.parse(reader).getAsJsonArray();
             for (JsonElement mElement : mArray) {
                 Monster monster = gson.fromJson(mElement, Monster.class);
@@ -55,7 +55,6 @@ public class MonsterParser {
             if (selected.getLevel() == level || selected.getLevel() == (level - 1)) {
                 selected.setup();
                 found = true;
-                System.out.println(selected);
                 return selected;
             }
         }

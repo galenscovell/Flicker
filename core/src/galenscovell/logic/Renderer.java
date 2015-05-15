@@ -42,7 +42,7 @@ public class Renderer {
     private Fog fog;
     private Torchlight torchlight;
 
-    private OrthographicCamera viewport;
+    private OrthographicCamera camera;
     private SpriteBatch spriteBatch;
     private int tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
@@ -50,10 +50,10 @@ public class Renderer {
 
     public Renderer(Map<Integer, Tile> tiles) {
         this.tileSize = Constants.TILESIZE;
-        this.viewport = new OrthographicCamera(Constants.WINDOW_X, Constants.GAME_HEIGHT);
-        viewport.setToOrtho(true, Constants.WINDOW_X, Constants.GAME_HEIGHT);
-        this.spriteBatch = new SpriteBatch();
+        this.camera = new OrthographicCamera(Constants.WINDOW_X, Constants.GAME_HEIGHT);
+        camera.setToOrtho(true, Constants.WINDOW_X, Constants.GAME_HEIGHT);
 
+        this.spriteBatch = new SpriteBatch();
         this.tiles = tiles;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
@@ -74,7 +74,7 @@ public class Renderer {
         findCameraBounds();
 
         // Set rendering area for batch (this line splits the game from the HUD)
-        Gdx.gl.glViewport(0, 0, Constants.WINDOW_X, Constants.GAME_HEIGHT);
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - Constants.HUD_HEIGHT);
         spriteBatch.begin();
 
         for (Tile tile : tiles.values()) {
@@ -121,7 +121,7 @@ public class Renderer {
 
         fog.render(spriteBatch);
 
-        Gdx.gl.glViewport(0, Constants.GAME_HEIGHT, Constants.WINDOW_X, Constants.HUD_HEIGHT);
+        Gdx.gl.glViewport(0, Gdx.graphics.getHeight() - Constants.HUD_HEIGHT, Gdx.graphics.getWidth(), Constants.HUD_HEIGHT);
         hud.render();
         spriteBatch.end();
     }
@@ -186,7 +186,6 @@ public class Renderer {
         Tile randomTile = findRandomTile();
         Entity monster = parser.spawn(2);
         monster.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
-        System.out.println(monster);
         entities.add(monster);
         randomTile.toggleOccupied();
     }
@@ -209,14 +208,14 @@ public class Renderer {
     }
 
     private void findCameraBounds() {
-        minCamX = player.getCurrentX() - (viewport.viewportWidth / 2);
-        minCamY = player.getCurrentY() - (viewport.viewportHeight / 2);
-        maxCamX = minCamX + viewport.viewportWidth;
-        maxCamY = minCamY + viewport.viewportHeight;
+        minCamX = player.getCurrentX() - (camera.viewportWidth / 2);
+        minCamY = player.getCurrentY() - (camera.viewportHeight / 2);
+        maxCamX = minCamX + camera.viewportWidth;
+        maxCamY = minCamY + camera.viewportHeight;
 
-        viewport.position.set(player.getCurrentX(), player.getCurrentY(), 0);
-        viewport.update();
-        spriteBatch.setProjectionMatrix(viewport.combined);
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+        camera.update();
+        spriteBatch.setProjectionMatrix(camera.combined);
     }
 
     private boolean inViewport(int x, int y) {

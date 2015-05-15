@@ -26,7 +26,7 @@ public class Constants {
     public static final int WORLD_HEIGHT = 800;
 
     // Tile square dimensions (in pixels)
-    public static final int TILESIZE = 32;
+    public static final int TILESIZE = 40;
 
     // Columns/rows in world (in Tiles)
     public static final int TILE_COLUMNS = WORLD_WIDTH / TILESIZE;
