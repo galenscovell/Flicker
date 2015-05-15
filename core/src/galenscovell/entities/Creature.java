@@ -137,7 +137,7 @@ public class Creature implements Entity {
     }
 
     public void animate(double interpolation) {
-        if (animateFrames == 20) {
+        if (animateFrames == 30) {
             if (sprite == currentSet[0]) {
                 sprite = currentSet[1];
             } else {

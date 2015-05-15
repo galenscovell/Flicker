@@ -1,7 +1,7 @@
 
 /**
  * HUDDISPLAY CLASS
- *
+ * Creates HUD and handles HUD updates.
  */
 
 package galenscovell.screens;
@@ -28,18 +28,18 @@ public class HudDisplay {
     private Stage stage;
     private Label eventLog;
     private int eventLines = 1;
-    private final int height = Constants.HUD_HEIGHT;
     private final int width = Gdx.graphics.getWidth();
+    private final int height = Gdx.graphics.getHeight();
 
 
     public HudDisplay() {
-        this.stage = new Stage(new ExtendViewport(width, height, width, height));
+        this.stage = new Stage();
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 11;
+        parameter.size = 10;
         BitmapFont retroFontLarge = fontGenerator.generateFont(parameter);
-        parameter.size = 9;
+        parameter.size = 8;
         BitmapFont retroFontSmall = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
@@ -49,61 +49,46 @@ public class HudDisplay {
         NinePatchDrawable bgImage = new NinePatchDrawable(getNinePatch("ui/hudBack.9.png"));
         NinePatchDrawable barBg = new NinePatchDrawable(getNinePatch("ui/bar.9.png"));
 
-        // Init main HUD layout
+        // Init main HUD layout (fills screen)
         Table mainTable = new Table();
+        mainTable.pad(2, 2, 2, 2);
         mainTable.setFillParent(true);
-        mainTable.pad(4, 8, 4, 8);
-        mainTable.setBackground(bgImage);
+        mainTable.setDebug(true);
 
 
+        // Top right table
+        Table topRightTable = new Table();
 
-        // Health section of HUD (top)
-        Table healthTable = new Table();
-        healthTable.pad(8, 6, 8, 0);
+        Table playerTable = new Table();
+        playerTable.setBackground(bgImage);
+        topRightTable.add(playerTable).height(height / 5).width(width / 4);
+        topRightTable.row();
 
-        Label healthLabel = new Label("HEALTH", retroStyleLarge);
-        healthLabel.setAlignment(Align.left);
-        healthTable.add(healthLabel).fill();
-
-        Table healthBar = new Table();
-        healthBar.setBackground(barBg);
-        healthTable.add(healthBar).width(width / 7).height(height / 3).expand();
-        healthTable.row();
-
-        Label manaLabel = new Label("MANA", retroStyleLarge);
-        manaLabel.setAlignment(Align.left);
-        healthTable.add(manaLabel).fill();
-
-        Table manaBar = new Table();
-        manaBar.setBackground(barBg);
-        healthTable.add(manaBar).width(width / 7).height(height / 3).expand();
-
-        healthTable.pack();
-        mainTable.add(healthTable).left().height(height - (height / 6)).width(width / 4).expand();
-
-
-
-        // Events section of HUD (middle)
         Table eventTable = new Table();
-        eventTable.setBackground(bgImage);
-
+        eventTable.pad(4, 0, 4, 0);
         this.eventLog = new Label("Events will be displayed here.", retroStyleSmall);
+        eventLog.setAlignment(Align.top, Align.right);
         eventLog.setWrap(true);
-        eventTable.add(eventLog).height(height - (height / 6)).fill().expand();
-
+        eventTable.add(eventLog).height(height / 6).width(width / 4);
         eventTable.pack();
-        mainTable.add(eventTable).height(height - (height / 6)).width(width / 2).expand();
+
+        topRightTable.add(eventTable).right();
+        topRightTable.pack();
+        mainTable.add(topRightTable).expand().top().right();
+        mainTable.row();
 
 
+        // Bottom left table
+        Table bottomLeftTable = new Table();
 
-        // Options section of HUD (bottom)
         Table optionsTable = new Table();
-
         Label optionsLabel = new Label("OPTIONS", retroStyleLarge);
         optionsLabel.setAlignment(Align.right);
         optionsTable.add(optionsLabel).top().fill();
         optionsTable.pack();
-        mainTable.add(optionsTable).right().height(height).width(width / 5).expand();
+
+        bottomLeftTable.add(optionsTable).height(height / 8).width(width / 4);
+        mainTable.add(bottomLeftTable).expand().bottom().left();
 
 
 
@@ -117,7 +102,7 @@ public class HudDisplay {
     }
 
     public void addToLog(String text) {
-        if (eventLines == 3) {
+        if (eventLines == 5) {
             eventLog.setText(text);
             eventLines = 1;
         } else {
