@@ -35,7 +35,6 @@ public class MonsterParser {
             JsonArray mArray = parser.parse(reader).getAsJsonArray();
             for (JsonElement mElement : mArray) {
                 Monster monster = gson.fromJson(mElement, Monster.class);
-                System.out.println(monster);
                 monsterList.add(monster);
             }
             reader.close();

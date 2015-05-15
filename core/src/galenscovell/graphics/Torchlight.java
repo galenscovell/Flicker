@@ -23,7 +23,7 @@ public class Torchlight {
 
 
     public Torchlight(float[][] resistanceMap) {
-        this.radius = 6;
+        this.radius = 4;
         this.mult = new int[][]{{1, 0, 0, -1, -1, 0, 0, 1},
                                 {0, 1, -1, 0, 0, -1, 1, 0},
                                 {0, 1, 1, 0, 0, -1, -1, 0},
@@ -35,7 +35,7 @@ public class Torchlight {
     public void findFOV(Player player, int tileSize) {
         startX = player.getX() / tileSize;
         startY = player.getY() / tileSize;
-        lightMap[startY][startX] = 1.0f;
+        lightMap[startY][startX] = 0.9f;
 
         for (int i = 0; i < 8; i++) {
             castLight(1, 1.0f, 0.0f, mult[0][i], mult[1][i], mult[2][i], mult[3][i]);
@@ -52,12 +52,15 @@ public class Torchlight {
         // Fill alpha over Tile depending on lightMap value
         for (int x = 0; x < lightMap[0].length; x++) {
             for (int y = 0; y < lightMap.length; y++) {
-                if (!(x < minX || x > maxX || y < minY || y > maxY)) {
+                if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
                     spriteBatch.setColor(0.02f, 0.01f, 0.0f, 1.0f - lightMap[y][x]);
                     spriteBatch.draw(rect, x * tileSize, y * tileSize, tileSize, tileSize);
                 }
-                // Reset all values for next frame
-                lightMap[y][x] = 0.0f;
+                if (lightMap[y][x] > 0.0f) {
+                    lightMap[y][x] = 0.1f;
+                } else {
+                    lightMap[y][x] = 0.0f;
+                }
             }
         }
         // Return batch color to original
@@ -87,8 +90,8 @@ public class Torchlight {
 
                 // Check if in lightable area and light if needed
                 float radiusCircle = (float) Math.sqrt(dx * dx + dy * dy);
-                if (radiusCircle <= radius) {
-                    float brightness = (1 - (radiusCircle / radius));
+                if (radiusCircle < radius) {
+                    float brightness = (1.0f - (radiusCircle / radius));
                     lightMap[currentY][currentX] = brightness;
                 }
 
