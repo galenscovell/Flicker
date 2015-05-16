@@ -14,12 +14,14 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import galenscovell.util.Constants;
 
@@ -38,35 +40,47 @@ public class HudDisplay {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 10;
-        BitmapFont retroFontLarge = fontGenerator.generateFont(parameter);
-        parameter.size = 8;
-        BitmapFont retroFontSmall = fontGenerator.generateFont(parameter);
+        BitmapFont customFont = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
-        Label.LabelStyle retroStyleLarge = new Label.LabelStyle(retroFontLarge, Color.WHITE);
-        Label.LabelStyle retroStyleSmall = new Label.LabelStyle(retroFontSmall, Color.WHITE);
+        Label.LabelStyle customStyle = new Label.LabelStyle(customFont, Color.WHITE);
 
-        NinePatchDrawable bgImage = new NinePatchDrawable(getNinePatch("ui/hudBack.9.png"));
-        NinePatchDrawable barBg = new NinePatchDrawable(getNinePatch("ui/bar.9.png"));
+        NinePatchDrawable hudBg = new NinePatchDrawable(getNinePatch("ui/hudbg.png"));
+        NinePatchDrawable barBg = new NinePatchDrawable(getNinePatch("ui/barbg.png"));
+        NinePatchDrawable buttonDownBg = new NinePatchDrawable(getNinePatch("ui/buttondownbg.png"));
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
         mainTable.pad(2, 2, 2, 2);
         mainTable.setFillParent(true);
-        mainTable.setDebug(true);
+        // mainTable.setDebug(true);
+
 
 
         // Top right table
         Table topRightTable = new Table();
 
+        // Player Stats table
         Table playerTable = new Table();
-        playerTable.setBackground(bgImage);
-        topRightTable.add(playerTable).height(height / 5).width(width / 4);
+        // Player image within player stats table
+        Table playerImage = new Table();
+        playerImage.setBackground(hudBg);
+        playerImage.pack();
+        // Player health within player stats table
+        Table playerHealth = new Table();
+        playerHealth.setBackground(barBg);
+        playerHealth.pack();
+
+        playerTable.add(playerHealth).height(height / 18).width(width / 5).expand().top();
+        playerTable.add(playerImage).height(height / 6).width(width / 10).expand().right();
+        playerTable.pack();
+        topRightTable.add(playerTable).height(height / 6).width(width / 3);
         topRightTable.row();
 
+        // Event log table
         Table eventTable = new Table();
         eventTable.pad(4, 0, 4, 0);
-        this.eventLog = new Label("Events will be displayed here.", retroStyleSmall);
+        this.eventLog = new Label("Events displayed here.", customStyle);
         eventLog.setAlignment(Align.top, Align.right);
         eventLog.setWrap(true);
         eventTable.add(eventLog).height(height / 6).width(width / 4);
@@ -78,16 +92,29 @@ public class HudDisplay {
         mainTable.row();
 
 
+
         // Bottom left table
         Table bottomLeftTable = new Table();
+        // Examine table
+        Button examineButton = new Button(hudBg, buttonDownBg);
+        Image examineIcon = createIcon("icons/examine.png");
+        examineButton.add(examineIcon).center().fill().expand();
+        examineButton.pack();
+        // Inventory table
+        Button inventoryButton = new Button(hudBg, buttonDownBg);
+        Image inventoryIcon = createIcon("icons/inventory.png");
+        inventoryButton.add(inventoryIcon).center().fill().expand();
+        inventoryButton.pack();
+        // Options table
+        Button optionsButton = new Button(hudBg, buttonDownBg);
+        Image optionsIcon = createIcon("icons/options.png");
+        optionsButton.add(optionsIcon).center().fill().expand();
+        optionsButton.pack();
+        optionsButton.toggle();
 
-        Table optionsTable = new Table();
-        Label optionsLabel = new Label("OPTIONS", retroStyleLarge);
-        optionsLabel.setAlignment(Align.right);
-        optionsTable.add(optionsLabel).top().fill();
-        optionsTable.pack();
-
-        bottomLeftTable.add(optionsTable).height(height / 8).width(width / 4);
+        bottomLeftTable.add(examineButton).height(height / 7).width(width / 11);
+        bottomLeftTable.add(inventoryButton).height(height / 7).width(width / 11);
+        bottomLeftTable.add(optionsButton).height(height / 7).width(width / 11).fill();
         mainTable.add(bottomLeftTable).expand().bottom().left();
 
 
@@ -113,8 +140,15 @@ public class HudDisplay {
         }
     }
 
-    private NinePatch getNinePatch(String fname) {
-        final Texture t = new Texture(Gdx.files.internal(fname));
-        return new NinePatch(new TextureRegion(t, 1, 1, t.getWidth() - 3, t.getWidth() - 3), 10, 10, 10, 10);
+    private NinePatch getNinePatch(String path) {
+        Texture t = new Texture(Gdx.files.internal(path));
+        return new NinePatch(new TextureRegion(t, 1, 1, t.getWidth() - 1, t.getWidth() - 1), 8, 8, 8, 8);
+    }
+
+    private Image createIcon(String path) {
+        Image icon = new Image();
+        icon.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path)))));
+        icon.setScaling(Scaling.fill);
+        return icon;
     }
 }
