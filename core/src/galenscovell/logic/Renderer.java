@@ -94,20 +94,18 @@ public class Renderer {
 
         for (Entity entity : entities) {
             // Entity [x, y] are in pixels
-            if (inViewport(entity.getX(), entity.getY())) {
+            if (illuminated(entity.getX() / tileSize, entity.getY() / tileSize)) {
                 entity.interpolate(interpolation);
                 if (entity.isAttacking()) {
                     entity.attack(interpolation, player);
                 }
                 spriteBatch.draw(entity.getSprite(), entity.getCurrentX(), entity.getCurrentY(), tileSize, tileSize);
 
-                int diffX = Math.abs(player.getX() / tileSize - entity.getX() / tileSize);
-                int diffY = Math.abs(player.getY() / tileSize - entity.getY() / tileSize);
-                if (!entity.isInView() && (diffX + diffY <= entity.getSightRange())) {
-                    entity.toggleInView();
-                } else if (entity.isInView() && (diffX + diffY > entity.getSightRange())) {
+                if (!entity.isInView()) {
                     entity.toggleInView();
                 }
+            } else if (entity.isInView()) {
+                entity.toggleInView();
             }
         }
 
@@ -220,5 +218,9 @@ public class Renderer {
 
     private boolean inViewport(int x, int y) {
         return ((x + tileSize) >= minCamX && x <= maxCamX && (y + tileSize) >= minCamY && y <= maxCamY);
+    }
+
+    private boolean illuminated(int x, int y) {
+        return(Math.abs(x - player.getX() / tileSize) + Math.abs(y - player.getY() / tileSize) < 4);
     }
 }

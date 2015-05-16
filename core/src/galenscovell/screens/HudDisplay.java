@@ -39,7 +39,7 @@ public class HudDisplay {
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 10;
+        parameter.size = 9;
         BitmapFont customFont = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
@@ -47,7 +47,6 @@ public class HudDisplay {
 
         NinePatchDrawable hudBg = new NinePatchDrawable(getNinePatch("ui/hudbg.png"));
         NinePatchDrawable barBg = new NinePatchDrawable(getNinePatch("ui/barbg.png"));
-        NinePatchDrawable buttonDownBg = new NinePatchDrawable(getNinePatch("ui/buttondownbg.png"));
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
@@ -71,10 +70,10 @@ public class HudDisplay {
         playerHealth.setBackground(barBg);
         playerHealth.pack();
 
-        playerTable.add(playerHealth).height(height / 18).width(width / 5).expand().top();
-        playerTable.add(playerImage).height(height / 6).width(width / 10).expand().right();
+        playerTable.add(playerHealth).height(height / 18).width(width / 7).expand().top();
+        playerTable.add(playerImage).height(height / 7).width(width / 11).expand().top().right();
         playerTable.pack();
-        topRightTable.add(playerTable).height(height / 6).width(width / 3);
+        topRightTable.add(playerTable).height(height / 6).width(width / 4);
         topRightTable.row();
 
         // Event log table
@@ -96,21 +95,23 @@ public class HudDisplay {
         // Bottom left table
         Table bottomLeftTable = new Table();
         // Examine table
-        Button examineButton = new Button(hudBg, buttonDownBg);
+        Table examineButton = new Table();
+        examineButton.setBackground(hudBg);
         Image examineIcon = createIcon("icons/examine.png");
         examineButton.add(examineIcon).center().fill().expand();
         examineButton.pack();
         // Inventory table
-        Button inventoryButton = new Button(hudBg, buttonDownBg);
+        Table inventoryButton = new Table();
+        inventoryButton.setBackground(hudBg);
         Image inventoryIcon = createIcon("icons/inventory.png");
         inventoryButton.add(inventoryIcon).center().fill().expand();
         inventoryButton.pack();
         // Options table
-        Button optionsButton = new Button(hudBg, buttonDownBg);
+        Table optionsButton = new Table();
+        optionsButton.setBackground(hudBg);
         Image optionsIcon = createIcon("icons/options.png");
         optionsButton.add(optionsIcon).center().fill().expand();
         optionsButton.pack();
-        optionsButton.toggle();
 
         bottomLeftTable.add(examineButton).height(height / 7).width(width / 11);
         bottomLeftTable.add(inventoryButton).height(height / 7).width(width / 11);
