@@ -8,14 +8,15 @@ package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
@@ -25,9 +26,10 @@ import galenscovell.util.Constants;
 
 
 public class HudDisplay {
-    private Stage stage;
+    public Stage stage;
     private Label eventLog;
     private ProgressBar health, mana;
+    public Button examineButton, inventoryButton, optionsButton;
     private int eventLines = 1;
     private final int width = Gdx.graphics.getWidth();
     private final int height = Gdx.graphics.getHeight();
@@ -107,23 +109,32 @@ public class HudDisplay {
         // Bottom left table
         Table bottomLeftTable = new Table();
         // Examine table
-        Table examineButton = new Table();
-        examineButton.setBackground(hudBg);
+        this.examineButton = new Button(hudBg);
         Image examineIcon = createIcon("icons/examine.png");
         examineButton.add(examineIcon).center().fill().expand();
-        examineButton.pack();
+        examineButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Examine button clicked");
+            }
+        });
         // Inventory table
-        Table inventoryButton = new Table();
-        inventoryButton.setBackground(hudBg);
+        this.inventoryButton = new Button(hudBg);
         Image inventoryIcon = createIcon("icons/inventory.png");
         inventoryButton.add(inventoryIcon).center().fill().expand();
-        inventoryButton.pack();
+        inventoryButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Inventory button clicked");
+            }
+        });
         // Options table
-        Table optionsButton = new Table();
-        optionsButton.setBackground(hudBg);
+        this.optionsButton = new Button(hudBg);
         Image optionsIcon = createIcon("icons/options.png");
         optionsButton.add(optionsIcon).center().fill().expand();
-        optionsButton.pack();
+        optionsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Options button clicked");
+            }
+        });
 
         bottomLeftTable.add(examineButton).height(height / 7).width(width / 11);
         bottomLeftTable.add(inventoryButton).height(height / 7).width(width / 11);

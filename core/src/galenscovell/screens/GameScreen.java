@@ -8,6 +8,7 @@ package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 
 import galenscovell.entities.Player;
@@ -17,6 +18,7 @@ import galenscovell.logic.Updater;
 import galenscovell.logic.World;
 
 import galenscovell.util.Constants;
+import galenscovell.util.InputHandler;
 
 
 public class GameScreen implements Screen {
@@ -36,20 +38,22 @@ public class GameScreen implements Screen {
         this.playerInstance = new Player();
         this.hud = new HudDisplay();
         createNewLevel();
+        InputHandler worldInput = new InputHandler(this);
+        InputMultiplexer multipleInputs = new InputMultiplexer();
+        multipleInputs.addProcessor(hud.stage);
+        multipleInputs.addProcessor(worldInput);
+        Gdx.input.setInputProcessor(multipleInputs);
+    }
+
+    public void update(int[] move) {
+        if (!moving && !acting || accumulator > Constants.TIMESTEP) {
+            updater.update(move, true, acting, renderer.getEntityList(), renderer.getInanimateList());
+            accumulator = 0;
+        }
     }
 
     @Override
     public void render(float delta) {
-        // Player movement and entity logic
-        // Scan for input at framerate until input found, then switch to logic updates
-        if (!moving && !acting) {
-            updater.update(checkMovement(), moving, acting, renderer.getEntityList(), renderer.getInanimateList());
-            accumulator = 0;
-        } else if (accumulator > Constants.TIMESTEP) {
-            updater.update(checkMovement(), moving, acting, renderer.getEntityList(), renderer.getInanimateList());
-            accumulator = 0;
-        }
-
         if (updater.playerDescends()) {
             this.renderer = null;
             this.updater = null;
@@ -110,39 +114,5 @@ public class GameScreen implements Screen {
         updater.setStairs(renderer.getInanimateList());
         renderer.setHud(hud);
         updater.setHud(hud);
-    }
-
-    private int[] checkMovement() {
-        int[] playerInput = new int[3];
-
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            playerInput[1]--;
-            moving = true;
-            acting = false;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            playerInput[1]++;
-            moving = true;
-            acting = false;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            playerInput[0]--;
-            moving = true;
-            acting = false;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            playerInput[0]++;
-            moving = true;
-            acting = false;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-            playerInput[2]++;
-            moving = false;
-            acting = true;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            playerInput[2]--;
-            moving = false;
-            acting = true;
-        } else {
-            moving = false;
-            acting = false;
-        }
-        return playerInput;
     }
 }
