@@ -221,6 +221,13 @@ public class Renderer {
     }
 
     private boolean illuminated(int x, int y) {
-        return(Math.abs(x - player.getX() / tileSize) + Math.abs(y - player.getY() / tileSize) < 4);
+        int diffX = Math.abs(x - player.getX() / tileSize);
+        int diffY = Math.abs(y - player.getY() / tileSize);
+        // Respect 'rounding' of torchlight when illuminating entities
+        if ((diffX == 0 && diffY == 4) || (diffY == 0 && diffX == 4)) {
+            return false;
+        } else {
+            return(diffX + diffY <= 4);
+        }
     }
 }

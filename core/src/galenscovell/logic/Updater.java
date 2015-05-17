@@ -92,6 +92,7 @@ public class Updater {
     }
 
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
+        hud.changeHealth(5);
         player.toggleAttack();
         Point attackedTile = player.getFacingPoint(tileSize);
         player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);

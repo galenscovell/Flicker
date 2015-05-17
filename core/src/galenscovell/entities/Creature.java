@@ -84,6 +84,10 @@ public class Creature implements Entity {
         if (possible) {
             x += dx;
             y += dy;
+            if (!inView) {
+                prevX = x;
+                prevY = y;
+            }
         }
     }
 

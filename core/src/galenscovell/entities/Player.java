@@ -76,6 +76,15 @@ public class Player extends Creature {
         }
     }
 
+    @Override
+    public void move(int dx, int dy, boolean possible) {
+        turn(dx, dy);
+        if (possible) {
+            x += dx;
+            y += dy;
+        }
+    }
+
     public void toggleInteracting() {
         if (interacting) {
             interacting = false;

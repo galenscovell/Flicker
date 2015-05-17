@@ -8,16 +8,14 @@ package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
@@ -29,6 +27,7 @@ import galenscovell.util.Constants;
 public class HudDisplay {
     private Stage stage;
     private Label eventLog;
+    private ProgressBar health, mana;
     private int eventLines = 1;
     private final int width = Gdx.graphics.getWidth();
     private final int height = Gdx.graphics.getHeight();
@@ -44,9 +43,7 @@ public class HudDisplay {
         fontGenerator.dispose();
 
         Label.LabelStyle customStyle = new Label.LabelStyle(customFont, Color.WHITE);
-
         NinePatchDrawable hudBg = new NinePatchDrawable(getNinePatch("ui/hudbg.png"));
-        NinePatchDrawable barBg = new NinePatchDrawable(getNinePatch("ui/barbg.png"));
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
@@ -58,22 +55,37 @@ public class HudDisplay {
 
         // Top right table
         Table topRightTable = new Table();
-
         // Player Stats table
         Table playerTable = new Table();
-        // Player image within player stats table
+        // Player image within player table
         Table playerImage = new Table();
         playerImage.setBackground(hudBg);
+        Image playerIcon = createIcon("icons/explorer.png");
+        playerImage.add(playerIcon).center().fill().expand();
         playerImage.pack();
-        // Player health within player stats table
-        Table playerHealth = new Table();
-        playerHealth.setBackground(barBg);
-        playerHealth.pack();
+        // Player health and mana bar table
+        Table playerBars = new Table();
+        playerBars.padLeft(width / 24);
+        playerBars.pack();
+        // Player health within player table
+        this.health = createBar("ui/healthfill.png", "ui/barempty.png");
+        health.pack();
+        // Table playerHealth = new Table();
+        // playerHealth.setBackground(barBg);
+        // playerHealth.pack();
+        // Player mana within player table
+        this.mana = createBar("ui/manafill.png", "ui/barempty.png");
+        mana.pack();
 
-        playerTable.add(playerHealth).height(height / 18).width(width / 7).expand().top();
+        playerBars.add(health).height(height / 22).width(width / 4).right();
+        playerBars.row();
+        playerBars.add(mana).height(height / 22).width(width / 8).right();
+
+        playerTable.add(playerBars).top().right();
         playerTable.add(playerImage).height(height / 7).width(width / 11).expand().top().right();
         playerTable.pack();
-        topRightTable.add(playerTable).height(height / 6).width(width / 4);
+
+        topRightTable.add(playerTable).height(height / 6).width(width / 3);
         topRightTable.row();
 
         // Event log table
@@ -127,6 +139,7 @@ public class HudDisplay {
 
     public void render() {
         stage.draw();
+        health.act(Gdx.graphics.getDeltaTime());
     }
 
     public void addToLog(String text) {
@@ -143,7 +156,7 @@ public class HudDisplay {
 
     private NinePatch getNinePatch(String path) {
         Texture t = new Texture(Gdx.files.internal(path));
-        return new NinePatch(new TextureRegion(t, 1, 1, t.getWidth() - 1, t.getWidth() - 1), 8, 8, 8, 8);
+        return new NinePatch(new TextureRegion(t, 1, 1, t.getWidth() - 2, t.getWidth() - 2), 10, 10, 10, 10);
     }
 
     private Image createIcon(String path) {
@@ -151,5 +164,20 @@ public class HudDisplay {
         icon.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path)))));
         icon.setScaling(Scaling.fill);
         return icon;
+    }
+
+    private ProgressBar createBar(String path1, String path2) {
+        TextureRegionDrawable fill = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path1))));
+        TextureRegionDrawable empty = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path2))));
+        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(fill, empty);
+        ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
+        barStyle.knobBefore = empty;
+        bar.setValue(0);
+        bar.setAnimateDuration(1);
+        return bar;
+    }
+
+    public void changeHealth(int amount) {
+        health.setValue(health.getValue() + amount);
     }
 }
