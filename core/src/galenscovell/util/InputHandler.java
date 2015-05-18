@@ -19,7 +19,6 @@ public class InputHandler extends InputAdapter {
         this.game = game;
     }
 
-    // Desktop only
     @Override
     public boolean scrolled (int amount) {
         game.screenZoom(amount > 0, false);

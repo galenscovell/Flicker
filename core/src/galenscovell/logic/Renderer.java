@@ -139,6 +139,10 @@ public class Renderer {
         camera.zoom += value;
     }
 
+    public void pan(float dx, float dy) {
+        camera.translate(-dx, -dy, 0);
+    }
+
     public void assembleLevel(Player player) {
         placeInanimates();
         createResistanceMap();
@@ -185,6 +189,8 @@ public class Renderer {
         this.player = playerInstance;
         player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
         randomTile.toggleOccupied();
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+        camera.update();
     }
 
     private void placeEntities(MonsterParser parser) {
@@ -217,8 +223,6 @@ public class Renderer {
         minCamY = player.getCurrentY() - (camera.viewportHeight / 2);
         maxCamX = minCamX + camera.viewportWidth;
         maxCamY = minCamY + camera.viewportHeight;
-
-        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
         camera.update();
         spriteBatch.setProjectionMatrix(camera.combined);
     }

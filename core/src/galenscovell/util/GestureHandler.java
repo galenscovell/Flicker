@@ -36,12 +36,8 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        return false;
-    }
-
-    @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
+        game.screenPan(deltaX, deltaY);
+        return true;
     }
 
     @Override

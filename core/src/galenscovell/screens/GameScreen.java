@@ -53,18 +53,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void screenZoom(boolean zoomOut, boolean touchScreen) {
-        float value = 0.1f;
-        if (touchScreen) {
-            value /= 8;
-        }
-        if (zoomOut) {
-            renderer.zoom(value);
-        } else {
-            renderer.zoom(-value);
-        }
-    }
-
     @Override
     public void render(float delta) {
         if (updater.playerDescends()) {
@@ -79,6 +67,22 @@ public class GameScreen implements Screen {
         interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation);
         accumulator++;
+    }
+
+    public void screenZoom(boolean zoomOut, boolean touchScreen) {
+        float value = 0.1f;
+        if (touchScreen) {
+            value /= 8;
+        }
+        if (zoomOut) {
+            renderer.zoom(value);
+        } else {
+            renderer.zoom(-value);
+        }
+    }
+
+    public void screenPan(float dx, float dy) {
+        renderer.pan(dx, dy);
     }
 
     @Override
