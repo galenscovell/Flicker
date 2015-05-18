@@ -7,9 +7,9 @@
 package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.input.GestureDetector;
 
 import galenscovell.entities.Player;
 
@@ -18,6 +18,7 @@ import galenscovell.logic.Updater;
 import galenscovell.logic.World;
 
 import galenscovell.util.Constants;
+import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
 
 
@@ -38,10 +39,10 @@ public class GameScreen implements Screen {
         this.playerInstance = new Player();
         this.hud = new HudDisplay();
         createNewLevel();
-        InputHandler worldInput = new InputHandler(this);
         InputMultiplexer multipleInputs = new InputMultiplexer();
         multipleInputs.addProcessor(hud.stage);
-        multipleInputs.addProcessor(worldInput);
+        multipleInputs.addProcessor(new GestureDetector(new GestureHandler(this)));
+        multipleInputs.addProcessor(new InputHandler(this));
         Gdx.input.setInputProcessor(multipleInputs);
     }
 
@@ -49,6 +50,18 @@ public class GameScreen implements Screen {
         if (!moving && !acting || accumulator > Constants.TIMESTEP) {
             updater.update(move, true, acting, renderer.getEntityList(), renderer.getInanimateList());
             accumulator = 0;
+        }
+    }
+
+    public void screenZoom(boolean zoomOut, boolean touchScreen) {
+        float value = 0.1f;
+        if (touchScreen) {
+            value /= 8;
+        }
+        if (zoomOut) {
+            renderer.zoom(value);
+        } else {
+            renderer.zoom(-value);
         }
     }
 

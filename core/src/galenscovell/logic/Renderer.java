@@ -132,6 +132,13 @@ public class Renderer {
         return inanimates;
     }
 
+    public void zoom(float value) {
+        if (camera.zoom + value > 2 || camera.zoom + value < 0.2) {
+            return;
+        }
+        camera.zoom += value;
+    }
+
     public void assembleLevel(Player player) {
         placeInanimates();
         createResistanceMap();
