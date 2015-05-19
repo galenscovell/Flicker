@@ -120,8 +120,8 @@ public class Renderer {
         fog.render(spriteBatch);
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        hud.render();
         spriteBatch.end();
+        hud.render();
     }
 
     public List<Entity> getEntityList() {
@@ -133,14 +133,21 @@ public class Renderer {
     }
 
     public void zoom(float value) {
-        if (camera.zoom + value > 2 || camera.zoom + value < 0.2) {
+        if (camera.zoom + value > 2 || camera.zoom + value < 0.25) {
             return;
         }
         camera.zoom += value;
+        // Constants.TILESIZE = (int) (32 * camera.zoom);
     }
 
     public void pan(float dx, float dy) {
-        camera.translate(-dx, -dy, 0);
+        // Only allow panning within range [0, 0], [WORLD_WIDTH, WORLD_HEIGHT] (topleft of camera)
+        if (camera.position.x - dx > 0 && camera.position.x - dx < Constants.WORLD_WIDTH) {
+            camera.translate(-dx, 0, 0);
+        }
+        if (camera.position.y - dy > 0 && camera.position.y - dx < Constants.WORLD_HEIGHT) {
+            camera.translate(0, -dy, 0);
+        }
     }
 
     public void assembleLevel(Player player) {

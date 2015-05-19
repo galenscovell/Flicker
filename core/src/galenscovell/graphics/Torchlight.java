@@ -53,7 +53,7 @@ public class Torchlight {
         for (int x = 0; x < lightMap[0].length; x++) {
             for (int y = 0; y < lightMap.length; y++) {
                 if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-                    spriteBatch.setColor(0.02f, 0.01f, 0.0f, 1.0f - lightMap[y][x]);
+                    spriteBatch.setColor(0.0f, 0.0f, 0.0f, 1.0f - lightMap[y][x]);
                     spriteBatch.draw(rect, x * tileSize, y * tileSize, tileSize, tileSize);
                 }
                 if (lightMap[y][x] > 0.0f) {

@@ -69,18 +69,14 @@ public class HudDisplay {
         playerImage.setBackground(hudBg);
         Image playerIcon = createIcon("icons/explorer.png");
         playerImage.add(playerIcon).center().fill().expand();
-        playerImage.pack();
 
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(width / 24);
-        playerBars.pack();
         // Player health
         this.health = createBar("ui/healthfill.png", "ui/barempty.png");
-        health.pack();
         // Player mana
         this.mana = createBar("ui/manafill.png", "ui/barempty.png");
-        mana.pack();
 
         playerBars.add(health).height(height / 22).width(width / 4).right();
         playerBars.row();
@@ -88,7 +84,6 @@ public class HudDisplay {
 
         playerTable.add(playerBars).top().right();
         playerTable.add(playerImage).height(height / 7).width(width / 11).expand().top().right();
-        playerTable.pack();
 
         topRightTable.add(playerTable).height(height / 6).width(width / 3);
         topRightTable.row();
@@ -101,10 +96,8 @@ public class HudDisplay {
         eventLog.setAlignment(Align.top, Align.right);
         eventLog.setWrap(true);
         eventTable.add(eventLog).height(height / 6).width(width / 4);
-        eventTable.pack();
 
         topRightTable.add(eventTable).right();
-        topRightTable.pack();
         mainTable.add(topRightTable).expand().top().right();
         mainTable.row();
 
@@ -195,7 +188,6 @@ public class HudDisplay {
                 moveEvent(0, 1);
             }
         });
-        dpad.pack();
 
         bottomTable.add(dpad).height(height / 3).width(width / 3).right().expand();
         mainTable.add(bottomTable).bottom().fill();
@@ -207,8 +199,8 @@ public class HudDisplay {
     }
 
     public void render() {
-        stage.draw();
         health.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     public void addToLog(String text) {
@@ -247,7 +239,7 @@ public class HudDisplay {
         ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
         barStyle.knobBefore = empty;
         bar.setValue(0);
-        bar.setAnimateDuration(1);
+        bar.setAnimateDuration(0.5f);
         return bar;
     }
 

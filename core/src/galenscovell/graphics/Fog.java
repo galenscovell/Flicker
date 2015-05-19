@@ -32,7 +32,7 @@ public class Fog {
         // Save original batch color
         Color c = new Color(spriteBatch.getColor());
         // Set new color for rendering fog sprite
-        spriteBatch.setColor(0.7f, 0.7f, 0.7f, 0.1f);
+        spriteBatch.setColor(0.7f, 0.7f, 0.7f, 0.05f);
         spriteBatch.draw(sprite, x, y, size, size);
         // Return color to original
         spriteBatch.setColor(c);
