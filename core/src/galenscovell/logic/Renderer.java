@@ -219,10 +219,10 @@ public class Renderer {
     }
 
     private void findCameraBounds() {
-        minCamX = player.getCurrentX() - (camera.viewportWidth / 2);
-        minCamY = player.getCurrentY() - (camera.viewportHeight / 2);
-        maxCamX = minCamX + camera.viewportWidth;
-        maxCamY = minCamY + camera.viewportHeight;
+        minCamX = camera.position.x - (camera.viewportWidth / 2) * camera.zoom;
+        minCamY = camera.position.y - (camera.viewportHeight / 2) * camera.zoom;
+        maxCamX = minCamX + camera.viewportWidth * camera.zoom;
+        maxCamY = minCamY + camera.viewportHeight * camera.zoom;
         camera.update();
         spriteBatch.setProjectionMatrix(camera.combined);
     }
