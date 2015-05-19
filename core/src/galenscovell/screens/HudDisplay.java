@@ -26,16 +26,17 @@ import galenscovell.util.Constants;
 
 
 public class HudDisplay {
+    private GameScreen game;
     public Stage stage;
     private Label eventLog;
     private ProgressBar health, mana;
-    public Button examineButton, inventoryButton, optionsButton;
     private int eventLines = 1;
     private final int width = Gdx.graphics.getWidth();
     private final int height = Gdx.graphics.getHeight();
 
 
-    public HudDisplay() {
+    public HudDisplay(GameScreen game) {
+        this.game = game;
         this.stage = new Stage();
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
@@ -51,31 +52,33 @@ public class HudDisplay {
         Table mainTable = new Table();
         mainTable.pad(2, 2, 2, 2);
         mainTable.setFillParent(true);
-        // mainTable.setDebug(true);
 
 
 
-        // Top right table
+        /**********************************
+         * TOP TABLE
+         **********************************/
         Table topRightTable = new Table();
+
+
         // Player Stats table
         Table playerTable = new Table();
-        // Player image within player table
+
+        // Player image
         Table playerImage = new Table();
         playerImage.setBackground(hudBg);
         Image playerIcon = createIcon("icons/explorer.png");
         playerImage.add(playerIcon).center().fill().expand();
         playerImage.pack();
+
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(width / 24);
         playerBars.pack();
-        // Player health within player table
+        // Player health
         this.health = createBar("ui/healthfill.png", "ui/barempty.png");
         health.pack();
-        // Table playerHealth = new Table();
-        // playerHealth.setBackground(barBg);
-        // playerHealth.pack();
-        // Player mana within player table
+        // Player mana
         this.mana = createBar("ui/manafill.png", "ui/barempty.png");
         mana.pack();
 
@@ -89,6 +92,7 @@ public class HudDisplay {
 
         topRightTable.add(playerTable).height(height / 6).width(width / 3);
         topRightTable.row();
+
 
         // Event log table
         Table eventTable = new Table();
@@ -106,10 +110,17 @@ public class HudDisplay {
 
 
 
-        // Bottom left table
-        Table bottomLeftTable = new Table();
-        // Examine table
-        this.examineButton = new Button(hudBg);
+
+        /**********************************
+         * BOTTOM TABLE
+         **********************************/
+        Table bottomTable = new Table();
+
+
+        // Bottom left section
+        Table bottomLeft = new Table();
+
+        Button examineButton = new Button(hudBg);
         Image examineIcon = createIcon("icons/examine.png");
         examineButton.add(examineIcon).center().fill().expand();
         examineButton.addListener(new ClickListener() {
@@ -117,8 +128,7 @@ public class HudDisplay {
                 System.out.println("Examine button clicked");
             }
         });
-        // Inventory table
-        this.inventoryButton = new Button(hudBg);
+        Button inventoryButton = new Button(hudBg);
         Image inventoryIcon = createIcon("icons/inventory.png");
         inventoryButton.add(inventoryIcon).center().fill().expand();
         inventoryButton.addListener(new ClickListener() {
@@ -126,8 +136,7 @@ public class HudDisplay {
                 System.out.println("Inventory button clicked");
             }
         });
-        // Options table
-        this.optionsButton = new Button(hudBg);
+        Button optionsButton = new Button(hudBg);
         Image optionsIcon = createIcon("icons/options.png");
         optionsButton.add(optionsIcon).center().fill().expand();
         optionsButton.addListener(new ClickListener() {
@@ -136,11 +145,60 @@ public class HudDisplay {
             }
         });
 
-        bottomLeftTable.add(examineButton).height(height / 7).width(width / 11);
-        bottomLeftTable.add(inventoryButton).height(height / 7).width(width / 11);
-        bottomLeftTable.add(optionsButton).height(height / 7).width(width / 11).fill();
-        mainTable.add(bottomLeftTable).expand().bottom().left();
+        bottomLeft.add(examineButton).height(height / 7).width(width / 11);
+        bottomLeft.add(inventoryButton).height(height / 7).width(width / 11);
+        bottomLeft.add(optionsButton).height(height / 7).width(width / 11);
+        bottomTable.add(bottomLeft).bottom().left().expand();
 
+
+        // Bottom right section (d-pad)
+        Table dpad = new Table();
+
+        Button upButton = new Button(hudBg);
+        Image upImage = createIcon("ui/uparrow.png");
+        upButton.add(upImage).center().fill().expand();
+        dpad.add(upButton).width(width / 12).height(height / 8).expand().colspan(2).center();
+        upButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                moveEvent(0, -1);
+            }
+        });
+        dpad.row();
+
+        Button leftButton = new Button(hudBg);
+        Image leftImage = createIcon("ui/leftarrow.png");
+        leftButton.add(leftImage).center().fill().expand();
+        dpad.add(leftButton).width(width / 12).height(height / 8).expand().left();
+        leftButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                moveEvent(-1, 0);
+            }
+        });
+
+        Button rightButton = new Button(hudBg);
+        Image rightImage = createIcon("ui/rightarrow.png");
+        rightButton.add(rightImage).center().fill().expand();
+        dpad.add(rightButton).width(width / 12).height(height / 8).expand().right();
+        rightButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                moveEvent(1, 0);
+            }
+        });
+        dpad.row();
+
+        Button downButton = new Button(hudBg);
+        Image downImage = createIcon("ui/downarrow.png");
+        downButton.add(downImage).center().fill().expand();
+        dpad.add(downButton).width(width / 12).height(height / 8).expand().colspan(2).center();
+        downButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                moveEvent(0, 1);
+            }
+        });
+        dpad.pack();
+
+        bottomTable.add(dpad).height(height / 3).width(width / 3).right().expand();
+        mainTable.add(bottomTable).bottom().fill();
 
 
         // Finalize HUD
@@ -163,6 +221,11 @@ public class HudDisplay {
             eventLog.setText(newText);
             eventLines++;
         }
+    }
+
+    private void moveEvent(int x, int y) {
+        int[] move = {x, y};
+        game.update(move);
     }
 
     private NinePatch getNinePatch(String path) {

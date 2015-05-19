@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
 
     public GameScreen() {
         this.playerInstance = new Player();
-        this.hud = new HudDisplay();
+        this.hud = new HudDisplay(this);
         createNewLevel();
         InputMultiplexer multipleInputs = new InputMultiplexer();
         multipleInputs.addProcessor(hud.stage);
