@@ -9,6 +9,8 @@ package galenscovell.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.input.GestureDetector;
 
 import galenscovell.entities.Player;
@@ -23,6 +25,7 @@ import galenscovell.util.InputHandler;
 
 
 public class GameScreen implements Screen {
+    private FPSLogger logger;
     private Player playerInstance;
     private HudDisplay hud;
     private World world;
@@ -36,6 +39,8 @@ public class GameScreen implements Screen {
 
 
     public GameScreen() {
+        GLProfiler.enable();
+        this.logger = new FPSLogger();
         this.playerInstance = new Player();
         this.hud = new HudDisplay(this);
         createNewLevel();
@@ -47,7 +52,7 @@ public class GameScreen implements Screen {
     }
 
     public void update(int[] move) {
-        if (!moving && !acting || accumulator > Constants.TIMESTEP) {
+        if (accumulator > Constants.TIMESTEP) {
             updater.update(move, true, acting, renderer.getEntityList(), renderer.getInanimateList());
             accumulator = 0;
         }
@@ -55,6 +60,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        logger.log();
         if (updater.playerDescends()) {
             this.renderer = null;
             this.updater = null;
@@ -67,12 +73,16 @@ public class GameScreen implements Screen {
         interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation);
         accumulator++;
+        System.out.println("Draws: " + GLProfiler.drawCalls + "\nTexture Bindings: " + GLProfiler.textureBindings + "\nShader switches: " + GLProfiler.shaderSwitches + "\nTotal calls: " + GLProfiler.calls);
+        GLProfiler.reset();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {
-        float value = 0.1f;
+        float value = 0.25f;
         if (touchScreen) {
-            value /= 8;
+            value /= 4;
+        } else {
+            value /= 2;
         }
         if (zoomOut) {
             renderer.zoom(value);
