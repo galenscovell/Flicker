@@ -53,16 +53,15 @@ public class HudDisplay {
 
         Label.LabelStyle customStyle = new Label.LabelStyle(customFont, Color.WHITE);
         TextureRegionDrawable hudBg = new TextureRegionDrawable(uiAtlas.findRegion("hudbg"));
+        TextureRegionDrawable buttonDown = new TextureRegionDrawable(uiAtlas.findRegion("buttonDown"));
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
         mainTable.pad(2, 2, 2, 2);
         mainTable.setFillParent(true);
 
-
-
         /**********************************
-         * TOP TABLE
+         * TOP TABLE                      *
          **********************************/
         Table topTable = new Table();
 
@@ -70,7 +69,7 @@ public class HudDisplay {
         // Top right section
         Table topRight = new Table();
 
-        Button playerButton = new Button(hudBg);
+        Button playerButton = new Button(hudBg, buttonDown);
         setIcon(playerButton, "explorer");
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -110,10 +109,8 @@ public class HudDisplay {
         mainTable.row();
 
 
-
-
         /**********************************
-         * BOTTOM TABLE
+         * BOTTOM TABLE                   *
          **********************************/
         Table bottomTable = new Table();
 
@@ -121,21 +118,21 @@ public class HudDisplay {
         // Bottom left section
         Table bottomLeft = new Table();
 
-        Button examineButton = new Button(hudBg);
+        Button examineButton = new Button(hudBg, buttonDown);
         setIcon(examineButton, "examine");
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Examine button clicked");
             }
         });
-        Button inventoryButton = new Button(hudBg);
+        Button inventoryButton = new Button(hudBg, buttonDown);
         setIcon(inventoryButton, "inventory");
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Inventory button clicked");
             }
         });
-        Button optionsButton = new Button(hudBg);
+        Button optionsButton = new Button(hudBg, buttonDown);
         setIcon(optionsButton, "options");
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -152,7 +149,7 @@ public class HudDisplay {
         // Bottom right section (d-pad)
         Table dpad = new Table();
 
-        Button upButton = new Button(hudBg);
+        Button upButton = new Button(hudBg, buttonDown);
         setIcon(upButton, "uparrow");
         dpad.add(upButton).width(width / 12).height(height / 8).expand().colspan(2).center();
         upButton.addListener(new ClickListener() {
@@ -162,7 +159,7 @@ public class HudDisplay {
         });
         dpad.row();
 
-        Button leftButton = new Button(hudBg);
+        Button leftButton = new Button(hudBg, buttonDown);
         setIcon(leftButton, "leftarrow");
         dpad.add(leftButton).width(width / 12).height(height / 8).expand().left();
         leftButton.addListener(new ClickListener() {
@@ -171,7 +168,7 @@ public class HudDisplay {
             }
         });
 
-        Button rightButton = new Button(hudBg);
+        Button rightButton = new Button(hudBg, buttonDown);
         setIcon(rightButton, "rightarrow");
         dpad.add(rightButton).width(width / 12).height(height / 8).expand().right();
         rightButton.addListener(new ClickListener() {
@@ -181,7 +178,7 @@ public class HudDisplay {
         });
         dpad.row();
 
-        Button downButton = new Button(hudBg);
+        Button downButton = new Button(hudBg, buttonDown);
         setIcon(downButton, "downarrow");
         dpad.add(downButton).width(width / 12).height(height / 8).expand().colspan(2).center();
         downButton.addListener(new ClickListener() {

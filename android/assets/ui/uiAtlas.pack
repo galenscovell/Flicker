@@ -3,9 +3,16 @@ uiAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-hudbg
+buttonDown
   rotate: false
   xy: 1, 19
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+hudbg
+  rotate: false
+  xy: 99, 19
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
@@ -19,7 +26,7 @@ downarrow
   index: -1
 examine
   rotate: false
-  xy: 99, 99
+  xy: 197, 99
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -33,56 +40,56 @@ explorer
   index: -1
 inventory
   rotate: false
-  xy: 99, 81
+  xy: 197, 81
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 leftarrow
   rotate: false
-  xy: 37, 1
+  xy: 215, 99
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 rightarrow
   rotate: false
-  xy: 99, 63
+  xy: 37, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 uparrow
   rotate: false
-  xy: 55, 1
+  xy: 197, 63
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 options
   rotate: false
-  xy: 99, 48
+  xy: 215, 84
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 healthfill
   rotate: false
-  xy: 117, 99
+  xy: 233, 99
   size: 8, 16
   orig: 8, 16
   offset: 0, 0
   index: -1
 manafill
   rotate: false
-  xy: 73, 1
+  xy: 55, 1
   size: 8, 16
   orig: 8, 16
   offset: 0, 0
   index: -1
 barempty
   rotate: false
-  xy: 99, 30
+  xy: 197, 45
   size: 2, 16
   orig: 2, 16
   offset: 0, 0
