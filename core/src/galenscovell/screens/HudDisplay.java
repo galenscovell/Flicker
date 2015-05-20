@@ -8,16 +8,16 @@ package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -28,6 +28,7 @@ import galenscovell.util.Constants;
 public class HudDisplay {
     private GameScreen game;
     public Stage stage;
+    private TextureAtlas uiAtlas;
     private Label eventLog;
     private ProgressBar health, mana;
     private int eventLines = 1;
@@ -37,7 +38,12 @@ public class HudDisplay {
 
     public HudDisplay(GameScreen game) {
         this.game = game;
+        create();
+    }
+
+    public void create() {
         this.stage = new Stage();
+        this.uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));
 
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -46,7 +52,7 @@ public class HudDisplay {
         fontGenerator.dispose();
 
         Label.LabelStyle customStyle = new Label.LabelStyle(customFont, Color.WHITE);
-        NinePatchDrawable hudBg = new NinePatchDrawable(getNinePatch("ui/hudbg.png"));
+        TextureRegionDrawable hudBg = new TextureRegionDrawable(uiAtlas.findRegion("hudbg"));
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
@@ -58,35 +64,37 @@ public class HudDisplay {
         /**********************************
          * TOP TABLE
          **********************************/
-        Table topRightTable = new Table();
+        Table topTable = new Table();
 
 
-        // Player Stats table
-        Table playerTable = new Table();
+        // Top right section
+        Table topRight = new Table();
 
-        // Player image
-        Table playerImage = new Table();
-        playerImage.setBackground(hudBg);
-        Image playerIcon = createIcon("icons/explorer.png");
-        playerImage.add(playerIcon).center().fill().expand();
+        Button playerButton = new Button(hudBg);
+        setIcon(playerButton, "explorer");
+        playerButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Player button clicked");
+            }
+        });
 
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(width / 24);
         // Player health
-        this.health = createBar("ui/healthfill.png", "ui/barempty.png");
+        this.health = createBar("healthfill", "barempty");
         // Player mana
-        this.mana = createBar("ui/manafill.png", "ui/barempty.png");
+        this.mana = createBar("manafill", "barempty");
 
         playerBars.add(health).height(height / 22).width(width / 4).right();
         playerBars.row();
         playerBars.add(mana).height(height / 22).width(width / 8).right();
 
-        playerTable.add(playerBars).top().right();
-        playerTable.add(playerImage).height(height / 7).width(width / 11).expand().top().right();
+        topRight.add(playerBars).top().right();
+        topRight.add(playerButton).height(height / 7).width(width / 11).expand().top().right();
 
-        topRightTable.add(playerTable).height(height / 6).width(width / 3);
-        topRightTable.row();
+        topTable.add(topRight).height(height / 6).width(width / 3);
+        topTable.row();
 
 
         // Event log table
@@ -95,10 +103,10 @@ public class HudDisplay {
         this.eventLog = new Label("Events displayed here.", customStyle);
         eventLog.setAlignment(Align.top, Align.right);
         eventLog.setWrap(true);
-        eventTable.add(eventLog).height(height / 6).width(width / 4);
+        eventTable.add(eventLog).height(height / 6).width(width / 4);;
 
-        topRightTable.add(eventTable).right();
-        mainTable.add(topRightTable).expand().top().right();
+        topTable.add(eventTable).right();
+        mainTable.add(topTable).expand().top().right();
         mainTable.row();
 
 
@@ -114,24 +122,21 @@ public class HudDisplay {
         Table bottomLeft = new Table();
 
         Button examineButton = new Button(hudBg);
-        Image examineIcon = createIcon("icons/examine.png");
-        examineButton.add(examineIcon).center().fill().expand();
+        setIcon(examineButton, "examine");
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Examine button clicked");
             }
         });
         Button inventoryButton = new Button(hudBg);
-        Image inventoryIcon = createIcon("icons/inventory.png");
-        inventoryButton.add(inventoryIcon).center().fill().expand();
+        setIcon(inventoryButton, "inventory");
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Inventory button clicked");
             }
         });
         Button optionsButton = new Button(hudBg);
-        Image optionsIcon = createIcon("icons/options.png");
-        optionsButton.add(optionsIcon).center().fill().expand();
+        setIcon(optionsButton, "options");
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Options button clicked");
@@ -148,8 +153,7 @@ public class HudDisplay {
         Table dpad = new Table();
 
         Button upButton = new Button(hudBg);
-        Image upImage = createIcon("ui/uparrow.png");
-        upButton.add(upImage).center().fill().expand();
+        setIcon(upButton, "uparrow");
         dpad.add(upButton).width(width / 12).height(height / 8).expand().colspan(2).center();
         upButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -159,8 +163,7 @@ public class HudDisplay {
         dpad.row();
 
         Button leftButton = new Button(hudBg);
-        Image leftImage = createIcon("ui/leftarrow.png");
-        leftButton.add(leftImage).center().fill().expand();
+        setIcon(leftButton, "leftarrow");
         dpad.add(leftButton).width(width / 12).height(height / 8).expand().left();
         leftButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -169,8 +172,7 @@ public class HudDisplay {
         });
 
         Button rightButton = new Button(hudBg);
-        Image rightImage = createIcon("ui/rightarrow.png");
-        rightButton.add(rightImage).center().fill().expand();
+        setIcon(rightButton, "rightarrow");
         dpad.add(rightButton).width(width / 12).height(height / 8).expand().right();
         rightButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -180,8 +182,7 @@ public class HudDisplay {
         dpad.row();
 
         Button downButton = new Button(hudBg);
-        Image downImage = createIcon("ui/downarrow.png");
-        downButton.add(downImage).center().fill().expand();
+        setIcon(downButton, "downarrow");
         dpad.add(downButton).width(width / 12).height(height / 8).expand().colspan(2).center();
         downButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -199,7 +200,7 @@ public class HudDisplay {
     }
 
     public void render() {
-        health.act(Gdx.graphics.getDeltaTime());
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
 
@@ -220,21 +221,15 @@ public class HudDisplay {
         game.update(move);
     }
 
-    private NinePatch getNinePatch(String path) {
-        Texture t = new Texture(Gdx.files.internal(path));
-        return new NinePatch(new TextureRegion(t, 1, 1, t.getWidth() - 2, t.getWidth() - 2), 10, 10, 10, 10);
-    }
-
-    private Image createIcon(String path) {
-        Image icon = new Image();
-        icon.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path)))));
+    private void setIcon(Table table, String name) {
+        Image icon = new Image(new TextureAtlas.AtlasRegion(uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fill);
-        return icon;
+        table.add(icon).width(table.getWidth() * 0.55f).height(table.getHeight() * 0.55f).center();
     }
 
     private ProgressBar createBar(String path1, String path2) {
-        TextureRegionDrawable fill = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path1))));
-        TextureRegionDrawable empty = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(path2))));
+        TextureRegionDrawable fill = new TextureRegionDrawable(uiAtlas.findRegion(path1));
+        TextureRegionDrawable empty = new TextureRegionDrawable(uiAtlas.findRegion(path1));
         ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(fill, empty);
         ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
         barStyle.knobBefore = empty;
@@ -245,5 +240,10 @@ public class HudDisplay {
 
     public void changeHealth(int amount) {
         health.setValue(health.getValue() + amount);
+    }
+
+    public void dispose() {
+        stage.dispose();
+        uiAtlas.dispose();
     }
 }

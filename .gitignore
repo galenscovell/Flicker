@@ -1,6 +1,7 @@
 
 # Ignored file extensions
 
+*.apk
 *.bat
 *.class
 *.idea
@@ -13,5 +14,6 @@
 # Ignored directory names
 
 build
+generating
 gradle
 gradlew

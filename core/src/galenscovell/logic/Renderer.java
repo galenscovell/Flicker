@@ -73,8 +73,6 @@ public class Renderer {
         player.interpolate(interpolation);
         findCameraBounds();
 
-        // Set rendering area for batch (this line splits the game from the HUD)
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.begin();
 
         for (Tile tile : tiles.values()) {
@@ -119,7 +117,6 @@ public class Renderer {
 
         fog.render(spriteBatch);
 
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.end();
         hud.render();
     }
@@ -141,13 +138,7 @@ public class Renderer {
     }
 
     public void pan(float dx, float dy) {
-        // Only allow panning within range [0, 0], [WORLD_WIDTH, WORLD_HEIGHT] (topleft of camera)
-        if (camera.position.x - dx > 0 && camera.position.x - dx < Constants.WORLD_WIDTH) {
-            camera.translate(-dx, 0, 0);
-        }
-        if (camera.position.y - dy > 0 && camera.position.y - dx < Constants.WORLD_HEIGHT) {
-            camera.translate(0, -dy, 0);
-        }
+        camera.translate(-dx, -dy, 0);
     }
 
     public void assembleLevel(Player player) {

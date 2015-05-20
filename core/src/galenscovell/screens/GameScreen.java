@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
 
 
     public GameScreen() {
-        GLProfiler.enable();
+        // GLProfiler.enable();
         this.logger = new FPSLogger();
         this.playerInstance = new Player();
         this.hud = new HudDisplay(this);
@@ -60,7 +60,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        logger.log();
         if (updater.playerDescends()) {
             this.renderer = null;
             this.updater = null;
@@ -69,18 +68,23 @@ public class GameScreen implements Screen {
             createNewLevel();
         }
 
-        // Graphics rendering
         interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation);
         accumulator++;
-        System.out.println("Draws: " + GLProfiler.drawCalls + "\nTexture Bindings: " + GLProfiler.textureBindings + "\nShader switches: " + GLProfiler.shaderSwitches + "\nTotal calls: " + GLProfiler.calls);
-        GLProfiler.reset();
+
+
+        /****************
+         *  DEBUG
+         ****************/
+        // logger.log();
+        // System.out.println("Draws: " + GLProfiler.drawCalls + "\nTexture Bindings: " + GLProfiler.textureBindings + "\nShader switches: " + GLProfiler.shaderSwitches + "\nTotal calls: " + GLProfiler.calls);
+        // GLProfiler.reset();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {
         float value = 0.25f;
         if (touchScreen) {
-            value /= 4;
+            value /= 8;
         } else {
             value /= 2;
         }
@@ -121,6 +125,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        hud.dispose();
         this.dispose();
     }
 
