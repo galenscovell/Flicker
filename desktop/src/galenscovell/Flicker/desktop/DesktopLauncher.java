@@ -15,6 +15,7 @@ public class DesktopLauncher {
         config.width = Constants.WINDOW_X;
         config.height = Constants.WINDOW_Y;
         config.title = "Flicker";
+        config.resizable = false;
         new LwjglApplication(new FlickerMain(), config);
     }
 }

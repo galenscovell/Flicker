@@ -45,7 +45,7 @@ public class HudDisplay {
         this.stage = new Stage();
         this.uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));
 
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/SDS_8x8.ttf"));
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 9;
         BitmapFont customFont = fontGenerator.generateFont(parameter);

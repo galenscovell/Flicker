@@ -9,8 +9,6 @@ package galenscovell.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.input.GestureDetector;
 
 import galenscovell.entities.Player;
@@ -25,7 +23,6 @@ import galenscovell.util.InputHandler;
 
 public class GameScreen implements Screen {
     private FlickerMain main;
-    private FPSLogger logger;
     private Player playerInstance;
     private HudDisplay hud;
     private World world;
@@ -38,9 +35,7 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(FlickerMain main) {
-        // GLProfiler.enable();
         this.main = main;
-        this.logger = new FPSLogger();
         this.playerInstance = new Player();
         this.hud = new HudDisplay(this);
         createNewLevel();
@@ -70,14 +65,6 @@ public class GameScreen implements Screen {
         interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation);
         accumulator++;
-
-
-        /****************
-         *  DEBUG
-         ****************/
-        // logger.log();
-        // System.out.println("Draws: " + GLProfiler.drawCalls + "\nTexture Bindings: " + GLProfiler.textureBindings + "\nShader switches: " + GLProfiler.shaderSwitches + "\nTotal calls: " + GLProfiler.calls);
-        // GLProfiler.reset();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {
