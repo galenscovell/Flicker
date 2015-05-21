@@ -41,10 +41,6 @@ public class GameScreen implements Screen {
         createNewLevel();
     }
 
-    public void changeScreen(Screen screen) {
-        main.setScreen(screen);
-    }
-
     public void update(int[] move) {
         if (accumulator > Constants.TIMESTEP) {
             updater.update(move, true, acting, renderer.getEntityList(), renderer.getInanimateList());

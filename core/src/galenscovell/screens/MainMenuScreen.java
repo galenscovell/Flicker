@@ -8,11 +8,7 @@ package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,19 +17,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 import galenscovell.flicker.FlickerMain;
+import galenscovell.util.ScreenResources;
 
 
 public class MainMenuScreen implements Screen {
     private FlickerMain main;
     private Stage stage;
-    private TextureAtlas uiAtlas;
     private float width = Gdx.graphics.getWidth();
     private float height = Gdx.graphics.getHeight();
-    private boolean newDetailsShown, continueDetailsShown, optionsShown, quitShown;
 
 
     public MainMenuScreen(FlickerMain main){
@@ -43,23 +37,6 @@ public class MainMenuScreen implements Screen {
 
     public void create() {
         this.stage = new Stage();
-        this.uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));
-
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/PressStart2P.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 8;
-        BitmapFont detailFont = fontGenerator.generateFont(parameter);
-        parameter.size = 14;
-        BitmapFont buttonFont = fontGenerator.generateFont(parameter);
-        parameter.size = 48;
-        BitmapFont titleFont = fontGenerator.generateFont(parameter);
-        fontGenerator.dispose();
-
-        Label.LabelStyle detailStyle = new Label.LabelStyle(detailFont, Color.WHITE);
-        Label.LabelStyle titleStyle = new Label.LabelStyle(titleFont, Color.WHITE);
-        TextureRegionDrawable hudBg = new TextureRegionDrawable(uiAtlas.findRegion("hudbg"));
-        TextureRegionDrawable buttonDown = new TextureRegionDrawable(uiAtlas.findRegion("buttonDown"));
-        TextButton.TextButtonStyle customStyle = new TextButton.TextButtonStyle(hudBg, buttonDown, hudBg, buttonFont);
 
         Table mainTable = new Table();
         mainTable.padBottom(4);
@@ -70,7 +47,7 @@ public class MainMenuScreen implements Screen {
          * TOP TABLE                      *
          **********************************/
         Table topTable = new Table();
-        Label titleLabel = new Label("FLICKER", titleStyle);
+        Label titleLabel = new Label("FLICKER", ScreenResources.titleStyle);
         titleLabel.setAlignment(Align.center, Align.center);
         topTable.add(titleLabel).width(width / 2).expand().fill();
         mainTable.add(topTable).height(height / 4).expand().fill().center();
@@ -83,28 +60,28 @@ public class MainMenuScreen implements Screen {
         final Table bottomTable = new Table();
         // bottomTable.setDebug(true);
 
-        TextButton newGameButton = new TextButton("NEW GAME", customStyle);
+        TextButton newGameButton = new TextButton("NEW GAME", ScreenResources.buttonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), switchScreen));
+                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toGameScreen));
             }
         });
-        TextButton continueButton = new TextButton("CONTINUE GAME", customStyle);
+        TextButton continueButton = new TextButton("CONTINUE GAME", ScreenResources.buttonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
-        TextButton optionsButton = new TextButton("OPTIONS", customStyle);
+        TextButton optionsButton = new TextButton("SETTINGS", ScreenResources.buttonStyle);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-
+                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toOptionScreen));
             }
         });
-        TextButton quitButton = new TextButton("QUIT", customStyle);
+        TextButton quitButton = new TextButton("QUIT", ScreenResources.buttonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), quitGame));
+                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), quitGame));
             }
         });
 
@@ -119,7 +96,7 @@ public class MainMenuScreen implements Screen {
         mainTable.add(bottomTable).expand().fill();
         mainTable.row();
 
-        Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", detailStyle);
+        Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ScreenResources.detailStyle);
         detailLabel.setAlignment(Align.bottom);
         mainTable.add(detailLabel).width(width / 6).expand().fill();
         mainTable.pack();
@@ -161,12 +138,18 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        uiAtlas.dispose();
     }
 
-    Action switchScreen = new Action() {
+    Action toGameScreen = new Action() {
         public boolean act(float delta) {
             main.setScreen(main.gameScreen);
+            return true;
+        }
+    };
+
+    Action toOptionScreen = new Action() {
+        public boolean act(float delta) {
+            main.setScreen(main.optionsScreen);
             return true;
         }
     };
