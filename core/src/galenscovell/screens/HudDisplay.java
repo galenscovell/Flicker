@@ -73,9 +73,7 @@ public class HudDisplay {
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(width / 24);
-        // Player health
         this.health = createBar("healthfill", "barempty");
-        // Player mana
         this.mana = createBar("manafill", "barempty");
         playerBars.add(health).height(height / 22).width(width / 4).right();
         playerBars.row();
@@ -196,12 +194,13 @@ public class HudDisplay {
 
     private ProgressBar createBar(String path1, String path2) {
         TextureRegionDrawable fill = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path1));
-        TextureRegionDrawable empty = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path1));
+        TextureRegionDrawable empty = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path2));
         ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(fill, empty);
         ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
         barStyle.knobBefore = empty;
         bar.setValue(0);
         bar.setAnimateDuration(0.5f);
+        bar.validate();
         return bar;
     }
 

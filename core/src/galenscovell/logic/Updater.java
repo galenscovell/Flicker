@@ -42,15 +42,13 @@ public class Updater {
         if (acting) {
             if (input[2] == 1) {
                 playerInteract(inanimates);
-            } else if (input[2] == -1 && !player.isAttacking()) {
+            } else if (input[2] == -1) {
                 playerAttack(entities, inanimates);
             }
         }
 
         if (moving) {
-            if (!player.isAttacking()) {
-                playerMove(input[0], input[1]);
-            }
+            playerMove(input[0], input[1]);
         }
 
         if (moving || acting) {
@@ -93,7 +91,7 @@ public class Updater {
 
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
         hud.changeHealth(5);
-        player.toggleAttack();
+        player.setAttacking();
         Point attackedTile = player.getFacingPoint(tileSize);
         player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);
         Entity hitEntity = null;
@@ -225,7 +223,9 @@ public class Updater {
     }
 
     private void entityAttack(Entity entity) {
-        entity.toggleAttack();
+        player.setBeingAttacked();
+        entity.setAttacking();
+        hud.changeHealth(5);
     }
 
     private Tile findTile(int x, int y) {

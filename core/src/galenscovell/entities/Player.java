@@ -27,7 +27,7 @@ public class Player extends Creature {
     }
 
     private void setStats() {
-        sightRange = 5;
+        sightRange = 4;
     }
 
     private void setSprites() {
@@ -107,6 +107,10 @@ public class Player extends Creature {
             prevX = x;
             prevY = y;
         }
+
+        if (interpolation >= 0.9) {
+            beingAttacked = false;
+        }
     }
 
     public void setAttackingCoords(int atkX, int atkY) {
@@ -124,7 +128,7 @@ public class Player extends Creature {
 
         // Attack animation only covers small portion of target's tile
         if (interpolation > 0.3) {
-            toggleAttack();
+            attacking = false;
         }
     }
 

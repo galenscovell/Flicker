@@ -7,7 +7,6 @@
 package galenscovell.graphics;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -22,8 +21,8 @@ public class Torchlight {
     private Texture rect = new Texture(Gdx.files.internal("textures/blank.png"));
 
 
-    public Torchlight(float[][] resistanceMap) {
-        this.radius = 4;
+    public Torchlight(float[][] resistanceMap, Player player) {
+        this.radius = player.getSightRange();
         this.mult = new int[][]{{1, 0, 0, -1, -1, 0, 0, 1},
                                 {0, 1, -1, 0, 0, -1, 1, 0},
                                 {0, 1, 1, 0, 0, -1, -1, 0},
@@ -47,8 +46,6 @@ public class Torchlight {
         minY /= tileSize;
         maxX /= tileSize;
         maxY /= tileSize;
-        // Keep record of batch color before setting lighting transparency
-        Color c = new Color(spriteBatch.getColor());
         // Fill alpha over Tile depending on lightMap value
         for (int x = 0; x < lightMap[0].length; x++) {
             for (int y = 0; y < lightMap.length; y++) {
@@ -64,7 +61,7 @@ public class Torchlight {
             }
         }
         // Return batch color to original
-        spriteBatch.setColor(c);
+        spriteBatch.setColor(1, 1, 1, 1);
     }
 
     private void castLight(int row, float startSlope, float endSlope, int xx, int xy, int yx, int yy) {

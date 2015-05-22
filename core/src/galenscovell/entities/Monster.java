@@ -14,8 +14,7 @@ import java.util.Random;
 
 
 public class Monster extends Creature {
-    private String type;
-    private String desc;
+    private String type, desc;
     private int level, spriteLocation, hp, vision, speed, evade, defense, attacks, damage, poison;
 
 

@@ -7,8 +7,10 @@
 package galenscovell.inanimates;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.graphics.SpriteSheet;
+import galenscovell.graphics.Torchlight;
 import galenscovell.logic.Tile;
 
 import java.util.Random;
@@ -23,7 +25,6 @@ public class Dead implements Inanimate {
     public Dead(int x, int y) {
         this.x = x;
         this.y = y;
-
         SpriteSheet sheet = SpriteSheet.charsheet;
         Random random = new Random();
         int choice = random.nextInt(4);
@@ -52,15 +53,11 @@ public class Dead implements Inanimate {
         return "Dead";
     }
 
-    public Sprite getSprite() {
-        return sprite;
-    }
-
     public String interact(Tile tile) {
         return "A corpse lies here.";
     }
 
-    public boolean isBlocking() {
-        return blocking;
+    public void draw(SpriteBatch batch, int tileSize, Torchlight torchlight) {
+        batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
     }
 }

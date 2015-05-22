@@ -6,11 +6,10 @@
 package galenscovell.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 public interface Entity {
-    public Sprite getSprite();
-
     public void setPosition(int newX, int newY);
     public int getX();
     public int getY();
@@ -26,7 +25,9 @@ public interface Entity {
     public void turn(int dx, int dy);
     public void interpolate(double interpolation);
 
-    public boolean isAttacking();
-    public void toggleAttack();
+    public void setBeingAttacked();
+    public void setAttacking();
     public void attack(double interpolation, Entity entity);
+
+    public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
 }

@@ -13,7 +13,7 @@ import galenscovell.graphics.SpriteSheet;
 
 public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
-    protected boolean inView, attacking;
+    protected boolean inView, attacking, beingAttacked;
 
     protected Sprite sprite;
     protected Sprite[] currentSet;
@@ -24,10 +24,6 @@ public class Creature implements Entity {
     private int moveTimer;
     private int animateFrames;
 
-
-    public Sprite getSprite() {
-        return sprite;
-    }
 
     public void setPosition(int newX, int newY) {
         prevX = newX;
@@ -108,22 +104,21 @@ public class Creature implements Entity {
             prevX = x;
             prevY = y;
         }
-    }
 
-    public boolean isAttacking() {
-        return attacking;
-    }
-
-    public void toggleAttack() {
-        if (attacking) {
-            attacking = false;
-        } else {
-            attacking = true;
+        if (interpolation >= 0.9) {
+            beingAttacked = false;
         }
     }
 
+    public void setBeingAttacked() {
+        beingAttacked = true;
+    }
+
+    public void setAttacking() {
+        attacking = true;
+    }
+
     public void attack(double interpolation, Entity entity) {
-        // Entities except for Player have 'homing' attacks for consistency
         int diffX = entity.getCurrentX() - x;
         int diffY = entity.getCurrentY() - y;
         if (diffX > 0) {
@@ -136,7 +131,7 @@ public class Creature implements Entity {
 
         // Attack animation only covers small portion of target's tile
         if (interpolation > 0.3) {
-            toggleAttack();
+            attacking = false;
         }
     }
 
@@ -151,5 +146,18 @@ public class Creature implements Entity {
         } else {
             animateFrames++;
         }
+    }
+
+    public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
+        interpolate(interpolation);
+        if (attacking) {
+            attack(interpolation, entity);
+        }
+        if (beingAttacked) {
+            batch.setColor(1, 0, 0, 0.8f);
+        } else {
+            batch.setColor(1, 1, 1, 1);
+        }
+        batch.draw(sprite, currentX, currentY, tileSize, tileSize);
     }
 }

@@ -70,35 +70,27 @@ public class Renderer {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        player.interpolate(interpolation);
         findCameraBounds();
-
         spriteBatch.begin();
 
+        // World rendering: [x, y] are in Tiles, convert to pixels
         for (Tile tile : tiles.values()) {
-            // Tile [x, y] are in Tiles, convert to pixels
             if (inViewport(tile.x * tileSize, tile.y * tileSize)) {
                 spriteBatch.draw(tile.sprite, tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
             }
         }
 
+        // Object rendering: [x, y] are in Tiles, convert to pixels
         for (Inanimate inanimate : inanimates) {
-            // Inanimate [x, y] are in Tiles, convert to pixels
             if (inViewport(inanimate.getX() * tileSize, inanimate.getY() * tileSize)) {
-                spriteBatch.draw(inanimate.getSprite(), inanimate.getX() * tileSize, inanimate.getY() * tileSize, tileSize, tileSize);
-                torchlight.updateResistanceMap(inanimate.getX(), inanimate.getY(), inanimate.isBlocking());
+                inanimate.draw(spriteBatch, tileSize, torchlight);
             }
         }
 
+        // Entity rendering: [x, y] are in pixels
         for (Entity entity : entities) {
-            // Entity [x, y] are in pixels
             if (illuminated(entity.getX() / tileSize, entity.getY() / tileSize)) {
-                entity.interpolate(interpolation);
-                if (entity.isAttacking()) {
-                    entity.attack(interpolation, player);
-                }
-                spriteBatch.draw(entity.getSprite(), entity.getCurrentX(), entity.getCurrentY(), tileSize, tileSize);
-
+                entity.draw(spriteBatch, tileSize, interpolation, player);
                 if (!entity.isInView()) {
                     entity.toggleInView();
                 }
@@ -107,10 +99,8 @@ public class Renderer {
             }
         }
 
-        if (player.isAttacking()) {
-            player.attack(interpolation, null);
-        }
-        spriteBatch.draw(player.getSprite(), player.getCurrentX(), player.getCurrentY(), tileSize, tileSize);
+        // Player rendering: [x, y] are in pixels
+        player.draw(spriteBatch, tileSize, interpolation, null);
 
         torchlight.findFOV(player, tileSize);
         torchlight.drawLight(spriteBatch, (int) minCamX, (int) maxCamX, (int) minCamY, (int) maxCamY, tileSize);
@@ -233,10 +223,10 @@ public class Renderer {
         int diffX = Math.abs(x - player.getX() / tileSize);
         int diffY = Math.abs(y - player.getY() / tileSize);
         // Respect 'rounding' of torchlight when illuminating entities
-        if ((diffX == 0 && diffY == 4) || (diffY == 0 && diffX == 4)) {
+        if ((diffX == 0 && diffY == player.getSightRange()) || (diffY == 0 && diffX == player.getSightRange())) {
             return false;
         } else {
-            return(diffX + diffY <= 4);
+            return(diffX + diffY <= player.getSightRange());
         }
     }
 }
