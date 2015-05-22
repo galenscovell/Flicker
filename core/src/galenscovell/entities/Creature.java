@@ -75,6 +75,14 @@ public class Creature implements Entity {
         return false;
     }
 
+    public void setBeingAttacked() {
+        beingAttacked = true;
+    }
+
+    public void setAttacking() {
+        attacking = true;
+    }
+
     public void move(int dx, int dy, boolean possible) {
         turn(dx, dy);
         if (possible) {
@@ -87,7 +95,7 @@ public class Creature implements Entity {
         }
     }
 
-    public void turn(int dx, int dy) {
+    protected void turn(int dx, int dy) {
         if (dx < 0 && currentSet != leftSprites) {
             currentSet = leftSprites;
         } else if (dx > 0 && currentSet != rightSprites) {
@@ -95,30 +103,7 @@ public class Creature implements Entity {
         }
     }
 
-    public void interpolate(double interpolation) {
-        animate(interpolation);
-        currentX = (int) (prevX + ((x - prevX) * interpolation));
-        currentY = (int) (prevY + ((y - prevY) * interpolation));
-
-        if (currentX == x && currentY == y) {
-            prevX = x;
-            prevY = y;
-        }
-
-        if (interpolation >= 0.9) {
-            beingAttacked = false;
-        }
-    }
-
-    public void setBeingAttacked() {
-        beingAttacked = true;
-    }
-
-    public void setAttacking() {
-        attacking = true;
-    }
-
-    public void attack(double interpolation, Entity entity) {
+    protected void attack(double interpolation, Entity entity) {
         int diffX = entity.getCurrentX() - x;
         int diffY = entity.getCurrentY() - y;
         if (diffX > 0) {
@@ -135,7 +120,7 @@ public class Creature implements Entity {
         }
     }
 
-    public void animate(double interpolation) {
+    protected void animate(double interpolation) {
         if (animateFrames == 30) {
             if (sprite == currentSet[0]) {
                 sprite = currentSet[1];
@@ -148,13 +133,28 @@ public class Creature implements Entity {
         }
     }
 
+    protected void interpolate(double interpolation) {
+        animate(interpolation);
+        currentX = (int) (prevX + ((x - prevX) * interpolation));
+        currentY = (int) (prevY + ((y - prevY) * interpolation));
+
+        if (currentX == x && currentY == y) {
+            prevX = x;
+            prevY = y;
+        }
+
+        if (interpolation >= 0.8) {
+            beingAttacked = false;
+        }
+    }
+
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
         interpolate(interpolation);
         if (attacking) {
             attack(interpolation, entity);
         }
         if (beingAttacked) {
-            batch.setColor(1, 0, 0, 0.8f);
+            batch.setColor(1, 0, 0, 1.0f - (float) interpolation);
         } else {
             batch.setColor(1, 1, 1, 1);
         }

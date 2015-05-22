@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.graphics.SpriteSheet;
-
 import galenscovell.logic.Point;
 
 
@@ -44,7 +43,6 @@ public class Player extends Creature {
             leftSprites[i] = new Sprite(sheet.getSprite(i + 16));
             rightSprites[i] = new Sprite(sheet.getSprite(i + 32));
         }
-
         currentSet = downSprites;
         sprite = currentSet[0];
     }
@@ -64,7 +62,7 @@ public class Player extends Creature {
     }
 
     @Override
-    public void turn(int dx, int dy) {
+    protected void turn(int dx, int dy) {
         if (dy < 0 && currentSet != upSprites) {
             currentSet = upSprites;
         } else if (dy > 0 && currentSet != downSprites) {
@@ -93,7 +91,43 @@ public class Player extends Creature {
         }
     }
 
-    public void interpolate(double interpolation) {
+    public void setAttackingCoords(int atkX, int atkY) {
+        this.atkX = atkX;
+        this.atkY = atkY;
+    }
+
+    @Override
+    protected void attack(double interpolation, Entity entity) {
+        sprite = currentSet[2];
+        int diffX = x - atkX;
+        int diffY = y - atkY;
+        currentX = (int) (prevX - (diffX * interpolation));
+        currentY = (int) (prevY - (diffY * interpolation));
+
+        // Attack animation only covers small portion of target's tile
+        if (interpolation > 0.3) {
+            attacking = false;
+        }
+    }
+
+    @Override
+    protected void animate(double interpolation) {
+        if (interpolation > 0.1 && interpolation < 0.2) {
+            if (step) {
+                sprite = currentSet[2];
+                step = false;
+            } else {
+                sprite = currentSet[1];
+                step = true;
+            }
+        } else if (interpolation > 0.8) {
+            sprite = currentSet[0];
+            return;
+        }
+    }
+
+    @Override
+    protected void interpolate(double interpolation) {
         // Disable movement animation during interactions
         if (!interacting) {
             animate(interpolation);
@@ -110,41 +144,6 @@ public class Player extends Creature {
 
         if (interpolation >= 0.9) {
             beingAttacked = false;
-        }
-    }
-
-    public void setAttackingCoords(int atkX, int atkY) {
-        this.atkX = atkX;
-        this.atkY = atkY;
-    }
-
-    @Override
-    public void attack(double interpolation, Entity entity) {
-        sprite = currentSet[2];
-        int diffX = x - atkX;
-        int diffY = y - atkY;
-        currentX = (int) (prevX - (diffX * interpolation));
-        currentY = (int) (prevY - (diffY * interpolation));
-
-        // Attack animation only covers small portion of target's tile
-        if (interpolation > 0.3) {
-            attacking = false;
-        }
-    }
-
-    @Override
-    public void animate(double interpolation) {
-        if (interpolation > 0.1 && interpolation < 0.2) {
-            if (step) {
-                sprite = currentSet[2];
-                step = false;
-            } else {
-                sprite = currentSet[1];
-                step = true;
-            }
-        } else if (interpolation > 0.8) {
-            sprite = currentSet[0];
-            return;
         }
     }
 }

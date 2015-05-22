@@ -133,8 +133,8 @@ public class Renderer {
 
     public void assembleLevel(Player player) {
         placeInanimates();
-        createResistanceMap();
         placePlayer(player);
+        createResistanceMap();
         MonsterParser monsterParser = new MonsterParser();
         for (int i = 0; i < 5; i++) {
             placeEntities(monsterParser);
@@ -160,6 +160,15 @@ public class Renderer {
         inanimates.add(new Stairs(stairTile.x, stairTile.y));
     }
 
+    private void placePlayer(Player playerInstance) {
+        Tile randomTile = findRandomTile();
+        this.player = playerInstance;
+        player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
+        randomTile.toggleOccupied();
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+        camera.update();
+    }
+
     private void createResistanceMap() {
         float[][] resistanceMap = new float[Constants.TILE_ROWS][Constants.TILE_COLUMNS];
         for (Tile tile : tiles.values()) {
@@ -169,16 +178,7 @@ public class Renderer {
                 resistanceMap[tile.y][tile.x] = 0.0f;
             }
         }
-        this.torchlight = new Torchlight(resistanceMap);
-    }
-
-    private void placePlayer(Player playerInstance) {
-        Tile randomTile = findRandomTile();
-        this.player = playerInstance;
-        player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
-        randomTile.toggleOccupied();
-        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
-        camera.update();
+        this.torchlight = new Torchlight(resistanceMap, player);
     }
 
     private void placeEntities(MonsterParser parser) {

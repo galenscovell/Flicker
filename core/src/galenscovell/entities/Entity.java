@@ -19,15 +19,10 @@ public interface Entity {
     public void toggleInView();
     public boolean isInView();
     public int getSightRange();
-
     public boolean movementTimer();
-    public void move(int dx, int dy, boolean possible);
-    public void turn(int dx, int dy);
-    public void interpolate(double interpolation);
-
     public void setBeingAttacked();
     public void setAttacking();
-    public void attack(double interpolation, Entity entity);
 
+    public void move(int dx, int dy, boolean possible);
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
 }
