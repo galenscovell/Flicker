@@ -81,7 +81,7 @@ public class HudDisplay {
         playerBars.row();
         playerBars.add(mana).width(100).right();
         topRight.add(playerBars).expand().top().right();
-        topRight.add(playerButton).height(80).width(80).top().right();
+        topRight.add(playerButton).width(80).height(80).top().right();
         topTable.add(topRight).height(120).width(400).expand().top().right();
 
         mainTable.add(topTable).expand().fill().top();
@@ -157,7 +157,7 @@ public class HudDisplay {
                 moveEvent(0, 1);
             }
         });
-        bottomTable.add(dpad).height(160).width(300).expand().right();
+        bottomTable.add(dpad).height(160).width(220).expand().right();
 
         mainTable.add(bottomTable).bottom().fill();
 
@@ -194,18 +194,17 @@ public class HudDisplay {
 
     private void setIcon(Table table, String name) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ScreenResources.uiAtlas.findRegion(name)));
-        icon.setScaling(Scaling.fillX);
-        table.add(icon).width(table.getWidth() * 0.7f).center();
+        icon.setScaling(Scaling.fit);
+        table.add(icon).expand().fill().center();
     }
 
-    private ProgressBar createBar(String path1) {
-        TextureRegionDrawable fill = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path1));
-        NinePatchDrawable empty = new NinePatchDrawable(ScreenResources.uiAtlas.createPatch("barempty"));
-        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(empty, fill);
+    private ProgressBar createBar(String path) {
+        TextureRegionDrawable fill = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path));
+        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(ScreenResources.frameBG, fill);
         ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
         barStyle.knobAfter = fill;
         bar.setValue(0);
-        bar.setAnimateDuration(0.5f);
+        bar.setAnimateDuration(0.2f);
         bar.validate();
         return bar;
     }

@@ -133,6 +133,9 @@ public class Renderer {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
         hud.resize(width, height);
+    }
+
+    public void centerOnPlayer() {
         camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
         camera.update();
     }

@@ -46,12 +46,12 @@ public class ScreenResources {
         this.detailStyle = new Label.LabelStyle(detailFont, Color.WHITE);
         this.titleStyle = new Label.LabelStyle(titleFont, Color.WHITE);
 
-        this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("hudbg"));
+        this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
         this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
         this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, buttonFont);
 
-        this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framebg"));
-        this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framelit"));
+        this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
+        this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
         this.frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, buttonFont);
     }
 

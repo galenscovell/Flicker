@@ -3,112 +3,105 @@ uiAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+buttonbg
+  rotate: false
+  xy: 1, 103
+  size: 24, 24
+  split: 7, 7, 7, 7
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
 buttondown
   rotate: false
-  xy: 1, 55
-  size: 72, 72
-  split: 10, 10, 9, 9
-  orig: 72, 72
-  offset: 0, 0
-  index: -1
-framebg
-  rotate: false
-  xy: 75, 55
-  size: 72, 72
-  split: 9, 9, 9, 9
-  orig: 72, 72
-  offset: 0, 0
-  index: -1
-framelit
-  rotate: false
-  xy: 149, 55
-  size: 72, 72
-  split: 9, 9, 9, 9
-  orig: 72, 72
-  offset: 0, 0
-  index: -1
-hudbg
-  rotate: false
-  xy: 223, 55
-  size: 72, 72
-  split: 10, 10, 9, 9
-  orig: 72, 72
+  xy: 1, 77
+  size: 24, 24
+  split: 7, 7, 7, 7
+  orig: 24, 24
   offset: 0, 0
   index: -1
 downarrow
   rotate: false
-  xy: 1, 37
-  size: 16, 16
-  orig: 16, 16
+  xy: 27, 107
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 examine
   rotate: false
-  xy: 297, 111
-  size: 16, 16
-  orig: 16, 16
+  xy: 1, 55
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 explorer
   rotate: false
-  xy: 1, 19
-  size: 16, 16
-  orig: 16, 16
+  xy: 27, 85
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 inventory
   rotate: false
-  xy: 1, 1
-  size: 16, 16
-  orig: 16, 16
+  xy: 1, 33
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 leftarrow
   rotate: false
-  xy: 19, 37
-  size: 16, 16
-  orig: 16, 16
+  xy: 1, 11
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 rightarrow
   rotate: false
-  xy: 297, 93
-  size: 16, 16
-  orig: 16, 16
+  xy: 27, 63
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
 uparrow
   rotate: false
-  xy: 315, 111
-  size: 16, 16
-  orig: 16, 16
+  xy: 23, 41
+  size: 20, 20
+  orig: 20, 20
   offset: 0, 0
   index: -1
-options
+framedbg
   rotate: false
-  xy: 19, 22
-  size: 13, 13
-  orig: 13, 13
+  xy: 23, 21
+  size: 16, 18
+  split: 7, 7, 7, 7
+  orig: 16, 18
   offset: 0, 0
   index: -1
-barempty
+framedlit
   rotate: false
-  xy: 37, 37
-  size: 2, 16
-  orig: 2, 16
+  xy: 23, 1
+  size: 16, 18
+  split: 7, 7, 7, 7
+  orig: 16, 18
   offset: 0, 0
   index: -1
 healthfill
   rotate: false
-  xy: 297, 75
-  size: 2, 16
-  orig: 2, 16
+  xy: 49, 109
+  size: 2, 18
+  orig: 2, 18
   offset: 0, 0
   index: -1
 manafill
   rotate: false
-  xy: 315, 93
-  size: 2, 16
-  orig: 2, 16
+  xy: 45, 43
+  size: 2, 18
+  orig: 2, 18
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 41, 24
+  size: 15, 15
+  orig: 15, 15
   offset: 0, 0
   index: -1
