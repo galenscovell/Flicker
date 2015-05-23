@@ -9,6 +9,7 @@ package galenscovell.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.input.GestureDetector;
 
 import galenscovell.entities.Player;
@@ -35,8 +36,9 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(FlickerMain main) {
+        // GLProfiler.enable();
         this.main = main;
-        this.playerInstance = new Player();
+        this.playerInstance = new Player("explorer");
         this.hud = new HudDisplay(this);
         createNewLevel();
     }
@@ -61,6 +63,8 @@ public class GameScreen implements Screen {
         interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation);
         accumulator++;
+        // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
+        // GLProfiler.reset();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {

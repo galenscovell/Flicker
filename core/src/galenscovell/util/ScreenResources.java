@@ -9,11 +9,12 @@ package galenscovell.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 
 public class ScreenResources {
@@ -22,10 +23,13 @@ public class ScreenResources {
     public static Label.LabelStyle detailStyle;
     public static Label.LabelStyle titleStyle;
 
-    public static TextureRegionDrawable hudBG;
-    public static TextureRegionDrawable buttonDown;
+    public static NinePatchDrawable hudBG;
+    public static NinePatchDrawable buttonDown;
+    public static NinePatchDrawable frameBG;
+    public static NinePatchDrawable frameLit;
 
     public static TextButton.TextButtonStyle buttonStyle;
+    public static TextButton.TextButtonStyle frameStyle;
 
 
     public ScreenResources() {
@@ -41,9 +45,14 @@ public class ScreenResources {
 
         this.detailStyle = new Label.LabelStyle(detailFont, Color.WHITE);
         this.titleStyle = new Label.LabelStyle(titleFont, Color.WHITE);
-        this.hudBG = new TextureRegionDrawable(uiAtlas.findRegion("hudbg"));
-        this.buttonDown = new TextureRegionDrawable(uiAtlas.findRegion("buttonDown"));
+
+        this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("hudbg"));
+        this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
         this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, buttonFont);
+
+        this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framebg"));
+        this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framelit"));
+        this.frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, buttonFont);
     }
 
     public void dispose() {

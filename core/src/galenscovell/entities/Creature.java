@@ -98,8 +98,10 @@ public class Creature implements Entity {
     protected void turn(int dx, int dy) {
         if (dx < 0 && currentSet != leftSprites) {
             currentSet = leftSprites;
+            sprite = currentSet[0];
         } else if (dx > 0 && currentSet != rightSprites) {
             currentSet = rightSprites;
+            sprite = currentSet[0];
         }
     }
 
@@ -120,7 +122,7 @@ public class Creature implements Entity {
         }
     }
 
-    protected void animate(double interpolation) {
+    protected void animate() {
         if (animateFrames == 30) {
             if (sprite == currentSet[0]) {
                 sprite = currentSet[1];
@@ -134,7 +136,6 @@ public class Creature implements Entity {
     }
 
     protected void interpolate(double interpolation) {
-        animate(interpolation);
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
 
@@ -143,12 +144,13 @@ public class Creature implements Entity {
             prevY = y;
         }
 
-        if (interpolation >= 0.8) {
+        if (interpolation >= 0.6) {
             beingAttacked = false;
         }
     }
 
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
+        animate();
         interpolate(interpolation);
         if (attacking) {
             attack(interpolation, entity);

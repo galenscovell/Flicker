@@ -13,16 +13,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
-
 import galenscovell.graphics.Fog;
 import galenscovell.graphics.Torchlight;
-
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
-
 import galenscovell.screens.HudDisplay;
-
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
@@ -53,8 +49,8 @@ public class Renderer {
         this.camera = new OrthographicCamera(Constants.WINDOW_X, Constants.WINDOW_Y);
         camera.setToOrtho(true, Constants.WINDOW_X, Constants.WINDOW_Y);
 
-        this.spriteBatch = new SpriteBatch();
         this.tiles = tiles;
+        this.spriteBatch = new SpriteBatch();
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
 
@@ -64,7 +60,6 @@ public class Renderer {
     public void setHud(HudDisplay hud) {
         this.hud = hud;
     }
-
 
     public void render(double interpolation) {
         Gdx.gl.glClearColor(0, 0, 0, 1);

@@ -63,7 +63,7 @@ public class HudDisplay {
 
         // Top right section
         Table topRight = new Table();
-        Button playerButton = new Button(ScreenResources.buttonStyle);
+        Button playerButton = new Button(ScreenResources.frameStyle);
         setIcon(playerButton, "explorer");
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -188,8 +188,8 @@ public class HudDisplay {
 
     private void setIcon(Table table, String name) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ScreenResources.uiAtlas.findRegion(name)));
-        icon.setScaling(Scaling.fill);
-        table.add(icon).width(table.getWidth() * 0.55f).height(table.getHeight() * 0.55f).center();
+        icon.setScaling(Scaling.fillX);
+        table.add(icon).width(table.getWidth() * 0.6f).center();
     }
 
     private ProgressBar createBar(String path1, String path2) {
