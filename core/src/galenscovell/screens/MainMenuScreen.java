@@ -18,16 +18,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import galenscovell.flicker.FlickerMain;
+import galenscovell.util.Constants;
 import galenscovell.util.ScreenResources;
 
 
 public class MainMenuScreen implements Screen {
     private FlickerMain main;
     private Stage stage;
-    private float width = Gdx.graphics.getWidth();
-    private float height = Gdx.graphics.getHeight();
 
 
     public MainMenuScreen(FlickerMain main){
@@ -36,7 +36,7 @@ public class MainMenuScreen implements Screen {
     }
 
     public void create() {
-        this.stage = new Stage();
+        this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
 
         Table mainTable = new Table();
         mainTable.padBottom(4);
@@ -49,8 +49,8 @@ public class MainMenuScreen implements Screen {
         Table topTable = new Table();
         Label titleLabel = new Label("FLICKER", ScreenResources.titleStyle);
         titleLabel.setAlignment(Align.center, Align.center);
-        topTable.add(titleLabel).width(width / 2).expand().fill();
-        mainTable.add(topTable).height(height / 4).expand().fill().center();
+        topTable.add(titleLabel).width(400).expand().fill();
+        mainTable.add(topTable).height(120).expand().fill().center();
         mainTable.row();
 
 
@@ -85,20 +85,20 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        bottomTable.add(newGameButton).width(width / 3).height(height / 8).expand().fill();
+        bottomTable.add(newGameButton).width(250).height(60).expand().fill();
         bottomTable.row();
-        bottomTable.add(continueButton).width(width / 3).height(height / 8).expand().fill();
+        bottomTable.add(continueButton).width(250).height(60).expand().fill();
         bottomTable.row();
-        bottomTable.add(optionsButton).width(width / 3).height(height / 8).expand().fill();
+        bottomTable.add(optionsButton).width(250).height(60).expand().fill();
         bottomTable.row();
-        bottomTable.add(quitButton).width(width / 3).height(height / 8).expand().fill();
+        bottomTable.add(quitButton).width(250).height(60).expand().fill();
         bottomTable.row();
         mainTable.add(bottomTable).expand().fill();
         mainTable.row();
 
         Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ScreenResources.detailStyle);
         detailLabel.setAlignment(Align.bottom);
-        mainTable.add(detailLabel).width(width / 6).expand().fill();
+        mainTable.add(detailLabel).width(150).expand().fill();
         mainTable.pack();
         stage.addActor(mainTable);
     }
@@ -113,6 +113,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override

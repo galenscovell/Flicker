@@ -18,16 +18,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import galenscovell.flicker.FlickerMain;
+import galenscovell.util.Constants;
 import galenscovell.util.ScreenResources;
 
 
 public class OptionsScreen implements Screen {
     private FlickerMain main;
     private Stage stage;
-    private float width = Gdx.graphics.getWidth() * 0.75f;
-    private float height = Gdx.graphics.getHeight() * 0.75f;
 
 
     public OptionsScreen(FlickerMain main) {
@@ -36,7 +36,7 @@ public class OptionsScreen implements Screen {
     }
 
     public void create() {
-        this.stage = new Stage();
+        this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
 
         Table mainTable = new Table();
         mainTable.padBottom(4);
@@ -48,8 +48,8 @@ public class OptionsScreen implements Screen {
         Table topTable = new Table();
         Label titleLabel = new Label("SETTINGS", ScreenResources.titleStyle);
         titleLabel.setAlignment(Align.center, Align.center);
-        topTable.add(titleLabel).width(width / 2).expand().fill();
-        mainTable.add(topTable).height(height / 4).expand().fill().center();
+        topTable.add(titleLabel).width(400).expand().fill();
+        mainTable.add(topTable).height(120).expand().fill().center();
         mainTable.row();
 
 
@@ -64,7 +64,7 @@ public class OptionsScreen implements Screen {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toMainMenuScreen));
             }
         });
-        bottomTable.add(returnButton).width(width / 3).height(height / 8).expand().fill();
+        bottomTable.add(returnButton).width(250).height(60).expand().fill();
         bottomTable.row();
 
         Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ScreenResources.detailStyle);
@@ -72,7 +72,7 @@ public class OptionsScreen implements Screen {
 
         mainTable.add(bottomTable).expand().fill();
         mainTable.row();
-        mainTable.add(detailLabel).width(width / 6).expand().fill();
+        mainTable.add(detailLabel).width(150).expand().fill();
         mainTable.pack();
 
         stage.addActor(mainTable);
@@ -88,6 +88,7 @@ public class OptionsScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override

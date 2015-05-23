@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.graphics.Fog;
@@ -39,6 +41,7 @@ public class Renderer {
     private Torchlight torchlight;
 
     private OrthographicCamera camera;
+    private Viewport viewport;
     private SpriteBatch spriteBatch;
     private int tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
@@ -47,6 +50,7 @@ public class Renderer {
     public Renderer(Map<Integer, Tile> tiles) {
         this.tileSize = Constants.TILESIZE;
         this.camera = new OrthographicCamera(Constants.WINDOW_X, Constants.WINDOW_Y);
+        this.viewport = new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y, camera);
         camera.setToOrtho(true, Constants.WINDOW_X, Constants.WINDOW_Y);
 
         this.tiles = tiles;
@@ -97,9 +101,9 @@ public class Renderer {
         // Player rendering: [x, y] are in pixels
         player.draw(spriteBatch, tileSize, interpolation, null);
 
+        // Effect rendering
         torchlight.findFOV(player, tileSize);
         torchlight.drawLight(spriteBatch, (int) minCamX, (int) maxCamX, (int) minCamY, (int) maxCamY, tileSize);
-
         fog.render(spriteBatch);
 
         spriteBatch.end();
@@ -124,6 +128,13 @@ public class Renderer {
 
     public void pan(float dx, float dy) {
         camera.translate(-dx, -dy, 0);
+    }
+
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+        hud.resize(width, height);
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+        camera.update();
     }
 
     public void assembleLevel(Player player) {
@@ -160,8 +171,6 @@ public class Renderer {
         this.player = playerInstance;
         player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
         randomTile.toggleOccupied();
-        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
-        camera.update();
     }
 
     private void createResistanceMap() {

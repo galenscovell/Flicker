@@ -7,7 +7,9 @@
 package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,9 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import galenscovell.util.Constants;
 import galenscovell.util.ScreenResources;
@@ -29,8 +33,6 @@ public class HudDisplay {
     private Label eventLog;
     private ProgressBar health, mana;
     private int eventLines = 1;
-    private final int width = Gdx.graphics.getWidth();
-    private final int height = Gdx.graphics.getHeight();
 
 
     public HudDisplay(GameScreen game) {
@@ -39,7 +41,7 @@ public class HudDisplay {
     }
 
     public void create() {
-        this.stage = new Stage();
+        this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
@@ -58,7 +60,7 @@ public class HudDisplay {
         eventLog.setAlignment(Align.topLeft, Align.topLeft);
         eventLog.setWrap(true);
         topLeft.add(eventLog).expand().fill().top().left();
-        topTable.add(topLeft).height(height / 4).width(width / 2).expand().top().left();
+        topTable.add(topLeft).height(120).width(400).expand().top().left();
 
 
         // Top right section
@@ -72,17 +74,17 @@ public class HudDisplay {
         });
         // Player health and mana bar table
         Table playerBars = new Table();
-        playerBars.padLeft(width / 24);
-        this.health = createBar("healthfill", "barempty");
-        this.mana = createBar("manafill", "barempty");
-        playerBars.add(health).height(height / 22).width(width / 4).right();
+        playerBars.padLeft(30);
+        this.health = createBar("healthfill");
+        this.mana = createBar("manafill");
+        playerBars.add(health).width(200).right();
         playerBars.row();
-        playerBars.add(mana).height(height / 22).width(width / 8).right();
+        playerBars.add(mana).width(100).right();
         topRight.add(playerBars).expand().top().right();
-        topRight.add(playerButton).height(height / 7).width(width / 11).top().right();
-        topTable.add(topRight).height(height / 4).width(width / 2).expand().top().right();
+        topRight.add(playerButton).height(80).width(80).top().right();
+        topTable.add(topRight).height(120).width(400).expand().top().right();
 
-        mainTable.add(topTable).expand().top();
+        mainTable.add(topTable).expand().fill().top();
         mainTable.row();
 
         /**********************************
@@ -113,9 +115,9 @@ public class HudDisplay {
 
             }
         });
-        bottomLeft.add(examineButton).height(height / 7).width(width / 11);
-        bottomLeft.add(inventoryButton).height(height / 7).width(width / 11);
-        bottomLeft.add(optionsButton).height(height / 7).width(width / 11);
+        bottomLeft.add(examineButton).height(80).width(80);
+        bottomLeft.add(inventoryButton).height(80).width(80);
+        bottomLeft.add(optionsButton).height(80).width(80);
         bottomTable.add(bottomLeft).bottom().left().expand();
 
 
@@ -123,7 +125,7 @@ public class HudDisplay {
         Table dpad = new Table();
         Button upButton = new Button(ScreenResources.buttonStyle);
         setIcon(upButton, "uparrow");
-        dpad.add(upButton).width(width / 12).height(height / 8).expand().colspan(2).center();
+        dpad.add(upButton).width(70).height(70).expand().colspan(2).center();
         upButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 moveEvent(0, -1);
@@ -132,7 +134,7 @@ public class HudDisplay {
         dpad.row();
         Button leftButton = new Button(ScreenResources.buttonStyle);
         setIcon(leftButton, "leftarrow");
-        dpad.add(leftButton).width(width / 12).height(height / 8).expand().left();
+        dpad.add(leftButton).width(70).height(70).expand().left();
         leftButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 moveEvent(-1, 0);
@@ -140,7 +142,7 @@ public class HudDisplay {
         });
         Button rightButton = new Button(ScreenResources.buttonStyle);
         setIcon(rightButton, "rightarrow");
-        dpad.add(rightButton).width(width / 12).height(height / 8).expand().right();
+        dpad.add(rightButton).width(70).height(70).expand().right();
         rightButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 moveEvent(1, 0);
@@ -149,13 +151,13 @@ public class HudDisplay {
         dpad.row();
         Button downButton = new Button(ScreenResources.buttonStyle);
         setIcon(downButton, "downarrow");
-        dpad.add(downButton).width(width / 12).height(height / 8).expand().colspan(2).center();
+        dpad.add(downButton).width(70).height(70).expand().colspan(2).center();
         downButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 moveEvent(0, 1);
             }
         });
-        bottomTable.add(dpad).height(height / 3).width(width / 3).right().expand();
+        bottomTable.add(dpad).height(160).width(300).expand().right();
 
         mainTable.add(bottomTable).bottom().fill();
 
@@ -167,6 +169,10 @@ public class HudDisplay {
     public void render() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     public void addToLog(String text) {
@@ -189,15 +195,15 @@ public class HudDisplay {
     private void setIcon(Table table, String name) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ScreenResources.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fillX);
-        table.add(icon).width(table.getWidth() * 0.6f).center();
+        table.add(icon).width(table.getWidth() * 0.7f).center();
     }
 
-    private ProgressBar createBar(String path1, String path2) {
+    private ProgressBar createBar(String path1) {
         TextureRegionDrawable fill = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path1));
-        TextureRegionDrawable empty = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path2));
-        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(fill, empty);
+        NinePatchDrawable empty = new NinePatchDrawable(ScreenResources.uiAtlas.createPatch("barempty"));
+        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(empty, fill);
         ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
-        barStyle.knobBefore = empty;
+        barStyle.knobAfter = fill;
         bar.setValue(0);
         bar.setAnimateDuration(0.5f);
         bar.validate();
