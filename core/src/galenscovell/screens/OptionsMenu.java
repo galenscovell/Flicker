@@ -6,6 +6,7 @@
 
 package galenscovell.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -31,42 +32,30 @@ public class OptionsMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ScreenResources.frameBG);
 
-        /**********************************
-         * TOP TABLE                      *
-         **********************************/
-        Table topTable = new Table();
-        Label titleLabel = new Label("OPTIONS", ScreenResources.menuStyle);
-        titleLabel.setAlignment(Align.top, Align.center);
-        topTable.add(titleLabel).width(400).expand().fill();
-
-
-        /**********************************
-         * BOTTOM TABLE                   *
-         **********************************/
-        Table bottomTable = new Table();
-
-        TextButton saveButton = new TextButton("Save", ScreenResources.buttonStyle);
-        saveButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-
-            }
-        });
-        TextButton quitButton = new TextButton("Quit", ScreenResources.buttonStyle);
-        quitButton.addListener(new ClickListener() {
+        TextButton mainMenuButton = new TextButton("Main Menu", ScreenResources.colorButtonStyle);
+        mainMenuButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.returnToMainMenu();
             }
         });
+        TextButton quitButton = new TextButton("Exit Flicker", ScreenResources.colorButtonStyle);
+        quitButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+        TextButton returnButton = new TextButton("Return to Game", ScreenResources.colorButtonStyle);
+        returnButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
 
-        bottomTable.add(saveButton).width(200).height(60).padBottom(10).expand().fill();
-        bottomTable.row();
-        bottomTable.add(quitButton).width(200).height(60).expand().fill();
-
-
-        mainTable.add(topTable).expand().top().center();
+            }
+        });
+        mainTable.add(mainMenuButton).width(280).height(60).padBottom(4).expand().fill();
         mainTable.row();
-        mainTable.add(bottomTable).expand().top().center();
+        mainTable.add(quitButton).width(280).height(60).padBottom(4).expand().fill();
+        mainTable.row();
+        mainTable.add(returnButton).width(280).height(60).expand().fill();
 
-        this.add(mainTable).width(300).height(240).expand().center();
+        this.add(mainTable).width(300).height(200).expand().center();
     }
 }

@@ -26,10 +26,13 @@ public class ScreenResources {
 
     public static NinePatchDrawable hudBG;
     public static NinePatchDrawable buttonDown;
+    public static NinePatchDrawable colorButtonBG;
+    public static NinePatchDrawable colorButtonDown;
     public static NinePatchDrawable frameBG;
     public static NinePatchDrawable frameLit;
 
     public static TextButton.TextButtonStyle buttonStyle;
+    public static TextButton.TextButtonStyle colorButtonStyle;
     public static TextButton.TextButtonStyle frameStyle;
 
 
@@ -53,6 +56,10 @@ public class ScreenResources {
         this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
         this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
         this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, buttonFont);
+
+        this.colorButtonBG = new NinePatchDrawable(uiAtlas.createPatch("tealbuttonbg"));
+        this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
+        this.colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, buttonFont);
 
         this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
         this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
