@@ -91,6 +91,10 @@ public class GameScreen implements Screen {
         renderer.centerOnPlayer();
     }
 
+    public void toMainMenu() {
+        main.setScreen(main.mainMenuScreen);
+    }
+
     @Override
     public void show() {
         InputMultiplexer multipleInputs = new InputMultiplexer();

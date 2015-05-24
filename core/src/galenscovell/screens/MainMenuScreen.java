@@ -41,7 +41,6 @@ public class MainMenuScreen implements Screen {
         Table mainTable = new Table();
         mainTable.padBottom(4);
         mainTable.setFillParent(true);
-        // mainTable.setDebug(true);
 
         /**********************************
          * TOP TABLE                      *
@@ -57,8 +56,7 @@ public class MainMenuScreen implements Screen {
         /**********************************
          * BOTTOM TABLE                   *
          **********************************/
-        final Table bottomTable = new Table();
-        // bottomTable.setDebug(true);
+        Table bottomTable = new Table();
 
         TextButton newGameButton = new TextButton("NEW GAME", ScreenResources.buttonStyle);
         newGameButton.addListener(new ClickListener() {

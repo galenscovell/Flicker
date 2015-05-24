@@ -21,6 +21,7 @@ public class ScreenResources {
     public static TextureAtlas uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));
 
     public static Label.LabelStyle detailStyle;
+    public static Label.LabelStyle menuStyle;
     public static Label.LabelStyle titleStyle;
 
     public static NinePatchDrawable hudBG;
@@ -39,11 +40,14 @@ public class ScreenResources {
         BitmapFont detailFont = fontGenerator.generateFont(parameter);
         parameter.size = 14;
         BitmapFont buttonFont = fontGenerator.generateFont(parameter);
+        parameter.size = 24;
+        BitmapFont menuFont = fontGenerator.generateFont(parameter);
         parameter.size = 48;
         BitmapFont titleFont = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
         this.detailStyle = new Label.LabelStyle(detailFont, Color.WHITE);
+        this.menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
         this.titleStyle = new Label.LabelStyle(titleFont, Color.WHITE);
 
         this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));

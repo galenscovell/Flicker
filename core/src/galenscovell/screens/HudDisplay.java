@@ -32,7 +32,9 @@ public class HudDisplay {
     public Stage stage;
     private Label eventLog;
     private ProgressBar health, mana;
+    private OptionsMenu optionsMenu;
     private int eventLines = 1;
+    private boolean optionsOpen, inventoryOpen, playerOpen;
 
 
     public HudDisplay(GameScreen game) {
@@ -42,6 +44,7 @@ public class HudDisplay {
 
     public void create() {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
+        this.optionsMenu = new OptionsMenu(this);
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
@@ -75,11 +78,11 @@ public class HudDisplay {
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(30);
-        this.health = createBar("healthfill");
-        this.mana = createBar("manafill");
-        playerBars.add(health).width(200).right();
+        this.health = createBar("healthfill", 50);
+        this.mana = createBar("manafill", 30);
+        playerBars.add(health).width(100).right();
         playerBars.row();
-        playerBars.add(mana).width(100).right();
+        playerBars.add(mana).width(60).right();
         topRight.add(playerBars).expand().top().right();
         topRight.add(playerButton).width(80).height(80).top().right();
         topTable.add(topRight).height(120).width(400).expand().top().right();
@@ -112,7 +115,13 @@ public class HudDisplay {
         setIcon(optionsButton, "options");
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-
+                if (optionsOpen) {
+                    optionsMenu.remove();
+                    optionsOpen = false;
+                } else {
+                    stage.addActor(optionsMenu);
+                    optionsOpen = true;
+                }
             }
         });
         bottomLeft.add(examineButton).height(80).width(80);
@@ -175,6 +184,12 @@ public class HudDisplay {
         stage.getViewport().update(width, height, true);
     }
 
+    public void returnToMainMenu() {
+        optionsMenu.remove();
+        optionsOpen = false;
+        game.toMainMenu();
+    }
+
     public void addToLog(String text) {
         if (eventLines == 5) {
             eventLog.setText(text);
@@ -198,10 +213,18 @@ public class HudDisplay {
         table.add(icon).expand().fill().center();
     }
 
-    private ProgressBar createBar(String path) {
+    public void setHealthBarRange(int max) {
+        health.setRange(0, max);
+    }
+
+    public void setManaBarRange(int max) {
+        mana.setRange(0, max);
+    }
+
+    private ProgressBar createBar(String path, int size) {
         TextureRegionDrawable fill = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path));
         ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(ScreenResources.frameBG, fill);
-        ProgressBar bar = new ProgressBar(0, 50, 1, false, barStyle);
+        ProgressBar bar = new ProgressBar(0, size, 1, false, barStyle);
         barStyle.knobAfter = fill;
         bar.setValue(0);
         bar.setAnimateDuration(0.2f);
