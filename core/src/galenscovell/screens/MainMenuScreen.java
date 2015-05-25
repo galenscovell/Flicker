@@ -58,25 +58,25 @@ public class MainMenuScreen implements Screen {
          **********************************/
         Table bottomTable = new Table();
 
-        TextButton newGameButton = new TextButton("NEW GAME", ScreenResources.buttonStyle);
+        TextButton newGameButton = new TextButton("New Game", ScreenResources.colorButtonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toGameScreen));
             }
         });
-        TextButton continueButton = new TextButton("CONTINUE GAME", ScreenResources.buttonStyle);
+        TextButton continueButton = new TextButton("Continue Game", ScreenResources.colorButtonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
-        TextButton optionsButton = new TextButton("SETTINGS", ScreenResources.buttonStyle);
+        TextButton optionsButton = new TextButton("Settings", ScreenResources.colorButtonStyle);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toOptionScreen));
             }
         });
-        TextButton quitButton = new TextButton("QUIT", ScreenResources.buttonStyle);
+        TextButton quitButton = new TextButton("Quit Game", ScreenResources.colorButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), quitGame));

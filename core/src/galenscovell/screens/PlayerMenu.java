@@ -1,7 +1,7 @@
 
 /**
- * OPTIONSMENU CLASS
- * HUD table for saving/quitting.
+ * PLAYERMENU CLASS
+ * HUD table for player attributes/info.
  */
 
 package galenscovell.screens;
@@ -18,12 +18,12 @@ import com.badlogic.gdx.utils.Align;
 import galenscovell.util.ScreenResources;
 
 
-public class OptionsMenu extends Table {
+public class PlayerMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
 
 
-    public OptionsMenu(HudDisplay root) {
+    public PlayerMenu(HudDisplay root) {
         this.root = root;
         create();
     }
@@ -33,28 +33,12 @@ public class OptionsMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ScreenResources.frameBG);
 
-        TextButton mainMenuButton = new TextButton("Main Menu", ScreenResources.colorButtonStyle);
-        mainMenuButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.returnToMainMenu();
-            }
-        });
-        TextButton quitButton = new TextButton("Exit Flicker", ScreenResources.colorButtonStyle);
-        quitButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
         TextButton returnButton = new TextButton("Return to Game", ScreenResources.colorButtonStyle);
         returnButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
-        mainTable.add(mainMenuButton).width(280).height(60).padBottom(4).expand().fill();
-        mainTable.row();
-        mainTable.add(quitButton).width(280).height(60).padBottom(4).expand().fill();
-        mainTable.row();
         mainTable.add(returnButton).width(280).height(60).expand().fill();
 
         this.add(mainTable).width(300).height(200).expand().center();

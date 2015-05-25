@@ -58,7 +58,7 @@ public class OptionsScreen implements Screen {
          **********************************/
         final Table bottomTable = new Table();
 
-        TextButton returnButton = new TextButton("RETURN", ScreenResources.buttonStyle);
+        TextButton returnButton = new TextButton("RETURN", ScreenResources.colorButtonStyle);
         returnButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toMainMenuScreen));

@@ -40,30 +40,30 @@ public class ScreenResources {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 8;
-        BitmapFont detailFont = fontGenerator.generateFont(parameter);
-        parameter.size = 14;
-        BitmapFont buttonFont = fontGenerator.generateFont(parameter);
+        BitmapFont smallFont = fontGenerator.generateFont(parameter);
+        parameter.size = 16;
+        BitmapFont mediumFont = fontGenerator.generateFont(parameter);
         parameter.size = 24;
-        BitmapFont menuFont = fontGenerator.generateFont(parameter);
+        BitmapFont largeFont = fontGenerator.generateFont(parameter);
         parameter.size = 48;
-        BitmapFont titleFont = fontGenerator.generateFont(parameter);
+        BitmapFont extraLargeFont = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
-        this.detailStyle = new Label.LabelStyle(detailFont, Color.WHITE);
-        this.menuStyle = new Label.LabelStyle(menuFont, Color.WHITE);
-        this.titleStyle = new Label.LabelStyle(titleFont, Color.WHITE);
+        this.detailStyle = new Label.LabelStyle(smallFont, Color.WHITE);
+        this.menuStyle = new Label.LabelStyle(largeFont, Color.WHITE);
+        this.titleStyle = new Label.LabelStyle(extraLargeFont, Color.WHITE);
 
         this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
         this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
-        this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, buttonFont);
+        this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, mediumFont);
 
         this.colorButtonBG = new NinePatchDrawable(uiAtlas.createPatch("tealbuttonbg"));
-        this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
-        this.colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, buttonFont);
+        this.colorButtonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
+        this.colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, mediumFont);
 
         this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
         this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
-        this.frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, buttonFont);
+        this.frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, mediumFont);
     }
 
     public void dispose() {
