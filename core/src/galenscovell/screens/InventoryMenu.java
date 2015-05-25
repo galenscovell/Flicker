@@ -32,15 +32,8 @@ public class InventoryMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ScreenResources.frameBG);
 
-        TextButton returnButton = new TextButton("Return to Game", ScreenResources.colorButtonStyle);
-        returnButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
 
-            }
-        });
-        mainTable.add(returnButton).width(280).height(60).expand().fill();
-
-        this.add(mainTable).width(300).height(200).expand().center();
+        this.add(mainTable).width(300).height(300).expand().left();
     }
 }
 

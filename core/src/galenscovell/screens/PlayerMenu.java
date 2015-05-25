@@ -32,14 +32,10 @@ public class PlayerMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ScreenResources.frameBG);
 
-        TextButton returnButton = new TextButton("Return to Game", ScreenResources.colorButtonStyle);
-        returnButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        this.add(mainTable).width(300).height(300).expand().right();
+    }
 
-            }
-        });
-        mainTable.add(returnButton).width(280).height(60).expand().fill();
-
-        this.add(mainTable).width(300).height(200).expand().center();
+    public void updateStats() {
+        // Update all displayed player stats when called.
     }
 }

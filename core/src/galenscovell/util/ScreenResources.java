@@ -56,14 +56,20 @@ public class ScreenResources {
         this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
         this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
         this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, mediumFont);
+        buttonStyle.pressedOffsetX = 1;
+        buttonStyle.pressedOffsetY = -1;
 
         this.colorButtonBG = new NinePatchDrawable(uiAtlas.createPatch("tealbuttonbg"));
         this.colorButtonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
         this.colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, mediumFont);
+        colorButtonStyle.pressedOffsetX = 1;
+        colorButtonStyle.pressedOffsetY = -1;
 
         this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
         this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
         this.frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, mediumFont);
+        frameStyle.pressedOffsetX = 1;
+        frameStyle.pressedOffsetY = -1;
     }
 
     public void dispose() {

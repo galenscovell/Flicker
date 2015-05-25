@@ -26,6 +26,8 @@ public class GameScreen implements Screen {
     private FlickerMain main;
     private Player playerInstance;
     private HudDisplay hud;
+    private InputMultiplexer fullInput;
+
     private World world;
     private Renderer renderer;
     private Updater updater;
@@ -40,6 +42,13 @@ public class GameScreen implements Screen {
         this.main = main;
         this.playerInstance = new Player("explorer");
         this.hud = new HudDisplay(this);
+
+        this.fullInput = new InputMultiplexer();
+        fullInput.addProcessor(hud.stage);
+        fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
+        fullInput.addProcessor(new InputHandler(this));
+        Gdx.input.setInputProcessor(fullInput);
+
         createNewLevel();
     }
 
@@ -95,13 +104,17 @@ public class GameScreen implements Screen {
         main.setScreen(main.mainMenuScreen);
     }
 
+    public void disableWorldInput() {
+        Gdx.input.setInputProcessor(hud.stage);
+    }
+
+    public void enableWorldInput() {
+        Gdx.input.setInputProcessor(fullInput);
+    }
+
     @Override
     public void show() {
-        InputMultiplexer multipleInputs = new InputMultiplexer();
-        multipleInputs.addProcessor(hud.stage);
-        multipleInputs.addProcessor(new GestureDetector(new GestureHandler(this)));
-        multipleInputs.addProcessor(new InputHandler(this));
-        Gdx.input.setInputProcessor(multipleInputs);
+        enableWorldInput();
     }
 
     @Override

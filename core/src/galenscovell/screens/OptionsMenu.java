@@ -32,6 +32,12 @@ public class OptionsMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ScreenResources.frameBG);
 
+        TextButton settingsButton = new TextButton("Settings", ScreenResources.colorButtonStyle);
+        settingsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: In-game settings
+            }
+        });
         TextButton mainMenuButton = new TextButton("Main Menu", ScreenResources.colorButtonStyle);
         mainMenuButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -44,17 +50,12 @@ public class OptionsMenu extends Table {
                 Gdx.app.exit();
             }
         });
-        TextButton returnButton = new TextButton("Return to Game", ScreenResources.colorButtonStyle);
-        returnButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
 
-            }
-        });
+        mainTable.add(settingsButton).width(280).height(60).padBottom(4).expand().fill();
+        mainTable.row();
         mainTable.add(mainMenuButton).width(280).height(60).padBottom(4).expand().fill();
         mainTable.row();
-        mainTable.add(quitButton).width(280).height(60).padBottom(4).expand().fill();
-        mainTable.row();
-        mainTable.add(returnButton).width(280).height(60).expand().fill();
+        mainTable.add(quitButton).width(280).height(60).expand().fill();
 
         this.add(mainTable).width(300).height(200).expand().center();
     }

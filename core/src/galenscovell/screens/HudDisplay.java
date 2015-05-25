@@ -7,17 +7,11 @@
 package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -30,13 +24,11 @@ import galenscovell.util.ScreenResources;
 public class HudDisplay {
     private GameScreen game;
     public Stage stage;
+    private int eventLines = 1;
     private Label eventLog;
     private ProgressBar health, mana;
-    private OptionsMenu optionsMenu;
-    private PlayerMenu playerMenu;
-    private InventoryMenu inventoryMenu;
-    private int eventLines = 1;
-    private boolean optionsOpen, inventoryOpen, playerOpen;
+    private Table playerMenu, inventoryMenu, optionsMenu;
+    private Button playerButton, examineButton, inventoryButton, optionsButton;
 
 
     public HudDisplay(GameScreen game) {
@@ -72,24 +64,11 @@ public class HudDisplay {
 
         // Top right section
         Table topRight = new Table();
-        Button playerButton = new Button(ScreenResources.frameStyle);
+        this.playerButton = new Button(ScreenResources.frameStyle);
         setIcon(playerButton, "explorer");
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                if (playerOpen) {
-                    playerMenu.remove();
-                    playerOpen = false;
-                } else {
-                    if (optionsOpen) {
-                        optionsMenu.remove();
-                        optionsOpen = false;
-                    } else if (inventoryOpen) {
-                        inventoryMenu.remove();
-                        inventoryOpen = false;
-                    }
-                    stage.addActor(playerMenu);
-                    playerOpen = true;
-                }
+                menuOperation(playerMenu);
             }
         });
         // Player health and mana bar table
@@ -114,51 +93,25 @@ public class HudDisplay {
 
         // Bottom left section
         Table bottomLeft = new Table();
-        Button examineButton = new Button(ScreenResources.buttonStyle);
+        this.examineButton = new Button(ScreenResources.buttonStyle);
         setIcon(examineButton, "examine");
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
-        Button inventoryButton = new Button(ScreenResources.buttonStyle);
+        this.inventoryButton = new Button(ScreenResources.buttonStyle);
         setIcon(inventoryButton, "inventory");
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                if (inventoryOpen) {
-                    inventoryMenu.remove();
-                    inventoryOpen = false;
-                } else {
-                    if (playerOpen) {
-                        playerMenu.remove();
-                        playerOpen = false;
-                    } else if (optionsOpen) {
-                        optionsMenu.remove();
-                        optionsOpen = false;
-                    }
-                    stage.addActor(inventoryMenu);
-                    inventoryOpen = true;
-                }
+                menuOperation(inventoryMenu);
             }
         });
-        Button optionsButton = new Button(ScreenResources.buttonStyle);
+        this.optionsButton = new Button(ScreenResources.buttonStyle);
         setIcon(optionsButton, "options");
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                if (optionsOpen) {
-                    optionsMenu.remove();
-                    optionsOpen = false;
-                } else {
-                    if (playerOpen) {
-                        playerMenu.remove();
-                        playerOpen = false;
-                    } else if (inventoryOpen) {
-                        inventoryMenu.remove();
-                        inventoryOpen = false;
-                    }
-                    stage.addActor(optionsMenu);
-                    optionsOpen = true;
-                }
+                menuOperation(optionsMenu);
             }
         });
         bottomLeft.add(examineButton).height(80).width(80);
@@ -221,9 +174,12 @@ public class HudDisplay {
         stage.getViewport().update(width, height, true);
     }
 
+    public void dispose() {
+        stage.dispose();
+    }
+
     public void returnToMainMenu() {
         optionsMenu.remove();
-        optionsOpen = false;
         game.toMainMenu();
     }
 
@@ -239,6 +195,10 @@ public class HudDisplay {
         }
     }
 
+    public void changeHealth(int amount) {
+        health.setValue(health.getValue() + amount);
+    }
+
     private void moveEvent(int x, int y) {
         int[] move = {x, y};
         game.update(move);
@@ -248,14 +208,6 @@ public class HudDisplay {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ScreenResources.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fit);
         table.add(icon).expand().fill().center();
-    }
-
-    public void setHealthBarRange(int max) {
-        health.setRange(0, max);
-    }
-
-    public void setManaBarRange(int max) {
-        mana.setRange(0, max);
     }
 
     private ProgressBar createBar(String path, int size) {
@@ -269,11 +221,20 @@ public class HudDisplay {
         return bar;
     }
 
-    public void changeHealth(int amount) {
-        health.setValue(health.getValue() + amount);
-    }
-
-    public void dispose() {
-        stage.dispose();
+    private void menuOperation(Table menu) {
+        if (menu.hasParent()) {
+            menu.remove();
+            game.enableWorldInput();
+        } else {
+            if (optionsMenu != menu && optionsMenu.hasParent()) {
+                optionsMenu.remove();
+            } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
+                inventoryMenu.remove();
+            } else if (playerMenu != menu && playerMenu.hasParent()) {
+                playerMenu.remove();
+            }
+            stage.addActor(menu);
+            game.disableWorldInput();
+        }
     }
 }
