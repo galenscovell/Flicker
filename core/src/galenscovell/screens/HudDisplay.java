@@ -34,6 +34,7 @@ public class HudDisplay {
     private ProgressBar health, mana;
     private OptionsMenu optionsMenu;
     private PlayerMenu playerMenu;
+    private InventoryMenu inventoryMenu;
     private int eventLines = 1;
     private boolean optionsOpen, inventoryOpen, playerOpen;
 
@@ -47,6 +48,7 @@ public class HudDisplay {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
         this.optionsMenu = new OptionsMenu(this);
         this.playerMenu = new PlayerMenu(this);
+        this.inventoryMenu = new InventoryMenu(this);
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
@@ -78,6 +80,13 @@ public class HudDisplay {
                     playerMenu.remove();
                     playerOpen = false;
                 } else {
+                    if (optionsOpen) {
+                        optionsMenu.remove();
+                        optionsOpen = false;
+                    } else if (inventoryOpen) {
+                        inventoryMenu.remove();
+                        inventoryOpen = false;
+                    }
                     stage.addActor(playerMenu);
                     playerOpen = true;
                 }
@@ -116,7 +125,20 @@ public class HudDisplay {
         setIcon(inventoryButton, "inventory");
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-
+                if (inventoryOpen) {
+                    inventoryMenu.remove();
+                    inventoryOpen = false;
+                } else {
+                    if (playerOpen) {
+                        playerMenu.remove();
+                        playerOpen = false;
+                    } else if (optionsOpen) {
+                        optionsMenu.remove();
+                        optionsOpen = false;
+                    }
+                    stage.addActor(inventoryMenu);
+                    inventoryOpen = true;
+                }
             }
         });
         Button optionsButton = new Button(ScreenResources.buttonStyle);
@@ -127,6 +149,13 @@ public class HudDisplay {
                     optionsMenu.remove();
                     optionsOpen = false;
                 } else {
+                    if (playerOpen) {
+                        playerMenu.remove();
+                        playerOpen = false;
+                    } else if (inventoryOpen) {
+                        inventoryMenu.remove();
+                        inventoryOpen = false;
+                    }
                     stage.addActor(optionsMenu);
                     optionsOpen = true;
                 }
