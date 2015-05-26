@@ -32,13 +32,14 @@ public class GameScreen implements Screen {
     private Renderer renderer;
     private Updater updater;
 
-    private boolean acting;
+    private boolean acting, moving, up, down, left, right;
+    private int[] move = new int[2];
     private double interpolation;
     private int accumulator = 0;
 
 
     public GameScreen(FlickerMain main) {
-        // GLProfiler.enable();
+        GLProfiler.enable();
         this.main = main;
         this.playerInstance = new Player("explorer");
         this.hud = new HudDisplay(this);
@@ -52,15 +53,30 @@ public class GameScreen implements Screen {
         createNewLevel();
     }
 
-    public void update(int[] move) {
-        if (accumulator > Constants.TIMESTEP) {
-            updater.update(move, true, acting, renderer.getEntityList(), renderer.getInanimateList());
-            accumulator = 0;
+    public void setMovement(int x, int y) {
+        left = (x == -1);
+        right = (x == 1);
+        up = (y == -1);
+        down = (y == 1);
+    }
+
+    public void update() {
+        move[0] = left ? -1 : right ? 1 : 0;
+        move[1] = up ? -1 : down ? 1 : 0;
+        if (move[0] == 0 && move[1] == 0) {
+            moving = false;
+        } else {
+            moving = true;
+            updater.update(move, renderer.getEntityList(), renderer.getInanimateList());
         }
     }
 
     @Override
     public void render(float delta) {
+        if (!moving || accumulator > Constants.TIMESTEP) {
+            update();
+            accumulator = 0;
+        }
         if (updater.playerDescends()) {
             this.renderer = null;
             this.updater = null;
@@ -70,10 +86,10 @@ public class GameScreen implements Screen {
         }
 
         interpolation = (double) accumulator / Constants.TIMESTEP;
-        renderer.render(interpolation);
+        renderer.render(interpolation, moving);
         accumulator++;
-        // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
-        // GLProfiler.reset();
+        System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
+        GLProfiler.reset();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {
@@ -97,7 +113,6 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         renderer.resize(width, height);
-        renderer.centerOnPlayer();
     }
 
     public void toMainMenu() {

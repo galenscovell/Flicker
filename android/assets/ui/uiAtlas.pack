@@ -5,7 +5,7 @@ filter: Nearest,Nearest
 repeat: none
 buttonbg
   rotate: false
-  xy: 1, 1
+  xy: 1, 101
   size: 24, 24
   split: 7, 7, 7, 7
   orig: 24, 24
@@ -13,7 +13,7 @@ buttonbg
   index: -1
 buttondown
   rotate: false
-  xy: 27, 1
+  xy: 1, 75
   size: 24, 24
   split: 7, 7, 7, 7
   orig: 24, 24
@@ -21,7 +21,7 @@ buttondown
   index: -1
 tealbuttonbg
   rotate: false
-  xy: 53, 1
+  xy: 27, 101
   size: 24, 24
   split: 7, 7, 7, 7
   orig: 24, 24
@@ -29,95 +29,95 @@ tealbuttonbg
   index: -1
 tealbuttondown
   rotate: false
-  xy: 79, 1
+  xy: 1, 49
   size: 24, 24
   split: 7, 7, 7, 7
   orig: 24, 24
   offset: 0, 0
   index: -1
-downarrow
-  rotate: false
-  xy: 105, 5
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
 examine
   rotate: false
-  xy: 127, 5
+  xy: 27, 79
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 explorer
   rotate: false
-  xy: 149, 5
+  xy: 1, 27
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 inventory
   rotate: false
-  xy: 171, 5
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
-leftarrow
-  rotate: false
-  xy: 193, 5
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
-rightarrow
-  rotate: false
-  xy: 215, 5
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
-uparrow
-  rotate: false
-  xy: 237, 5
+  xy: 27, 57
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 framedbg
   rotate: false
-  xy: 259, 7
+  xy: 1, 7
   size: 16, 18
   split: 7, 7, 7, 7
   orig: 16, 18
   offset: 0, 0
   index: -1
-framedlit
+downarrow
   rotate: false
-  xy: 277, 7
-  size: 16, 18
-  split: 7, 7, 7, 7
-  orig: 16, 18
-  offset: 0, 0
-  index: -1
-options
-  rotate: false
-  xy: 295, 10
-  size: 15, 15
-  orig: 15, 15
+  xy: 27, 39
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 healthfill
   rotate: false
-  xy: 312, 7
+  xy: 23, 29
   size: 2, 18
   orig: 2, 18
   offset: 0, 0
   index: -1
+framedlit
+  rotate: false
+  xy: 27, 19
+  size: 16, 18
+  split: 7, 7, 7, 7
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
 manafill
   rotate: false
-  xy: 316, 7
+  xy: 53, 107
   size: 2, 18
   orig: 2, 18
+  offset: 0, 0
+  index: -1
+leftarrow
+  rotate: false
+  xy: 45, 39
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+rightarrow
+  rotate: false
+  xy: 45, 21
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+uparrow
+  rotate: false
+  xy: 19, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 37, 2
+  size: 15, 15
+  orig: 15, 15
   offset: 0, 0
   index: -1

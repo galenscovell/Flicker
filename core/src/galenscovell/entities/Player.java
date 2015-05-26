@@ -95,7 +95,7 @@ public class Player extends Creature {
     }
 
     @Override
-    protected void interpolate(double interpolation) {
+    public void interpolate(double interpolation) {
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
 

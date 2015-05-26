@@ -67,7 +67,7 @@ public class MainMenuScreen implements Screen {
         TextButton continueButton = new TextButton("Continue Game", ScreenResources.colorButtonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-
+                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toContinuedGameScreen));
             }
         });
         TextButton optionsButton = new TextButton("Settings", ScreenResources.colorButtonStyle);
@@ -141,7 +141,14 @@ public class MainMenuScreen implements Screen {
 
     Action toGameScreen = new Action() {
         public boolean act(float delta) {
-            main.setScreen(main.gameScreen);
+            main.newGame();
+            return true;
+        }
+    };
+
+    Action toContinuedGameScreen = new Action() {
+        public boolean act(float delta) {
+            main.continueGame();
             return true;
         }
     };

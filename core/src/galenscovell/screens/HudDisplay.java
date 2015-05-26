@@ -65,7 +65,7 @@ public class HudDisplay {
         // Top right section
         Table topRight = new Table();
         this.playerButton = new Button(ScreenResources.frameStyle);
-        setIcon(playerButton, "explorer");
+        setIcon(playerButton, "explorer", 0.9f);
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(playerMenu);
@@ -94,21 +94,21 @@ public class HudDisplay {
         // Bottom left section
         Table bottomLeft = new Table();
         this.examineButton = new Button(ScreenResources.buttonStyle);
-        setIcon(examineButton, "examine");
+        setIcon(examineButton, "examine", 0.9f);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
         this.inventoryButton = new Button(ScreenResources.buttonStyle);
-        setIcon(inventoryButton, "inventory");
+        setIcon(inventoryButton, "inventory", 0.9f);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
         this.optionsButton = new Button(ScreenResources.buttonStyle);
-        setIcon(optionsButton, "options");
+        setIcon(optionsButton, "options", 0.9f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(optionsMenu);
@@ -122,38 +122,58 @@ public class HudDisplay {
 
         // Bottom right section (d-pad)
         Table dpad = new Table();
-        Button upButton = new Button(ScreenResources.buttonStyle);
-        setIcon(upButton, "uparrow");
+        Table upButton = new Table();
+        setIcon(upButton, "uparrow", 0.4f);
         dpad.add(upButton).width(70).height(70).expand().colspan(2).center();
         upButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                moveEvent(0, -1);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(0, -1);
+                return true;
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(0, 0);
             }
         });
         dpad.row();
-        Button leftButton = new Button(ScreenResources.buttonStyle);
-        setIcon(leftButton, "leftarrow");
+        Table leftButton = new Table();
+        setIcon(leftButton, "leftarrow", 0.4f);
         dpad.add(leftButton).width(70).height(70).expand().left();
         leftButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                moveEvent(-1, 0);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(-1, 0);
+                return true;
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(0, 0);
             }
         });
-        Button rightButton = new Button(ScreenResources.buttonStyle);
-        setIcon(rightButton, "rightarrow");
+        Table rightButton = new Table();
+        setIcon(rightButton, "rightarrow", 0.4f);
         dpad.add(rightButton).width(70).height(70).expand().right();
         rightButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                moveEvent(1, 0);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(1, 0);
+                return true;
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(0, 0);
             }
         });
         dpad.row();
-        Button downButton = new Button(ScreenResources.buttonStyle);
-        setIcon(downButton, "downarrow");
+        Table downButton = new Table();
+        setIcon(downButton, "downarrow", 0.4f);
         dpad.add(downButton).width(70).height(70).expand().colspan(2).center();
         downButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                moveEvent(0, 1);
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(0, 1);
+                return true;
+            }
+
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setMovement(0, 0);
             }
         });
         bottomTable.add(dpad).height(160).width(220).expand().right();
@@ -175,6 +195,9 @@ public class HudDisplay {
     }
 
     public void dispose() {
+        stage.addActor(playerMenu);
+        stage.addActor(inventoryMenu);
+        stage.addActor(optionsMenu);
         stage.dispose();
     }
 
@@ -199,14 +222,10 @@ public class HudDisplay {
         health.setValue(health.getValue() + amount);
     }
 
-    private void moveEvent(int x, int y) {
-        int[] move = {x, y};
-        game.update(move);
-    }
-
-    private void setIcon(Table table, String name) {
+    private void setIcon(Table table, String name, float alpha) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ScreenResources.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fit);
+        icon.setColor(1.0f, 1.0f, 1.0f, alpha);
         table.add(icon).expand().fill().center();
     }
 

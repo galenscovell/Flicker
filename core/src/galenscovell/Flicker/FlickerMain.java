@@ -26,12 +26,20 @@ public class FlickerMain extends Game {
         this.screenResources = new ScreenResources();
         this.mainMenuScreen = new MainMenuScreen(this);
         this.optionsScreen = new OptionsScreen(this);
-        this.gameScreen = new GameScreen(this);
         setScreen(mainMenuScreen);
     }
 
     @Override
     public void dispose() {
         screenResources.dispose();
+    }
+
+    public void newGame() {
+        this.gameScreen = new GameScreen(this);
+        setScreen(gameScreen);
+    }
+
+    public void continueGame() {
+
     }
 }

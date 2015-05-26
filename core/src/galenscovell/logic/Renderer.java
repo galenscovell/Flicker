@@ -65,10 +65,14 @@ public class Renderer {
         this.hud = hud;
     }
 
-    public void render(double interpolation) {
+    public void render(double interpolation, boolean moving) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        player.interpolate(interpolation);
+        if (moving) {
+            centerOnPlayer();
+        }
         findCameraBounds();
         spriteBatch.begin();
 
@@ -123,7 +127,6 @@ public class Renderer {
             return;
         }
         camera.zoom += value;
-        // Constants.TILESIZE = (int) (32 * camera.zoom);
     }
 
     public void pan(float dx, float dy) {
@@ -133,11 +136,7 @@ public class Renderer {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
         hud.resize(width, height);
-    }
-
-    public void centerOnPlayer() {
-        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
-        camera.update();
+        centerOnPlayer();
     }
 
     public void assembleLevel(Player player) {
@@ -174,6 +173,7 @@ public class Renderer {
         this.player = playerInstance;
         player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
         randomTile.toggleOccupied();
+        centerOnPlayer();
     }
 
     private void createResistanceMap() {
@@ -211,6 +211,10 @@ public class Renderer {
             }
         }
         return null;
+    }
+
+    private void centerOnPlayer() {
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
     }
 
     private void findCameraBounds() {

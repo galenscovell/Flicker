@@ -38,24 +38,11 @@ public class Updater {
         this.hud = hud;
     }
 
-    public void update(int[] input, boolean moving, boolean acting, List<Entity> entities, List<Inanimate> inanimates) {
-        if (acting) {
-            if (input[2] == 1) {
-                playerInteract(inanimates);
-            } else if (input[2] == -1) {
-                playerAttack(entities, inanimates);
-            }
-        }
-
-        if (moving) {
-            playerMove(input[0], input[1]);
-        }
-
-        if (moving || acting) {
-            for (Entity entity : entities) {
-                if (entity.movementTimer()) {
-                    entityMove(entity);
-                }
+    public void update(int[] input, List<Entity> entities, List<Inanimate> inanimates) {
+        playerMove(input[0], input[1]);
+        for (Entity entity : entities) {
+            if (entity.movementTimer()) {
+                entityMove(entity);
             }
         }
     }
