@@ -84,7 +84,7 @@ public class Renderer {
         // World rendering: [x, y] are in Tiles, convert to pixels
         for (Tile tile : tiles.values()) {
             if (inViewport(tile.x * tileSize, tile.y * tileSize)) {
-                spriteBatch.draw(tile.sprite, tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
+                tile.draw(spriteBatch, tileSize);
             }
         }
 

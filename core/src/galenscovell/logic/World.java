@@ -43,7 +43,6 @@ public class World {
 
     public void optimizeLayout() {
         List<Integer> pruned = new ArrayList<Integer>();
-
         // If Tile is a wall connected to a floor Tile, it becomes a perimeter Tile
         for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
             Tile tile = entry.getValue();
@@ -59,7 +58,6 @@ public class World {
                 tile.state = 1;
             }
         }
-
         // Set perimeter Tiles not on perimeter to be floor Tiles
         int wallNeighbors;
         for (Tile tile : tiles.values()) {
@@ -75,7 +73,6 @@ public class World {
                 }
             }
         }
-
         // If Tile is on world boundary or has adjacent non-perimeter wall, make it perimeter
         int key;
         for (Tile tile : tiles.values()) {
@@ -92,7 +89,6 @@ public class World {
                 }
             }
         }
-
         // Recheck Tiles for floor neighbors, if floor exists without any adjacent
         // floor Tiles remove it. If Tile has only one adjacent floor make it perimeter.
         checkAdjacent();
@@ -104,19 +100,12 @@ public class World {
                 pruned.add(entry.getKey());
             }
         }
-
         // Remove pruned Tiles from Tiles list
         for (int removeKey : pruned) {
             tiles.remove(removeKey);
         }
-
         skin();
-        fillWater();
-    }
-
-    public void deconstruct() {
-        tiles = null;
-        builder = null;
+        placeWater();
     }
 
     private void skin() {
@@ -126,18 +115,43 @@ public class World {
         }
     }
 
-    private void fillWater() {
+    private void placeWater() {
         Random generator = new Random();
-        int waterPoints = generator.nextInt(5);
+        int waterPoints = generator.nextInt(3);
         List<Tile> waterTiles = new ArrayList<Tile>();
+        // Place initial water spawn points randomly
         for (int i = 0; i < waterPoints; i++) {
             Tile waterTile = findRandomTile();
             waterTile.state = 4;
             waterTiles.add(waterTile);
+            // Expand each point out one layer initially
+            expandWater(waterTile, waterTiles);
         }
+        // Randomly expand water tiles
+        List<Tile> addedTiles = new ArrayList<Tile>();
+        for (Tile tile : waterTiles) {
+            if (generator.nextInt(20) < 10) {
+                expandWater(tile, addedTiles);
+            }
+        }
+        for (Tile tile : addedTiles) {
+            waterTiles.add(tile);
+        }
+        // Find water tile bitmasks and apply sprites
         for (Tile tile : waterTiles) {
             tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
             tile.findSprite();
+        }
+    }
+
+    private void expandWater(Tile tile, List<Tile> waterTiles) {
+        List<Point> neighbors = tile.getNeighbors();
+        for (Point point : neighbors) {
+            Tile neighborTile = tiles.get(point.x * columns + point.y);
+            if (neighborTile.isFloor()) {
+                neighborTile.state = 4;
+                waterTiles.add(neighborTile);
+            }
         }
     }
 

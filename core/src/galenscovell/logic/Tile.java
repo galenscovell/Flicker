@@ -2,12 +2,13 @@
 /**
  * TILE CLASS
  * Keeps track of tile position, state and rendering.
- * State can be Wall(0), Floor(1), Corridor(2) or Perimeter(3)
+ * State can be Wall(0), Floor(1), Corridor(2), Perimeter(3) or Water(4)
  */
 
 package galenscovell.logic;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,8 @@ public class Tile {
     private int floorNeighbors;
     private List<Point> neighborTilePoints;
     private int bitmask;
-    public Sprite sprite;
+    private Sprite[] sprites;
+    private int currentFrame, frames;
     private boolean occupied, blocking;
 
 
@@ -30,6 +32,9 @@ public class Tile {
         this.state = 0;
         this.bitmask = 0;
         this.neighborTilePoints = findNeighbors(columns, rows);
+        this.sprites = new Sprite[2];
+        this.frames = 0;
+        this.currentFrame = 0;
     }
 
     public boolean isWall() {
@@ -98,141 +103,187 @@ public class Tile {
 
     public void findSprite() {
         SpriteSheet sheet = SpriteSheet.tilesheet;
+        int s1 = 0;
+        int s2 = 0;
         if (isPerimeter()) {
             switch (bitmask) {
                 case 0:
-                    sprite = new Sprite(sheet.getSprite(53));
+                    s1 = 53;
+                    s2 = 53;
                     break;
                 case 1:
                 case 100:
                 case 101:
-                    sprite = new Sprite(sheet.getSprite(16));
+                    s1 = 16;
+                    s2 = 16;
                     break;
                 case 10:
                 case 1000:
                 case 1010:
-                    sprite = new Sprite(sheet.getSprite(1));
+                    s1 = 1;
+                    s2 = 1;
                     break;
                 case 11:
-                    sprite = new Sprite(sheet.getSprite(32));
+                    s1 = 32;
+                    s2 = 32;
                     break;
                 case 110:
-                    sprite = new Sprite(sheet.getSprite(0));
+                    s1 = 0;
+                    s2 = 0;
                     break;
                 case 111:
-                    sprite = new Sprite(sheet.getSprite(19));
+                    s1 = 19;
+                    s2 = 19;
                     break;
                 case 1001:
-                    sprite = new Sprite(sheet.getSprite(34));
+                    s1 = 34;
+                    s2 = 34;
                     break;
                 case 1011:
-                    sprite = new Sprite(sheet.getSprite(36));
+                    s1 = 36;
+                    s2 = 36;
                     break;
                 case 1100:
-                    sprite = new Sprite(sheet.getSprite(2));
+                    s1 = 2;
+                    s2 = 2;
                     break;
                 case 1101:
-                    sprite = new Sprite(sheet.getSprite(21));
+                    s1 = 21;
+                    s2 = 21;
                     break;
                 case 1110:
-                    sprite = new Sprite(sheet.getSprite(4));
+                    s1 = 4;
+                    s2 = 4;
                     break;
                 case 1111:
                 default:
                     state = 1;
-                    sprite = new Sprite(sheet.getSprite(5));
+                    s1 = 5;
+                    s2 = 5;
             }
         } else if (isFloor()) {
             switch (bitmask) {
-                case 0:
-                    sprite = new Sprite(sheet.getSprite(65));
-                    break;
                 case 1:
-                    sprite = new Sprite(sheet.getSprite(49));
+                    s1 = 49;
+                    s2 = 49;
                     break;
                 case 10:
-                    sprite = new Sprite(sheet.getSprite(66));
+                    s1 = 66;
+                    s2 = 66;
                     break;
                 case 11:
-                    sprite = new Sprite(sheet.getSprite(50));
+                    s1 = 50;
+                    s2 = 50;
                     break;
                 case 100:
-                    sprite = new Sprite(sheet.getSprite(81));
+                    s1 = 81;
+                    s2 = 81;
                     break;
                 case 101:
-                    sprite = new Sprite(sheet.getSprite(69));
+                    s1 = 69;
+                    s2 = 69;
                     break;
                 case 110:
-                    sprite = new Sprite(sheet.getSprite(82));
+                    s1 = 82;
+                    s2 = 82;
                     break;
                 case 111:
-                    sprite = new Sprite(sheet.getSprite(70));
+                    s1 = 70;
+                    s2 = 70;
                     break;
                 case 1000:
-                    sprite = new Sprite(sheet.getSprite(64));
+                    s1 = 64;
+                    s2 = 64;
                     break;
                 case 1001:
-                    sprite = new Sprite(sheet.getSprite(48));
+                    s1 = 48;
+                    s2 = 48;
                     break;
                 case 1010:
-                    sprite = new Sprite(sheet.getSprite(67));
+                    s1 = 67;
+                    s2 = 67;
                     break;
                 case 1011:
-                    sprite = new Sprite(sheet.getSprite(51));
+                    s1 = 51;
+                    s2 = 51;
                     break;
                 case 1100:
-                    sprite = new Sprite(sheet.getSprite(80));
+                    s1 = 80;
+                    s2 = 80;
                     break;
                 case 1101:
-                    sprite = new Sprite(sheet.getSprite(68));
+                    s1 = 68;
+                    s2 = 68;
                     break;
                 case 1110:
-                    sprite = new Sprite(sheet.getSprite(83));
+                    s1 = 83;
+                    s2 = 83;
                     break;
                 case 1111:
-                    sprite = new Sprite(sheet.getSprite(53));
+                    s1 = 53;
+                    s2 = 53;
                     break;
                 default:
-                    sprite = new Sprite(sheet.getSprite(65));
+                    s1 = 65;
+                    s2 = 65;
             }
         } else if (isWater()) {
             switch (bitmask) {
-                case 0:
-                case 100:
-                    sprite = new Sprite(sheet.getSprite(25));
-                    break;
                 case 1:
                 case 101:
-                    sprite = new Sprite(sheet.getSprite(9));
+                    s1 = 9;
+                    s2 = 41;
                     break;
                 case 10:
                 case 110:
-                    sprite = new Sprite(sheet.getSprite(26));
+                    s1 = 26;
+                    s2 = 58;
                     break;
                 case 11:
                 case 111:
-                    sprite = new Sprite(sheet.getSprite(10));
+                    s1 = 10;
+                    s2 = 42;
                     break;
                 case 1000:
                 case 1100:
-                    sprite = new Sprite(sheet.getSprite(24));
+                    s1 = 24;
+                    s2 = 56;
                     break;
                 case 1001:
                 case 1101:
-                    sprite = new Sprite(sheet.getSprite(8));
+                    s1 = 8;
+                    s2 = 40;
                     break;
                 case 1010:
                 case 1110:
-                    sprite = new Sprite(sheet.getSprite(28));
+                    s1 = 28;
+                    s2 = 60;
                     break;
                 case 1011:
                 case 1111:
-                    sprite = new Sprite(sheet.getSprite(12));
+                    s1 = 12;
+                    s2 = 44;
                     break;
                 default:
-                    sprite = new Sprite(sheet.getSprite(25));
+                    s1 = 25;
+                    s2 = 57;
             }
         }
+        sprites[0] = new Sprite(sheet.getSprite(s1));
+        sprites[1] = new Sprite(sheet.getSprite(s2));
+    }
+
+    public void draw(SpriteBatch batch, int tileSize) {
+        if (frames == 60) {
+            if (currentFrame == 0) {
+                currentFrame++;
+            } else if (currentFrame == 1) {
+                currentFrame--;
+            }
+            frames -= frames;
+        }
+        batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
+        frames++;
     }
 
     private List<Point> findNeighbors(int columns, int rows) {
