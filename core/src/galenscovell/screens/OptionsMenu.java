@@ -8,13 +8,11 @@ package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import com.badlogic.gdx.utils.Align;
-import galenscovell.util.ScreenResources;
+import galenscovell.util.ResourceManager;
 
 
 public class OptionsMenu extends Table {
@@ -30,21 +28,21 @@ public class OptionsMenu extends Table {
     public void create() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ScreenResources.frameBG);
+        mainTable.setBackground(ResourceManager.frameBG);
 
-        TextButton settingsButton = new TextButton("Settings", ScreenResources.colorButtonStyle);
+        TextButton settingsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
         settingsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: In-game settings
             }
         });
-        TextButton mainMenuButton = new TextButton("Main Menu", ScreenResources.colorButtonStyle);
+        TextButton mainMenuButton = new TextButton("Main Menu", ResourceManager.colorButtonStyle);
         mainMenuButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.returnToMainMenu();
             }
         });
-        TextButton quitButton = new TextButton("Exit Flicker", ScreenResources.colorButtonStyle);
+        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.colorButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();

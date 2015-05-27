@@ -195,6 +195,43 @@ public class Tile {
                 default:
                     sprite = new Sprite(sheet.getSprite(65));
             }
+        } else if (isWater()) {
+            switch (bitmask) {
+                case 0:
+                case 100:
+                    sprite = new Sprite(sheet.getSprite(25));
+                    break;
+                case 1:
+                case 101:
+                    sprite = new Sprite(sheet.getSprite(9));
+                    break;
+                case 10:
+                case 110:
+                    sprite = new Sprite(sheet.getSprite(26));
+                    break;
+                case 11:
+                case 111:
+                    sprite = new Sprite(sheet.getSprite(10));
+                    break;
+                case 1000:
+                case 1100:
+                    sprite = new Sprite(sheet.getSprite(24));
+                    break;
+                case 1001:
+                case 1101:
+                    sprite = new Sprite(sheet.getSprite(8));
+                    break;
+                case 1010:
+                case 1110:
+                    sprite = new Sprite(sheet.getSprite(28));
+                    break;
+                case 1011:
+                case 1111:
+                    sprite = new Sprite(sheet.getSprite(12));
+                    break;
+                default:
+                    sprite = new Sprite(sheet.getSprite(25));
+            }
         }
     }
 

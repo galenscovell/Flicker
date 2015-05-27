@@ -13,14 +13,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
+
 import galenscovell.graphics.Fog;
 import galenscovell.graphics.Torchlight;
+
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
+
 import galenscovell.screens.HudDisplay;
+
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 

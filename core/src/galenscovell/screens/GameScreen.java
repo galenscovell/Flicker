@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(FlickerMain main) {
-        GLProfiler.enable();
+        // GLProfiler.enable();
         this.main = main;
         this.playerInstance = new Player("explorer");
         this.hud = new HudDisplay(this);
@@ -88,8 +88,8 @@ public class GameScreen implements Screen {
         interpolation = (double) accumulator / Constants.TIMESTEP;
         renderer.render(interpolation, moving);
         accumulator++;
-        System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
-        GLProfiler.reset();
+        // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
+        // GLProfiler.reset();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {

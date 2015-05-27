@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import galenscovell.util.Constants;
-import galenscovell.util.ScreenResources;
+import galenscovell.util.ResourceManager;
 
 
 public class HudDisplay {
@@ -55,7 +55,7 @@ public class HudDisplay {
         // Top left section
         Table topLeft = new Table();
         topLeft.pad(8, 8, 8, 8);
-        this.eventLog = new Label("Events displayed here.", ScreenResources.detailStyle);
+        this.eventLog = new Label("Events displayed here.", ResourceManager.detailStyle);
         eventLog.setAlignment(Align.topLeft, Align.topLeft);
         eventLog.setWrap(true);
         topLeft.add(eventLog).expand().fill().top().left();
@@ -64,7 +64,7 @@ public class HudDisplay {
 
         // Top right section
         Table topRight = new Table();
-        this.playerButton = new Button(ScreenResources.frameStyle);
+        this.playerButton = new Button(ResourceManager.frameStyle);
         setIcon(playerButton, "explorer", 0.9f);
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -93,21 +93,21 @@ public class HudDisplay {
 
         // Bottom left section
         Table bottomLeft = new Table();
-        this.examineButton = new Button(ScreenResources.buttonStyle);
+        this.examineButton = new Button(ResourceManager.buttonStyle);
         setIcon(examineButton, "examine", 0.9f);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
-        this.inventoryButton = new Button(ScreenResources.buttonStyle);
+        this.inventoryButton = new Button(ResourceManager.buttonStyle);
         setIcon(inventoryButton, "inventory", 0.9f);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
-        this.optionsButton = new Button(ScreenResources.buttonStyle);
+        this.optionsButton = new Button(ResourceManager.buttonStyle);
         setIcon(optionsButton, "options", 0.9f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -223,15 +223,15 @@ public class HudDisplay {
     }
 
     private void setIcon(Table table, String name, float alpha) {
-        Image icon = new Image(new TextureAtlas.AtlasRegion(ScreenResources.uiAtlas.findRegion(name)));
+        Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fit);
         icon.setColor(1.0f, 1.0f, 1.0f, alpha);
         table.add(icon).expand().fill().center();
     }
 
     private ProgressBar createBar(String path, int size) {
-        TextureRegionDrawable fill = new TextureRegionDrawable(ScreenResources.uiAtlas.findRegion(path));
-        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(ScreenResources.frameBG, fill);
+        TextureRegionDrawable fill = new TextureRegionDrawable(ResourceManager.uiAtlas.findRegion(path));
+        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(ResourceManager.frameBG, fill);
         ProgressBar bar = new ProgressBar(0, size, 1, false, barStyle);
         barStyle.knobAfter = fill;
         bar.setValue(0);

@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import galenscovell.flicker.FlickerMain;
 import galenscovell.util.Constants;
-import galenscovell.util.ScreenResources;
+import galenscovell.util.ResourceManager;
 
 
 public class MainMenuScreen implements Screen {
@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
          * TOP TABLE                      *
          **********************************/
         Table topTable = new Table();
-        Label titleLabel = new Label("FLICKER", ScreenResources.titleStyle);
+        Label titleLabel = new Label("FLICKER", ResourceManager.titleStyle);
         titleLabel.setAlignment(Align.center, Align.center);
         topTable.add(titleLabel).width(400).expand().fill();
         mainTable.add(topTable).height(120).expand().fill().center();
@@ -58,25 +58,25 @@ public class MainMenuScreen implements Screen {
          **********************************/
         Table bottomTable = new Table();
 
-        TextButton newGameButton = new TextButton("New Game", ScreenResources.colorButtonStyle);
+        TextButton newGameButton = new TextButton("New Game", ResourceManager.colorButtonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toGameScreen));
             }
         });
-        TextButton continueButton = new TextButton("Continue Game", ScreenResources.colorButtonStyle);
+        TextButton continueButton = new TextButton("Continue Game", ResourceManager.colorButtonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toContinuedGameScreen));
             }
         });
-        TextButton optionsButton = new TextButton("Settings", ScreenResources.colorButtonStyle);
+        TextButton optionsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toOptionScreen));
             }
         });
-        TextButton quitButton = new TextButton("Quit Game", ScreenResources.colorButtonStyle);
+        TextButton quitButton = new TextButton("Quit Game", ResourceManager.colorButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), quitGame));
@@ -94,7 +94,7 @@ public class MainMenuScreen implements Screen {
         mainTable.add(bottomTable).expand().fill();
         mainTable.row();
 
-        Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ScreenResources.detailStyle);
+        Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ResourceManager.detailStyle);
         detailLabel.setAlignment(Align.bottom);
         mainTable.add(detailLabel).width(150).expand().fill();
         mainTable.pack();

@@ -20,41 +20,30 @@ import java.util.Map;
 public class Bitmasker {
 
     public int findBitmask(Tile tile, Map<Integer, Tile> tiles, int columns) {
-        boolean top = false;
-        boolean bottom = false;
-        boolean left = false;
-        boolean right = false;
-
+        int value = 0;
         List<Point> neighbors = tile.getNeighbors();
 
         // Find neighbor positions
         for (Point point : neighbors) {
             Tile neighborTile = tiles.get(point.x * columns + point.y);
             // Find neighboring perimeter Tiles
-            if (neighborTile != null && neighborTile.isPerimeter()) {
+            if (neighborTile != null && (neighborTile.isPerimeter() || (tile.isWater() && neighborTile.isFloor()))) {
                 int diffX = tile.x - neighborTile.x;
                 int diffY = tile.y - neighborTile.y;
 
                 if (diffX == -1 && diffY == 0) {
-                    right = true;
+                    value += 2;
                 } else if (diffX == 0) {
                     if (diffY == -1) {
-                        bottom = true;
+                        value += 4;
                     } else if (diffY == 1) {
-                        top = true;
+                        value += 1;
                     }
                 } else if (diffX == 1 && diffY == 0) {
-                    left = true;
+                    value += 8;
                 }
             }
         }
-
-        int value = 0;
-        // Add Tile value if flagged as occupied
-        if (top) value += 1;
-        if (bottom) value += 4;
-        if (left) value += 8;
-        if (right) value += 2;
 
         if (value == 0) {
             return 0;

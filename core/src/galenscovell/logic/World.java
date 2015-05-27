@@ -11,12 +11,14 @@ import galenscovell.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 public class World {
     private int columns, rows;
     private Builder builder;
     private Map<Integer, Tile> tiles;
+    private Bitmasker bitmasker;
 
 
     public World() {
@@ -25,6 +27,7 @@ public class World {
         this.builder = new DungeonBuilder(columns, rows);
         builder.build();
         this.tiles = builder.getTiles();
+        this.bitmasker = new Bitmasker();
     }
 
     public void update() {
@@ -108,6 +111,7 @@ public class World {
         }
 
         skin();
+        fillWater();
     }
 
     public void deconstruct() {
@@ -116,8 +120,22 @@ public class World {
     }
 
     private void skin() {
-        Bitmasker bitmasker = new Bitmasker();
         for (Tile tile : tiles.values()) {
+            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
+            tile.findSprite();
+        }
+    }
+
+    private void fillWater() {
+        Random generator = new Random();
+        int waterPoints = generator.nextInt(5);
+        List<Tile> waterTiles = new ArrayList<Tile>();
+        for (int i = 0; i < waterPoints; i++) {
+            Tile waterTile = findRandomTile();
+            waterTile.state = 4;
+            waterTiles.add(waterTile);
+        }
+        for (Tile tile : waterTiles) {
             tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
             tile.findSprite();
         }
@@ -136,5 +154,22 @@ public class World {
             }
             tile.setFloorNeighbors(value);
         }
+    }
+
+    private Tile findRandomTile() {
+        Random random = new Random();
+        boolean found = false;
+        while (!found) {
+            int choiceX = random.nextInt(Constants.TILE_COLUMNS);
+            int choiceY = random.nextInt(Constants.TILE_ROWS);
+            if (tiles.containsKey(choiceX * Constants.TILE_COLUMNS + choiceY)) {
+                Tile tile = tiles.get(choiceX * Constants.TILE_COLUMNS + choiceY);
+                if (tile.isFloor()) {
+                    found = true;
+                    return tile;
+                }
+            }
+        }
+        return null;
     }
 }

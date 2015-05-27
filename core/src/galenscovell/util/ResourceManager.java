@@ -1,7 +1,7 @@
 
 /**
- * SCREENRESOURCES
- * Handles common resources used within all screens.
+ * RESOURCEMANAGER
+ * Stores common resources throughout application for easy usage/disposal.
  */
 
 package galenscovell.util;
@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 
-public class ScreenResources {
+public class ResourceManager {
     public static TextureAtlas uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));
 
     public static Label.LabelStyle detailStyle;
@@ -36,7 +36,7 @@ public class ScreenResources {
     public static TextButton.TextButtonStyle frameStyle;
 
 
-    public ScreenResources() {
+    public static void load() {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 8;
@@ -49,30 +49,30 @@ public class ScreenResources {
         BitmapFont extraLargeFont = fontGenerator.generateFont(parameter);
         fontGenerator.dispose();
 
-        this.detailStyle = new Label.LabelStyle(smallFont, Color.WHITE);
-        this.menuStyle = new Label.LabelStyle(largeFont, Color.WHITE);
-        this.titleStyle = new Label.LabelStyle(extraLargeFont, Color.WHITE);
+        detailStyle = new Label.LabelStyle(smallFont, Color.WHITE);
+        menuStyle = new Label.LabelStyle(largeFont, Color.WHITE);
+        titleStyle = new Label.LabelStyle(extraLargeFont, Color.WHITE);
 
-        this.hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
-        this.buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
-        this.buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, mediumFont);
+        hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
+        buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
+        buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, mediumFont);
         buttonStyle.pressedOffsetX = 1;
         buttonStyle.pressedOffsetY = -1;
 
-        this.colorButtonBG = new NinePatchDrawable(uiAtlas.createPatch("tealbuttonbg"));
-        this.colorButtonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
-        this.colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, mediumFont);
+        colorButtonBG = new NinePatchDrawable(uiAtlas.createPatch("tealbuttonbg"));
+        colorButtonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
+        colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, mediumFont);
         colorButtonStyle.pressedOffsetX = 1;
         colorButtonStyle.pressedOffsetY = -1;
 
-        this.frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
-        this.frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
-        this.frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, mediumFont);
+        frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
+        frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
+        frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, mediumFont);
         frameStyle.pressedOffsetX = 1;
         frameStyle.pressedOffsetY = -1;
     }
 
-    public void dispose() {
+    public static void dispose() {
         uiAtlas.dispose();
     }
 }

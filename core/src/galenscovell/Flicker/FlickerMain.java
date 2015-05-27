@@ -11,11 +11,10 @@ import com.badlogic.gdx.Game;
 import galenscovell.screens.GameScreen;
 import galenscovell.screens.MainMenuScreen;
 import galenscovell.screens.OptionsScreen;
-import galenscovell.util.ScreenResources;
+import galenscovell.util.ResourceManager;
 
 
 public class FlickerMain extends Game {
-    public static ScreenResources screenResources;
     public MainMenuScreen mainMenuScreen;
     public OptionsScreen optionsScreen;
     public GameScreen gameScreen;
@@ -23,7 +22,7 @@ public class FlickerMain extends Game {
 
     @Override
     public void create () {
-        this.screenResources = new ScreenResources();
+        ResourceManager.load();
         this.mainMenuScreen = new MainMenuScreen(this);
         this.optionsScreen = new OptionsScreen(this);
         setScreen(mainMenuScreen);
@@ -31,7 +30,7 @@ public class FlickerMain extends Game {
 
     @Override
     public void dispose() {
-        screenResources.dispose();
+        ResourceManager.dispose();
     }
 
     public void newGame() {

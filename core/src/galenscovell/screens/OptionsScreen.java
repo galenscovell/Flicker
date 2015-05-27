@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import galenscovell.flicker.FlickerMain;
 import galenscovell.util.Constants;
-import galenscovell.util.ScreenResources;
+import galenscovell.util.ResourceManager;
 
 
 public class OptionsScreen implements Screen {
@@ -46,7 +46,7 @@ public class OptionsScreen implements Screen {
          * TOP TABLE                      *
          **********************************/
         Table topTable = new Table();
-        Label titleLabel = new Label("SETTINGS", ScreenResources.titleStyle);
+        Label titleLabel = new Label("SETTINGS", ResourceManager.titleStyle);
         titleLabel.setAlignment(Align.center, Align.center);
         topTable.add(titleLabel).width(400).expand().fill();
         mainTable.add(topTable).height(120).expand().fill().center();
@@ -58,7 +58,7 @@ public class OptionsScreen implements Screen {
          **********************************/
         final Table bottomTable = new Table();
 
-        TextButton returnButton = new TextButton("RETURN", ScreenResources.colorButtonStyle);
+        TextButton returnButton = new TextButton("RETURN", ResourceManager.colorButtonStyle);
         returnButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toMainMenuScreen));
@@ -67,7 +67,7 @@ public class OptionsScreen implements Screen {
         bottomTable.add(returnButton).width(250).height(60).expand().fill();
         bottomTable.row();
 
-        Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ScreenResources.detailStyle);
+        Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ResourceManager.detailStyle);
         detailLabel.setAlignment(Align.bottom);
 
         mainTable.add(bottomTable).expand().fill();
