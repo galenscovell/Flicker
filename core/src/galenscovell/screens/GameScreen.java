@@ -20,6 +20,7 @@ import galenscovell.logic.World;
 import galenscovell.util.Constants;
 import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
+import galenscovell.util.PlayerParser;
 
 
 public class GameScreen implements Screen {
@@ -39,8 +40,9 @@ public class GameScreen implements Screen {
     public GameScreen(FlickerMain main) {
         // GLProfiler.enable();
         this.main = main;
-        this.playerInstance = new Player("explorer");
-        this.hud = new HudDisplay(this);
+        PlayerParser playerParser = new PlayerParser();
+        this.playerInstance = playerParser.pullClassStats("knight");
+        this.hud = new HudDisplay(this, playerInstance);
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(hud.stage);

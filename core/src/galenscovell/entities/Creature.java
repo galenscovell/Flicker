@@ -18,14 +18,12 @@ public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
     protected boolean inView, attacking, beingAttacked;
 
-    protected Sprite sprite;
     protected Sprite[] currentSet;
     protected Sprite[] leftSprites, rightSprites;
 
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
-    private int moveTimer;
-    private int animateFrames;
+    private int moveTimer, frame, animateFrames;
 
 
     @Override
@@ -106,10 +104,8 @@ public class Creature implements Entity {
     protected void turn(int dx, int dy) {
         if (dx < 0 && currentSet != leftSprites) {
             currentSet = leftSprites;
-            sprite = currentSet[0];
         } else if (dx > 0 && currentSet != rightSprites) {
             currentSet = rightSprites;
-            sprite = currentSet[0];
         }
     }
 
@@ -132,10 +128,10 @@ public class Creature implements Entity {
 
     protected void animate() {
         if (animateFrames == 30) {
-            if (sprite == currentSet[0]) {
-                sprite = currentSet[1];
+            if (frame == 0) {
+                frame++;
             } else {
-                sprite = currentSet[0];
+                frame--;
             }
             animateFrames = 0;
         } else {
@@ -168,6 +164,6 @@ public class Creature implements Entity {
         } else {
             batch.setColor(1, 1, 1, 1);
         }
-        batch.draw(sprite, currentX, currentY, tileSize, tileSize);
+        batch.draw(currentSet[frame], currentX, currentY, tileSize, tileSize);
     }
 }

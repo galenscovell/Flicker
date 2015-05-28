@@ -65,35 +65,27 @@ public class Updater {
     }
 
     private void playerInteract(List<Inanimate> inanimates) {
-        Point facingPoint = player.getFacingPoint(tileSize);
-        Tile facingTile = findTile(facingPoint.x, facingPoint.y);
-        for (Inanimate inanimate : inanimates) {
-            if (inanimate.getX() == facingTile.x && inanimate.getY() == facingTile.y) {
-                hud.addToLog(inanimate.interact(facingTile));
-                return;
-            }
-        }
-        hud.addToLog("There doesn't appear to be anything here.");
+
     }
 
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
-        player.setAttacking();
-        Point attackedTile = player.getFacingPoint(tileSize);
-        player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);
-        Entity hitEntity = null;
-
-        for (Entity entity : entities) {
-            if (entity.getX() == attackedTile.x * tileSize && entity.getY() == attackedTile.y * tileSize) {
-                Tile tile = findTile(attackedTile.x, attackedTile.y);
-                tile.toggleOccupied();
-                hitEntity = entity;
-            }
-        }
-
-        if (hitEntity != null) {
-            entities.remove(hitEntity);
-            inanimates.add(new Dead(attackedTile.x, attackedTile.y));
-        }
+//        player.setAttacking();
+//        Point attackedTile = player.getFacingPoint(tileSize);
+//        player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);
+//        Entity hitEntity = null;
+//
+//        for (Entity entity : entities) {
+//            if (entity.getX() == attackedTile.x * tileSize && entity.getY() == attackedTile.y * tileSize) {
+//                Tile tile = findTile(attackedTile.x, attackedTile.y);
+//                tile.toggleOccupied();
+//                hitEntity = entity;
+//            }
+//        }
+//
+//        if (hitEntity != null) {
+//            entities.remove(hitEntity);
+//            inanimates.add(new Dead(attackedTile.x, attackedTile.y));
+//        }
     }
 
     private void playerMove(int dx, int dy) {

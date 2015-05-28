@@ -4,13 +4,14 @@
     "desc": "A salamander youngling. Cute.",
     "level": 1,
     "spriteLocation": 80,
-    "hp": 6,
+    "vit": 6,
+    "intel": 1,
     "vision": 4,
     "speed": 3,
     "evade": 0,
     "defense": 1,
     "attacks": 1,
-    "damage": 2,
+    "damage": 4,
     "poison": 0
   },
   {
@@ -18,13 +19,14 @@
     "desc": "A juvenile salamander. Starting to get less cute.",
     "level": 2,
     "spriteLocation": 84,
-    "hp": 10,
+    "vit": 10,
+    "intel": 1,
     "vision": 5,
     "speed": 3,
     "evade": 1,
     "defense": 1,
     "attacks": 1,
-    "damage": 4,
+    "damage": 6,
     "poison": 0
   },
   {
@@ -32,13 +34,14 @@
     "desc": "An adult salamander. Having shed its juvenile skin, it glows respendlent emerald.",
     "level": 3,
     "spriteLocation": 88,
-    "hp": 14,
+    "vit": 14,
+    "intel": 1,
     "vision": 5,
     "speed": 2,
     "evade": 2,
     "defense": 2,
     "attacks": 2,
-    "damage": 4,
+    "damage": 8,
     "poison": 1
   },
   {
@@ -46,13 +49,14 @@
     "desc": "An elder salamander. What are these things eating?",
     "level": 4,
     "spriteLocation": 92,
-    "hp": 18,
+    "vit": 18,
+    "intel": 1,
     "vision": 5,
     "speed": 1,
     "evade": 2,
     "defense": 3,
     "attacks": 2,
-    "damage": 5,
+    "damage": 10,
     "poison": 2
   }
 ]

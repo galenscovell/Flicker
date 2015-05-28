@@ -25,7 +25,6 @@ import galenscovell.entities.Monster;
 
 public class MonsterParser {
 
-
     private List<Monster> createMonsterList() {
         List<Monster> monsterList = new ArrayList<Monster>();
         JsonParser parser = new JsonParser();

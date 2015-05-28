@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import galenscovell.entities.Player;
 import galenscovell.util.Constants;
 import galenscovell.util.ResourceManager;
 
@@ -31,12 +32,12 @@ public class HudDisplay {
     private Button playerButton, examineButton, inventoryButton, optionsButton;
 
 
-    public HudDisplay(GameScreen game) {
+    public HudDisplay(GameScreen game, Player player) {
         this.game = game;
-        create();
+        create(player);
     }
 
-    public void create() {
+    public void create(Player player) {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
         this.optionsMenu = new OptionsMenu(this);
         this.playerMenu = new PlayerMenu(this);
@@ -65,7 +66,7 @@ public class HudDisplay {
         // Top right section
         Table topRight = new Table();
         this.playerButton = new Button(ResourceManager.frameStyle);
-        setIcon(playerButton, "explorer", 0.9f);
+        setIcon(playerButton, player.getClassType(), 0.9f);
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(playerMenu);
@@ -74,11 +75,11 @@ public class HudDisplay {
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(30);
-        this.health = createBar("healthfill", 50);
-        this.mana = createBar("manafill", 30);
-        playerBars.add(health).width(100).right();
+        this.health = createBar("healthfill", player.getStat("vit") * 5);
+        this.mana = createBar("manafill", player.getStat("int") * 5);
+        playerBars.add(health).width(player.getStat("vit") * 10).right();
         playerBars.row();
-        playerBars.add(mana).width(60).right();
+        playerBars.add(mana).width(player.getStat("int") * 10).right();
         topRight.add(playerBars).expand().top().right();
         topRight.add(playerButton).width(80).height(80).top().right();
         topTable.add(topRight).height(120).width(400).expand().top().right();
