@@ -22,7 +22,7 @@ public class Torchlight {
 
 
     public Torchlight(float[][] resistanceMap, Player player) {
-        this.radius = player.getSightRange();
+        this.radius = player.getStat("vision");
         this.mult = new int[][]{{1, 0, 0, -1, -1, 0, 0, 1},
                                 {0, 1, -1, 0, 0, -1, 1, 0},
                                 {0, 1, 1, 0, 0, -1, -1, 0},

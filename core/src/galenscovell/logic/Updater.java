@@ -8,12 +8,9 @@ package galenscovell.logic;
 
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
-
 import galenscovell.inanimates.Dead;
 import galenscovell.inanimates.Inanimate;
-
 import galenscovell.screens.HudDisplay;
-
 import galenscovell.util.Constants;
 
 import java.util.List;
@@ -38,13 +35,17 @@ public class Updater {
         this.hud = hud;
     }
 
-    public void update(int[] input, List<Entity> entities, List<Inanimate> inanimates) {
+    public void move(int[] input, List<Entity> entities, List<Inanimate> inanimates) {
         playerMove(input[0], input[1]);
         for (Entity entity : entities) {
             if (entity.movementTimer()) {
                 entityMove(entity);
             }
         }
+    }
+
+    public void act() {
+
     }
 
     public void setPlayer(Player playerInstance) {
@@ -59,12 +60,11 @@ public class Updater {
         }
     }
 
-    public boolean playerDescends() {
+    public boolean descend() {
         return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
     }
 
     private void playerInteract(List<Inanimate> inanimates) {
-        player.toggleInteracting();
         Point facingPoint = player.getFacingPoint(tileSize);
         Tile facingTile = findTile(facingPoint.x, facingPoint.y);
         for (Inanimate inanimate : inanimates) {
@@ -77,7 +77,6 @@ public class Updater {
     }
 
     private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
-        hud.changeHealth(5);
         player.setAttacking();
         Point attackedTile = player.getFacingPoint(tileSize);
         player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);
@@ -212,7 +211,8 @@ public class Updater {
     private void entityAttack(Entity entity) {
         player.setBeingAttacked();
         entity.setAttacking();
-        hud.changeHealth(5);
+        hud.changeHealth(entity.getStat("damage"));
+        hud.addToLog(entity + " hits " + player + " for " + entity.getStat("damage") + " damage.");
     }
 
     private Tile findTile(int x, int y) {

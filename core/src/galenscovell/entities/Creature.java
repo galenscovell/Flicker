@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.graphics.SpriteSheet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
@@ -19,11 +22,16 @@ public class Creature implements Entity {
     protected Sprite[] currentSet;
     protected Sprite[] leftSprites, rightSprites;
 
-    protected int sightRange;
-    protected int movementRequirement;
+    protected String title, description;
+    protected Map<String, Integer> stats = new HashMap<String, Integer>();
     private int moveTimer;
     private int animateFrames;
 
+
+    @Override
+    public String toString() {
+        return title;
+    }
 
     public void setPosition(int newX, int newY) {
         prevX = newX;
@@ -50,8 +58,8 @@ public class Creature implements Entity {
         return currentY;
     }
 
-    public int getSightRange() {
-        return sightRange;
+    public int getStat(String key) {
+        return stats.get(key);
     }
 
     public void toggleInView() {
@@ -67,7 +75,7 @@ public class Creature implements Entity {
     }
 
     public boolean movementTimer() {
-        if (moveTimer == movementRequirement) {
+        if (moveTimer == stats.get("speed")) {
             moveTimer = 0;
             return true;
         }

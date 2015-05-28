@@ -39,7 +39,7 @@ public class ResourceManager {
     public static void load() {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("ui/PressStart2P.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 8;
+        parameter.size = 9;
         BitmapFont smallFont = fontGenerator.generateFont(parameter);
         parameter.size = 16;
         BitmapFont mediumFont = fontGenerator.generateFont(parameter);

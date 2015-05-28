@@ -8,22 +8,19 @@ package galenscovell.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import galenscovell.graphics.SpriteSheet;
-
 import java.util.Random;
+
+import galenscovell.graphics.SpriteSheet;
 
 
 public class Monster extends Creature {
     private String type, desc;
-    private int level, spriteLocation, hp, vision, speed, evade, defense, attacks, damage, poison;
+    public int level;
+    private int spriteLocation, hp, vision, speed, evade, defense, attacks, damage, poison;
 
 
     public Monster() {
         super();
-    }
-
-    public int getLevel() {
-        return level;
     }
 
     public void setup() {
@@ -32,24 +29,18 @@ public class Monster extends Creature {
         setStats();
     }
 
-    @Override
-    public String toString() {
-        return "Type: " + type +
-                "\n\tDesc: " + desc +
-                "\n\tSprite: " + spriteLocation +
-                "\n\tHP: " + hp +
-                "\n\tVision: " + vision +
-                "\n\tSpeed (waited turns before action): " + speed +
-                "\n\tEvade: " + evade +
-                "\n\tDefense: " + defense +
-                "\n\tAttacks: " + attacks +
-                "\n\tDamage: " + damage +
-                "\n\tPoison: " + poison;
-    }
-
     private void setStats() {
-        sightRange = vision;
-        movementRequirement = speed;
+        title = type;
+        description = desc;
+        stats.put("level", level);
+        stats.put("hp", hp);
+        stats.put("vision", vision);
+        stats.put("speed", speed);
+        stats.put("evade", evade);
+        stats.put("defense", defense);
+        stats.put("attacks", attacks);
+        stats.put("damage", damage);
+        stats.put("poison", poison);
     }
 
     private void setFlags() {

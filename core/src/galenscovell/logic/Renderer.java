@@ -10,22 +10,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
-
 import galenscovell.graphics.Fog;
 import galenscovell.graphics.Torchlight;
-
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
-
 import galenscovell.screens.HudDisplay;
-
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
@@ -238,11 +233,12 @@ public class Renderer {
     private boolean illuminated(int x, int y) {
         int diffX = Math.abs(x - player.getX() / tileSize);
         int diffY = Math.abs(y - player.getY() / tileSize);
+        int playerVision = player.getStat("vision");
         // Respect 'rounding' of torchlight when illuminating entities
-        if ((diffX == 0 && diffY == player.getSightRange()) || (diffY == 0 && diffX == player.getSightRange())) {
+        if ((diffX == 0 && diffY == playerVision) || (diffY == 0 && diffX == playerVision)) {
             return false;
         } else {
-            return(diffX + diffY <= player.getSightRange());
+            return(diffX + diffY <= playerVision);
         }
     }
 }

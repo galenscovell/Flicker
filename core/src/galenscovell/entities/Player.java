@@ -14,7 +14,6 @@ import galenscovell.logic.Point;
 
 
 public class Player extends Creature {
-    private boolean interacting;
     private int atkX, atkY;
     private String type;
 
@@ -25,14 +24,27 @@ public class Player extends Creature {
         setStats();
     }
 
+    @Override
+    public String toString() {
+        return "Player";
+    }
+
     private void setStats() {
-        sightRange = 4;
+        stats.put("vision", 5);
     }
 
     private void setSprites(String type) {
         int spriteLocation = 0;
         if (type.equals("explorer")) {
             spriteLocation = 0;
+        } else if (type.equals("knight")) {
+            spriteLocation = 4;
+        } else if (type.equals("archer")) {
+            spriteLocation = 8;
+        } else if (type.equals("mage")) {
+            spriteLocation = 12;
+        } else {
+            System.err.println("Player type not found.");
         }
         SpriteSheet sheet = SpriteSheet.charsheet;
         leftSprites = new Sprite[2];
@@ -64,14 +76,6 @@ public class Player extends Creature {
         if (possible) {
             x += dx;
             y += dy;
-        }
-    }
-
-    public void toggleInteracting() {
-        if (interacting) {
-            interacting = false;
-        } else {
-            interacting = true;
         }
     }
 

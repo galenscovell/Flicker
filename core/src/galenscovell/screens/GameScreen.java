@@ -27,12 +27,10 @@ public class GameScreen implements Screen {
     private Player playerInstance;
     private HudDisplay hud;
     private InputMultiplexer fullInput;
-
-    private World world;
     private Renderer renderer;
     private Updater updater;
 
-    private boolean acting, moving, up, down, left, right;
+    private boolean moving, up, down, left, right;
     private int[] move = new int[2];
     private double interpolation;
     private int accumulator = 0;
@@ -67,7 +65,7 @@ public class GameScreen implements Screen {
             moving = false;
         } else {
             moving = true;
-            updater.update(move, renderer.getEntityList(), renderer.getInanimateList());
+            updater.move(move, renderer.getEntityList(), renderer.getInanimateList());
         }
     }
 
@@ -77,10 +75,9 @@ public class GameScreen implements Screen {
             update();
             accumulator = 0;
         }
-        if (updater.playerDescends()) {
+        if (updater.descend()) {
             this.renderer = null;
             this.updater = null;
-            this.world = null;
             System.gc(); // Suggest garbage collection on null references
             createNewLevel();
         }
@@ -154,17 +151,13 @@ public class GameScreen implements Screen {
     }
 
     private void createNewLevel() {
-        this.world = new World();
+        World world = new World();
+        for (int i = 0; i < Constants.WORLD_SMOOTHING_PASSES; i++) {
+            world.update();
+        }
+        world.optimizeLayout();
         this.renderer = new Renderer(world.getTiles());
         this.updater = new Updater(world.getTiles());
-
-        int smoothTicks = Constants.WORLD_SMOOTHING_PASSES;
-        while (smoothTicks > 0) {
-            world.update();
-            smoothTicks--;
-        }
-
-        world.optimizeLayout();
         renderer.assembleLevel(playerInstance);
         updater.setPlayer(playerInstance);
         updater.setStairs(renderer.getInanimateList());

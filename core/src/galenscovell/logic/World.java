@@ -6,12 +6,12 @@
 
 package galenscovell.logic;
 
-import galenscovell.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import galenscovell.util.Constants;
 
 
 public class World {
