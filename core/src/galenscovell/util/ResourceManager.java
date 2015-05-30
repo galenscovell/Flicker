@@ -34,6 +34,7 @@ public class ResourceManager {
     public static TextButton.TextButtonStyle buttonStyle;
     public static TextButton.TextButtonStyle colorButtonStyle;
     public static TextButton.TextButtonStyle frameStyle;
+    public static TextButton.TextButtonStyle frameCheckedStyle;
 
 
     public static void load() {
@@ -70,6 +71,10 @@ public class ResourceManager {
         frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, mediumFont);
         frameStyle.pressedOffsetX = 1;
         frameStyle.pressedOffsetY = -1;
+
+        frameCheckedStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameLit, mediumFont);
+        frameCheckedStyle.pressedOffsetX = 1;
+        frameCheckedStyle.pressedOffsetY = -1;
     }
 
     public static void dispose() {

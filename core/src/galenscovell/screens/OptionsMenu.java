@@ -1,7 +1,7 @@
 
 /**
  * OPTIONSMENU CLASS
- * HUD table for saving/quitting.
+ * HUD popup table for saving/quitting.
  */
 
 package galenscovell.screens;

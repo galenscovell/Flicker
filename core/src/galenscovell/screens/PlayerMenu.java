@@ -1,7 +1,7 @@
 
 /**
  * PLAYERMENU CLASS
- * HUD table for player attributes/info.
+ * HUD popup table for player attributes/info.
  */
 
 package galenscovell.screens;

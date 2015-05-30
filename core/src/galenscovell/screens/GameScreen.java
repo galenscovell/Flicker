@@ -37,11 +37,11 @@ public class GameScreen implements Screen {
     private int accumulator = 0;
 
 
-    public GameScreen(FlickerMain main) {
+    public GameScreen(FlickerMain main, String classType) {
         // GLProfiler.enable();
         this.main = main;
         PlayerParser playerParser = new PlayerParser();
-        this.playerInstance = playerParser.pullClassStats("knight");
+        this.playerInstance = playerParser.pullClassStats(classType);
         this.hud = new HudDisplay(this, playerInstance);
 
         this.fullInput = new InputMultiplexer();

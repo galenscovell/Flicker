@@ -1,7 +1,7 @@
 
 /**
  * INVENTORYMENU CLASS
- * HUD table for player inventory.
+ * HUD popup table for player inventory.
  */
 
 package galenscovell.screens;

@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,6 +29,9 @@ import galenscovell.util.ResourceManager;
 public class MainMenuScreen implements Screen {
     private FlickerMain main;
     private Stage stage;
+    private NewGameMenu newGameMenu;
+    private TextButton newGameButton, continueButton, optionsButton, quitButton;
+    private String selectedClass;
 
 
     public MainMenuScreen(FlickerMain main){
@@ -37,6 +41,7 @@ public class MainMenuScreen implements Screen {
 
     public void create() {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
+        this.newGameMenu = new NewGameMenu(this);
 
         Table mainTable = new Table();
         mainTable.padBottom(4);
@@ -58,25 +63,25 @@ public class MainMenuScreen implements Screen {
          **********************************/
         Table bottomTable = new Table();
 
-        TextButton newGameButton = new TextButton("New Game", ResourceManager.colorButtonStyle);
+        this.newGameButton = new TextButton("New Game", ResourceManager.colorButtonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toGameScreen));
+                menuOperation(newGameMenu, 1);
             }
         });
-        TextButton continueButton = new TextButton("Continue Game", ResourceManager.colorButtonStyle);
+        this.continueButton = new TextButton("Continue Game", ResourceManager.colorButtonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toContinuedGameScreen));
             }
         });
-        TextButton optionsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
+        this.optionsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toOptionScreen));
             }
         });
-        TextButton quitButton = new TextButton("Quit Game", ResourceManager.colorButtonStyle);
+        this.quitButton = new TextButton("Quit Game", ResourceManager.colorButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), quitGame));
@@ -139,9 +144,30 @@ public class MainMenuScreen implements Screen {
         stage.dispose();
     }
 
+    public void menuOperation(Table menu, int toggle) {
+        if (toggle == 0) {
+            menu.remove();
+            newGameButton.setTouchable(Touchable.enabled);
+            continueButton.setTouchable(Touchable.enabled);
+            optionsButton.setTouchable(Touchable.enabled);
+            quitButton.setTouchable(Touchable.enabled);
+        } else {
+            stage.addActor(menu);
+            newGameButton.setTouchable(Touchable.disabled);
+            continueButton.setTouchable(Touchable.disabled);
+            optionsButton.setTouchable(Touchable.disabled);
+            quitButton.setTouchable(Touchable.disabled);
+        }
+    }
+
+    public void startGame(String classType) {
+        this.selectedClass = classType;
+        stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(1.0f), toGameScreen));
+    }
+
     Action toGameScreen = new Action() {
         public boolean act(float delta) {
-            main.newGame();
+            main.newGame(selectedClass);
             return true;
         }
     };

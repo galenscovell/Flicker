@@ -33,8 +33,8 @@ public class FlickerMain extends Game {
         ResourceManager.dispose();
     }
 
-    public void newGame() {
-        this.gameScreen = new GameScreen(this);
+    public void newGame(String classType) {
+        this.gameScreen = new GameScreen(this, classType);
         setScreen(gameScreen);
     }
 
