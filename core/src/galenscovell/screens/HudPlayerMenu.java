@@ -1,7 +1,7 @@
 
 /**
- * INVENTORYMENU CLASS
- * HUD popup table for player inventory.
+ * HUD-PLAYERMENU
+ * HUD popup table for player attributes/info.
  */
 
 package galenscovell.screens;
@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import galenscovell.util.ResourceManager;
 
 
-public class InventoryMenu extends Table {
+public class HudPlayerMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
 
 
-    public InventoryMenu(HudDisplay root) {
+    public HudPlayerMenu(HudDisplay root) {
         this.root = root;
         create();
     }
@@ -26,8 +26,10 @@ public class InventoryMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ResourceManager.frameBG);
 
+        this.add(mainTable).width(300).height(300).expand().right();
+    }
 
-        this.add(mainTable).width(300).height(300).expand().left();
+    public void updateStats() {
+        // Update all displayed player stats when called.
     }
 }
-

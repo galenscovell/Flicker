@@ -1,6 +1,6 @@
 
 /**
- * CONSTANTS CLASS
+ * CONSTANTS
  * Storage of constants used throughout application for easy access.
  */
 

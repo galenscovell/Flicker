@@ -1,6 +1,6 @@
 
 /**
- * PLAYERPARSER CLASS
+ * PLAYER-PARSER
  * Deserializes player class JSON data.
  */
 

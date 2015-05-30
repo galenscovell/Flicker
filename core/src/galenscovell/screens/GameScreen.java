@@ -1,6 +1,6 @@
 
 /**
- * GAMESCREEN CLASS
+ * GAME-SCREEN
  * Primary screen in which main gameplay occurs.
  */
 

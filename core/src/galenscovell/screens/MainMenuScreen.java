@@ -1,6 +1,6 @@
 
 /**
- * MAINMENUSCREEN CLASS
+ * MAINMENU-SCREEN
  * Opening screen. Contains New Game, Continue Game, Options, Quit and version info.
  */
 
@@ -29,7 +29,7 @@ import galenscovell.util.ResourceManager;
 public class MainMenuScreen implements Screen {
     private FlickerMain main;
     private Stage stage;
-    private NewGameMenu newGameMenu;
+    private Table newGameMenu, optionsMenu;
     private TextButton newGameButton, continueButton, optionsButton, quitButton;
     private String selectedClass;
 
@@ -41,7 +41,8 @@ public class MainMenuScreen implements Screen {
 
     public void create() {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
-        this.newGameMenu = new NewGameMenu(this);
+        this.newGameMenu = new MainMenuNewGame(this);
+        this.optionsMenu = new MainMenuOptions(this);
 
         Table mainTable = new Table();
         mainTable.padBottom(4);
@@ -78,7 +79,7 @@ public class MainMenuScreen implements Screen {
         this.optionsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toOptionScreen));
+                menuOperation(optionsMenu, 1);
             }
         });
         this.quitButton = new TextButton("Quit Game", ResourceManager.colorButtonStyle);
@@ -175,13 +176,6 @@ public class MainMenuScreen implements Screen {
     Action toContinuedGameScreen = new Action() {
         public boolean act(float delta) {
             main.continueGame();
-            return true;
-        }
-    };
-
-    Action toOptionScreen = new Action() {
-        public boolean act(float delta) {
-            main.setScreen(main.optionsScreen);
             return true;
         }
     };

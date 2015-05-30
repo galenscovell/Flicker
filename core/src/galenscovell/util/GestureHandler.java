@@ -1,6 +1,6 @@
 
 /**
- * GESTUREHANDLER CLASS
+ * GESTURE-HANDLER
  * Sets up gesture detector for player interaction with world (not ui)
  */
 

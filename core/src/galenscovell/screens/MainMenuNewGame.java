@@ -1,6 +1,6 @@
 
 /**
- * NEWGAMEMENU
+ * MAINMENU-NEWGAME
  * MainMenuScreen popup table displaying new game options.
  */
 
@@ -19,14 +19,14 @@ import com.badlogic.gdx.utils.Scaling;
 import galenscovell.util.ResourceManager;
 
 
-public class NewGameMenu extends Table {
+public class MainMenuNewGame extends Table {
     private MainMenuScreen root;
     private Table mainTable;
     private Button knightButton, explorerButton, mageButton;
     private boolean knightSelected, explorerSelected, mageSelected;
 
 
-    public NewGameMenu(MainMenuScreen root) {
+    public MainMenuNewGame(MainMenuScreen root) {
         this.root = root;
         create();
     }

@@ -1,6 +1,6 @@
 
 /**
- * HUDDISPLAY CLASS
+ * HUD-DISPLAY
  * Creates HUD and handles HUD updates.
  */
 
@@ -39,9 +39,9 @@ public class HudDisplay {
 
     public void create(Player player) {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
-        this.optionsMenu = new OptionsMenu(this);
-        this.playerMenu = new PlayerMenu(this);
-        this.inventoryMenu = new InventoryMenu(this);
+        this.optionsMenu = new HudOptionsMenu(this);
+        this.playerMenu = new HudPlayerMenu(this);
+        this.inventoryMenu = new HudInventoryMenu(this);
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();

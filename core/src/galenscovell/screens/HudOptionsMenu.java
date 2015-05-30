@@ -1,6 +1,6 @@
 
 /**
- * OPTIONSMENU CLASS
+ * HUD-OPTIONSMENU
  * HUD popup table for saving/quitting.
  */
 
@@ -15,12 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import galenscovell.util.ResourceManager;
 
 
-public class OptionsMenu extends Table {
+public class HudOptionsMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
 
 
-    public OptionsMenu(HudDisplay root) {
+    public HudOptionsMenu(HudDisplay root) {
         this.root = root;
         create();
     }

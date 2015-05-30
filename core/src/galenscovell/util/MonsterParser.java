@@ -1,6 +1,6 @@
 
 /**
- * MONSTERPARSER CLASS
+ * MONSTER-PARSER
  * Deserializes monster JSON data.
  */
 
