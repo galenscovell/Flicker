@@ -21,6 +21,10 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
+        if (game.tileSelection()) {
+            System.out.println("Tile selection made.");
+            return true;
+        }
         return false;
     }
 

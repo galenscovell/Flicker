@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -28,7 +29,7 @@ public class HudDisplay {
     private int eventLines = 1;
     private Label eventLog;
     private ProgressBar health, mana;
-    private Table playerMenu, inventoryMenu, optionsMenu;
+    private Table playerMenu, inventoryMenu, optionsMenu, examineMenu;
     private Button playerButton, examineButton, inventoryButton, optionsButton;
 
 
@@ -39,13 +40,13 @@ public class HudDisplay {
 
     public void create(Player player) {
         this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
-        this.optionsMenu = new HudOptionsMenu(this);
         this.playerMenu = new HudPlayerMenu(this);
+        this.examineMenu = new HudExamineMenu(this);
         this.inventoryMenu = new HudInventoryMenu(this);
+        this.optionsMenu = new HudOptionsMenu(this);
 
         // Init main HUD layout (fills screen)
         Table mainTable = new Table();
-        mainTable.pad(2, 2, 2, 2);
         mainTable.setFillParent(true);
 
         /**********************************
@@ -98,7 +99,8 @@ public class HudDisplay {
         setIcon(examineButton, "examine", 0.9f);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-
+                examine();
+                game.toggleTileSelection();
             }
         });
         this.inventoryButton = new Button(ResourceManager.buttonStyle);
@@ -178,7 +180,6 @@ public class HudDisplay {
             }
         });
         bottomTable.add(dpad).height(160).width(220).expand().right();
-
         mainTable.add(bottomTable).bottom().fill();
 
         // Finalize HUD
@@ -196,6 +197,7 @@ public class HudDisplay {
     }
 
     public void dispose() {
+        stage.addActor(examineButton);
         stage.addActor(playerMenu);
         stage.addActor(inventoryMenu);
         stage.addActor(optionsMenu);
@@ -219,6 +221,20 @@ public class HudDisplay {
         }
     }
 
+    public void examine() {
+        if (examineMenu.hasParent()) {
+            examineMenu.remove();
+            playerButton.setTouchable(Touchable.enabled);
+            inventoryButton.setTouchable(Touchable.enabled);
+            optionsButton.setTouchable(Touchable.enabled);
+        } else {
+            stage.addActor(examineMenu);
+            playerButton.setTouchable(Touchable.disabled);
+            inventoryButton.setTouchable(Touchable.disabled);
+            optionsButton.setTouchable(Touchable.disabled);
+        }
+    }
+
     public void changeHealth(int amount) {
         health.setValue(health.getValue() + amount);
     }
@@ -236,7 +252,7 @@ public class HudDisplay {
         ProgressBar bar = new ProgressBar(0, size, 1, false, barStyle);
         barStyle.knobAfter = fill;
         bar.setValue(0);
-        bar.setAnimateDuration(0.2f);
+        bar.setAnimateDuration(0.4f);
         bar.validate();
         return bar;
     }

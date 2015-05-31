@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
     private Renderer renderer;
     private Updater updater;
 
-    private boolean moving, up, down, left, right;
+    private boolean tileSelection, moving, up, down, left, right;
     private int[] move = new int[2];
     private double interpolation;
     private int accumulator = 0;
@@ -51,24 +51,6 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(fullInput);
 
         createNewLevel();
-    }
-
-    public void setMovement(int x, int y) {
-        left = (x == -1);
-        right = (x == 1);
-        up = (y == -1);
-        down = (y == 1);
-    }
-
-    public void update() {
-        move[0] = left ? -1 : right ? 1 : 0;
-        move[1] = up ? -1 : down ? 1 : 0;
-        if (move[0] == 0 && move[1] == 0) {
-            moving = false;
-        } else {
-            moving = true;
-            updater.move(move, renderer.getEntityList(), renderer.getInanimateList());
-        }
     }
 
     @Override
@@ -126,6 +108,14 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(fullInput);
     }
 
+    public boolean tileSelection() {
+        return tileSelection;
+    }
+
+    public void toggleTileSelection() {
+        tileSelection = tileSelection ? false : true;
+    }
+
     @Override
     public void show() {
         enableWorldInput();
@@ -150,6 +140,24 @@ public class GameScreen implements Screen {
     public void dispose() {
         hud.dispose();
         this.dispose();
+    }
+
+    public void setMovement(int x, int y) {
+        left = (x == -1);
+        right = (x == 1);
+        up = (y == -1);
+        down = (y == 1);
+    }
+
+    private void update() {
+        move[0] = left ? -1 : right ? 1 : 0;
+        move[1] = up ? -1 : down ? 1 : 0;
+        if (move[0] == 0 && move[1] == 0) {
+            moving = false;
+        } else {
+            moving = true;
+            updater.move(move, renderer.getEntityList(), renderer.getInanimateList());
+        }
     }
 
     private void createNewLevel() {

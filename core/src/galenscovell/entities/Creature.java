@@ -61,11 +61,7 @@ public class Creature implements Entity {
     }
 
     public void toggleInView() {
-        if (inView) {
-            inView = false;
-        } else {
-            inView = true;
-        }
+        inView = inView ? false : true;
     }
 
     public boolean isInView() {

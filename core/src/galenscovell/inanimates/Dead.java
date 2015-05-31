@@ -37,7 +37,6 @@ public class Dead implements Inanimate {
         } else {
             this.sprite = new Sprite(sheet.getSprite(67));
         }
-
         this.blocking = false;
     }
 
