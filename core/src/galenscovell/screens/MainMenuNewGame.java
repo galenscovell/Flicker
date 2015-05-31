@@ -9,13 +9,11 @@ package galenscovell.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
+
 import galenscovell.util.ResourceManager;
 
 
@@ -43,11 +41,20 @@ public class MainMenuNewGame extends Table {
         Table classTable = new Table();
         classTable.setBackground(ResourceManager.hudBG);
 
+        // Knight
         this.knightButton = new Button(ResourceManager.frameCheckedStyle);
         knightButton.padLeft(4);
         Table knightIcon = new Table();
         setIcon(knightIcon, "knight");
         knightButton.add(knightIcon).width(160).height(120).expand().fill().top();
+        knightButton.row();
+
+        Table knightInfo = new Table();
+        knightInfo.padTop(8);
+        Label knightLabel = new Label("Knight", ResourceManager.mediumStyle);
+        knightLabel.setAlignment(Align.top, Align.center);
+        knightInfo.add(knightLabel).width(140).height(40).expand().fill().top();
+
         knightButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (knightSelected) {
@@ -61,12 +68,22 @@ public class MainMenuNewGame extends Table {
                 }
             }
         });
+        knightButton.add(knightInfo).width(160).height(170).expand().fill().center();
         classTable.add(knightButton).width(160).height(300).expand().fill();
 
+        // Explorer
         this.explorerButton = new Button(ResourceManager.frameCheckedStyle);
         Table explorerIcon = new Table();
         setIcon(explorerIcon, "explorer");
         explorerButton.add(explorerIcon).width(160).height(120).expand().fill().top();
+        explorerButton.row();
+
+        Table explorerInfo = new Table();
+        explorerInfo.padTop(8);
+        Label explorerLabel = new Label("Explorer", ResourceManager.mediumStyle);
+        explorerLabel.setAlignment(Align.top, Align.center);
+        explorerInfo.add(explorerLabel).width(140).height(40).expand().fill().top();
+
         explorerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (explorerSelected) {
@@ -80,13 +97,23 @@ public class MainMenuNewGame extends Table {
                 }
             }
         });
+        explorerButton.add(explorerInfo).width(160).height(170).expand().fill().center();
         classTable.add(explorerButton).width(160).height(300).expand().fill();
 
+        // Mage
         this.mageButton = new Button(ResourceManager.frameCheckedStyle);
         mageButton.padRight(4);
         Table mageIcon = new Table();
         setIcon(mageIcon, "mage");
         mageButton.add(mageIcon).width(160).height(120).expand().fill().top();
+        mageButton.row();
+
+        Table mageInfo = new Table();
+        mageInfo.padTop(8);
+        Label mageLabel = new Label("Mage", ResourceManager.mediumStyle);
+        mageLabel.setAlignment(Align.top, Align.center);
+        mageInfo.add(mageLabel).width(140).height(40).expand().fill().top();
+
         mageButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (mageSelected) {
@@ -100,6 +127,7 @@ public class MainMenuNewGame extends Table {
                 }
             }
         });
+        mageButton.add(mageInfo).width(160).height(170).expand().fill().center();
         classTable.add(mageButton).width(160).height(300).expand().fill();
         classTable.pack();
 

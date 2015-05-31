@@ -30,14 +30,20 @@ public class MainMenuOptions extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ResourceManager.frameBG);
 
-        TextButton audioButton = new TextButton("Audio", ResourceManager.colorButtonStyle);
-        audioButton.addListener(new ClickListener() {
+        TextButton soundButton = new TextButton("Sound Effects", ResourceManager.colorButtonStyle);
+        soundButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Audio settings
             }
         });
-        TextButton graphicsButton = new TextButton("Graphics", ResourceManager.colorButtonStyle);
-        graphicsButton.addListener(new ClickListener() {
+        TextButton musicButton = new TextButton("Music", ResourceManager.colorButtonStyle);
+        musicButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: Graphics settings
+            }
+        });
+        TextButton brightnessButton = new TextButton("Brightness", ResourceManager.colorButtonStyle);
+        brightnessButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Graphics settings
             }
@@ -49,13 +55,15 @@ public class MainMenuOptions extends Table {
             }
         });
 
-        mainTable.add(audioButton).width(280).height(60).padBottom(4).expand().fill();
+        mainTable.add(soundButton).width(280).height(60).padBottom(4).expand().fill();
         mainTable.row();
-        mainTable.add(graphicsButton).width(280).height(60).padBottom(4).expand().fill();
+        mainTable.add(musicButton).width(280).height(60).padBottom(4).expand().fill();
+        mainTable.row();
+        mainTable.add(brightnessButton).width(280).height(60).padBottom(4).expand().fill();
         mainTable.row();
         mainTable.add(returnButton).width(280).height(60).expand().fill();
 
-        this.add(mainTable).width(300).height(200).expand().center();
+        this.add(mainTable).width(300).height(300).expand().center();
     }
 
     private void returnToMain() {

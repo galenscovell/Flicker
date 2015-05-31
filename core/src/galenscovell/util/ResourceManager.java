@@ -21,6 +21,7 @@ public class ResourceManager {
     public static TextureAtlas uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));
 
     public static Label.LabelStyle detailStyle;
+    public static Label.LabelStyle mediumStyle;
     public static Label.LabelStyle menuStyle;
     public static Label.LabelStyle titleStyle;
 
@@ -51,6 +52,7 @@ public class ResourceManager {
         fontGenerator.dispose();
 
         detailStyle = new Label.LabelStyle(smallFont, Color.WHITE);
+        mediumStyle = new Label.LabelStyle(mediumFont, Color.WHITE);
         menuStyle = new Label.LabelStyle(largeFont, Color.WHITE);
         titleStyle = new Label.LabelStyle(extraLargeFont, Color.WHITE);
 
