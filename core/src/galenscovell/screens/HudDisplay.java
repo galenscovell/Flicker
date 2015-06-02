@@ -93,37 +93,7 @@ public class HudDisplay {
          **********************************/
         Table bottomTable = new Table();
 
-        // Bottom left section
-        Table bottomLeft = new Table();
-        this.examineButton = new Button(ResourceManager.buttonStyle);
-        setIcon(examineButton, "examine", 0.9f);
-        examineButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                examine();
-                game.toggleTileSelection();
-            }
-        });
-        this.inventoryButton = new Button(ResourceManager.buttonStyle);
-        setIcon(inventoryButton, "inventory", 0.9f);
-        inventoryButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation(inventoryMenu);
-            }
-        });
-        this.optionsButton = new Button(ResourceManager.buttonStyle);
-        setIcon(optionsButton, "options", 0.9f);
-        optionsButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation(optionsMenu);
-            }
-        });
-        bottomLeft.add(examineButton).height(80).width(80);
-        bottomLeft.add(inventoryButton).height(80).width(80);
-        bottomLeft.add(optionsButton).height(80).width(80);
-        bottomTable.add(bottomLeft).bottom().left().expand();
-
-
-        // Bottom right section (d-pad)
+        // Bottom left section (d-pad)
         Table dpad = new Table();
         Table upButton = new Table();
         setIcon(upButton, "uparrow", 0.4f);
@@ -179,7 +149,38 @@ public class HudDisplay {
                 game.setMovement(0, 0);
             }
         });
-        bottomTable.add(dpad).height(160).width(220).expand().right();
+        bottomTable.add(dpad).height(160).width(220).left().expand();
+
+
+        // Bottom right section
+        Table bottomRight = new Table();
+        this.examineButton = new Button(ResourceManager.buttonStyle);
+        setIcon(examineButton, "examine", 0.9f);
+        examineButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                examine();
+                game.toggleTileSelection();
+            }
+        });
+        this.inventoryButton = new Button(ResourceManager.buttonStyle);
+        setIcon(inventoryButton, "inventory", 0.9f);
+        inventoryButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                menuOperation(inventoryMenu);
+            }
+        });
+        this.optionsButton = new Button(ResourceManager.buttonStyle);
+        setIcon(optionsButton, "options", 0.9f);
+        optionsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                menuOperation(optionsMenu);
+            }
+        });
+        bottomRight.add(examineButton).height(80).width(80);
+        bottomRight.add(inventoryButton).height(80).width(80);
+        bottomRight.add(optionsButton).height(80).width(80);
+        bottomTable.add(bottomRight).bottom().right().expand();
+
         mainTable.add(bottomTable).bottom().fill();
 
         // Finalize HUD
