@@ -1,22 +1,21 @@
-
-/**
- * FLICKERMAIN CLASS
- * Provides main entry for application. Creates all screens for game and sets to main menu.
- */
-
 package galenscovell.flicker;
-
-import com.badlogic.gdx.Game;
 
 import galenscovell.screens.GameScreen;
 import galenscovell.screens.MainMenuScreen;
 import galenscovell.util.ResourceManager;
 
+import com.badlogic.gdx.Game;
+
+/**
+ * FLICKER MAIN
+ * Provides main entry for application. Creates all screens for game and sets to main menu.
+ *
+ * @author Galen Scovell
+ */
 
 public class FlickerMain extends Game {
     public MainMenuScreen mainMenuScreen;
     public GameScreen gameScreen;
-
 
     @Override
     public void create () {

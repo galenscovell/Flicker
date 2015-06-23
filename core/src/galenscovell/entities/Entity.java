@@ -1,13 +1,13 @@
-
-/**
- * ENTITY INTERFACE
- */
-
 package galenscovell.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * ENTITY INTERFACE
+ *
+ * @author Galen Scovell
+ */
 
 public interface Entity {
     public void setPosition(int newX, int newY);

@@ -1,18 +1,19 @@
-
-/**
- * CREATURE SUPERCLASS
- */
-
 package galenscovell.entities;
+
+import galenscovell.graphics.SpriteSheet;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import galenscovell.graphics.SpriteSheet;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * CREATURE ENTITY
+ * Superclass of all mobile entities.
+ *
+ * @author Galen Scovell
+ */
 
 public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
@@ -24,7 +25,6 @@ public class Creature implements Entity {
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
     private int moveTimer, frame, animateFrames;
-
 
     @Override
     public String toString() {

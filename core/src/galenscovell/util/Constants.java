@@ -1,14 +1,13 @@
+package galenscovell.util;
 
 /**
  * CONSTANTS
  * Storage of constants used throughout application for easy access.
+ *
+ * @author Galen Scovell
  */
 
-package galenscovell.util;
-
-
 public class Constants {
-
     private Constants() { }
 
     // Width/height of application window (in pixels)

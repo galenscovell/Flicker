@@ -1,25 +1,24 @@
-
-/**
- * WORLD CLASS
- * World is composed of a 2D array grid and a list of matching Tile instances.
- */
-
 package galenscovell.logic;
+
+import galenscovell.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import galenscovell.util.Constants;
-
+/**
+ * WORLD
+ * World is composed of a 2D array grid and a list of matching Tile instances.
+ *
+ * @author Galen Scovell
+ */
 
 public class World {
     private int columns, rows;
     private Builder builder;
     private Map<Integer, Tile> tiles;
     private Bitmasker bitmasker;
-
 
     public World() {
         this.columns = Constants.TILE_COLUMNS;

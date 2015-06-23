@@ -1,13 +1,13 @@
-
-/**
- * BUILDER INTERFACE
- * All builders utilize build(), smooth() and getTiles()
- */
-
 package galenscovell.logic;
 
 import java.util.Map;
 
+/**
+ * BUILDER INTERFACE
+ * All builders build(), smooth() and getTiles()
+ *
+ * @author Galen Scovell
+ */
 
 public interface Builder {
     public void build();

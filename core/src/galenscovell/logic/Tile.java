@@ -1,11 +1,6 @@
-
-/**
- * TILE CLASS
- * Keeps track of tile position, state and rendering.
- * State can be Wall(0), Floor(1), Corridor(2), Perimeter(3) or Water(4)
- */
-
 package galenscovell.logic;
+
+import galenscovell.graphics.SpriteSheet;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,8 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
-import galenscovell.graphics.SpriteSheet;
-
+/**
+ * TILE
+ * Keeps track of tile position, state and rendering.
+ * State can be Wall(0), Floor(1), Corridor(2), Perimeter(3) or Water(4)
+ *
+ * @author Galen Scovell
+ */
 
 public class Tile {
     public int x, y, state;
@@ -24,7 +24,6 @@ public class Tile {
     private Sprite[] sprites;
     private int currentFrame, frames;
     private boolean occupied, blocking;
-
 
     public Tile(int x, int y, int columns, int rows) {
         this.x = x;

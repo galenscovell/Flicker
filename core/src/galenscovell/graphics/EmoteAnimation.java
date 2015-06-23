@@ -1,18 +1,17 @@
-
-/**
- * EMOTEANIMATION CLASS
- *
- */
-
 package galenscovell.graphics;
+
+import galenscovell.entities.Entity;
+import galenscovell.graphics.SpriteSheet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import galenscovell.entities.Entity;
-import galenscovell.graphics.SpriteSheet;
-
+/**
+ * EMOTE ANIMATION
+ *
+ * @author Galen Scovell
+ */
 
 public class EmoteAnimation {
     private Sprite[] emote;
@@ -21,7 +20,6 @@ public class EmoteAnimation {
     private int turns = 0;
     private int skipFrames = 60;
     private int frame = 0;
-
 
     public EmoteAnimation(String type, Entity entity) {
         if (type.equals("confused")) {

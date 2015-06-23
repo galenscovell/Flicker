@@ -1,23 +1,22 @@
-
-/**
- * MONSTER CLASS
- * Utilizes MonsterParser to create Creatures based on JSON data.
- */
-
 package galenscovell.entities;
+
+import galenscovell.graphics.SpriteSheet;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import java.util.Random;
 
-import galenscovell.graphics.SpriteSheet;
-
+/**
+ * MONSTER CREATURE
+ * Utilizes MonsterParser to create Creatures based on JSON data.
+ *
+ * @author Galen Scovell
+ */
 
 public class Monster extends Creature {
     private String type, desc;
     public int level;
     private int spriteLocation, vit, intel, vision, speed, evade, defense, attacks, damage, poison;
-
 
     public Monster() {
         super();

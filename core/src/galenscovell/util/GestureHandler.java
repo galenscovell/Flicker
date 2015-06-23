@@ -1,19 +1,18 @@
-
-/**
- * GESTURE-HANDLER
- * Sets up gesture detector for player interaction with world (not ui)
- */
-
 package galenscovell.util;
-
-import com.badlogic.gdx.input.GestureDetector;
 
 import galenscovell.screens.GameScreen;
 
+import com.badlogic.gdx.input.GestureDetector;
+
+/**
+ * GESTURE HANDLER
+ * Sets up gesture detector for player interaction with world (not ui)
+ *
+ * @author Galen Scovell
+ */
 
 public class GestureHandler extends GestureDetector.GestureAdapter {
     private GameScreen game;
-
 
     public GestureHandler(GameScreen game) {
         this.game = game;

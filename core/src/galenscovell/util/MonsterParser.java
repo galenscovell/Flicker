@@ -1,10 +1,6 @@
-
-/**
- * MONSTER-PARSER
- * Deserializes monster JSON data.
- */
-
 package galenscovell.util;
+
+import galenscovell.entities.Monster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -20,11 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import galenscovell.entities.Monster;
-
+/**
+ * MONSTER PARSER
+ * Deserializes monster JSON data.
+ *
+ * @author Galen Scovell
+ */
 
 public class MonsterParser {
-
     private List<Monster> createMonsterList() {
         List<Monster> monsterList = new ArrayList<Monster>();
         JsonParser parser = new JsonParser();

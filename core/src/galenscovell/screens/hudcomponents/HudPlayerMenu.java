@@ -1,20 +1,20 @@
+package galenscovell.screens.hudcomponents;
 
-/**
- * HUD-PLAYERMENU
- * HUD popup table for player attributes/info.
- */
-
-package galenscovell.screens;
+import galenscovell.screens.HudDisplay;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import galenscovell.util.ResourceManager;
-
+/**
+ * PLAYER MENU
+ * HUD popup table for player attributes/info.
+ *
+ * @author Galen Scovell
+ */
 
 public class HudPlayerMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
-
 
     public HudPlayerMenu(HudDisplay root) {
         this.root = root;

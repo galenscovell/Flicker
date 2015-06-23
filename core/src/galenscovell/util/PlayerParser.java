@@ -1,16 +1,10 @@
-
-/**
- * PLAYER-PARSER
- * Deserializes player class JSON data.
- */
-
 package galenscovell.util;
+
+import galenscovell.entities.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.*;
-
-import galenscovell.entities.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,9 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * PLAYER PARSER
+ * Deserializes player class JSON data.
+ *
+ * @author Galen Scovell
+ */
 
 public class PlayerParser {
-
     public Player pullClassStats(String type) {
         JsonParser parser = new JsonParser();
         Gson gson = new Gson();

@@ -1,9 +1,3 @@
-
-/**
- * UPDATER CLASS
- * Handles game logic: interactions, movements, behaviors and HUD updates.
- */
-
 package galenscovell.logic;
 
 import galenscovell.entities.Entity;
@@ -17,6 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * UPDATER
+ * Handles game logic: interactions, movements, behaviors and HUD updates.
+ *
+ * @author Galen Scovell
+ */
 
 public class Updater {
     private int tileSize;
@@ -24,7 +24,6 @@ public class Updater {
     private Map<Integer, Tile> tiles;
     private Player player;
     private Inanimate stairs;
-
 
     public Updater(Map<Integer, Tile> tiles) {
         this.tiles = tiles;

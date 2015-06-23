@@ -1,10 +1,8 @@
-
-/**
- * MAINMENU-SCREEN
- * Opening screen. Contains New Game, Continue Game, Options, Quit and version info.
- */
-
 package galenscovell.screens;
+
+import galenscovell.flicker.FlickerMain;
+import galenscovell.util.Constants;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,10 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import galenscovell.flicker.FlickerMain;
-import galenscovell.util.Constants;
-import galenscovell.util.ResourceManager;
-
+/**
+ * MAINMENU SCREEN
+ * Opening screen. Contains New Game, Continue Game, Options, Quit and version info.
+ *
+ * @author Galen Scovell
+ */
 
 public class MainMenuScreen implements Screen {
     private FlickerMain main;
@@ -32,7 +32,6 @@ public class MainMenuScreen implements Screen {
     private Table newGameMenu, optionsMenu;
     private TextButton newGameButton, continueButton, optionsButton, quitButton;
     private String selectedClass;
-
 
     public MainMenuScreen(FlickerMain main){
         this.main = main;

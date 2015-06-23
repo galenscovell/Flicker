@@ -1,10 +1,7 @@
+package galenscovell.screens.hudcomponents;
 
-/**
- * HUD-OPTIONSMENU
- * HUD popup table for saving/quitting.
- */
-
-package galenscovell.screens;
+import galenscovell.screens.HudDisplay;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,13 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import galenscovell.util.ResourceManager;
-
+/**
+ * OPTIONS MENU
+ * HUD popup table for saving/quitting.
+ *
+ * @author Galen Scovell
+ */
 
 public class HudOptionsMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
-
 
     public HudOptionsMenu(HudDisplay root) {
         this.root = root;

@@ -1,26 +1,25 @@
-
-/**
- * DEAD CLASS
- * Enemy death sprite loading and location.
- */
-
 package galenscovell.inanimates;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.graphics.SpriteSheet;
 import galenscovell.graphics.Torchlight;
 import galenscovell.logic.Tile;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.Random;
 
+/**
+ * DEAD INANIMATE
+ * Enemy death sprite loading and location.
+ *
+ * @author Galen Scovell
+ */
 
 public class Dead implements Inanimate {
     private int x, y;
     private Sprite sprite;
     private boolean blocking;
-
 
     public Dead(int x, int y) {
         this.x = x;

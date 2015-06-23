@@ -1,17 +1,4 @@
-
-/**
- * RENDERER CLASS
- * Handles game graphics.
- */
-
 package galenscovell.logic;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
@@ -24,11 +11,24 @@ import galenscovell.screens.HudDisplay;
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * RENDERER
+ * Handles game graphics.
+ *
+ * @author Galen Scovell
+ */
 
 public class Renderer {
     private Map<Integer, Tile> tiles;
@@ -45,7 +45,6 @@ public class Renderer {
     private SpriteBatch spriteBatch;
     private int tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
-
 
     public Renderer(Map<Integer, Tile> tiles) {
         this.tileSize = Constants.TILESIZE;

@@ -1,9 +1,3 @@
-
-/**
- * GAME-SCREEN
- * Primary screen in which main gameplay occurs.
- */
-
 package galenscovell.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -22,6 +16,12 @@ import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
 import galenscovell.util.PlayerParser;
 
+/**
+ * GAME SCREEN
+ * Primary screen in which main gameplay occurs.
+ *
+ * @author Galen Scovell
+ */
 
 public class GameScreen implements Screen {
     private FlickerMain main;
@@ -35,7 +35,6 @@ public class GameScreen implements Screen {
     private int[] move = new int[2];
     private double interpolation;
     private int accumulator = 0;
-
 
     public GameScreen(FlickerMain main, String classType) {
         // GLProfiler.enable();

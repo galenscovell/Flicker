@@ -1,10 +1,3 @@
-
-/**
- * DUNGEONBUILDER CLASS
- * Constructs a new world grid and tileset with dungeon features. 
- * (Rectangular rooms connected by Tile-width corridors)
- */
-
 package galenscovell.logic;
 
 import java.util.ArrayList;
@@ -13,11 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * DUNGEON BUILDER
+ * Constructs a new world grid and tileset with dungeon features.
+ * (Rectangular rooms connected by Tile-width corridors)
+ *
+ * @author Galen Scovell
+ */
 
 public class DungeonBuilder implements Builder {
     private int rows, columns;
     private Tile[][] grid;
-
 
     public DungeonBuilder(int columns, int rows) {
         this.columns = columns;

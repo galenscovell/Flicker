@@ -1,6 +1,10 @@
+package galenscovell.logic;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * BITMASKER CLASS
+ * BITMASKER
  * Handles calculation of bitmask value for Tiles.
  *
  *    1         1       Total = (Sum of occupied values)
@@ -9,16 +13,11 @@
  *
  * Bitmask value range: 0, 1111 [0, 15] (None occupied, all occupied)
  * Bitmask value determines sprite of Tile.
+ *
+ * @author Galen Scovell
  */
 
-package galenscovell.logic;
-
-import java.util.List;
-import java.util.Map;
-
-
 public class Bitmasker {
-
     public int findBitmask(Tile tile, Map<Integer, Tile> tiles, int columns) {
         int value = 0;
         List<Point> neighbors = tile.getNeighbors();

@@ -1,24 +1,23 @@
-
-/**
- * STAIRS CLASS
- * Loads stair sprite and handles interaction events.
- */
-
 package galenscovell.inanimates;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import galenscovell.graphics.SpriteSheet;
 import galenscovell.graphics.Torchlight;
 import galenscovell.logic.Tile;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+/**
+ * STAIRS INANIMATE
+ * Loads stair sprite and handles interaction events.
+ *
+ * @author Galen Scovell
+ */
 
 public class Stairs implements Inanimate {
     private int x, y;
     private Sprite sprite;
     private boolean blocking;
-
 
     public Stairs(int x, int y) {
         this.x = x;

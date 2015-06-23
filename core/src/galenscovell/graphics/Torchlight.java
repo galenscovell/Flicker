@@ -1,17 +1,17 @@
-
-/**
- * TORCHLIGHT CLASS
- * Handles torchlight effect surrounding player.
- */
-
 package galenscovell.graphics;
+
+import galenscovell.entities.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import galenscovell.entities.Player;
-
+/**
+ * TORCHLIGHT
+ * Handles torchlight effect surrounding player.
+ *
+ * @author Galen Scovell
+ */
 
 public class Torchlight {
     private int radius, startX, startY;
@@ -19,7 +19,6 @@ public class Torchlight {
     private float[][] resistanceMap;
     private float[][] lightMap;
     private Texture rect = new Texture(Gdx.files.internal("textures/blank.png"));
-
 
     public Torchlight(float[][] resistanceMap, Player player) {
         this.radius = player.getStat("vision");

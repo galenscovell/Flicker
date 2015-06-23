@@ -1,15 +1,15 @@
-
-/**
- * SPRITESHEET CLASS
- * Manages spritesheet loading.
- */
-
 package galenscovell.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * SPRITESHEET
+ * Manages spritesheet loading.
+ *
+ * @author Galen Scovell
+ */
 
 public class SpriteSheet {
     private String path;
@@ -20,7 +20,6 @@ public class SpriteSheet {
     public static SpriteSheet charsheet = new SpriteSheet("textures/charsheet.png", 16);
     public static SpriteSheet tilesheet = new SpriteSheet("textures/tilesheet.png", 16);
     public static SpriteSheet fxsheet = new SpriteSheet("textures/fxsheet.png", 16);
-
 
     public SpriteSheet(String path, int spriteSize) {
         this.path = path;

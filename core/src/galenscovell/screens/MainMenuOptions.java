@@ -1,10 +1,6 @@
-
-/**
- * MAINMENU-OPTIONS
- * MainMenu popup table for setting tweaking.
- */
-
 package galenscovell.screens;
+
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,13 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import galenscovell.util.ResourceManager;
-
+/**
+ * OPTIONS POPUP
+ * MainMenu popup for setting tweaks.
+ *
+ * @author Galen Scovell
+ */
 
 public class MainMenuOptions extends Table {
     private MainMenuScreen root;
     private Table mainTable;
-
 
     public MainMenuOptions(MainMenuScreen root) {
         this.root = root;

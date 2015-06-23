@@ -1,9 +1,3 @@
-
-/**
- * RESOURCEMANAGER
- * Stores common resources throughout application for easy usage/disposal.
- */
-
 package galenscovell.util;
 
 import com.badlogic.gdx.Gdx;
@@ -16,6 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
+/**
+ * RESOURCE MANAGER
+ * Stores common resources throughout application for easy usage/disposal.
+ *
+ * @author Galen Scovell
+ */
 
 public class ResourceManager {
     public static TextureAtlas uiAtlas = new TextureAtlas(Gdx.files.internal("ui/uiAtlas.pack"));

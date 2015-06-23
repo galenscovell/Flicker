@@ -1,10 +1,6 @@
-
-/**
- * MAINMENU-NEWGAME
- * MainMenuScreen popup table displaying new game options.
- */
-
 package galenscovell.screens;
+
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,15 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 
-import galenscovell.util.ResourceManager;
-
+/**
+ * NEWGAME POPUP
+ * MainMenuScreen popup displaying new game options.
+ *
+ * @author Galen Scovell
+ */
 
 public class MainMenuNewGame extends Table {
     private MainMenuScreen root;
     private Table mainTable;
     private Button knightButton, explorerButton, mageButton;
     private boolean knightSelected, explorerSelected, mageSelected;
-
 
     public MainMenuNewGame(MainMenuScreen root) {
         this.root = root;

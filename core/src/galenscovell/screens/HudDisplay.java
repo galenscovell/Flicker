@@ -1,10 +1,9 @@
-
-/**
- * HUD-DISPLAY
- * Creates HUD and handles HUD updates.
- */
-
 package galenscovell.screens;
+
+import galenscovell.entities.Player;
+import galenscovell.screens.hudcomponents.*;
+import galenscovell.util.Constants;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,10 +17,12 @@ import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import galenscovell.entities.Player;
-import galenscovell.util.Constants;
-import galenscovell.util.ResourceManager;
-
+/**
+ * HUD DISPLAY
+ * Creates HUD and handles HUD updates.
+ *
+ * @author Galen Scovell
+ */
 
 public class HudDisplay {
     private GameScreen game;
@@ -31,7 +32,6 @@ public class HudDisplay {
     private ProgressBar health, mana;
     private Table playerMenu, inventoryMenu, optionsMenu, examineMenu;
     private Button playerButton, examineButton, inventoryButton, optionsButton;
-
 
     public HudDisplay(GameScreen game, Player player) {
         this.game = game;

@@ -1,22 +1,21 @@
-
-/**
- * PLAYER CLASS
- * Only one Player instance exists for persistence across levels.
- */
-
 package galenscovell.entities;
+
+import galenscovell.graphics.SpriteSheet;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import galenscovell.graphics.SpriteSheet;
-
+/**
+ * PLAYER CREATURE
+ * Only one Player instance exists for persistence across levels.
+ *
+ * @author Galen Scovell
+ */
 
 public class Player extends Creature {
     private int atkX, atkY;
     private String type, desc;
     private int level, spriteLocation, vit, intel, vision, speed, evade, defense, attacks, damage, poison;
-
 
     public Player() {
         super();

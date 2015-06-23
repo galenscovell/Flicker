@@ -1,20 +1,20 @@
+package galenscovell.screens.hudcomponents;
 
-/**
- * HUD-INVENTORYMENU
- * HUD popup table for player inventory.
- */
-
-package galenscovell.screens;
+import galenscovell.screens.HudDisplay;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import galenscovell.util.ResourceManager;
-
+/**
+ * INVENTORY MENU
+ * HUD popup table for player inventory.
+ *
+ * @author Galen Scovell
+ */
 
 public class HudInventoryMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
-
 
     public HudInventoryMenu(HudDisplay root) {
         this.root = root;

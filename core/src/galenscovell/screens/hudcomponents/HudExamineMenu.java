@@ -1,22 +1,22 @@
+package galenscovell.screens.hudcomponents;
 
-/**
- * HUDEXAMINE-MENU
- * HUD popup table for examine action.
- */
-
-package galenscovell.screens;
+import galenscovell.screens.HudDisplay;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
-import galenscovell.util.ResourceManager;
-
+/**
+ * EXAMINE MENU
+ * HUD popup table for examine action.
+ *
+ * @author Galen Scovell
+ */
 
 public class HudExamineMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
-
 
     public HudExamineMenu(HudDisplay root) {
         this.root = root;
