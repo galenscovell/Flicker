@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -30,7 +29,7 @@ import java.util.Random;
  */
 
 public class Renderer {
-    private Map<Integer, Tile> tiles;
+    private Tile[][] tiles;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
 
@@ -42,11 +41,12 @@ public class Renderer {
     private OrthographicCamera camera;
     private Viewport viewport;
     private SpriteBatch spriteBatch;
-    private int tileSize;
+
+    private int rows, columns, tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(Map<Integer, Tile> tiles) {
-        this.tileSize = 32;
+    public Renderer(Tile[][] tiles, int tileSize) {
+        this.tileSize = tileSize;
         this.camera = new OrthographicCamera(800, 480);
         this.viewport = new FitViewport(800, 480, camera);
         camera.setToOrtho(true, 800, 480);
@@ -75,9 +75,14 @@ public class Renderer {
         spriteBatch.begin();
 
         // World rendering: [x, y] are in Tiles, convert to pixels
-        for (Tile tile : tiles.values()) {
-            if (inViewport(tile.x * tileSize, tile.y * tileSize)) {
-                tile.draw(spriteBatch, tileSize);
+        for (Tile[] row : tiles) {
+            for (Tile tile : row) {
+                if (tile == null) {
+                    continue;
+                }
+                if (inViewport(tile.x * tileSize, tile.y * tileSize)) {
+                    tile.draw(spriteBatch, tileSize);
+                }
             }
         }
 
@@ -137,7 +142,9 @@ public class Renderer {
         centerOnPlayer();
     }
 
-    public void assembleLevel(Player player) {
+    public void assembleLevel(Player player, int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
         placeInanimates();
         placePlayer(player);
         createResistanceMap();
@@ -149,16 +156,21 @@ public class Renderer {
     }
 
     private void placeInanimates() {
-        for (Tile tile : tiles.values()) {
-            if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
-                if (tile.getBitmask() == 1010) {
-                    inanimates.add(new Door(tile.x, tile.y, 0));
-                    tile.toggleBlocking();
-                    tile.toggleOccupied();
-                } else if (tile.getBitmask() == 101) {
-                    inanimates.add(new Door(tile.x, tile.y, 1));
-                    tile.toggleBlocking();
-                    tile.toggleOccupied();
+        for (Tile[] row : tiles) {
+            for (Tile tile : row) {
+                if (tile == null) {
+                    continue;
+                }
+                if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
+                    if (tile.getBitmask() == 1010) {
+                        inanimates.add(new Door(tile.x, tile.y, 0));
+                        tile.toggleBlocking();
+                        tile.toggleOccupied();
+                    } else if (tile.getBitmask() == 101) {
+                        inanimates.add(new Door(tile.x, tile.y, 1));
+                        tile.toggleBlocking();
+                        tile.toggleOccupied();
+                    }
                 }
             }
         }
@@ -175,13 +187,24 @@ public class Renderer {
     }
 
     private void createResistanceMap() {
-        float[][] resistanceMap = new float[60][60];
-        for (Tile tile : tiles.values()) {
-            if (tile.isPerimeter() || tile.isBlocking()) {
-                resistanceMap[tile.y][tile.x] = 2.0f;
-            } else {
-                resistanceMap[tile.y][tile.x] = 0.0f;
+        float[][] resistanceMap = new float[rows][columns];
+        for (Tile[] row : tiles) {
+            for (Tile tile : row) {
+                if (tile == null) {
+                    continue;
+                }
+                if (tile.isPerimeter() || tile.isBlocking()) {
+                    resistanceMap[tile.y][tile.x] = 2.0f;
+                } else {
+                    resistanceMap[tile.y][tile.x] = 0.0f;
+                }
             }
+        }
+        for (float[] row : resistanceMap) {
+            for (float e : row) {
+                System.out.print(e + " ");
+            }
+            System.out.println();
         }
         this.torchlight = new Torchlight(resistanceMap, player);
     }
@@ -198,10 +221,10 @@ public class Renderer {
         Random random = new Random();
         boolean found = false;
         while (!found) {
-            int choiceX = random.nextInt(60);
-            int choiceY = random.nextInt(60);
-            if (tiles.containsKey(choiceX * 60 + choiceY)) {
-                Tile tile = tiles.get(choiceX * 60 + choiceY);
+            int choiceY = random.nextInt(rows);
+            int choiceX = random.nextInt(columns);
+            if (tiles[choiceY][choiceX] != null) {
+                Tile tile = tiles[choiceY][choiceX];
                 if (tile.isFloor() && !tile.isOccupied()) {
                     found = true;
                     return tile;

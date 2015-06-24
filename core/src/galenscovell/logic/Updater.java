@@ -7,7 +7,6 @@ import galenscovell.inanimates.Inanimate;
 import galenscovell.screens.HudDisplay;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -20,13 +19,13 @@ import java.util.Random;
 public class Updater {
     private int tileSize;
     private HudDisplay hud;
-    private Map<Integer, Tile> tiles;
+    private Tile[][] tiles;
     private Player player;
     private Inanimate stairs;
 
-    public Updater(Map<Integer, Tile> tiles) {
+    public Updater(Tile[][] tiles, int tileSize) {
+        this.tileSize = tileSize;
         this.tiles = tiles;
-        this.tileSize = 32;
     }
 
     public void setHud(HudDisplay hud) {
@@ -40,10 +39,6 @@ public class Updater {
                 entityMove(entity);
             }
         }
-    }
-
-    public void act() {
-
     }
 
     public void setPlayer(Player playerInstance) {
@@ -64,26 +59,6 @@ public class Updater {
 
     private void playerInteract(List<Inanimate> inanimates) {
 
-    }
-
-    private void playerAttack(List<Entity> entities, List<Inanimate> inanimates) {
-//        player.setAttacking();
-//        Point attackedTile = player.getFacingPoint(tileSize);
-//        player.setAttackingCoords(attackedTile.x * tileSize, attackedTile.y * tileSize);
-//        Entity hitEntity = null;
-//
-//        for (Entity entity : entities) {
-//            if (entity.getX() == attackedTile.x * tileSize && entity.getY() == attackedTile.y * tileSize) {
-//                Tile tile = findTile(attackedTile.x, attackedTile.y);
-//                tile.toggleOccupied();
-//                hitEntity = entity;
-//            }
-//        }
-//
-//        if (hitEntity != null) {
-//            entities.remove(hitEntity);
-//            inanimates.add(new Dead(attackedTile.x, attackedTile.y));
-//        }
     }
 
     private void playerMove(int dx, int dy) {
@@ -206,7 +181,6 @@ public class Updater {
     }
 
     private Tile findTile(int x, int y) {
-        // x * COLUMNS + y
-        return tiles.get(x * 60 + y);
+        return tiles[y][x];
     }
 }

@@ -96,45 +96,66 @@ public class MainMenuScreen extends AbstractScreen {
                 // TODO: Continue previous game
             }
         });
+        TextButton settingsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
+        settingsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO: Settings screen
+            }
+        });
         TextButton quitButton = new TextButton("Quit Game", ResourceManager.colorButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
-        buttonTable.add(newGameButton).width(250).height(80).expand().fill();
+        buttonTable.add(newGameButton).width(300).height(60).expand().fill().padBottom(20);
         buttonTable.row();
-        buttonTable.add(continueButton).width(250).height(80).expand().fill();
+        buttonTable.add(continueButton).width(300).height(60).expand().fill().padBottom(20);
         buttonTable.row();
-        buttonTable.add(quitButton).width(250).height(80).expand().fill();
+        buttonTable.add(settingsButton).width(300).height(60).expand().fill().padBottom(20);
+        buttonTable.row();
+        buttonTable.add(quitButton).width(300).height(60).expand().fill();
     }
 
     private void createNewTable() {
         this.newTable = new Table();
-        newTable.setDebug(true);
         Table classTable = new Table();
-        Button knightButton = new Button(ResourceManager.buttonStyle);
-        setIcon(knightButton, "knight");
-        Button mageButton = new Button(ResourceManager.buttonStyle);
-        setIcon(mageButton, "mage");
-        Button explorerButton = new Button(ResourceManager.buttonStyle);
-        setIcon(explorerButton, "explorer");
-
-        TextButton returnButton = new TextButton("Return", ResourceManager.colorButtonStyle);
+        Button knightButton = new Button(ResourceManager.frameStyle);
+        knightButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                root.newGame("knight");
+            }
+        });
+        setButtonIcon(knightButton, "knight");
+        Button mageButton = new Button(ResourceManager.frameStyle);
+        mageButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                root.newGame("mage");
+            }
+        });
+        setButtonIcon(mageButton, "mage");
+        Button explorerButton = new Button(ResourceManager.frameStyle);
+        explorerButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                root.newGame("explorer");
+            }
+        });
+        setButtonIcon(explorerButton, "explorer");
+        TextButton returnButton = new TextButton("Return", ResourceManager.buttonStyle);
         returnButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation();
             }
         });
-        classTable.add(knightButton).width(200).height(60).expand().fill().left();
-        classTable.add(mageButton).width(200).height(60).expand().fill().center();
-        classTable.add(explorerButton).width(200).height(60).expand().fill().right();
+        classTable.add(knightButton).width(180).height(220).expand().fill();
+        classTable.add(mageButton).width(180).height(220).expand().fill().padLeft(30).padRight(30);
+        classTable.add(explorerButton).width(180).height(220).expand().fill();
         newTable.add(classTable).expand().fill();
         newTable.row();
-        newTable.add(returnButton).width(250).height(60).expand().fill().center();
+        newTable.add(returnButton).width(300).height(60).expand().fill().center().padTop(20);
     }
 
-    private void setIcon(Button button, String name) {
+    private void setButtonIcon(Button button, String name) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fit);
         button.add(icon).expand().fill().center();

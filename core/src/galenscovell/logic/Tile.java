@@ -61,11 +61,7 @@ public class Tile {
     }
 
     public void toggleOccupied() {
-        if (occupied) {
-            occupied = false;
-        } else {
-            occupied = true;
-        }
+        occupied = !occupied;
     }
 
     public boolean isBlocking() {
@@ -73,11 +69,7 @@ public class Tile {
     }
 
     public void toggleBlocking() {
-        if (blocking) {
-            blocking = false;
-        } else {
-            blocking = true;
-        }
+        blocking = !blocking;
     }
 
     public void setFloorNeighbors(int value) {
@@ -292,7 +284,6 @@ public class Tile {
             for (int j = -1; j <= 1; j++) {
                 sumX = x + i;
                 sumY = y + j;
-
                 if ((sumX == x && sumY == y || (isOutOfBounds(sumX, sumY, columns, rows)))) {
                     continue;
                 }
@@ -302,13 +293,7 @@ public class Tile {
         return points;
     }
 
-    private boolean isOutOfBounds(int i, int j, int columns, int rows) {
-        if (i < 0 || j < 0) {
-            return true;
-        } else if (i >= columns || j >= rows) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean isOutOfBounds(int x, int y, int columns, int rows) {
+        return (x < 0 || y < 0 || x >= columns || y >= rows);
     }
 }

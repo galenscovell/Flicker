@@ -4,7 +4,7 @@ import galenscovell.entities.Player;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.logic.Renderer;
 import galenscovell.logic.Updater;
-import galenscovell.logic.World;
+import galenscovell.logic.Level;
 import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
 import galenscovell.util.PlayerParser;
@@ -12,33 +12,34 @@ import galenscovell.util.PlayerParser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.input.GestureDetector;
 
 /**
  * GAME SCREEN
- * Primary screen in which main gameplay occurs.
+ * Main gameplay screen.
+ * createNewLevel(int rows, int columns) is called for each level.
  *
  * @author Galen Scovell
  */
 
 public class GameScreen implements Screen {
-    private FlickerMain main;
+    private FlickerMain root;
     private Player playerInstance;
     private HudDisplay hud;
     private InputMultiplexer fullInput;
     private Renderer renderer;
     private Updater updater;
 
-    private int timestep = 12;
     private boolean tileSelection, moving, up, down, left, right;
-    private int[] move = new int[2];
     private double interpolation;
+
+    private final int timestep = 12;
+    private int[] move = new int[2];
     private int accumulator = 0;
 
-    public GameScreen(FlickerMain main, String classType) {
+    public GameScreen(FlickerMain root, String classType) {
         // GLProfiler.enable();
-        this.main = main;
+        this.root = root;
         PlayerParser playerParser = new PlayerParser();
         this.playerInstance = playerParser.pullClassStats(classType);
         this.hud = new HudDisplay(this, playerInstance);
@@ -49,7 +50,7 @@ public class GameScreen implements Screen {
         fullInput.addProcessor(new InputHandler(this));
         Gdx.input.setInputProcessor(fullInput);
 
-        createNewLevel();
+        createNewLevel(10, 10);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class GameScreen implements Screen {
             this.renderer = null;
             this.updater = null;
             System.gc(); // Suggest garbage collection on null references
-            createNewLevel();
+            createNewLevel(10, 10);
         }
 
         interpolation = (double) accumulator / timestep;
@@ -75,7 +76,7 @@ public class GameScreen implements Screen {
     public void screenZoom(boolean zoomOut, boolean touchScreen) {
         float value = 0.25f;
         if (touchScreen) {
-            value /= 8;
+            value /= 16;
         } else {
             value /= 2;
         }
@@ -96,7 +97,7 @@ public class GameScreen implements Screen {
     }
 
     public void toMainMenu() {
-        main.setScreen(main.mainMenuScreen);
+        root.setScreen(root.mainMenuScreen);
     }
 
     public void disableWorldInput() {
@@ -112,7 +113,7 @@ public class GameScreen implements Screen {
     }
 
     public void toggleTileSelection() {
-        tileSelection = tileSelection ? false : true;
+        tileSelection = !tileSelection;
     }
 
     @Override
@@ -159,16 +160,16 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void createNewLevel() {
-        World world = new World();
+    private void createNewLevel(int rows, int columns) {
+        Level level = new Level(rows, columns);
         // Modify smoothing passes here
         for (int i = 0; i < 6; i++) {
-            world.update();
+            level.update();
         }
-        world.optimizeLayout();
-        this.renderer = new Renderer(world.getTiles());
-        this.updater = new Updater(world.getTiles());
-        renderer.assembleLevel(playerInstance);
+        level.optimizeLayout();
+        this.renderer = new Renderer(level.getTiles(), 32);
+        this.updater = new Updater(level.getTiles(), 32);
+        renderer.assembleLevel(playerInstance, rows, columns);
         updater.setPlayer(playerInstance);
         updater.setStairs(renderer.getInanimateList());
         renderer.setHud(hud);

@@ -18,13 +18,13 @@ import java.util.Map;
  */
 
 public class Bitmasker {
-    public int findBitmask(Tile tile, Map<Integer, Tile> tiles, int columns) {
+    public int findBitmask(Tile tile, Tile[][] tiles) {
         int value = 0;
         List<Point> neighbors = tile.getNeighbors();
 
         // Find neighbor positions
-        for (Point point : neighbors) {
-            Tile neighborTile = tiles.get(point.x * columns + point.y);
+        for (Point neighbor : neighbors) {
+            Tile neighborTile = tiles[neighbor.y][neighbor.x];
             // Find neighboring perimeter Tiles
             if (neighborTile != null && (neighborTile.isPerimeter() || (tile.isWater() && neighborTile.isFloor()))) {
                 int diffX = tile.x - neighborTile.x;
