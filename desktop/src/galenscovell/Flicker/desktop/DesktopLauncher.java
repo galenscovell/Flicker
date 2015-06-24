@@ -1,19 +1,21 @@
-
 package galenscovell.flicker.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import galenscovell.flicker.FlickerMain;
-import galenscovell.util.Constants;
 
+/**
+ * DESKTOP LAUNCHER
+ *
+ */
 
 public class DesktopLauncher {
 
     public static void main (String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = Constants.WINDOW_X;
-        config.height = Constants.WINDOW_Y;
+        config.width = 800;
+        config.height = 480;
         config.title = "Flicker";
         config.resizable = true;
         new LwjglApplication(new FlickerMain(), config);

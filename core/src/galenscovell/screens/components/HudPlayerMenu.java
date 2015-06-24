@@ -1,4 +1,4 @@
-package galenscovell.screens.hudcomponents;
+package galenscovell.screens.components;
 
 import galenscovell.screens.HudDisplay;
 import galenscovell.util.ResourceManager;
@@ -6,17 +6,17 @@ import galenscovell.util.ResourceManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 /**
- * INTERACT POPUP
- * Dynamic display showing available interactive objects/entities in range.
+ * PLAYER MENU
+ * HUD popup table for player attributes/info.
  *
  * @author Galen Scovell
  */
 
-public class InteractPopup extends Table {
+public class HudPlayerMenu extends Table {
     private HudDisplay root;
     private Table mainTable;
 
-    public InteractPopup(HudDisplay root) {
+    public HudPlayerMenu(HudDisplay root) {
         this.root = root;
         create();
     }
@@ -26,6 +26,10 @@ public class InteractPopup extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ResourceManager.frameBG);
 
-        this.add(mainTable).width(60).height(60).expand().right();
+        this.add(mainTable).width(300).height(300).expand().right();
+    }
+
+    public void updateStats() {
+        // Update all displayed player stats when called.
     }
 }

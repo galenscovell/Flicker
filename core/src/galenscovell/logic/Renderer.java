@@ -8,7 +8,6 @@ import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
 import galenscovell.screens.HudDisplay;
-import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
 import com.badlogic.gdx.Gdx;
@@ -47,10 +46,10 @@ public class Renderer {
     private float minCamX, minCamY, maxCamX, maxCamY;
 
     public Renderer(Map<Integer, Tile> tiles) {
-        this.tileSize = Constants.TILESIZE;
-        this.camera = new OrthographicCamera(Constants.WINDOW_X, Constants.WINDOW_Y);
-        this.viewport = new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y, camera);
-        camera.setToOrtho(true, Constants.WINDOW_X, Constants.WINDOW_Y);
+        this.tileSize = 32;
+        this.camera = new OrthographicCamera(800, 480);
+        this.viewport = new FitViewport(800, 480, camera);
+        camera.setToOrtho(true, 800, 480);
 
         this.tiles = tiles;
         this.spriteBatch = new SpriteBatch();
@@ -176,7 +175,7 @@ public class Renderer {
     }
 
     private void createResistanceMap() {
-        float[][] resistanceMap = new float[Constants.TILE_ROWS][Constants.TILE_COLUMNS];
+        float[][] resistanceMap = new float[60][60];
         for (Tile tile : tiles.values()) {
             if (tile.isPerimeter() || tile.isBlocking()) {
                 resistanceMap[tile.y][tile.x] = 2.0f;
@@ -199,10 +198,10 @@ public class Renderer {
         Random random = new Random();
         boolean found = false;
         while (!found) {
-            int choiceX = random.nextInt(Constants.TILE_COLUMNS);
-            int choiceY = random.nextInt(Constants.TILE_ROWS);
-            if (tiles.containsKey(choiceX * Constants.TILE_COLUMNS + choiceY)) {
-                Tile tile = tiles.get(choiceX * Constants.TILE_COLUMNS + choiceY);
+            int choiceX = random.nextInt(60);
+            int choiceY = random.nextInt(60);
+            if (tiles.containsKey(choiceX * 60 + choiceY)) {
+                Tile tile = tiles.get(choiceX * 60 + choiceY);
                 if (tile.isFloor() && !tile.isOccupied()) {
                     found = true;
                     return tile;

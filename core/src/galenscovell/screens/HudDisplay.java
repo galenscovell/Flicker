@@ -1,8 +1,7 @@
 package galenscovell.screens;
 
 import galenscovell.entities.Player;
-import galenscovell.screens.hudcomponents.*;
-import galenscovell.util.Constants;
+import galenscovell.screens.components.*;
 import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
@@ -39,7 +38,7 @@ public class HudDisplay {
     }
 
     public void create(Player player) {
-        this.stage = new Stage(new FitViewport((float) Constants.WINDOW_X, (float) Constants.WINDOW_Y));
+        this.stage = new Stage(new FitViewport(800, 480));
         this.playerMenu = new HudPlayerMenu(this);
         this.examineMenu = new HudExamineMenu(this);
         this.inventoryMenu = new HudInventoryMenu(this);

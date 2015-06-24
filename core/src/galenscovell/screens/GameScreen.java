@@ -1,20 +1,19 @@
 package galenscovell.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.input.GestureDetector;
-
 import galenscovell.entities.Player;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.logic.Renderer;
 import galenscovell.logic.Updater;
 import galenscovell.logic.World;
-import galenscovell.util.Constants;
 import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
 import galenscovell.util.PlayerParser;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.input.GestureDetector;
 
 /**
  * GAME SCREEN
@@ -31,6 +30,7 @@ public class GameScreen implements Screen {
     private Renderer renderer;
     private Updater updater;
 
+    private int timestep = 12;
     private boolean tileSelection, moving, up, down, left, right;
     private int[] move = new int[2];
     private double interpolation;
@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (!moving || accumulator > Constants.TIMESTEP) {
+        if (!moving || accumulator > timestep) {
             update();
             accumulator = 0;
         }
@@ -65,7 +65,7 @@ public class GameScreen implements Screen {
             createNewLevel();
         }
 
-        interpolation = (double) accumulator / Constants.TIMESTEP;
+        interpolation = (double) accumulator / timestep;
         renderer.render(interpolation, moving);
         accumulator++;
         // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
@@ -161,7 +161,8 @@ public class GameScreen implements Screen {
 
     private void createNewLevel() {
         World world = new World();
-        for (int i = 0; i < Constants.WORLD_SMOOTHING_PASSES; i++) {
+        // Modify smoothing passes here
+        for (int i = 0; i < 6; i++) {
             world.update();
         }
         world.optimizeLayout();

@@ -1,7 +1,5 @@
 package galenscovell.logic;
 
-import galenscovell.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +19,8 @@ public class World {
     private Bitmasker bitmasker;
 
     public World() {
-        this.columns = Constants.TILE_COLUMNS;
-        this.rows = Constants.TILE_ROWS;
+        this.columns = 60;
+        this.rows = 60;
         this.builder = new DungeonBuilder(columns, rows);
         builder.build();
         this.tiles = builder.getTiles();
@@ -173,10 +171,10 @@ public class World {
         Random random = new Random();
         boolean found = false;
         while (!found) {
-            int choiceX = random.nextInt(Constants.TILE_COLUMNS);
-            int choiceY = random.nextInt(Constants.TILE_ROWS);
-            if (tiles.containsKey(choiceX * Constants.TILE_COLUMNS + choiceY)) {
-                Tile tile = tiles.get(choiceX * Constants.TILE_COLUMNS + choiceY);
+            int choiceX = random.nextInt(columns);
+            int choiceY = random.nextInt(rows);
+            if (tiles.containsKey(choiceX * columns + choiceY)) {
+                Tile tile = tiles.get(choiceX * columns + choiceY);
                 if (tile.isFloor()) {
                     found = true;
                     return tile;

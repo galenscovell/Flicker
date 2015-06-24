@@ -1,4 +1,4 @@
-package galenscovell.screens.hudcomponents;
+package galenscovell.screens.components;
 
 import galenscovell.screens.HudDisplay;
 import galenscovell.util.ResourceManager;

@@ -5,7 +5,6 @@ import galenscovell.entities.Player;
 import galenscovell.inanimates.Dead;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.screens.HudDisplay;
-import galenscovell.util.Constants;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class Updater {
 
     public Updater(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
-        this.tileSize = Constants.TILESIZE;
+        this.tileSize = 32;
     }
 
     public void setHud(HudDisplay hud) {
@@ -207,6 +206,7 @@ public class Updater {
     }
 
     private Tile findTile(int x, int y) {
-        return tiles.get(x * Constants.TILE_COLUMNS + y);
+        // x * COLUMNS + y
+        return tiles.get(x * 60 + y);
     }
 }
