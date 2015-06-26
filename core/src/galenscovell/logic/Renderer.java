@@ -7,11 +7,9 @@ import galenscovell.graphics.Torchlight;
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
-import galenscovell.screens.HudDisplay;
 import galenscovell.util.MonsterParser;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -33,7 +31,6 @@ public class Renderer {
     private List<Entity> entities;
     private List<Inanimate> inanimates;
 
-    private HudDisplay hud;
     private Player player;
     private Fog fog;
     private Torchlight torchlight;
@@ -45,32 +42,22 @@ public class Renderer {
     private int rows, columns, tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(Tile[][] tiles, int tileSize) {
+    public Renderer(Tile[][] tiles, SpriteBatch spriteBatch, int tileSize) {
         this.tileSize = tileSize;
         this.camera = new OrthographicCamera(800, 480);
         this.viewport = new FitViewport(800, 480, camera);
         camera.setToOrtho(true, 800, 480);
 
         this.tiles = tiles;
-        this.spriteBatch = new SpriteBatch();
+        this.spriteBatch = spriteBatch;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
 
         this.fog = new Fog();
     }
 
-    public void setHud(HudDisplay hud) {
-        this.hud = hud;
-    }
-
-    public void render(double interpolation, boolean moving) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+    public void render(double interpolation) {
         player.interpolate(interpolation);
-        if (moving) {
-            centerOnPlayer();
-        }
         findCameraBounds();
         spriteBatch.begin();
 
@@ -114,7 +101,6 @@ public class Renderer {
         fog.render(spriteBatch);
 
         spriteBatch.end();
-        hud.render();
     }
 
     public List<Entity> getEntityList() {
@@ -138,7 +124,6 @@ public class Renderer {
 
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        hud.resize(width, height);
         centerOnPlayer();
     }
 
@@ -199,12 +184,6 @@ public class Renderer {
                     resistanceMap[tile.y][tile.x] = 0.0f;
                 }
             }
-        }
-        for (float[] row : resistanceMap) {
-            for (float e : row) {
-                System.out.print(e + " ");
-            }
-            System.out.println();
         }
         this.torchlight = new Torchlight(resistanceMap, player);
     }

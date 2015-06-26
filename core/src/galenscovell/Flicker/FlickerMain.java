@@ -23,10 +23,11 @@ public class FlickerMain extends Game {
     @Override
     public void create () {
         // Initialize resource manager and load assets
+        // TODO: Loading screen
         ResourceManager.create();
         ResourceManager.assetManager.finishLoading();
         ResourceManager.done();
-
+        // Initialize spriteBatch used throughout game
         this.spriteBatch = new SpriteBatch();
         this.mainMenuScreen = new MainMenuScreen(this);
         setScreen(mainMenuScreen);
@@ -44,6 +45,9 @@ public class FlickerMain extends Game {
     @Override
     public void dispose() {
         mainMenuScreen.dispose();
+        if (gameScreen != null) {
+            gameScreen.dispose();
+        }
         ResourceManager.dispose();
     }
 }

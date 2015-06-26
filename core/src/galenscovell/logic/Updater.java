@@ -2,9 +2,8 @@ package galenscovell.logic;
 
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
-import galenscovell.inanimates.Dead;
 import galenscovell.inanimates.Inanimate;
-import galenscovell.screens.HudDisplay;
+import galenscovell.screens.HudStage;
 
 import java.util.List;
 import java.util.Random;
@@ -18,7 +17,7 @@ import java.util.Random;
 
 public class Updater {
     private int tileSize;
-    private HudDisplay hud;
+    private HudStage hud;
     private Tile[][] tiles;
     private Player player;
     private Inanimate stairs;
@@ -28,7 +27,7 @@ public class Updater {
         this.tiles = tiles;
     }
 
-    public void setHud(HudDisplay hud) {
+    public void setHud(HudStage hud) {
         this.hud = hud;
     }
 
@@ -55,10 +54,6 @@ public class Updater {
 
     public boolean descend() {
         return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
-    }
-
-    private void playerInteract(List<Inanimate> inanimates) {
-
     }
 
     private void playerMove(int dx, int dy) {

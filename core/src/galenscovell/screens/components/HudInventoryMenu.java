@@ -1,6 +1,6 @@
 package galenscovell.screens.components;
 
-import galenscovell.screens.HudDisplay;
+import galenscovell.screens.HudStage;
 import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -13,10 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  */
 
 public class HudInventoryMenu extends Table {
-    private HudDisplay root;
+    private HudStage root;
     private Table mainTable;
 
-    public HudInventoryMenu(HudDisplay root) {
+    public HudInventoryMenu(HudStage root) {
         this.root = root;
         create();
     }

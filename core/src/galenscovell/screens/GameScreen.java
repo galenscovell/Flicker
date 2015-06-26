@@ -10,8 +10,9 @@ import galenscovell.util.InputHandler;
 import galenscovell.util.PlayerParser;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.input.GestureDetector;
 
 /**
@@ -22,39 +23,41 @@ import com.badlogic.gdx.input.GestureDetector;
  * @author Galen Scovell
  */
 
-public class GameScreen implements Screen {
-    private FlickerMain root;
+public class GameScreen extends AbstractScreen {
     private Player playerInstance;
-    private HudDisplay hud;
     private InputMultiplexer fullInput;
     private Renderer renderer;
     private Updater updater;
 
     private boolean tileSelection, moving, up, down, left, right;
-    private double interpolation;
 
     private final int timestep = 12;
     private int[] move = new int[2];
     private int accumulator = 0;
 
     public GameScreen(FlickerMain root, String classType) {
+        super(root);
+        create(classType);
+    }
+
+    protected void create(String classType) {
         // GLProfiler.enable();
-        this.root = root;
         PlayerParser playerParser = new PlayerParser();
         this.playerInstance = playerParser.pullClassStats(classType);
-        this.hud = new HudDisplay(this, playerInstance);
-
+        this.stage = new HudStage(this, playerInstance, root.spriteBatch);
         this.fullInput = new InputMultiplexer();
-        fullInput.addProcessor(hud.stage);
+        fullInput.addProcessor(stage);
         fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
         fullInput.addProcessor(new InputHandler(this));
         Gdx.input.setInputProcessor(fullInput);
-
-        createNewLevel(10, 10);
+        createNewLevel();
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(delta);
         if (!moving || accumulator > timestep) {
             update();
             accumulator = 0;
@@ -63,14 +66,25 @@ public class GameScreen implements Screen {
             this.renderer = null;
             this.updater = null;
             System.gc(); // Suggest garbage collection on null references
-            createNewLevel(10, 10);
+            createNewLevel();
         }
 
-        interpolation = (double) accumulator / timestep;
-        renderer.render(interpolation, moving);
+        renderer.render((double) accumulator / timestep);
+        stage.draw();
         accumulator++;
         // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
         // GLProfiler.reset();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        renderer.resize(width, height);
+        stage.getViewport().update(width, height, true);
+    }
+
+    @Override
+    public void show() {
+        enableWorldInput();
     }
 
     public void screenZoom(boolean zoomOut, boolean touchScreen) {
@@ -91,17 +105,12 @@ public class GameScreen implements Screen {
         renderer.pan(dx, dy);
     }
 
-    @Override
-    public void resize(int width, int height) {
-        renderer.resize(width, height);
-    }
-
     public void toMainMenu() {
         root.setScreen(root.mainMenuScreen);
     }
 
     public void disableWorldInput() {
-        Gdx.input.setInputProcessor(hud.stage);
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void enableWorldInput() {
@@ -114,32 +123,6 @@ public class GameScreen implements Screen {
 
     public void toggleTileSelection() {
         tileSelection = !tileSelection;
-    }
-
-    @Override
-    public void show() {
-        enableWorldInput();
-    }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-        hud.dispose();
-        this.dispose();
     }
 
     public void setMovement(int x, int y) {
@@ -160,19 +143,21 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void createNewLevel(int rows, int columns) {
+    private void createNewLevel() {
+        // Modify level dimensions here
+        int rows = 10;
+        int columns = 10;
         Level level = new Level(rows, columns);
         // Modify smoothing passes here
         for (int i = 0; i < 6; i++) {
             level.update();
         }
         level.optimizeLayout();
-        this.renderer = new Renderer(level.getTiles(), 32);
+        this.renderer = new Renderer(level.getTiles(), root.spriteBatch, 32);
         this.updater = new Updater(level.getTiles(), 32);
         renderer.assembleLevel(playerInstance, rows, columns);
         updater.setPlayer(playerInstance);
         updater.setStairs(renderer.getInanimateList());
-        renderer.setHud(hud);
-        updater.setHud(hud);
+        updater.setHud((HudStage) stage);
     }
 }

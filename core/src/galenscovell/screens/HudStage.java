@@ -5,6 +5,7 @@ import galenscovell.screens.components.*;
 import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,34 +18,32 @@ import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
- * HUD DISPLAY
+ * HUD STAGE
  * Creates HUD and handles HUD updates.
  *
  * @author Galen Scovell
  */
 
-public class HudDisplay {
+public class HudStage extends Stage {
     private GameScreen game;
-    public Stage stage;
     private int eventLines = 1;
     private Label eventLog;
     private ProgressBar health, mana;
     private Table playerMenu, inventoryMenu, optionsMenu, examineMenu;
     private Button playerButton, examineButton, inventoryButton, optionsButton;
 
-    public HudDisplay(GameScreen game, Player player) {
+    public HudStage(GameScreen game, Player player, SpriteBatch spriteBatch) {
+        super(new FitViewport(800, 480), spriteBatch);
         this.game = game;
         create(player);
     }
 
     public void create(Player player) {
-        this.stage = new Stage(new FitViewport(800, 480));
         this.playerMenu = new HudPlayerMenu(this);
         this.examineMenu = new HudExamineMenu(this);
         this.inventoryMenu = new HudInventoryMenu(this);
         this.optionsMenu = new HudOptionsMenu(this);
 
-        // Init main HUD layout (fills screen)
         Table mainTable = new Table();
         mainTable.setFillParent(true);
 
@@ -53,7 +52,7 @@ public class HudDisplay {
          **********************************/
         Table topTable = new Table();
 
-        // Top left section
+
         Table topLeft = new Table();
         topLeft.pad(8, 8, 8, 8);
         this.eventLog = new Label("Events displayed here.", ResourceManager.detailStyle);
@@ -63,7 +62,6 @@ public class HudDisplay {
         topTable.add(topLeft).height(120).width(400).expand().top().left();
 
 
-        // Top right section
         Table topRight = new Table();
         this.playerButton = new Button(ResourceManager.frameStyle);
         setIcon(playerButton, player.getClassType(), 0.9f);
@@ -92,67 +90,8 @@ public class HudDisplay {
          **********************************/
         Table bottomTable = new Table();
 
-        // Bottom left section (d-pad)
-        Table dpad = new Table();
-        Table upButton = new Table();
-        setIcon(upButton, "uparrow", 0.4f);
-        dpad.add(upButton).width(70).height(70).expand().colspan(2).center();
-        upButton.addListener(new ClickListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(0, -1);
-                return true;
-            }
 
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(0, 0);
-            }
-        });
-        dpad.row();
-        Table leftButton = new Table();
-        setIcon(leftButton, "leftarrow", 0.4f);
-        dpad.add(leftButton).width(70).height(70).expand().left();
-        leftButton.addListener(new ClickListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(-1, 0);
-                return true;
-            }
-
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(0, 0);
-            }
-        });
-        Table rightButton = new Table();
-        setIcon(rightButton, "rightarrow", 0.4f);
-        dpad.add(rightButton).width(70).height(70).expand().right();
-        rightButton.addListener(new ClickListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(1, 0);
-                return true;
-            }
-
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(0, 0);
-            }
-        });
-        dpad.row();
-        Table downButton = new Table();
-        setIcon(downButton, "downarrow", 0.4f);
-        dpad.add(downButton).width(70).height(70).expand().colspan(2).center();
-        downButton.addListener(new ClickListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(0, 1);
-                return true;
-            }
-
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setMovement(0, 0);
-            }
-        });
-        bottomTable.add(dpad).height(160).width(220).left().expand();
-
-
-        // Bottom right section
-        Table bottomRight = new Table();
+        Table bottomLeft = new Table();
         this.examineButton = new Button(ResourceManager.buttonStyle);
         setIcon(examineButton, "examine", 0.9f);
         examineButton.addListener(new ClickListener() {
@@ -175,33 +114,22 @@ public class HudDisplay {
                 menuOperation(optionsMenu);
             }
         });
-        bottomRight.add(examineButton).height(80).width(80);
-        bottomRight.add(inventoryButton).height(80).width(80);
-        bottomRight.add(optionsButton).height(80).width(80);
-        bottomTable.add(bottomRight).bottom().right().expand();
+        bottomLeft.add(examineButton).height(80).width(80);
+        bottomLeft.add(inventoryButton).height(80).width(80);
+        bottomLeft.add(optionsButton).height(80).width(80);
+        bottomTable.add(bottomLeft).bottom().left().expand();
 
         mainTable.add(bottomTable).bottom().fill();
 
-        // Finalize HUD
         mainTable.pack();
-        stage.addActor(mainTable);
-    }
-
-    public void render() {
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-    }
-
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        this.addActor(mainTable);
     }
 
     public void dispose() {
-        stage.addActor(examineButton);
-        stage.addActor(playerMenu);
-        stage.addActor(inventoryMenu);
-        stage.addActor(optionsMenu);
-        stage.dispose();
+        this.addActor(examineButton);
+        this.addActor(playerMenu);
+        this.addActor(inventoryMenu);
+        this.addActor(optionsMenu);
     }
 
     public void returnToMainMenu() {
@@ -228,7 +156,7 @@ public class HudDisplay {
             inventoryButton.setTouchable(Touchable.enabled);
             optionsButton.setTouchable(Touchable.enabled);
         } else {
-            stage.addActor(examineMenu);
+            this.addActor(examineMenu);
             playerButton.setTouchable(Touchable.disabled);
             inventoryButton.setTouchable(Touchable.disabled);
             optionsButton.setTouchable(Touchable.disabled);
@@ -269,7 +197,7 @@ public class HudDisplay {
             } else if (playerMenu != menu && playerMenu.hasParent()) {
                 playerMenu.remove();
             }
-            stage.addActor(menu);
+            this.addActor(menu);
             game.disableWorldInput();
         }
     }

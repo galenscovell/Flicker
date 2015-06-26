@@ -1,6 +1,6 @@
 package galenscovell.screens.components;
 
-import galenscovell.screens.HudDisplay;
+import galenscovell.screens.HudStage;
 import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Gdx;
@@ -17,10 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 
 public class HudOptionsMenu extends Table {
-    private HudDisplay root;
+    private HudStage root;
     private Table mainTable;
 
-    public HudOptionsMenu(HudDisplay root) {
+    public HudOptionsMenu(HudStage root) {
         this.root = root;
         create();
     }
