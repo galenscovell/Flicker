@@ -6,6 +6,7 @@ import galenscovell.inanimates.Inanimate;
 import galenscovell.screens.HudStage;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -16,15 +17,16 @@ import java.util.Random;
  */
 
 public class Updater {
-    private int tileSize;
+    private int tileSize, columns;
     private HudStage hud;
-    private Tile[][] tiles;
+    private Map<Integer, Tile> tiles;
     private Player player;
     private Inanimate stairs;
 
-    public Updater(Tile[][] tiles, int tileSize) {
+    public Updater(Map<Integer, Tile> tiles, int tileSize, int columns) {
         this.tileSize = tileSize;
         this.tiles = tiles;
+        this.columns = columns;
     }
 
     public void setHud(HudStage hud) {
@@ -176,6 +178,6 @@ public class Updater {
     }
 
     private Tile findTile(int x, int y) {
-        return tiles[y][x];
+        return tiles.get(x * columns + y);
     }
 }

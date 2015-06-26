@@ -43,7 +43,7 @@ public class Stairs implements Inanimate {
         return "The stairs descend deeper.";
     }
 
-    public void draw(SpriteBatch batch, int tileSize, Torchlight torchlight) {
+    public void draw(SpriteBatch batch, int tileSize) {
         batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
     }
 }

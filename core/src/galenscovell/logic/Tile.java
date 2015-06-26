@@ -23,7 +23,7 @@ public class Tile {
     private int bitmask;
     private Sprite[] sprites;
     private int currentFrame, frames;
-    private boolean occupied, blocking;
+    private boolean occupied, blocking, unused, selected;
 
     public Tile(int x, int y, int columns, int rows) {
         this.x = x;
@@ -34,6 +34,10 @@ public class Tile {
         this.sprites = new Sprite[2];
         this.frames = 0;
         this.currentFrame = 0;
+    }
+
+    public boolean isEmpty() {
+        return unused;
     }
 
     public boolean isWall() {
@@ -94,8 +98,8 @@ public class Tile {
 
     public void findSprite() {
         SpriteSheet sheet = SpriteSheet.tilesheet;
-        int s1 = 0;
-        int s2 = 0;
+        int s1 = 5;
+        int s2 = 5;
         if (isPerimeter()) {
             switch (bitmask) {
                 case 0:
@@ -149,8 +153,6 @@ public class Tile {
                 case 1111:
                 default:
                     state = 1;
-                    s1 = 5;
-                    s2 = 5;
             }
         } else if (isFloor()) {
             switch (bitmask) {
@@ -260,8 +262,15 @@ public class Tile {
                     s2 = 57;
             }
         }
+        if (s1 == 5 && s2 == 5) {
+            this.unused = true;
+        }
         sprites[0] = new Sprite(sheet.getSprite(s1));
         sprites[1] = new Sprite(sheet.getSprite(s2));
+    }
+
+    public void toggleSelected() {
+        selected = !selected;
     }
 
     public void draw(SpriteBatch batch, int tileSize) {
@@ -273,7 +282,13 @@ public class Tile {
             }
             frames -= frames;
         }
-        batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
+        if (selected) {
+            batch.setColor(0.0f, 0.8f, 0.3f, 0.8f);
+            batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
+            batch.setColor(1, 1, 1, 1);
+        } else {
+            batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
+        }
         frames++;
     }
 

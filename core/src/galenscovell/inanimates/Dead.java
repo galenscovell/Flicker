@@ -55,7 +55,7 @@ public class Dead implements Inanimate {
         return "A corpse lies here.";
     }
 
-    public void draw(SpriteBatch batch, int tileSize, Torchlight torchlight) {
+    public void draw(SpriteBatch batch, int tileSize) {
         batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
     }
 }

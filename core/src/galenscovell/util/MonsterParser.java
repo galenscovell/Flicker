@@ -45,16 +45,13 @@ public class MonsterParser {
     public Monster spawn(int level) {
         List<Monster> monsterList = createMonsterList();
         Random random = new Random();
-        boolean found = false;
-        while (!found) {
+        while (true) {
             int selection = random.nextInt(monsterList.size());
             Monster selected = monsterList.get(selection);
             if (selected.level == level || selected.level == (level - 1)) {
                 selected.setup();
-                found = true;
                 return selected;
             }
         }
-        return null;
     }
 }

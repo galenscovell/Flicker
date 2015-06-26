@@ -63,10 +63,9 @@ public class Door implements Inanimate {
         }
     }
 
-    public void draw(SpriteBatch batch, int tileSize, Torchlight torchlight) {
+    public void draw(SpriteBatch batch, int tileSize) {
         batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
         if (stateChanged) {
-            torchlight.updateResistanceMap(x, y, blocking);
             stateChanged = false;
         }
     }

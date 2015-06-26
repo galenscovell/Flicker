@@ -1,7 +1,9 @@
 package galenscovell.util;
 
+import com.badlogic.gdx.math.Vector3;
 import galenscovell.screens.GameScreen;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 
 /**
@@ -13,15 +15,19 @@ import com.badlogic.gdx.input.GestureDetector;
 
 public class GestureHandler extends GestureDetector.GestureAdapter {
     private GameScreen game;
+    private OrthographicCamera camera;
 
-    public GestureHandler(GameScreen game) {
+    public GestureHandler(GameScreen game, OrthographicCamera camera) {
         this.game = game;
+        this.camera = camera;
     }
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         if (game.tileSelection()) {
-            System.out.println("Tile selection made.");
+            Vector3 worldCoordinates = new Vector3(x, y, 0);
+            camera.unproject(worldCoordinates);
+            game.findTile(worldCoordinates.x, worldCoordinates.y);
             return true;
         }
         return false;

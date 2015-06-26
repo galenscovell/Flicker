@@ -1,6 +1,5 @@
 package galenscovell.inanimates;
 
-import galenscovell.graphics.Torchlight;
 import galenscovell.logic.Tile;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,5 +17,5 @@ public interface Inanimate {
     public int getY();
     public String interact(Tile tile);
     public String getType();
-    public void draw(SpriteBatch batch, int tileSize, Torchlight torchlight);
+    public void draw(SpriteBatch batch, int tileSize);
 }

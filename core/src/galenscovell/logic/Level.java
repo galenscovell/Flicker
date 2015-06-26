@@ -2,11 +2,13 @@ package galenscovell.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
- * WORLD
- * World is composed of a 2D array grid and a list of matching Tile instances.
+ * LEVEL
+ * Level is composed of a HashMap with Tile object values and (x * level_columns + y) keys.
+ * Optimization is an intensive procedure which should only occur when creating levels.
  *
  * @author Galen Scovell
  */
@@ -14,7 +16,7 @@ import java.util.Random;
 public class Level {
     private int columns, rows;
     private DungeonBuilder builder;
-    private Tile[][] tiles;
+    private Map<Integer, Tile> tiles;
 
     public Level(int rows, int columns) {
         this.rows = rows;
@@ -25,91 +27,87 @@ public class Level {
 
     public void update() {
         checkAdjacent();
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                builder.smooth(tile);
-            }
+        for (Tile tile : tiles.values()) {
+            builder.smooth(tile);
         }
     }
 
-    public Tile[][] getTiles() {
+    public Map<Integer, Tile> getTiles() {
         return tiles;
     }
 
-    public void optimizeLayout() {
-        // If Tile is a wall connected to a floor Tile, it becomes a perimeter Tile
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                if (tile.isWall()) {
-                    if (tile.getFloorNeighbors() > 0) {
-                        tile.state = 3;
-                    } else {
-                        // Otherwise remove Tile
-                        tile = null;
+    public void optimize() {
+        // If Tile is a wall with neighboring floor, it becomes a perimeter Tile
+        // Also switch over any remaining corridor Tiles
+        for (Tile tile : tiles.values()) {
+            if (tile.isWall()) {
+                if (tile.getFloorNeighbors() > 0) {
+                    tile.state = 3;
+                }
+            } else if (tile.isCorridor()) {
+                tile.state = 1;
+            }
+        }
+        // Set perimeter Tiles not actually on perimeter to be floor Tiles
+        int wallNeighbors;
+        for (Tile tile : tiles.values()) {
+            if (tile.isPerimeter()) {
+                wallNeighbors = 0;
+                for (Point neighbor : tile.getNeighbors()) {
+                    if (tiles.get(neighbor.x * columns + neighbor.y).isWall()) {
+                        wallNeighbors++;
                     }
-                } else if (tile.isCorridor()) {
-                    // Switch over lingering corridor tiles
+                }
+                if (wallNeighbors == 0) {
                     tile.state = 1;
                 }
             }
         }
-        // Set perimeter Tiles not on perimeter to be floor Tiles
-        int wallNeighbors;
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                if (tile.isPerimeter()) {
-                    wallNeighbors = 0;
-                    for (Point neighbor : tile.getNeighbors()) {
-                        if (tiles[neighbor.y][neighbor.x].isWall()) {
-                            wallNeighbors++;
-                        }
-                    }
-                    if (wallNeighbors == 0) {
-                        tile.state = 1;
+        // Set floor Tiles on world boundary or with neighboring walls as perimeter
+        for (Tile tile : tiles.values()) {
+            if (tile.isFloor()) {
+                wallNeighbors = 0;
+                for (Point neighbor : tile.getNeighbors()) {
+                    if (tiles.get(neighbor.x * columns + neighbor.y).isWall()) {
+                        wallNeighbors++;
                     }
                 }
-            }
-        }
-        // If Tile is on world boundary or has adjacent non-perimeter wall, make it perimeter
-        int key;
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                if (tile.isFloor()) {
-                    wallNeighbors = 0;
-                    for (Point neighbor : tile.getNeighbors()) {
-                        if (tiles[neighbor.y][neighbor.x].isWall()) {
-                            wallNeighbors++;
-                        }
-                    }
-                    if (wallNeighbors > 0 || tile.getNeighbors().size() < 8) {
-                        tile.state = 3;
-                    }
+                if (wallNeighbors > 0 || tile.getNeighbors().size() < 8) {
+                    tile.state = 3;
                 }
             }
         }
         // Recheck Tiles for floor neighbors, if floor exists without any adjacent
         // floor Tiles remove it. If Tile has only one adjacent floor make it perimeter.
         checkAdjacent();
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                if (tile.getFloorNeighbors() == 1) {
-                    tile.state = 3;
-                } else if (tile.getFloorNeighbors() == 0) {
-                    tile = null;
-                }
+        for (Tile tile : tiles.values()) {
+            if (tile.getFloorNeighbors() == 1) {
+                tile.state = 3;
             }
         }
         skin();
+        prune();
         placeWater();
     }
 
     private void skin() {
         Bitmasker bitmasker = new Bitmasker();
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                tile.setBitmask(bitmasker.findBitmask(tile, tiles));
-                tile.findSprite();
+        for (Tile tile : tiles.values()) {
+            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
+            tile.findSprite();
+        }
+    }
+
+    private void prune() {
+        // Remove unused Tiles
+        List<Integer> pruned = new ArrayList<Integer>();
+        for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                pruned.add(entry.getKey());
             }
+        }
+        for (int key : pruned) {
+            tiles.remove(key);
         }
     }
 
@@ -138,7 +136,7 @@ public class Level {
         // Find water tile bitmasks and apply sprites
         Bitmasker bitmasker = new Bitmasker();
         for (Tile tile : waterTiles) {
-            tile.setBitmask(bitmasker.findBitmask(tile, tiles));
+            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
             tile.findSprite();
         }
     }
@@ -146,7 +144,7 @@ public class Level {
     private void expandWater(Tile tile, List<Tile> waterTiles) {
         List<Point> neighbors = tile.getNeighbors();
         for (Point point : neighbors) {
-            Tile neighborTile = tiles[point.y][point.x];
+            Tile neighborTile = tiles.get(point.x * columns + point.y);
             if (neighborTile.isFloor()) {
                 neighborTile.state = 4;
                 waterTiles.add(neighborTile);
@@ -155,34 +153,27 @@ public class Level {
     }
 
     private void checkAdjacent() {
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                int value = 0;
-                List<Point> neighborPoints = tile.getNeighbors();
-                for (Point point : neighborPoints) {
-                    if (tiles[point.y][point.x].isFloor()) {
-                        value++;
-                    }
+        for (Tile tile : tiles.values()) {
+            int value = 0;
+            List<Point> neighborPoints = tile.getNeighbors();
+            for (Point point : neighborPoints) {
+                if (tiles.get(point.x * columns + point.y).isFloor()) {
+                    value++;
                 }
-                tile.setFloorNeighbors(value);
             }
+            tile.setFloorNeighbors(value);
         }
     }
 
     private Tile findRandomTile() {
         Random random = new Random();
-        boolean found = false;
-        while (!found) {
+        while (true) {
             int choiceY = random.nextInt(rows);
             int choiceX = random.nextInt(columns);
-            if (tiles[choiceY][choiceX] != null) {
-                Tile tile = tiles[choiceY][choiceX];
-                if (tile.isFloor()) {
-                    found = true;
-                    return tile;
-                }
+            Tile tile = tiles.get(choiceX * columns + choiceY);
+            if (tile != null && tile.isFloor() && !tile.isOccupied()) {
+                return tile;
             }
         }
-        return null;
     }
 }

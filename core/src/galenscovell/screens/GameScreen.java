@@ -45,11 +45,6 @@ public class GameScreen extends AbstractScreen {
         PlayerParser playerParser = new PlayerParser();
         this.playerInstance = playerParser.pullClassStats(classType);
         this.stage = new HudStage(this, playerInstance, root.spriteBatch);
-        this.fullInput = new InputMultiplexer();
-        fullInput.addProcessor(stage);
-        fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
-        fullInput.addProcessor(new InputHandler(this));
-        Gdx.input.setInputProcessor(fullInput);
         createNewLevel();
     }
 
@@ -125,6 +120,10 @@ public class GameScreen extends AbstractScreen {
         tileSelection = !tileSelection;
     }
 
+    public void findTile(float x, float y) {
+        renderer.getTile(x, y);
+    }
+
     public void setMovement(int x, int y) {
         left = (x == -1);
         right = (x == 1);
@@ -152,12 +151,18 @@ public class GameScreen extends AbstractScreen {
         for (int i = 0; i < 6; i++) {
             level.update();
         }
-        level.optimizeLayout();
+        level.optimize();
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch, 32);
-        this.updater = new Updater(level.getTiles(), 32);
+        this.updater = new Updater(level.getTiles(), 32, columns);
         renderer.assembleLevel(playerInstance, rows, columns);
         updater.setPlayer(playerInstance);
         updater.setStairs(renderer.getInanimateList());
         updater.setHud((HudStage) stage);
+
+        this.fullInput = new InputMultiplexer();
+        fullInput.addProcessor(stage);
+        fullInput.addProcessor(new GestureDetector(new GestureHandler(this, renderer.getCamera())));
+        fullInput.addProcessor(new InputHandler(this));
+        enableWorldInput();
     }
 }

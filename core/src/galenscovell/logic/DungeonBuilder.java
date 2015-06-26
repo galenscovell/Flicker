@@ -1,7 +1,9 @@
 package galenscovell.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -14,16 +16,24 @@ import java.util.Random;
 
 public class DungeonBuilder {
     private int rows, columns;
-    private Tile[][] tiles;
+    private Tile[][] grid;
 
     public DungeonBuilder(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
-        this.tiles = new Tile[rows][columns];
+        this.grid = new Tile[rows][columns];
         build();
     }
 
-    public Tile[][] getTiles() {
+    public Map<Integer, Tile> getTiles() {
+        Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
+        int key;
+        for (int x = 0; x < columns; x++) {
+            for (int y = 0; y < rows; y++) {
+                key = x * columns + y;
+                tiles.put(key, grid[y][x]);
+            }
+        }
         return tiles;
     }
 
@@ -42,7 +52,7 @@ public class DungeonBuilder {
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
                 // All tiles begin as walls
-                tiles[y][x] = new Tile(x, y, columns, rows);
+                grid[y][x] = new Tile(x, y, columns, rows);
             }
         }
         // Find center of Tile tiles for creation of first room
@@ -59,7 +69,7 @@ public class DungeonBuilder {
         int sumX, sumY;
 
         // Set center Tile as floor
-        tiles[centerY][centerX].state = 1;
+        grid[centerY][centerX].state = 1;
 
         // Find all tiles within (-roomsize, roomsize) from center
         for (int x = -roomSize; x <= roomSize; x++) {
@@ -74,12 +84,12 @@ public class DungeonBuilder {
                     // If point is corner of room, do not use as corridor entry point
                     if (Math.abs(x) == roomSize && Math.abs(y) == roomSize) {
                         // Uncomment to make rooms have square corners
-                        // tiles[sumY][sumX].state = 1;
+                        // grid[sumY][sumX].state = 1;
                         continue;
                     }
                     perimeterPoints.add(new Point(sumX, sumY));
                 }
-                tiles[sumY][sumX].state = 1;
+                grid[sumY][sumX].state = 1;
             }
         }
         int chosenPoint = generator.nextInt(perimeterPoints.size() - 1);
@@ -97,7 +107,7 @@ public class DungeonBuilder {
             if (isOutOfBounds(sumX, sumY)) {
                 continue;
             }
-            if (tiles[sumY][sumX].isWall()) {
+            if (grid[sumY][sumX].isWall()) {
                 if (x == -1) {
                     direction = "left";
                 } else if (x == 1) {
@@ -111,7 +121,7 @@ public class DungeonBuilder {
             if (isOutOfBounds(sumX, sumY)) {
                 continue;
             }
-            if (tiles[sumY][sumX].isWall()) {
+            if (grid[sumY][sumX].isWall()) {
                 if (y == -1) {
                     direction = "up";
                 } else if (y == 1) {
@@ -130,7 +140,7 @@ public class DungeonBuilder {
         int currentY = startY;
 
         // Set corridor starting point as Floor
-        tiles[startY][startX].state = 1;
+        grid[startY][startX].state = 1;
 
         for (int i = 0; i < corridorSize; i++) {
             if (direction.equals("up") && !isOutOfBounds(currentX, currentY - 1)) {
@@ -142,10 +152,10 @@ public class DungeonBuilder {
             } else if (direction.equals("left") && !isOutOfBounds(currentX - 1, currentY)) {
                 currentX -= 1;
             }
-            tiles[currentY][currentX].state = 1;
+            grid[currentY][currentX].state = 1;
         }
         // Set final Tile as Corridor for next room creation
-        tiles[currentY][currentX].state = 2;
+        grid[currentY][currentX].state = 2;
     }
 
     private boolean isOutOfBounds(int x, int y) {
