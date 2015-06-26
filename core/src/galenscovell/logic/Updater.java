@@ -23,7 +23,8 @@ public class Updater {
     private Player player;
     private Inanimate stairs;
 
-    public Updater(Map<Integer, Tile> tiles, int tileSize, int columns) {
+    public Updater(Player playerInstance, Map<Integer, Tile> tiles, int tileSize, int columns) {
+        this.player = playerInstance;
         this.tileSize = tileSize;
         this.tiles = tiles;
         this.columns = columns;
@@ -40,10 +41,6 @@ public class Updater {
                 entityMove(entity);
             }
         }
-    }
-
-    public void setPlayer(Player playerInstance) {
-        this.player = playerInstance;
     }
 
     public void setStairs(List<Inanimate> inanimates) {

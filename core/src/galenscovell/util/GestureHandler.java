@@ -1,10 +1,10 @@
 package galenscovell.util;
 
-import com.badlogic.gdx.math.Vector3;
 import galenscovell.screens.GameScreen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * GESTURE HANDLER
@@ -34,16 +34,6 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
     }
 
     @Override
-    public boolean tap(float x, float y, int count, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean longPress(float x, float y) {
-        return false;
-    }
-
-    @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         game.screenPan(deltaX, deltaY);
         return true;
@@ -51,7 +41,7 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean zoom (float initialDistance, float endDistance){
-        game.screenZoom(endDistance < initialDistance, true);
+        game.screenZoom(endDistance < initialDistance);
         return true;
     }
 }

@@ -6,33 +6,28 @@ import galenscovell.logic.Renderer;
 import galenscovell.logic.Updater;
 import galenscovell.logic.Level;
 import galenscovell.util.GestureHandler;
-import galenscovell.util.InputHandler;
 import galenscovell.util.PlayerParser;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 
 /**
  * GAME SCREEN
- * Main gameplay screen.
- * createNewLevel(int rows, int columns) is called for each level.
+ * Main gameplay screen. Has both a HUD (stage) and world (renderer). Updater handles logic.
  *
  * @author Galen Scovell
  */
 
 public class GameScreen extends AbstractScreen {
     private Player playerInstance;
-    private InputMultiplexer fullInput;
     private Renderer renderer;
     private Updater updater;
+    private InputMultiplexer fullInput;
 
-    private boolean tileSelection, moving, up, down, left, right;
-
+    private boolean tileSelection;
     private final int timestep = 12;
-    private int[] move = new int[2];
     private int accumulator = 0;
 
     public GameScreen(FlickerMain root, String classType) {
@@ -53,17 +48,10 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
-        if (!moving || accumulator > timestep) {
+        if (accumulator > timestep) {
             update();
             accumulator = 0;
         }
-        if (updater.descend()) {
-            this.renderer = null;
-            this.updater = null;
-            System.gc(); // Suggest garbage collection on null references
-            createNewLevel();
-        }
-
         renderer.render((double) accumulator / timestep);
         stage.draw();
         accumulator++;
@@ -82,13 +70,8 @@ public class GameScreen extends AbstractScreen {
         enableWorldInput();
     }
 
-    public void screenZoom(boolean zoomOut, boolean touchScreen) {
-        float value = 0.25f;
-        if (touchScreen) {
-            value /= 16;
-        } else {
-            value /= 2;
-        }
+    public void screenZoom(boolean zoomOut) {
+        float value = 0.015625f;
         if (zoomOut) {
             renderer.zoom(value);
         } else {
@@ -124,24 +107,6 @@ public class GameScreen extends AbstractScreen {
         renderer.getTile(x, y);
     }
 
-    public void setMovement(int x, int y) {
-        left = (x == -1);
-        right = (x == 1);
-        up = (y == -1);
-        down = (y == 1);
-    }
-
-    private void update() {
-        move[0] = left ? -1 : right ? 1 : 0;
-        move[1] = up ? -1 : down ? 1 : 0;
-        if (move[0] == 0 && move[1] == 0) {
-            moving = false;
-        } else {
-            moving = true;
-            updater.move(move, renderer.getEntityList(), renderer.getInanimateList());
-        }
-    }
-
     private void createNewLevel() {
         // Modify level dimensions here
         int rows = 10;
@@ -153,16 +118,18 @@ public class GameScreen extends AbstractScreen {
         }
         level.optimize();
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch, 32);
-        this.updater = new Updater(level.getTiles(), 32, columns);
+        this.updater = new Updater(playerInstance, level.getTiles(), 32, columns);
         renderer.assembleLevel(playerInstance, rows, columns);
-        updater.setPlayer(playerInstance);
         updater.setStairs(renderer.getInanimateList());
         updater.setHud((HudStage) stage);
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);
         fullInput.addProcessor(new GestureDetector(new GestureHandler(this, renderer.getCamera())));
-        fullInput.addProcessor(new InputHandler(this));
         enableWorldInput();
+    }
+
+    private void update() {
+
     }
 }
