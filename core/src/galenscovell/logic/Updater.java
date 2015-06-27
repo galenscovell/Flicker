@@ -4,6 +4,7 @@ import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.screens.HudStage;
+import galenscovell.util.Constants;
 
 import java.util.List;
 import java.util.Map;
@@ -17,17 +18,16 @@ import java.util.Random;
  */
 
 public class Updater {
-    private int tileSize, columns;
+    private int tileSize;
     private HudStage hud;
     private Map<Integer, Tile> tiles;
     private Player player;
     private Inanimate stairs;
 
-    public Updater(Player playerInstance, Map<Integer, Tile> tiles, int tileSize, int columns) {
+    public Updater(Player playerInstance, Map<Integer, Tile> tiles) {
         this.player = playerInstance;
-        this.tileSize = tileSize;
         this.tiles = tiles;
-        this.columns = columns;
+        this.tileSize = Constants.TILESIZE;
     }
 
     public void setHud(HudStage hud) {
@@ -175,6 +175,6 @@ public class Updater {
     }
 
     private Tile findTile(int x, int y) {
-        return tiles.get(x * columns + y);
+        return tiles.get(x * Constants.COLUMNS + y);
     }
 }

@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 /**
  * HUD STAGE
  * Creates HUD and handles HUD updates.
+ * HUD camera uses pixel dimensions (800, 480) for pixel-perfect placement.
  *
  * @author Galen Scovell
  */

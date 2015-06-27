@@ -6,6 +6,7 @@ import galenscovell.graphics.Fog;
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
+import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
 import box2dLight.PointLight;
@@ -25,6 +26,7 @@ import java.util.Random;
 /**
  * RENDERER
  * Handles game graphics.
+ * Renderer uses custom units (100, 60) rather than pixel dimensions.
  *
  * @author Galen Scovell
  */
@@ -45,14 +47,14 @@ public class Renderer {
     private Viewport viewport;
     private SpriteBatch spriteBatch;
 
-    private int rows, columns, tileSize;
+    private int tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(World world, RayHandler rayHandler, Map<Integer, Tile> tiles, SpriteBatch spriteBatch, int tileSize) {
-        this.tileSize = tileSize;
-        this.camera = new OrthographicCamera(800, 480);
-        this.viewport = new FitViewport(800, 480, camera);
-        camera.setToOrtho(true, 800, 480);
+    public Renderer(World world, RayHandler rayHandler, Map<Integer, Tile> tiles, SpriteBatch spriteBatch) {
+        this.tileSize = Constants.TILESIZE;
+        this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
+        this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
+        camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
 
         this.tiles = tiles;
         this.world = world;
@@ -66,9 +68,10 @@ public class Renderer {
         RayHandler.useDiffuseLight(true);
         // Set environment to pitch black
         rayHandler.setAmbientLight(0.0f);
-        this.torch = new PointLight(rayHandler, 40, new Color(0.9f, 0.9f, 0.95f, 1.0f), 400, 200, 200);
+        this.torch = new PointLight(rayHandler, 20, new Color(0.9f, 0.9f, 0.95f, 0.95f), 25, 0, 0);
         // Depth which light continues through collision objects
         torch.setSoftnessLength(60);
+        torch.isXray();
 
         this.debug = new Box2DDebugRenderer();
     }
@@ -104,10 +107,12 @@ public class Renderer {
         fog.render(spriteBatch);
         spriteBatch.end();
 
+        // Set torch position centered on player coordinates
+        torch.setPosition(player.getX() + (tileSize / 2), player.getY() + (tileSize / 2));
         rayHandler.setCombinedMatrix(camera.combined);
         rayHandler.updateAndRender();
 
-        debug.render(world, camera.combined);
+        // debug.render(world, camera.combined);
     }
 
     public OrthographicCamera getCamera() {
@@ -123,9 +128,9 @@ public class Renderer {
     }
 
     public void getTile(float x, float y) {
-        int tileX = (int) (x / 32);
-        int tileY = (int) (y / 32);
-        Tile foundTile = tiles.get(tileX * columns + tileY);
+        int tileX = (int) (x / Constants.TILESIZE);
+        int tileY = (int) (y / Constants.TILESIZE);
+        Tile foundTile = tiles.get(tileX * Constants.COLUMNS + tileY);
         if (foundTile != null) {
             foundTile.toggleSelected();
         }
@@ -139,7 +144,7 @@ public class Renderer {
     }
 
     public void pan(float dx, float dy) {
-        camera.translate(-dx, -dy, 0);
+        camera.translate(-dx / (tileSize * 2), -dy / (tileSize * 2), 0);
     }
 
     public void resize(int width, int height) {
@@ -147,9 +152,7 @@ public class Renderer {
         centerOnPlayer();
     }
 
-    public void assembleLevel(Player player, int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
+    public void assembleLevel(Player player) {
         placeInanimates();
         placePlayer(player);
         MonsterParser monsterParser = new MonsterParser();
@@ -196,9 +199,9 @@ public class Renderer {
     private Tile findRandomTile() {
         Random random = new Random();
         while (true) {
-            int choiceY = random.nextInt(rows);
-            int choiceX = random.nextInt(columns);
-            Tile tile = tiles.get(choiceX * columns + choiceY);
+            int choiceY = random.nextInt(Constants.ROWS);
+            int choiceX = random.nextInt(Constants.COLUMNS);
+            Tile tile = tiles.get(choiceX * Constants.COLUMNS + choiceY);
             if (tile != null && tile.isFloor()) {
                 if (tile.isOccupied()) {
                     continue;
@@ -227,7 +230,7 @@ public class Renderer {
     private void createTileBodies() {
         // Setup box2D bodies for light collision
         PolygonShape tileShape = new PolygonShape();
-        tileShape.setAsBox(16, 16);
+        tileShape.setAsBox(2, 2);
         BodyDef tileBodyDef = new BodyDef();
         tileBodyDef.type = BodyDef.BodyType.StaticBody;
         FixtureDef tileFixture = new FixtureDef();
@@ -236,7 +239,7 @@ public class Renderer {
         for (Tile tile : tiles.values()) {
             if (tile.isPerimeter()) {
                 tileFixture.filter.groupIndex = 0;
-                tileBodyDef.position.set(tile.x * 32 + 16, tile.y * 32 + 16);
+                tileBodyDef.position.set(tile.x * Constants.TILESIZE + 2, tile.y * Constants.TILESIZE + 2);
                 Body tileBody = world.createBody(tileBodyDef);
                 tileBody.createFixture(tileFixture);
             }

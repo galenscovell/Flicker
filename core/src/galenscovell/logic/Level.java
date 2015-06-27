@@ -1,5 +1,7 @@
 package galenscovell.logic;
 
+import galenscovell.util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +20,9 @@ public class Level {
     private DungeonBuilder builder;
     private Map<Integer, Tile> tiles;
 
-    public Level(int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
+    public Level() {
+        this.rows = Constants.ROWS;
+        this.columns = Constants.COLUMNS;
         this.builder = new DungeonBuilder(columns, rows);
         this.tiles = builder.getTiles();
     }

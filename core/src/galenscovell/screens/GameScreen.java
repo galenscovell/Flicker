@@ -124,18 +124,15 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void createNewLevel() {
-        // Modify level dimensions here
-        int rows = 20;
-        int columns = 20;
-        Level level = new Level(rows, columns);
+        Level level = new Level();
         // Modify smoothing passes here
         for (int i = 0; i < 6; i++) {
             level.update();
         }
         level.optimize();
-        this.renderer = new Renderer(world, rayHandler, level.getTiles(), root.spriteBatch, 32);
-        this.updater = new Updater(playerInstance, level.getTiles(), 32, columns);
-        renderer.assembleLevel(playerInstance, rows, columns);
+        this.renderer = new Renderer(world, rayHandler, level.getTiles(), root.spriteBatch);
+        this.updater = new Updater(playerInstance, level.getTiles());
+        renderer.assembleLevel(playerInstance);
         updater.setStairs(renderer.getInanimateList());
         updater.setHud((HudStage) stage);
 
