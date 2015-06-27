@@ -28,6 +28,7 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
             Vector3 worldCoordinates = new Vector3(x, y, 0);
             camera.unproject(worldCoordinates);
             game.findTile(worldCoordinates.x, worldCoordinates.y);
+            game.playerMove(worldCoordinates.x, worldCoordinates.y);
             return true;
         }
         return false;

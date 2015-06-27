@@ -62,16 +62,14 @@ public class Renderer {
         this.spriteBatch = spriteBatch;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
-
         this.fog = new Fog();
+
         this.rayHandler = rayHandler;
+        // rayHandler.setCulling(false);
         RayHandler.useDiffuseLight(true);
-        // Set environment to pitch black
         rayHandler.setAmbientLight(0.0f);
-        this.torch = new PointLight(rayHandler, 20, new Color(0.9f, 0.9f, 0.95f, 0.95f), 25, 0, 0);
-        // Depth which light continues through collision objects
-        torch.setSoftnessLength(60);
-        torch.isXray();
+        this.torch = new PointLight(rayHandler, 60, new Color(0.9f, 0.9f, 0.95f, 0.95f), 35, 0, 0);
+        torch.setSoftnessLength(6);
 
         this.debug = new Box2DDebugRenderer();
     }
@@ -109,7 +107,7 @@ public class Renderer {
 
         // Set torch position centered on player coordinates
         torch.setPosition(player.getX() + (tileSize / 2), player.getY() + (tileSize / 2));
-        rayHandler.setCombinedMatrix(camera.combined);
+        rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
 
         // debug.render(world, camera.combined);

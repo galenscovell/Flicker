@@ -36,11 +36,11 @@ public class Updater {
 
     public void move(int[] input, List<Entity> entities, List<Inanimate> inanimates) {
         playerMove(input[0], input[1]);
-        for (Entity entity : entities) {
-            if (entity.movementTimer()) {
-                entityMove(entity);
-            }
-        }
+//        for (Entity entity : entities) {
+//            if (entity.movementTimer()) {
+//                entityMove(entity);
+//            }
+//        }
     }
 
     public void setStairs(List<Inanimate> inanimates) {

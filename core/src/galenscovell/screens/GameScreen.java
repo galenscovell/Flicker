@@ -5,6 +5,7 @@ import galenscovell.flicker.FlickerMain;
 import galenscovell.logic.Renderer;
 import galenscovell.logic.Updater;
 import galenscovell.logic.Level;
+import galenscovell.util.Constants;
 import galenscovell.util.GestureHandler;
 import galenscovell.util.PlayerParser;
 
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
 
@@ -33,8 +35,9 @@ public class GameScreen extends AbstractScreen {
     private RayHandler rayHandler;
 
     private boolean tileSelection;
-    private final int timestep = 30;
+    private final int timestep = 10;
     private int accumulator = 0;
+    private int[] move;
 
     public GameScreen(FlickerMain root, String classType) {
         super(root);
@@ -49,13 +52,19 @@ public class GameScreen extends AbstractScreen {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         createNewLevel();
+        this.move = new int[2];
     }
 
     @Override
     public void render(float delta) {
-        world.step(1 / 60f, 6, 2);
+        world.step(delta, 6, 2);
         stage.act(delta);
         if (accumulator > timestep) {
+            if (move[0] != 0 || move[1] != 0) {
+                update(move);
+                move[0] = 0;
+                move[1] = 0;
+            }
             accumulator = 0;
         }
 
@@ -84,6 +93,24 @@ public class GameScreen extends AbstractScreen {
         world.dispose();
         rayHandler.dispose();
         stage.dispose();
+    }
+
+    public void playerMove(float x, float y) {
+        float diffX = x - playerInstance.getCurrentX();
+        float diffY = y - playerInstance.getCurrentY();
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX > 0) {
+                move[0] = 1;
+            } else {
+                move[0] = -1;
+            }
+        } else {
+            if (diffY > 0) {
+                move[1] = 1;
+            } else {
+                move[1] = -1;
+            }
+        }
     }
 
     public void screenZoom(boolean zoomOut) {
@@ -142,7 +169,7 @@ public class GameScreen extends AbstractScreen {
         enableWorldInput();
     }
 
-    private void update() {
-
+    private void update(int[] move) {
+        updater.move(move, null, null);
     }
 }
