@@ -1,7 +1,6 @@
 package galenscovell.inanimates;
 
 import galenscovell.graphics.SpriteSheet;
-import galenscovell.graphics.Torchlight;
 import galenscovell.logic.Tile;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;

@@ -8,6 +8,10 @@ import galenscovell.inanimates.Inanimate;
 import galenscovell.inanimates.Stairs;
 import galenscovell.util.MonsterParser;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -32,6 +36,10 @@ public class Renderer {
 
     private Player player;
     private Fog fog;
+    private RayHandler rayHandler;
+    private PointLight torch;
+    private World world;
+    private Box2DDebugRenderer debug;
 
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -40,39 +48,48 @@ public class Renderer {
     private int rows, columns, tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(Map<Integer, Tile> tiles, SpriteBatch spriteBatch, int tileSize) {
+    public Renderer(World world, RayHandler rayHandler, Map<Integer, Tile> tiles, SpriteBatch spriteBatch, int tileSize) {
         this.tileSize = tileSize;
         this.camera = new OrthographicCamera(800, 480);
         this.viewport = new FitViewport(800, 480, camera);
         camera.setToOrtho(true, 800, 480);
 
         this.tiles = tiles;
+        this.world = world;
+        createTileBodies();
         this.spriteBatch = spriteBatch;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
 
         this.fog = new Fog();
+        this.rayHandler = rayHandler;
+        RayHandler.useDiffuseLight(true);
+        // Set environment to pitch black
+        rayHandler.setAmbientLight(0.0f);
+        this.torch = new PointLight(rayHandler, 40, new Color(0.9f, 0.9f, 0.95f, 1.0f), 400, 200, 200);
+        // Depth which light continues through collision objects
+        torch.setSoftnessLength(60);
+
+        this.debug = new Box2DDebugRenderer();
     }
 
     public void render(double interpolation) {
         player.interpolate(interpolation);
         findCameraBounds();
+        spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
-
-        // World rendering: [x, y] are in Tiles, convert to pixels
+        // Tile rendering: [x, y] are in Tiles, convert to pixels
         for (Tile tile : tiles.values()) {
             if (inViewport(tile.x * tileSize, tile.y * tileSize)) {
                 tile.draw(spriteBatch, tileSize);
             }
         }
-
         // Object rendering: [x, y] are in Tiles, convert to pixels
         for (Inanimate inanimate : inanimates) {
             if (inViewport(inanimate.getX() * tileSize, inanimate.getY() * tileSize)) {
                 inanimate.draw(spriteBatch, tileSize);
             }
         }
-
         // Entity rendering: [x, y] are in pixels
         for (Entity entity : entities) {
             entity.draw(spriteBatch, tileSize, interpolation, player);
@@ -82,14 +99,15 @@ public class Renderer {
                 entity.toggleInView();
             }
         }
-
         // Player rendering: [x, y] are in pixels
         player.draw(spriteBatch, tileSize, interpolation, null);
-
-        // Effect rendering
         fog.render(spriteBatch);
-
         spriteBatch.end();
+
+        rayHandler.setCombinedMatrix(camera.combined);
+        rayHandler.updateAndRender();
+
+        debug.render(world, camera.combined);
     }
 
     public OrthographicCamera getCamera() {
@@ -200,10 +218,29 @@ public class Renderer {
         maxCamX = minCamX + camera.viewportWidth * camera.zoom;
         maxCamY = minCamY + camera.viewportHeight * camera.zoom;
         camera.update();
-        spriteBatch.setProjectionMatrix(camera.combined);
     }
 
     private boolean inViewport(int x, int y) {
         return ((x + tileSize) >= minCamX && x <= maxCamX && (y + tileSize) >= minCamY && y <= maxCamY);
+    }
+
+    private void createTileBodies() {
+        // Setup box2D bodies for light collision
+        PolygonShape tileShape = new PolygonShape();
+        tileShape.setAsBox(16, 16);
+        BodyDef tileBodyDef = new BodyDef();
+        tileBodyDef.type = BodyDef.BodyType.StaticBody;
+        FixtureDef tileFixture = new FixtureDef();
+        tileFixture.shape = tileShape;
+
+        for (Tile tile : tiles.values()) {
+            if (tile.isPerimeter()) {
+                tileFixture.filter.groupIndex = 0;
+                tileBodyDef.position.set(tile.x * 32 + 16, tile.y * 32 + 16);
+                Body tileBody = world.createBody(tileBodyDef);
+                tileBody.createFixture(tileFixture);
+            }
+        }
+        tileShape.dispose();
     }
 }
