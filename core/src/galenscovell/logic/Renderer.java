@@ -59,7 +59,6 @@ public class Renderer {
 
         this.tiles = tiles;
         this.world = world;
-        createTileBodies();
         this.spriteBatch = spriteBatch;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
@@ -67,8 +66,8 @@ public class Renderer {
 
         this.rayHandler = rayHandler;
         RayHandler.useDiffuseLight(true);
-        rayHandler.setAmbientLight(0.0f);
-        this.torch = new PointLight(rayHandler, 40, new Color(0.95f, 0.9f, 0.9f, 0.9f), Constants.TILESIZE * 8, 0, 0);
+        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f);
+        this.torch = new PointLight(rayHandler, 60, new Color(0.95f, 0.9f, 0.9f, 0.9f), Constants.TILESIZE * 8, 0, 0);
         torch.setSoftnessLength(Constants.TILESIZE * 1.5f);
         this.torchFrames = 30;
 
@@ -119,7 +118,7 @@ public class Renderer {
         }
         torchFrames--;
 
-        // debug.render(world, camera.combined);
+        debug.render(world, camera.combined);
     }
 
     public OrthographicCamera getCamera() {
@@ -229,7 +228,7 @@ public class Renderer {
         return ((x + tileSize) >= minCamX && x <= maxCamX && (y + tileSize) >= minCamY && y <= maxCamY);
     }
 
-    private void createTileBodies() {
+    public void createTileBodies() {
         // Setup box2D bodies for light collision
         PolygonShape tileShape = new PolygonShape();
         tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
@@ -239,7 +238,7 @@ public class Renderer {
         tileFixture.shape = tileShape;
 
         for (Tile tile : tiles.values()) {
-            if (tile.isPerimeter()) {
+            if (tile.isBlocking()) {
                 tileFixture.filter.groupIndex = 0;
                 tileBodyDef.position.set(tile.x * Constants.TILESIZE + (Constants.TILESIZE / 2f), tile.y * Constants.TILESIZE + (Constants.TILESIZE / 2f));
                 Body tileBody = world.createBody(tileBodyDef);

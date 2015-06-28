@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * TILE
  * Keeps track of tile position, state and rendering.
- * State can be Wall(0), Floor(1), Corridor(2), Perimeter(3) or Water(4)
+ * State can be Wall(0), Floor(1), Corridor(2), or Water(3)
  *
  * @author Galen Scovell
  */
@@ -36,6 +36,10 @@ public class Tile {
         this.currentFrame = 0;
     }
 
+    public void setUnused() {
+        this.unused = true;
+    }
+
     public boolean isEmpty() {
         return unused;
     }
@@ -52,12 +56,8 @@ public class Tile {
         return state == 2;
     }
 
-    public boolean isPerimeter() {
-        return state == 3;
-    }
-
     public boolean isWater() {
-        return state == 4;
+        return state == 3;
     }
 
     public boolean isOccupied() {
@@ -100,7 +100,7 @@ public class Tile {
         SpriteSheet sheet = SpriteSheet.tilesheet;
         int s1 = 5;
         int s2 = 5;
-        if (isPerimeter()) {
+        if (isWall()) {
             switch (bitmask) {
                 case 0:
                     s1 = 53;
@@ -261,9 +261,6 @@ public class Tile {
                     s1 = 25;
                     s2 = 57;
             }
-        }
-        if (s1 == 5 && s2 == 5) {
-            this.unused = true;
         }
         sprites[0] = new Sprite(sheet.getSprite(s1));
         sprites[1] = new Sprite(sheet.getSprite(s2));

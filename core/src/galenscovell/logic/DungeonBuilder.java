@@ -55,7 +55,7 @@ public class DungeonBuilder {
                 grid[y][x] = new Tile(x, y, columns, rows);
             }
         }
-        // Find center of Tile tiles for creation of first room
+        // Find center of tiles for creation of first room
         int midColumn = (columns - 1) / 2;
         int midRow = (rows - 1) / 2;
         createRoom(midColumn, midRow);

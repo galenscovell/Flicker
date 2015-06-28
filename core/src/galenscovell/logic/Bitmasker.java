@@ -22,11 +22,12 @@ public class Bitmasker {
         int value = 0;
         List<Point> neighbors = tile.getNeighbors();
 
-        // Find neighbor positions
+        // Analyzes neighboring tile states
+        // If tile of interest is floor or walls, checks if neighbors are walls
+        // If tile of interest is water, checks if neighbors are floor
         for (Point neighbor : neighbors) {
             Tile neighborTile = tiles.get(neighbor.x * columns + neighbor.y);
-            // Find neighboring perimeter Tiles
-            if (neighborTile != null && (neighborTile.isPerimeter() || (tile.isWater() && neighborTile.isFloor()))) {
+            if (neighborTile != null && (neighborTile.isWall() || (tile.isWater() && neighborTile.isFloor()))) {
                 int diffX = tile.x - neighborTile.x;
                 int diffY = tile.y - neighborTile.y;
 
@@ -52,23 +53,20 @@ public class Bitmasker {
     }
 
     private int calculateBinary(int value) {
+        // Binary value: divide value by 2, remainder is digit of binary
+        // Current value is then value from division, repeat
+        // Reverse final result
         int remainder;
         String strResult = "";
-
-        // Binary value: divide value by 2, remainder is digit of binary.
-        // Current value is then value from division, repeat.
-        // Reverse final result.
         while (value != 0) {
             remainder = value % 2;
             strResult += Integer.toString(remainder);
             value /= 2;
         }
-
         String reversed = "";
         for (int i = strResult.length() - 1; i >= 0; i--) {
             reversed += strResult.charAt(i);
         }
-
         int result = Integer.parseInt(reversed);
         return result;
     }

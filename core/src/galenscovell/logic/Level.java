@@ -39,22 +39,22 @@ public class Level {
     }
 
     public void optimize() {
-        // If Tile is a wall with neighboring floor, it becomes a perimeter Tile
-        // Also switch over any remaining corridor Tiles
+        // Remove walls without floor neighbors, also switch over any remaining corridor Tiles
         for (Tile tile : tiles.values()) {
             if (tile.isWall()) {
-                if (tile.getFloorNeighbors() > 0) {
-                    tile.state = 3;
+                if (tile.getFloorNeighbors() == 0) {
+                    tile.setUnused();
                 }
             } else if (tile.isCorridor()) {
                 tile.state = 1;
             }
         }
-        // Set perimeter Tiles not actually on perimeter to be floor Tiles
+        // If wall has one or zero connecting walls, make it floor
+        // If floor is on level boundary, make it wall
         int wallNeighbors;
         for (Tile tile : tiles.values()) {
-            if (tile.isPerimeter()) {
-                wallNeighbors = 0;
+            wallNeighbors = 0;
+            if (tile.isWall()) {
                 for (Point neighbor : tile.getNeighbors()) {
                     if (tiles.get(neighbor.x * columns + neighbor.y).isWall()) {
                         wallNeighbors++;
@@ -63,32 +63,25 @@ public class Level {
                 if (wallNeighbors == 0) {
                     tile.state = 1;
                 }
-            }
-        }
-        // Set floor Tiles on world boundary or with neighboring walls as perimeter
-        for (Tile tile : tiles.values()) {
-            if (tile.isFloor()) {
-                wallNeighbors = 0;
-                for (Point neighbor : tile.getNeighbors()) {
-                    if (tiles.get(neighbor.x * columns + neighbor.y).isWall()) {
-                        wallNeighbors++;
-                    }
-                }
-                if (wallNeighbors > 0 || tile.getNeighbors().size() < 8) {
-                    tile.state = 3;
+             } else if (tile.isFloor()) {
+                if (tile.getNeighbors().size() < 8) {
+                    tile.state = 0;
                 }
             }
         }
-        // Recheck Tiles for floor neighbors, if floor exists without any adjacent
-        // floor Tiles remove it. If Tile has only one adjacent floor make it perimeter.
+        // Recheck floor neighbors, if floor exists with exactly one floor neighbor, make it wall
         checkAdjacent();
         for (Tile tile : tiles.values()) {
-            if (tile.getFloorNeighbors() == 1) {
-                tile.state = 3;
+            if (tile.isFloor()) {
+                if (tile.getFloorNeighbors() == 1) {
+                    tile.state = 0;
+                }
+            } else if (tile.isWall()) {
+                tile.toggleBlocking();
             }
         }
-        skin();
         prune();
+        skin();
         placeWater();
     }
 
@@ -120,7 +113,7 @@ public class Level {
         // Place initial water spawn points randomly
         for (int i = 0; i < waterPoints; i++) {
             Tile waterTile = findRandomTile();
-            waterTile.state = 4;
+            waterTile.state = 3;
             waterTiles.add(waterTile);
             // Expand each point out one layer initially
             expandWater(waterTile, waterTiles);
@@ -147,8 +140,8 @@ public class Level {
         List<Point> neighbors = tile.getNeighbors();
         for (Point point : neighbors) {
             Tile neighborTile = tiles.get(point.x * columns + point.y);
-            if (neighborTile.isFloor()) {
-                neighborTile.state = 4;
+            if (neighborTile != null && neighborTile.isFloor()) {
+                neighborTile.state = 3;
                 waterTiles.add(neighborTile);
             }
         }
