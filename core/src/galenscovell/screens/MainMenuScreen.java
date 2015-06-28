@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  */
 
 public class MainMenuScreen extends AbstractScreen {
-    private Table centerTable, buttonTable, newTable;
+    private Table centerTable, buttonTable;
 
     public MainMenuScreen(FlickerMain root){
         super(root);
@@ -55,7 +55,6 @@ public class MainMenuScreen extends AbstractScreen {
          **********************************/
         this.centerTable = new Table();
         createButtonTable();
-        createNewTable();
         centerTable.add(buttonTable).expand().fill();
 
         mainTable.add(centerTable).expand().fill();
@@ -68,26 +67,12 @@ public class MainMenuScreen extends AbstractScreen {
         stage.addActor(mainTable);
     }
 
-    public void startGame(String classType) {
-        root.newGame(classType);
-    }
-
-    private void menuOperation() {
-        if (buttonTable.hasParent()) {
-            centerTable.removeActor(buttonTable);
-            centerTable.add(newTable);
-        } else {
-            centerTable.removeActor(newTable);
-            centerTable.add(buttonTable);
-        }
-    }
-
     private void createButtonTable() {
         this.buttonTable = new Table();
         TextButton newGameButton = new TextButton("New Game", ResourceManager.colorButtonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                menuOperation();
+                root.newGame();
             }
         });
         TextButton continueButton = new TextButton("Continue", ResourceManager.colorButtonStyle);
@@ -115,49 +100,5 @@ public class MainMenuScreen extends AbstractScreen {
         buttonTable.add(settingsButton).width(300).height(60).expand().fill().padBottom(20);
         buttonTable.row();
         buttonTable.add(quitButton).width(300).height(60).expand().fill();
-    }
-
-    private void createNewTable() {
-        this.newTable = new Table();
-        Table classTable = new Table();
-        Button knightButton = new Button(ResourceManager.frameStyle);
-        knightButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.newGame("knight");
-            }
-        });
-        setButtonIcon(knightButton, "knight");
-        Button mageButton = new Button(ResourceManager.frameStyle);
-        mageButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.newGame("mage");
-            }
-        });
-        setButtonIcon(mageButton, "mage");
-        Button explorerButton = new Button(ResourceManager.frameStyle);
-        explorerButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.newGame("explorer");
-            }
-        });
-        setButtonIcon(explorerButton, "explorer");
-        TextButton returnButton = new TextButton("Return", ResourceManager.buttonStyle);
-        returnButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation();
-            }
-        });
-        classTable.add(knightButton).width(180).height(220).expand().fill();
-        classTable.add(mageButton).width(180).height(220).expand().fill().padLeft(30).padRight(30);
-        classTable.add(explorerButton).width(180).height(220).expand().fill();
-        newTable.add(classTable).expand().fill();
-        newTable.row();
-        newTable.add(returnButton).width(300).height(60).expand().fill().center().padTop(20);
-    }
-
-    private void setButtonIcon(Button button, String name) {
-        Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
-        icon.setScaling(Scaling.fit);
-        button.add(icon).expand().fill().center();
     }
 }

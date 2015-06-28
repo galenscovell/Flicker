@@ -17,14 +17,14 @@ import java.util.Map;
 
 public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
-    protected boolean inView, attacking, beingAttacked;
+    protected boolean inView, moving, attacking, beingAttacked;
 
     protected Sprite[] currentSet;
     protected Sprite[] leftSprites, rightSprites;
 
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
-    private int moveTimer, frame, animateFrames;
+    private int moveTimer, frame;
 
     @Override
     public String toString() {
@@ -88,6 +88,7 @@ public class Creature implements Entity {
     public void move(int dx, int dy, boolean possible) {
         turn(dx, dy);
         if (possible) {
+            moving = true;
             x += dx;
             y += dy;
             if (!inView) {
@@ -105,7 +106,7 @@ public class Creature implements Entity {
         }
     }
 
-    protected void attack(double interpolation, Entity entity) {
+    public void attack(double interpolation, Entity entity) {
         int diffX = entity.getCurrentX() - x;
         int diffY = entity.getCurrentY() - y;
         if (diffX > 0) {
@@ -122,36 +123,38 @@ public class Creature implements Entity {
         }
     }
 
-    protected void animate() {
-        if (animateFrames == 30) {
-            if (frame == 0) {
-                frame++;
-            } else {
-                frame--;
-            }
-            animateFrames = 0;
-        } else {
-            animateFrames++;
-        }
-    }
-
-    protected void interpolate(double interpolation) {
+    public void interpolate(double interpolation) {
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
-
         if (currentX == x && currentY == y) {
             prevX = x;
             prevY = y;
         }
-
         if (interpolation >= 0.6) {
             beingAttacked = false;
         }
     }
 
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
-        animate();
         interpolate(interpolation);
+        if (moving) {
+            if (currentX == x && currentY == y) {
+                moving = false;
+                frame = 0;
+            } else {
+                if (interpolation == 0.2) {
+                    frame = 1;
+                } else if (interpolation == 0.4) {
+                    frame = 2;
+                } else if (interpolation == 0.6) {
+                    frame = 3;
+                } else if (interpolation == 0.8) {
+                    frame = 4;
+                } else if (interpolation == 1.0) {
+                    frame = 5;
+                }
+            }
+        }
         if (attacking) {
             attack(interpolation, entity);
         }

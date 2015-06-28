@@ -2,6 +2,7 @@ package galenscovell.util;
 
 /**
  * CONSTANTS
+ * Storage of common variables throughout application.
  *
  * @author Galen Scovell
  */
@@ -16,7 +17,7 @@ public class Constants {
     // Custom units
     public static final int SCREEN_X = 100;
     public static final int SCREEN_Y = 60;
-    public static final int TILESIZE = 4;
+    public static final int TILESIZE = 5;
 
     public static final int ROWS = 20;
     public static final int COLUMNS = 20;

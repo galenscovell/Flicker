@@ -34,8 +34,8 @@ public class Updater {
         this.hud = hud;
     }
 
-    public void move(int[] input, List<Entity> entities, List<Inanimate> inanimates) {
-        playerMove(input[0], input[1]);
+    public void move(int[] destination, List<Entity> entities, List<Inanimate> inanimates) {
+        playerMove(destination);
 //        for (Entity entity : entities) {
 //            if (entity.movementTimer()) {
 //                entityMove(entity);
@@ -55,9 +55,26 @@ public class Updater {
         return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
     }
 
-    private void playerMove(int dx, int dy) {
+    private void playerMove(int[] destination) {
         int playerX = (player.getX() / tileSize);
         int playerY = (player.getY() / tileSize);
+        int diffX = destination[0] - playerX;
+        int diffY = destination[1] - playerY;
+        int dx = 0;
+        int dy = 0;
+        if (diffX > 0) {
+            dx++;
+        } else if (diffX < 0){
+            dx--;
+        }
+        if (diffY > 0) {
+            dy++;
+        } else if (diffY < 0){
+            dy--;
+        }
+        if (dx == 0 && dy == 0) {
+            return;
+        }
         Tile nextTile = findTile(playerX + dx, playerY + dy);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
             Tile currentTile = findTile(playerX, playerY);

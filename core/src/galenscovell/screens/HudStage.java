@@ -65,7 +65,7 @@ public class HudStage extends Stage {
 
         Table topRight = new Table();
         this.playerButton = new Button(ResourceManager.frameStyle);
-        setIcon(playerButton, player.getClassType(), 0.9f);
+        setIcon(playerButton, "explorer", 0.9f);
         playerButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(playerMenu);
@@ -74,11 +74,11 @@ public class HudStage extends Stage {
         // Player health and mana bar table
         Table playerBars = new Table();
         playerBars.padLeft(30);
-        this.health = createBar("healthfill", player.getStat("vit") * 5);
-        this.mana = createBar("manafill", player.getStat("int") * 5);
-        playerBars.add(health).width(player.getStat("vit") * 10).right();
+        this.health = createBar("healthfill", 50);
+        this.mana = createBar("manafill", 20);
+        playerBars.add(health).width(50).right();
         playerBars.row();
-        playerBars.add(mana).width(player.getStat("int") * 10).right();
+        playerBars.add(mana).width(20).right();
         topRight.add(playerBars).expand().top().right();
         topRight.add(playerButton).width(80).height(80).top().right();
         topTable.add(topRight).height(120).width(400).expand().top().right();
@@ -98,7 +98,7 @@ public class HudStage extends Stage {
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 examine();
-                game.toggleTileSelection();
+                game.toggleExamineMode();
             }
         });
         this.inventoryButton = new Button(ResourceManager.buttonStyle);

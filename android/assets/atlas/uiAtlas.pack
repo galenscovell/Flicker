@@ -1,0 +1,102 @@
+
+uiAtlas.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonbg
+  rotate: false
+  xy: 1, 1
+  size: 24, 24
+  split: 7, 7, 7, 7
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+buttondown
+  rotate: false
+  xy: 27, 1
+  size: 24, 24
+  split: 7, 7, 7, 7
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+tealbuttonbg
+  rotate: false
+  xy: 53, 1
+  size: 24, 24
+  split: 7, 7, 7, 7
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+tealbuttondown
+  rotate: false
+  xy: 79, 1
+  size: 24, 24
+  split: 7, 7, 7, 7
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+examine
+  rotate: false
+  xy: 105, 5
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+explorer
+  rotate: false
+  xy: 127, 5
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+inventory
+  rotate: false
+  xy: 149, 5
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+framedbg
+  rotate: false
+  xy: 171, 7
+  size: 16, 18
+  split: 7, 7, 7, 7
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+framedlit
+  rotate: false
+  xy: 189, 7
+  size: 16, 18
+  split: 7, 7, 7, 7
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 207, 10
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+healthfill
+  rotate: false
+  xy: 224, 7
+  size: 2, 18
+  orig: 2, 18
+  offset: 0, 0
+  index: -1
+loadfill
+  rotate: false
+  xy: 228, 7
+  size: 2, 18
+  orig: 2, 18
+  offset: 0, 0
+  index: -1
+manafill
+  rotate: false
+  xy: 232, 7
+  size: 2, 18
+  orig: 2, 18
+  offset: 0, 0
+  index: -1

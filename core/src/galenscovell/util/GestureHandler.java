@@ -24,14 +24,24 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        if (game.tileSelection()) {
-            Vector3 worldCoordinates = new Vector3(x, y, 0);
-            camera.unproject(worldCoordinates);
+        Vector3 worldCoordinates = new Vector3(x, y, 0);
+        camera.unproject(worldCoordinates);
+        if (game.examineMode()) {
             game.findTile(worldCoordinates.x, worldCoordinates.y);
-            game.playerMove(worldCoordinates.x, worldCoordinates.y);
-            return true;
         }
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
+        Vector3 worldCoordinates = new Vector3(x, y, 0);
+        camera.unproject(worldCoordinates);
+        if (game.examineMode()) {
+            game.findTile(worldCoordinates.x, worldCoordinates.y);
+        } else {
+            game.playerMove(worldCoordinates.x, worldCoordinates.y);
+        }
+        return true;
     }
 
     @Override

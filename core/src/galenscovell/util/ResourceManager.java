@@ -24,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public class ResourceManager {
     public static AssetManager assetManager;
-    public static TextureAtlas uiAtlas;
+    public static TextureAtlas uiAtlas, playerAtlas;
 
     public static Label.LabelStyle detailStyle;
     public static Label.LabelStyle mediumStyle;
@@ -49,7 +49,8 @@ public class ResourceManager {
     }
 
     public static void load() {
-        assetManager.load("ui/uiAtlas.pack", TextureAtlas.class);
+        assetManager.load("atlas/uiAtlas.pack", TextureAtlas.class);
+        assetManager.load("atlas/playerAtlas.pack", TextureAtlas.class);
 
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
@@ -77,7 +78,8 @@ public class ResourceManager {
     }
 
     public static void done() {
-        uiAtlas = assetManager.get("ui/uiAtlas.pack", TextureAtlas.class);
+        uiAtlas = assetManager.get("atlas/uiAtlas.pack", TextureAtlas.class);
+        playerAtlas = assetManager.get("atlas/playerAtlas.pack", TextureAtlas.class);
 
         detailStyle = new Label.LabelStyle(assetManager.get("smallFont.ttf", BitmapFont.class), Color.WHITE);
         mediumStyle = new Label.LabelStyle(assetManager.get("mediumFont.ttf", BitmapFont.class), Color.WHITE);
@@ -111,5 +113,6 @@ public class ResourceManager {
     public static void dispose() {
         assetManager.dispose();
         uiAtlas.dispose();
+        playerAtlas.dispose();
     }
 }

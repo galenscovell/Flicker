@@ -33,8 +33,8 @@ public class FlickerMain extends Game {
         setScreen(mainMenuScreen);
     }
 
-    public void newGame(String classType) {
-        this.gameScreen = new GameScreen(this, classType);
+    public void newGame() {
+        this.gameScreen = new GameScreen(this);
         setScreen(gameScreen);
     }
 

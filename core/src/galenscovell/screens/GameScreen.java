@@ -1,5 +1,7 @@
 package galenscovell.screens;
 
+import box2dLight.RayHandler;
+
 import galenscovell.entities.Player;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.logic.Renderer;
@@ -7,26 +9,24 @@ import galenscovell.logic.Updater;
 import galenscovell.logic.Level;
 import galenscovell.util.Constants;
 import galenscovell.util.GestureHandler;
-import galenscovell.util.PlayerParser;
 
-import box2dLight.RayHandler;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * GAME SCREEN
- * Main gameplay screen. Has both a HUD (stage) and world (renderer). Updater handles logic.
+ * Main gameplay screen.
+ * Has both a HUD (stage) and world (renderer). Updater handles logic.
  *
  * @author Galen Scovell
  */
 
 public class GameScreen extends AbstractScreen {
-    private Player playerInstance;
+    private Player player;
     private Renderer renderer;
     private Updater updater;
     private InputMultiplexer fullInput;
@@ -34,25 +34,22 @@ public class GameScreen extends AbstractScreen {
     private World world;
     private RayHandler rayHandler;
 
-    private boolean tileSelection;
-    private final int timestep = 10;
+    private boolean examineMode;
+    private final int timestep = 20;
     private int accumulator = 0;
-    private int[] move;
+    private int[] destination;
 
-    public GameScreen(FlickerMain root, String classType) {
+    public GameScreen(FlickerMain root) {
         super(root);
-        create(classType);
+        create();
     }
 
-    protected void create(String classType) {
+    protected void create() {
         // GLProfiler.enable();
-        PlayerParser playerParser = new PlayerParser();
-        this.playerInstance = playerParser.pullClassStats(classType);
-        this.stage = new HudStage(this, playerInstance, root.spriteBatch);
-        this.world = new World(new Vector2(0, 0), true);
-        this.rayHandler = new RayHandler(world);
+        this.player = new Player();
+        this.stage = new HudStage(this, player, root.spriteBatch);
         createNewLevel();
-        this.move = new int[2];
+        this.destination = new int[2];
     }
 
     @Override
@@ -60,12 +57,13 @@ public class GameScreen extends AbstractScreen {
         world.step(delta, 6, 2);
         stage.act(delta);
         if (accumulator > timestep) {
-            if (move[0] != 0 || move[1] != 0) {
-                update(move);
-                move[0] = 0;
-                move[1] = 0;
-            }
             accumulator = 0;
+            update(destination);
+            if (updater.descend()) {
+                rayHandler.dispose();
+                world.dispose();
+                createNewLevel();
+            }
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -96,25 +94,12 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void playerMove(float x, float y) {
-        float diffX = x - playerInstance.getCurrentX();
-        float diffY = y - playerInstance.getCurrentY();
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            if (diffX > 0) {
-                move[0] = 1;
-            } else {
-                move[0] = -1;
-            }
-        } else {
-            if (diffY > 0) {
-                move[1] = 1;
-            } else {
-                move[1] = -1;
-            }
-        }
+        destination[0] = (int) x / Constants.TILESIZE;
+        destination[1] = (int) y / Constants.TILESIZE;
     }
 
     public void screenZoom(boolean zoomOut) {
-        float value = 0.015625f;
+        float value = 0.02f;
         if (zoomOut) {
             renderer.zoom(value);
         } else {
@@ -138,12 +123,12 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(fullInput);
     }
 
-    public boolean tileSelection() {
-        return tileSelection;
+    public boolean examineMode() {
+        return examineMode;
     }
 
-    public void toggleTileSelection() {
-        tileSelection = !tileSelection;
+    public void toggleExamineMode() {
+        examineMode = !examineMode;
     }
 
     public void findTile(float x, float y) {
@@ -151,6 +136,9 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void createNewLevel() {
+        this.world = new World(new Vector2(0, 0), true);
+        this.rayHandler = new RayHandler(world);
+
         Level level = new Level();
         // Modify smoothing passes here
         for (int i = 0; i < 6; i++) {
@@ -158,18 +146,18 @@ public class GameScreen extends AbstractScreen {
         }
         level.optimize();
         this.renderer = new Renderer(world, rayHandler, level.getTiles(), root.spriteBatch);
-        this.updater = new Updater(playerInstance, level.getTiles());
-        renderer.assembleLevel(playerInstance);
+        this.updater = new Updater(player, level.getTiles());
+        renderer.assembleLevel(player);
         updater.setStairs(renderer.getInanimateList());
         updater.setHud((HudStage) stage);
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);
-        fullInput.addProcessor(new GestureDetector(new GestureHandler(this, renderer.getCamera())));
+        fullInput.addProcessor(new GestureDetector(20, 0.4f, 0.2f, 0.15f, new GestureHandler(this, renderer.getCamera())));
         enableWorldInput();
     }
 
-    private void update(int[] move) {
-        updater.move(move, null, null);
+    private void update(int[] destination) {
+        updater.move(destination, renderer.getEntityList(), renderer.getInanimateList());
     }
 }
