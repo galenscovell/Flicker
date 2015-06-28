@@ -27,7 +27,7 @@ import java.util.Random;
 /**
  * RENDERER
  * Handles game graphics.
- * Renderer uses custom units (100, 60) rather than pixel dimensions.
+ * Renderer uses custom units (400, 240) rather than pixel dimensions.
  *
  * @author Galen Scovell
  */
@@ -68,7 +68,7 @@ public class Renderer {
         this.rayHandler = rayHandler;
         RayHandler.useDiffuseLight(true);
         rayHandler.setAmbientLight(0.0f);
-        this.torch = new PointLight(rayHandler, 60, new Color(0.95f, 0.9f, 0.9f, 0.9f), Constants.TILESIZE * 8, 0, 0);
+        this.torch = new PointLight(rayHandler, 40, new Color(0.95f, 0.9f, 0.9f, 0.9f), Constants.TILESIZE * 8, 0, 0);
         torch.setSoftnessLength(Constants.TILESIZE * 1.5f);
         this.torchFrames = 30;
 
@@ -76,10 +76,8 @@ public class Renderer {
     }
 
     public void render(double interpolation) {
-        player.interpolate(interpolation);
         findCameraBounds();
         spriteBatch.setProjectionMatrix(camera.combined);
-
         spriteBatch.begin();
         // Tile rendering: [x, y] are in Tiles, convert to custom units
         for (Tile tile : tiles.values()) {
@@ -152,13 +150,8 @@ public class Renderer {
         camera.zoom += value;
     }
 
-    public void pan(float dx, float dy) {
-        camera.translate(-dx / (tileSize * 3), -dy / (tileSize * 3), 0);
-    }
-
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        centerOnPlayer();
     }
 
     public void assembleLevel(Player player) {
@@ -194,7 +187,6 @@ public class Renderer {
         this.player = playerInstance;
         player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
         randomTile.toggleOccupied();
-        centerOnPlayer();
     }
 
     private void placeEntities(MonsterParser parser) {
@@ -220,16 +212,17 @@ public class Renderer {
         }
     }
 
-    private void centerOnPlayer() {
-        camera.position.set(player.getCurrentX() + (Constants.TILESIZE / 2), player.getCurrentY() + (Constants.TILESIZE / 2), 0);
-    }
-
     private void findCameraBounds() {
+        centerOnPlayer();
         minCamX = camera.position.x - (camera.viewportWidth / 2) * camera.zoom;
         minCamY = camera.position.y - (camera.viewportHeight / 2) * camera.zoom;
         maxCamX = minCamX + camera.viewportWidth * camera.zoom;
         maxCamY = minCamY + camera.viewportHeight * camera.zoom;
         camera.update();
+    }
+
+    private void centerOnPlayer() {
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
     }
 
     private boolean inViewport(int x, int y) {

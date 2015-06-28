@@ -45,12 +45,6 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
     }
 
     @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        game.screenPan(deltaX, deltaY);
-        return true;
-    }
-
-    @Override
     public boolean zoom (float initialDistance, float endDistance){
         game.screenZoom(endDistance < initialDistance);
         return true;

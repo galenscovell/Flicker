@@ -49,22 +49,27 @@ public class GameScreen extends AbstractScreen {
         this.player = new Player();
         this.stage = new HudStage(this, player, root.spriteBatch);
         createNewLevel();
-        this.destination = new int[2];
     }
 
-    @Override
-    public void render(float delta) {
-        world.step(delta, 6, 2);
-        stage.act(delta);
+    public void update(float delta) {
         if (accumulator > timestep) {
             accumulator = 0;
-            update(destination);
+            if (!(destination[0] == (player.getX() / Constants.TILESIZE) && destination[1] == (player.getY() / Constants.TILESIZE))) {
+                updater.move(destination, renderer.getEntityList(), renderer.getInanimateList());
+            }
             if (updater.descend()) {
                 rayHandler.dispose();
                 world.dispose();
                 createNewLevel();
             }
         }
+        world.step(delta, 6, 2);
+        stage.act(delta);
+    }
+
+    @Override
+    public void render(float delta) {
+        update(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -99,16 +104,11 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void screenZoom(boolean zoomOut) {
-        float value = 0.02f;
         if (zoomOut) {
-            renderer.zoom(value);
+            renderer.zoom(0.02f);
         } else {
-            renderer.zoom(-value);
+            renderer.zoom(-0.02f);
         }
-    }
-
-    public void screenPan(float dx, float dy) {
-        renderer.pan(dx, dy);
     }
 
     public void toMainMenu() {
@@ -153,11 +153,9 @@ public class GameScreen extends AbstractScreen {
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);
-        fullInput.addProcessor(new GestureDetector(20, 0.4f, 0.2f, 0.15f, new GestureHandler(this, renderer.getCamera())));
+        fullInput.addProcessor(new GestureDetector(20, 0.4f, 0.1f, 0.15f, new GestureHandler(this, renderer.getCamera())));
         enableWorldInput();
-    }
-
-    private void update(int[] destination) {
-        updater.move(destination, renderer.getEntityList(), renderer.getInanimateList());
+        // Set initial destination to player starting position
+        this.destination = new int[]{player.getX() / Constants.TILESIZE, player.getY() / Constants.TILESIZE};
     }
 }

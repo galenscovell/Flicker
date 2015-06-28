@@ -24,8 +24,8 @@ public class Updater {
     private Player player;
     private Inanimate stairs;
 
-    public Updater(Player playerInstance, Map<Integer, Tile> tiles) {
-        this.player = playerInstance;
+    public Updater(Player player, Map<Integer, Tile> tiles) {
+        this.player = player;
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
     }
@@ -64,16 +64,13 @@ public class Updater {
         int dy = 0;
         if (diffX > 0) {
             dx++;
-        } else if (diffX < 0){
+        } else if (diffX < 0) {
             dx--;
         }
         if (diffY > 0) {
             dy++;
-        } else if (diffY < 0){
+        } else if (diffY < 0) {
             dy--;
-        }
-        if (dx == 0 && dy == 0) {
-            return;
         }
         Tile nextTile = findTile(playerX + dx, playerY + dy);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
@@ -188,7 +185,7 @@ public class Updater {
         player.setBeingAttacked();
         entity.setAttacking();
         hud.changeHealth(entity.getStat("damage"));
-        hud.addToLog(entity + " hits " + player + " for " + entity.getStat("damage") + " damage.");
+        hud.addToLog(entity + " hits for " + entity.getStat("damage") + " damage.");
     }
 
     private Tile findTile(int x, int y) {

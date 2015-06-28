@@ -1,7 +1,5 @@
 package galenscovell.entities;
 
-import galenscovell.graphics.SpriteSheet;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -129,6 +127,8 @@ public class Creature implements Entity {
         if (currentX == x && currentY == y) {
             prevX = x;
             prevY = y;
+            moving = false;
+            frame = 0;
         }
         if (interpolation >= 0.6) {
             beingAttacked = false;
@@ -138,21 +138,16 @@ public class Creature implements Entity {
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
         interpolate(interpolation);
         if (moving) {
-            if (currentX == x && currentY == y) {
-                moving = false;
-                frame = 0;
-            } else {
-                if (interpolation == 0.2) {
-                    frame = 1;
-                } else if (interpolation == 0.4) {
-                    frame = 2;
-                } else if (interpolation == 0.6) {
-                    frame = 3;
-                } else if (interpolation == 0.8) {
-                    frame = 4;
-                } else if (interpolation == 1.0) {
-                    frame = 5;
-                }
+            if (interpolation == 0.2) {
+                frame = 1;
+            } else if (interpolation == 0.4) {
+                frame = 2;
+            } else if (interpolation == 0.6) {
+                frame = 3;
+            } else if (interpolation == 0.8) {
+                frame = 4;
+            } else if (interpolation == 1.0) {
+                frame = 5;
             }
         }
         if (attacking) {
