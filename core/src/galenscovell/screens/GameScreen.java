@@ -55,9 +55,11 @@ public class GameScreen extends AbstractScreen {
         if (accumulator > timestep) {
             accumulator = 0;
             if (!(destination[0] == (player.getX() / Constants.TILESIZE) && destination[1] == (player.getY() / Constants.TILESIZE))) {
-                updater.move(destination, renderer.getEntityList(), renderer.getInanimateList());
-                destination[0] = player.getX() / Constants.TILESIZE;
-                destination[1] = player.getY() / Constants.TILESIZE;
+                System.out.println("Called");
+                if (!updater.move(destination, renderer.getEntityList(), renderer.getInanimateList())) {
+                    destination[0] = player.getX() / Constants.TILESIZE;
+                    destination[1] = player.getY() / Constants.TILESIZE;
+                }
             }
             if (updater.descend()) {
                 rayHandler.dispose();

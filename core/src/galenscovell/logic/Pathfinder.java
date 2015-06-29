@@ -16,27 +16,34 @@ public class Pathfinder {
     private class Node {
         Node parent;
         Tile self;
+        double cost;
 
-        public Node(Node p, Tile s) {
-            this.parent = p;
+        public Node(Tile s) {
             this.self = s;
+            this.cost = Double.POSITIVE_INFINITY;
         }
     }
 
-    public void findPath(Map<Integer, Tile> tiles, Tile start, Tile end) {
+    public Stack<Point> findPath(Map<Integer, Tile> tiles, Tile start, Tile end) {
         List<Node> open = new ArrayList<Node>();
         List<Tile> closed = new ArrayList<Tile>();
-        // Add starting point with no parent to open list
-        open.add(new Node(null, start));
-        // As long as there are open Nodes in the open list...
+        Node startNode = new Node(start);
+        startNode.cost = 0;
+        Node endNode = new Node(end);
+        open.add(startNode);
+
         while (!open.isEmpty()) {
-            // Choose a node to analyze
-            Node a = open.get(0);
+            // Consider node with best score in open list
+            Node a = chooseNode(open, endNode);
             // If node tile is end tile, trace path and finish
             if (a.self == end) {
-                tracePath(a);
+                return tracePath(a);
             } else {
-                // Otherwise analyze all adjacent tiles for chosen node
+                // Don't repeat ourselves
+                open.remove(a);
+                closed.add(a.self);
+
+                // Consider current node's neighbors
                 for (Point point : a.self.getNeighbors()) {
                     Tile neighbor = tiles.get(point.x * Constants.COLUMNS + point.y);
                     // If node tile is unwalkable, ignore it
@@ -50,23 +57,53 @@ public class Pathfinder {
                             inOpen = true;
                         }
                     }
-                    // Otherwise add it as new unexplored node with current node as parent
+                    Node adjacent = new Node(neighbor);
+                    // Otherwise add it as new unexplored node
                     if (!inOpen) {
-                        open.add(new Node(a, neighbor));
+                        open.add(adjacent);
+                    }
+                    // If this is a new path or shorter than current, keep it
+                    if (a.cost + 1 < adjacent.cost) {
+                        adjacent.parent = a;
+                        adjacent.cost = a.cost + 1;
                     }
                 }
             }
-            // Remove current node from open list and add its tile to closed list
-            open.remove(a);
-            closed.add(a.self);
         }
+        return null;
     }
 
-    private void tracePath(Node n) {
+    private Node chooseNode(List<Node> open, Node end) {
+        double minCost = Double.POSITIVE_INFINITY;
+        Node bestNode = null;
+
+        for (Node n : open) {
+            double costFromStart = n.cost;
+            double costToEnd = estimateDistance(n, end);
+            double totalCost = costFromStart + costToEnd;
+            if (minCost > totalCost) {
+                minCost = totalCost;
+                bestNode = n;
+            }
+        }
+        return bestNode;
+    }
+
+    private double estimateDistance(Node n, Node end) {
+        // Calculates Manhattan distance between nodes
+        double xs = (n.self.x - end.self.x) * (n.self.x - end.self.x);
+        double ys = (n.self.y - end.self.y) * (n.self.y - end.self.y);
+        return Math.sqrt(xs + ys);
+    }
+
+    private Stack<Point> tracePath(Node n) {
+        // Returns ordered stack of points along movement path
+        Stack<Point> path = new Stack<Point>();
         // Chase parent of node until start point reached
-        while (n != null) {
-            n.self.toggleSelected();
+        while (n.parent != null) {
+            path.push(new Point(n.self.x, n.self.y));
             n = n.parent;
         }
+        return path;
     }
 }

@@ -9,6 +9,7 @@ import galenscovell.util.Constants;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * UPDATER
@@ -24,6 +25,7 @@ public class Updater {
     private Player player;
     private Inanimate stairs;
     private Pathfinder pathfinder;
+    private Stack<Point> playerPath;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
@@ -36,14 +38,21 @@ public class Updater {
         this.hud = hud;
     }
 
-    public void move(int[] destination, List<Entity> entities, List<Inanimate> inanimates) {
+    public boolean move(int[] destination, List<Entity> entities, List<Inanimate> inanimates) {
         Tile playerTile = getTile(player.getX(), player.getY());
         Tile endTile = getTile(destination[0], destination[1]);
-        if (endTile == null) {
-            return;
+        if (endTile == null || playerTile == endTile) {
+            return false;
+        } else {
+            this.playerPath = pathfinder.findPath(tiles, playerTile, endTile);
         }
-        pathfinder.findPath(tiles, playerTile, endTile);
-//        playerMove(destination);
+        if (playerPath == null || playerPath.isEmpty()) {
+            return false;
+        } else {
+            Point nextMove = playerPath.pop();
+            playerMove(nextMove.x, nextMove.y);
+            return true;
+        }
 //        for (Entity entity : entities) {
 //            if (entity.movementTimer()) {
 //                entityMove(entity);
@@ -73,11 +82,11 @@ public class Updater {
         return findTile(tileX, tileY);
     }
 
-    private void playerMove(int[] destination) {
+    private void playerMove(int x, int y) {
         int playerX = (player.getX() / tileSize);
         int playerY = (player.getY() / tileSize);
-        int diffX = destination[0] - playerX;
-        int diffY = destination[1] - playerY;
+        int diffX = x - playerX;
+        int diffY = y - playerY;
         int dx = 0;
         int dy = 0;
         if (diffX > 0) {
