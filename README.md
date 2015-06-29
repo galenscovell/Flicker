@@ -3,25 +3,25 @@
 Flicker-libgdx
 ======
 
-Flicker is a graphical roguelike game for <b>Android and Desktop</b> that is coded in Java with Libgdx. It's currently a work in progress with regularly added features.
+Flicker is an Android game about exploration and mystery in an alien world.
+It's a work in progress with regularly added features.
 
 <b>Current Features:</b>
 ======
 <b>Mechanics</b>
-* Procedurally generated caves/dungeons with persistent Player across levels
-* Viewport rendering with orthographic camera complete with zoom and pan controls
+* Procedurally generated levels, entities, items and events
+* Viewport rendering with orthographic camera and zoom pinching
 * Efficient game-loop with clear separation of rendering and logic
-* Smooth player input on both touch devices and desktop
+* Smooth player input on touch devices
+* Entity and player pathfinding with advanced creature behavior
 * Turn-based gameplay
-* Entity passive and aggressive behaviors
 * JSON data deserialization for procedurally spawned entities and items with unique attributes
 * Clean package organization utilizing interfaces, inheritance and DRY principles
 
 <b>Graphics</b>
 * Scaling graphics for accurate display on all devices/resolutions
 * Sprites: loading and rendering, animation, linear interpolation
-* Torchlight: recursive shadowcasting for dynamic field-of-view
-* Transparency effects: slow-moving fog, FOV brightness fall-off, 'fog of war'
+* Box2D lighting with collision detection
 * Tile bitmasking: comprehensive world skinning
-* GUI HUD
+* GUI/HUD
 
