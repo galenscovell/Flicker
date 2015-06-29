@@ -19,10 +19,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * RENDERER
@@ -69,6 +66,7 @@ public class Renderer {
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f);
         this.torch = new PointLight(rayHandler, 60, new Color(0.95f, 0.9f, 0.9f, 0.9f), Constants.TILESIZE * 8, 0, 0);
         torch.setSoftnessLength(Constants.TILESIZE * 1.5f);
+        torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
         this.torchFrames = 30;
 
         this.debug = new Box2DDebugRenderer();
@@ -105,15 +103,15 @@ public class Renderer {
         fog.render(spriteBatch);
         spriteBatch.end();
 
-        // Set torch position centered on player coordinates
+        // Set torch position centered on player
         torch.setPosition(player.getCurrentX() + (tileSize / 2), player.getCurrentY() + (tileSize / 2));
         rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
         // Torch 'flicker' effect
         if (torchFrames == 15) {
-            torch.setColor(1, 1, 1, 0.85f);
+            torch.setColor(0.95f, 0.9f, 0.9f, 0.85f);
         } else if (torchFrames == 0) {
-            torch.setColor(1, 1, 1, 0.9f);
+            torch.setColor(0.95f, 0.9f, 0.9f, 0.9f);
             torchFrames = 30;
         }
         torchFrames--;
@@ -131,15 +129,6 @@ public class Renderer {
 
     public List<Inanimate> getInanimateList() {
         return inanimates;
-    }
-
-    public void getTile(float x, float y) {
-        int tileX = (int) (x / Constants.TILESIZE);
-        int tileY = (int) (y / Constants.TILESIZE);
-        Tile foundTile = tiles.get(tileX * Constants.COLUMNS + tileY);
-        if (foundTile != null) {
-            foundTile.toggleSelected();
-        }
     }
 
     public void zoom(float value) {
@@ -229,7 +218,7 @@ public class Renderer {
     }
 
     public void createTileBodies() {
-        // Setup box2D bodies for light collision
+        Map<Tile, Body> bodies = new HashMap<Tile, Body>();
         PolygonShape tileShape = new PolygonShape();
         tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
         BodyDef tileBodyDef = new BodyDef();
@@ -239,11 +228,16 @@ public class Renderer {
 
         for (Tile tile : tiles.values()) {
             if (tile.isBlocking()) {
-                tileFixture.filter.groupIndex = 0;
-                tileBodyDef.position.set(tile.x * Constants.TILESIZE + (Constants.TILESIZE / 2f), tile.y * Constants.TILESIZE + (Constants.TILESIZE / 2f));
-                Body tileBody = world.createBody(tileBodyDef);
-                tileBody.createFixture(tileFixture);
+                tileFixture.filter.groupIndex = Constants.BIT_GROUP;
+            } else {
+                continue;
+                // Set body to ignore all collisions
+                // tileFixture.filter.groupIndex = -Constants.BIT_GROUP;
             }
+            // Body position: center of (tileX * TILESIZE), center of (tileY * TILESIZE)
+            tileBodyDef.position.set(tile.x * Constants.TILESIZE + (Constants.TILESIZE / 2f), tile.y * Constants.TILESIZE + (Constants.TILESIZE / 2f));
+            Body tileBody = world.createBody(tileBodyDef);
+            tileBody.createFixture(tileFixture);
         }
         tileShape.dispose();
     }

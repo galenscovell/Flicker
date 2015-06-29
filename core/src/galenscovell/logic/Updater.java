@@ -23,11 +23,13 @@ public class Updater {
     private Map<Integer, Tile> tiles;
     private Player player;
     private Inanimate stairs;
+    private Pathfinder pathfinder;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
+        this.pathfinder = new Pathfinder();
     }
 
     public void setHud(HudStage hud) {
@@ -35,12 +37,22 @@ public class Updater {
     }
 
     public void move(int[] destination, List<Entity> entities, List<Inanimate> inanimates) {
-        playerMove(destination);
+        Tile playerTile = getTile(player.getX(), player.getY());
+        Tile endTile = getTile(destination[0], destination[1]);
+        if (endTile == null) {
+            return;
+        }
+        pathfinder.findPath(tiles, playerTile, endTile);
+//        playerMove(destination);
 //        for (Entity entity : entities) {
 //            if (entity.movementTimer()) {
 //                entityMove(entity);
 //            }
 //        }
+    }
+
+    public void interact() {
+
     }
 
     public void setStairs(List<Inanimate> inanimates) {
@@ -53,6 +65,12 @@ public class Updater {
 
     public boolean descend() {
         return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
+    }
+
+    public Tile getTile(float x, float y) {
+        int tileX = (int) (x / tileSize);
+        int tileY = (int) (y / tileSize);
+        return findTile(tileX, tileY);
     }
 
     private void playerMove(int[] destination) {

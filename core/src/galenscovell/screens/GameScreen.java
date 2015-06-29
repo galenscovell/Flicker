@@ -56,6 +56,8 @@ public class GameScreen extends AbstractScreen {
             accumulator = 0;
             if (!(destination[0] == (player.getX() / Constants.TILESIZE) && destination[1] == (player.getY() / Constants.TILESIZE))) {
                 updater.move(destination, renderer.getEntityList(), renderer.getInanimateList());
+                destination[0] = player.getX() / Constants.TILESIZE;
+                destination[1] = player.getY() / Constants.TILESIZE;
             }
             if (updater.descend()) {
                 rayHandler.dispose();
@@ -99,8 +101,8 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void playerMove(float x, float y) {
-        destination[0] = (int) x / Constants.TILESIZE;
-        destination[1] = (int) y / Constants.TILESIZE;
+        destination[0] = (int) x;
+        destination[1] = (int) y;
     }
 
     public void screenZoom(boolean zoomOut) {
@@ -132,7 +134,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void findTile(float x, float y) {
-        renderer.getTile(x, y);
+        updater.getTile(x, y);
     }
 
     private void createNewLevel() {
@@ -156,7 +158,7 @@ public class GameScreen extends AbstractScreen {
         fullInput.addProcessor(stage);
         fullInput.addProcessor(new GestureDetector(20, 0.4f, 0.1f, 0.15f, new GestureHandler(this, renderer.getCamera())));
         enableWorldInput();
-        // Set initial destination to player starting position
+        // Set initial movement destination to player starting position
         this.destination = new int[]{player.getX() / Constants.TILESIZE, player.getY() / Constants.TILESIZE};
     }
 }

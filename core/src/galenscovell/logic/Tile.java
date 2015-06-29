@@ -280,7 +280,7 @@ public class Tile {
             frames -= frames;
         }
         if (selected) {
-            batch.setColor(0.0f, 0.8f, 0.3f, 0.8f);
+            batch.setColor(0.0f, 1.0f, 0.0f, 1.0f);
             batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
             batch.setColor(1, 1, 1, 1);
         } else {
