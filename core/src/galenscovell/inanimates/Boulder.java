@@ -9,24 +9,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * DOOR INANIMATE
  * Loads door sprite and handles interaction events.
- * @direction is either 0 (vertically facing) or 1 (horizontally facing).
  *
  * @author Galen Scovell
  */
 
-public class Door implements Inanimate {
+public class Boulder implements Inanimate {
     private int x, y;
     private Sprite sprite;
     private Sprite[] sprites;
     private boolean blocking, stateChanged;
 
-    public Door(int x, int y, int direction) {
+    public Boulder(int x, int y) {
         this.x = x;
         this.y = y;
         SpriteSheet sheet = SpriteSheet.tilesheet;
         this.sprites = new Sprite[2];
-        this.sprites[0] = new Sprite(sheet.getSprite(96 + direction));
-        this.sprites[1] = new Sprite(sheet.getSprite(112 + direction));
+        this.sprites[0] = new Sprite(sheet.getSprite(96));
+        this.sprites[1] = new Sprite(sheet.getSprite(97));
         this.sprite = sprites[0];
         this.blocking = true;
         this.stateChanged = false;

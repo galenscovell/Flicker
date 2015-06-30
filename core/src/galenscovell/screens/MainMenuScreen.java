@@ -69,36 +69,36 @@ public class MainMenuScreen extends AbstractScreen {
 
     private void createButtonTable() {
         this.buttonTable = new Table();
-        TextButton newGameButton = new TextButton("New Game", ResourceManager.colorButtonStyle);
+        TextButton newGameButton = new TextButton("New Game", ResourceManager.buttonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.newGame();
             }
         });
-        TextButton continueButton = new TextButton("Continue", ResourceManager.colorButtonStyle);
+        TextButton continueButton = new TextButton("Continue", ResourceManager.buttonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Continue previous game
             }
         });
-        TextButton settingsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
+        TextButton settingsButton = new TextButton("Settings", ResourceManager.buttonStyle);
         settingsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Settings screen
             }
         });
-        TextButton quitButton = new TextButton("Quit Game", ResourceManager.colorButtonStyle);
+        TextButton quitButton = new TextButton("Quit Game", ResourceManager.buttonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
-        buttonTable.add(newGameButton).width(300).height(60).expand().fill().padBottom(20);
+        buttonTable.add(newGameButton).width(300).height(70).expand().fill().padBottom(10);
         buttonTable.row();
-        buttonTable.add(continueButton).width(300).height(60).expand().fill().padBottom(20);
+        buttonTable.add(continueButton).width(300).height(70).expand().fill().padBottom(10);
         buttonTable.row();
-        buttonTable.add(settingsButton).width(300).height(60).expand().fill().padBottom(20);
+        buttonTable.add(settingsButton).width(300).height(70).expand().fill().padBottom(10);
         buttonTable.row();
-        buttonTable.add(quitButton).width(300).height(60).expand().fill();
+        buttonTable.add(quitButton).width(300).height(70).expand().fill();
     }
 }

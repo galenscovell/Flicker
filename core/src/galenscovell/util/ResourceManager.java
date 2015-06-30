@@ -31,15 +31,12 @@ public class ResourceManager {
     public static Label.LabelStyle menuStyle;
     public static Label.LabelStyle titleStyle;
 
-    public static NinePatchDrawable hudBG;
-    public static NinePatchDrawable buttonDown;
-    public static NinePatchDrawable colorButtonBG;
-    public static NinePatchDrawable colorButtonDown;
+    public static NinePatchDrawable buttonDarkUp;
+    public static NinePatchDrawable buttonDarkDown;
     public static NinePatchDrawable frameBG;
     public static NinePatchDrawable frameLit;
 
     public static TextButton.TextButtonStyle buttonStyle;
-    public static TextButton.TextButtonStyle colorButtonStyle;
     public static TextButton.TextButtonStyle frameStyle;
     public static TextButton.TextButtonStyle frameCheckedStyle;
 
@@ -86,17 +83,9 @@ public class ResourceManager {
         menuStyle = new Label.LabelStyle(assetManager.get("largeFont.ttf", BitmapFont.class), Color.WHITE);
         titleStyle = new Label.LabelStyle(assetManager.get("extraLargeFont.ttf", BitmapFont.class), Color.WHITE);
 
-        hudBG = new NinePatchDrawable(uiAtlas.createPatch("buttonbg"));
-        buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown"));
-        buttonStyle = new TextButton.TextButtonStyle(hudBG, buttonDown, hudBG, assetManager.get("mediumFont.ttf", BitmapFont.class));
-        buttonStyle.pressedOffsetX = 1;
-        buttonStyle.pressedOffsetY = -1;
-
-        colorButtonBG = new NinePatchDrawable(uiAtlas.createPatch("tealbuttonbg"));
-        colorButtonDown = new NinePatchDrawable(uiAtlas.createPatch("tealbuttondown"));
-        colorButtonStyle = new TextButton.TextButtonStyle(colorButtonBG, colorButtonDown, colorButtonBG, assetManager.get("mediumFont.ttf", BitmapFont.class));
-        colorButtonStyle.pressedOffsetX = 1;
-        colorButtonStyle.pressedOffsetY = -1;
+        buttonDarkUp = new NinePatchDrawable(uiAtlas.createPatch("button_up"));
+        buttonDarkDown = new NinePatchDrawable(uiAtlas.createPatch("button_down"));
+        buttonStyle = new TextButton.TextButtonStyle(buttonDarkUp, buttonDarkDown, buttonDarkUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
 
         frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
         frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));

@@ -30,19 +30,19 @@ public class HudOptionsMenu extends Table {
         this.mainTable = new Table();
         mainTable.setBackground(ResourceManager.frameBG);
 
-        TextButton settingsButton = new TextButton("Settings", ResourceManager.colorButtonStyle);
+        TextButton settingsButton = new TextButton("Settings", ResourceManager.buttonStyle);
         settingsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: In-game settings
             }
         });
-        TextButton mainMenuButton = new TextButton("Main Menu", ResourceManager.colorButtonStyle);
+        TextButton mainMenuButton = new TextButton("Main Menu", ResourceManager.buttonStyle);
         mainMenuButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.returnToMainMenu();
             }
         });
-        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.colorButtonStyle);
+        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.buttonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();

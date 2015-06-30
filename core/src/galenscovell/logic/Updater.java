@@ -64,16 +64,8 @@ public class Updater {
 
     }
 
-    public void setStairs(List<Inanimate> inanimates) {
-        for (Inanimate inanimate : inanimates) {
-            if (inanimate.getType().equals("Stairs")) {
-                this.stairs = inanimate;
-            }
-        }
-    }
-
     public boolean descend() {
-        return ((player.getCurrentX() / tileSize) == stairs.getX() && (player.getCurrentY() / tileSize) == stairs.getY());
+        return false;
     }
 
     public Tile getTile(float x, float y) {
@@ -211,8 +203,8 @@ public class Updater {
     private void entityAttack(Entity entity) {
         player.setBeingAttacked();
         entity.setAttacking();
-        hud.changeHealth(entity.getStat("damage"));
-        hud.addToLog(entity + " hits for " + entity.getStat("damage") + " damage.");
+        // hud.changeHealth(entity.getStat("damage"));
+        // hud.addToLog(entity + " hits for " + entity.getStat("damage") + " damage.");
     }
 
     private Tile findTile(int x, int y) {

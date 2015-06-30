@@ -55,7 +55,6 @@ public class GameScreen extends AbstractScreen {
         if (accumulator > timestep) {
             accumulator = 0;
             if (!(destination[0] == (player.getX() / Constants.TILESIZE) && destination[1] == (player.getY() / Constants.TILESIZE))) {
-                System.out.println("Called");
                 if (!updater.move(destination, renderer.getEntityList(), renderer.getInanimateList())) {
                     destination[0] = player.getX() / Constants.TILESIZE;
                     destination[1] = player.getY() / Constants.TILESIZE;
@@ -153,7 +152,6 @@ public class GameScreen extends AbstractScreen {
         this.updater = new Updater(player, level.getTiles());
         renderer.assembleLevel(player);
         renderer.createTileBodies();
-        updater.setStairs(renderer.getInanimateList());
         updater.setHud((HudStage) stage);
 
         this.fullInput = new InputMultiplexer();

@@ -30,8 +30,8 @@ public class HudStage extends Stage {
     private int eventLines = 1;
     private Label eventLog;
     private ProgressBar health, mana;
-    private Table playerMenu, inventoryMenu, optionsMenu, examineMenu;
-    private Button playerButton, examineButton, inventoryButton, optionsButton;
+    private Table inventoryMenu, optionsMenu, examineMenu;
+    private Button examineButton, inventoryButton, optionsButton;
 
     public HudStage(GameScreen game, Player player, SpriteBatch spriteBatch) {
         super(new FitViewport(800, 480), spriteBatch);
@@ -40,7 +40,6 @@ public class HudStage extends Stage {
     }
 
     public void create(Player player) {
-        this.playerMenu = new HudPlayerMenu(this);
         this.examineMenu = new HudExamineMenu(this);
         this.inventoryMenu = new HudInventoryMenu(this);
         this.optionsMenu = new HudOptionsMenu(this);
@@ -64,23 +63,6 @@ public class HudStage extends Stage {
 
 
         Table topRight = new Table();
-        this.playerButton = new Button(ResourceManager.frameStyle);
-        setIcon(playerButton, "explorer", 0.9f);
-        playerButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation(playerMenu);
-            }
-        });
-        // Player health and mana bar table
-        Table playerBars = new Table();
-        playerBars.padLeft(30);
-        this.health = createBar("healthfill", 50);
-        this.mana = createBar("manafill", 20);
-        playerBars.add(health).width(50).right();
-        playerBars.row();
-        playerBars.add(mana).width(20).right();
-        topRight.add(playerBars).expand().top().right();
-        topRight.add(playerButton).width(80).height(80).top().right();
         topTable.add(topRight).height(120).width(400).expand().top().right();
 
         mainTable.add(topTable).expand().fill().top();
@@ -94,7 +76,7 @@ public class HudStage extends Stage {
 
         Table bottomLeft = new Table();
         this.examineButton = new Button(ResourceManager.buttonStyle);
-        setIcon(examineButton, "examine", 0.9f);
+        setIcon(examineButton, "sensor");
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 examine();
@@ -102,14 +84,14 @@ public class HudStage extends Stage {
             }
         });
         this.inventoryButton = new Button(ResourceManager.buttonStyle);
-        setIcon(inventoryButton, "inventory", 0.9f);
+        setIcon(inventoryButton, "microchip");
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
         this.optionsButton = new Button(ResourceManager.buttonStyle);
-        setIcon(optionsButton, "options", 0.9f);
+        setIcon(optionsButton, "network");
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(optionsMenu);
@@ -128,7 +110,6 @@ public class HudStage extends Stage {
 
     public void dispose() {
         this.addActor(examineButton);
-        this.addActor(playerMenu);
         this.addActor(inventoryMenu);
         this.addActor(optionsMenu);
     }
@@ -153,25 +134,18 @@ public class HudStage extends Stage {
     public void examine() {
         if (examineMenu.hasParent()) {
             examineMenu.remove();
-            playerButton.setTouchable(Touchable.enabled);
             inventoryButton.setTouchable(Touchable.enabled);
             optionsButton.setTouchable(Touchable.enabled);
         } else {
             this.addActor(examineMenu);
-            playerButton.setTouchable(Touchable.disabled);
             inventoryButton.setTouchable(Touchable.disabled);
             optionsButton.setTouchable(Touchable.disabled);
         }
     }
 
-    public void changeHealth(int amount) {
-        health.setValue(health.getValue() + amount);
-    }
-
-    private void setIcon(Table table, String name, float alpha) {
+    private void setIcon(Table table, String name) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fit);
-        icon.setColor(1.0f, 1.0f, 1.0f, alpha);
         table.add(icon).expand().fill().center();
     }
 
@@ -195,8 +169,6 @@ public class HudStage extends Stage {
                 optionsMenu.remove();
             } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
                 inventoryMenu.remove();
-            } else if (playerMenu != menu && playerMenu.hasParent()) {
-                playerMenu.remove();
             }
             this.addActor(menu);
             game.disableWorldInput();

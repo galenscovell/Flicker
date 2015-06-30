@@ -6,9 +6,8 @@ import box2dLight.RayHandler;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.graphics.Fog;
-import galenscovell.inanimates.Door;
+import galenscovell.inanimates.Boulder;
 import galenscovell.inanimates.Inanimate;
-import galenscovell.inanimates.Stairs;
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
@@ -116,7 +115,7 @@ public class Renderer {
         }
         torchFrames--;
 
-        debug.render(world, camera.combined);
+        // debug.render(world, camera.combined);
     }
 
     public OrthographicCamera getCamera() {
@@ -155,19 +154,13 @@ public class Renderer {
     private void placeInanimates() {
         for (Tile tile : tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
-                if (tile.getBitmask() == 1010) {
-                    inanimates.add(new Door(tile.x, tile.y, 0));
-                    tile.toggleBlocking();
-                    tile.toggleOccupied();
-                } else if (tile.getBitmask() == 101) {
-                    inanimates.add(new Door(tile.x, tile.y, 1));
+                if (tile.getBitmask() == 1010 || tile.getBitmask() == 101) {
+                    inanimates.add(new Boulder(tile.x, tile.y));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                 }
             }
         }
-        Tile stairTile = findRandomTile();
-        inanimates.add(new Stairs(stairTile.x, stairTile.y));
     }
 
     private void placePlayer(Player playerInstance) {
