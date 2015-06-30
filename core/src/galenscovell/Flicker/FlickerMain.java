@@ -2,7 +2,9 @@ package galenscovell.flicker;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import galenscovell.screens.AbstractScreen;
 import galenscovell.screens.GameScreen;
+import galenscovell.screens.LoadingScreen;
 import galenscovell.screens.MainMenuScreen;
 import galenscovell.util.ResourceManager;
 
@@ -17,20 +19,16 @@ import com.badlogic.gdx.Game;
 
 public class FlickerMain extends Game {
     public SpriteBatch spriteBatch;
-    public MainMenuScreen mainMenuScreen;
+    public AbstractScreen loadingScreen, mainMenuScreen;
     public GameScreen gameScreen;
 
     @Override
     public void create () {
-        // Initialize resource manager and load assets
-        // TODO: Loading screen
-        ResourceManager.create();
-        ResourceManager.assetManager.finishLoading();
-        ResourceManager.done();
         // Initialize spriteBatch used throughout game
         this.spriteBatch = new SpriteBatch();
+        this.loadingScreen = new LoadingScreen(this);
         this.mainMenuScreen = new MainMenuScreen(this);
-        setScreen(mainMenuScreen);
+        setScreen(loadingScreen);
     }
 
     public void newGame() {
