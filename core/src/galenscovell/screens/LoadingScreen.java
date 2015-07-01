@@ -27,10 +27,10 @@ public class LoadingScreen extends AbstractScreen {
     }
 
     protected void create() {
-        this.stage = new Stage(new FitViewport(800, 480), root.spriteBatch);
+        this.stage = new Stage(new FitViewport(400, 240), root.spriteBatch);
         Table splashMain = new Table();
         splashMain.setFillParent(true);
-        Image splashImage = new Image(ResourceManager.assetManager.get("textures/loading.png", Texture.class));
+        Image splashImage = new Image(new Texture(Gdx.files.internal("textures/loading.png")));
         splashMain.add(splashImage).expand().fill().center();
         stage.addActor(splashMain);
     }
@@ -43,18 +43,16 @@ public class LoadingScreen extends AbstractScreen {
         stage.draw();
         if (ResourceManager.assetManager.update()) {
             ResourceManager.done();
-            stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.5f), toMainMenuScreen));
+            stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.4f), toMainMenuScreen));
         }
     }
 
     @Override
     public void show() {
         ResourceManager.create();
-        ResourceManager.assetManager.load("textures/loading.png", Texture.class);
-        ResourceManager.assetManager.finishLoading();
         create();
         stage.getRoot().getColor().a = 0;
-        stage.getRoot().addAction(Actions.sequence(Actions.fadeIn(0.1f)));
+        stage.getRoot().addAction(Actions.sequence(Actions.fadeIn(0.2f)));
     }
 
     Action toMainMenuScreen = new Action() {

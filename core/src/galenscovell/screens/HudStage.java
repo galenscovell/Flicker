@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 /**
  * HUD STAGE
  * Creates HUD and handles HUD updates.
- * HUD camera uses pixel dimensions (800, 480) for pixel-perfect placement.
+ * HUD camera uses exact pixel dimensions (800, 480).
  *
  * @author Galen Scovell
  */
@@ -29,7 +29,7 @@ public class HudStage extends Stage {
     private GameScreen game;
     private int eventLines = 1;
     private Label eventLog;
-    private ProgressBar health, mana;
+    private ProgressBar chassis, power, matter;
     private Table inventoryMenu, optionsMenu, examineMenu;
     private Button examineButton, inventoryButton, optionsButton;
 
@@ -73,8 +73,22 @@ public class HudStage extends Stage {
          **********************************/
         Table bottomTable = new Table();
 
-
+        // Bottom left
         Table bottomLeft = new Table();
+        Table barTable = new Table();
+        this.chassis = createBar("chassisFill");
+        this.power = createBar("powerFill");
+        this.matter = createBar("matterFill");
+        barTable.add(chassis).width(260).height(20);
+        barTable.row();
+        barTable.add(power).width(260).height(20);
+        barTable.row();
+        barTable.add(matter).width(260).height(20);
+        bottomLeft.add(barTable).width(260).height(60).expand().fill().bottom().left();
+        bottomTable.add(bottomLeft).expand().fill().left();
+
+        // Bottom right
+        Table bottomRight = new Table();
         this.examineButton = new Button(ResourceManager.buttonStyle);
         setIcon(examineButton, "sensor");
         examineButton.addListener(new ClickListener() {
@@ -97,10 +111,10 @@ public class HudStage extends Stage {
                 menuOperation(optionsMenu);
             }
         });
-        bottomLeft.add(examineButton).height(80).width(80);
-        bottomLeft.add(inventoryButton).height(80).width(80);
-        bottomLeft.add(optionsButton).height(80).width(80);
-        bottomTable.add(bottomLeft).bottom().left().expand();
+        bottomRight.add(examineButton).height(80).width(80);
+        bottomRight.add(inventoryButton).height(80).width(80);
+        bottomRight.add(optionsButton).height(80).width(80);
+        bottomTable.add(bottomRight).expand().bottom().right();
 
         mainTable.add(bottomTable).bottom().fill();
 
@@ -131,6 +145,18 @@ public class HudStage extends Stage {
         }
     }
 
+    public void updateChassis(int val) {
+        chassis.setValue(chassis.getValue() + val);
+    }
+
+    public void updatePower(int val) {
+
+    }
+
+    public void updateMatter(int val) {
+
+    }
+
     public void examine() {
         if (examineMenu.hasParent()) {
             examineMenu.remove();
@@ -149,13 +175,14 @@ public class HudStage extends Stage {
         table.add(icon).expand().fill().center();
     }
 
-    private ProgressBar createBar(String path, int size) {
+    private ProgressBar createBar(String path) {
         TextureRegionDrawable fill = new TextureRegionDrawable(ResourceManager.uiAtlas.findRegion(path));
-        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(ResourceManager.frameBG, fill);
-        ProgressBar bar = new ProgressBar(0, size, 1, false, barStyle);
-        barStyle.knobAfter = fill;
-        bar.setValue(0);
-        bar.setAnimateDuration(0.4f);
+        TextureRegionDrawable empty = new TextureRegionDrawable(ResourceManager.uiAtlas.findRegion("barEmpty"));
+        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(empty, fill);
+        ProgressBar bar = new ProgressBar(0, 260, 1, false, barStyle);
+        barStyle.knobBefore = fill;
+        bar.setValue(260);
+        bar.setAnimateDuration(0.1f);
         bar.validate();
         return bar;
     }
