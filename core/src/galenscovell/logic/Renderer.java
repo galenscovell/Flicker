@@ -90,10 +90,10 @@ public class Renderer {
         // Entity rendering: [x, y] are in custom units
         for (Entity entity : entities) {
             entity.draw(spriteBatch, tileSize, interpolation, player);
-            if (!entity.isInView()) {
-                entity.toggleInView();
-            } else if (entity.isInView()) {
-                entity.toggleInView();
+            if (!entity.isAggressive()) {
+                entity.toggleAggressive();
+            } else if (entity.isAggressive()) {
+                entity.toggleAggressive();
             }
         }
         // Player rendering: [x, y] are in custom units

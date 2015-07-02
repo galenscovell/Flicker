@@ -8,7 +8,6 @@ import galenscovell.util.Constants;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -51,10 +50,11 @@ public class Updater {
         for (Entity entity : entities) {
             if (entity.movementTimer()) {
                 if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
-                    if (entity.isInView()) {
+                    if (entity.isAggressive()) {
                         findPath(entity, player.getX(), player.getY());
                     } else {
-                        npcPassiveMove(entity);
+                        // TODO: Passive behavior, destination depends on entity
+                        // findPath(entity, DESTINATIONX, DESTINATIONY);
                     }
                 } else {
                     Point nextMove = entity.getPathStack().pop();

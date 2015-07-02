@@ -19,8 +19,8 @@ public interface Entity {
     public int getCurrentX();
     public int getCurrentY();
 
-    public void toggleInView();
-    public boolean isInView();
+    public void toggleAggressive();
+    public boolean isAggressive();
     public boolean movementTimer();
     public void setBeingAttacked();
     public void setAttacking();

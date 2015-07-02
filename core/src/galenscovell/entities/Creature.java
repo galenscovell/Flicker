@@ -18,15 +18,15 @@ import java.util.Stack;
 
 public class Creature implements Entity {
     protected int x, y, prevX, prevY, currentX, currentY;
-    protected boolean inView, moving, attacking, beingAttacked;
+    protected boolean aggressive, moving, attacking, beingAttacked;
 
     protected Sprite[] currentSet;
     protected Sprite[] leftSprites, rightSprites;
 
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
-    private int moveTimer, frame;
     private Stack<Point> pathStack;
+    private int moveTimer, frame;
 
     @Override
     public String toString() {
@@ -62,12 +62,12 @@ public class Creature implements Entity {
         return stats.get(key);
     }
 
-    public void toggleInView() {
-        inView = inView ? false : true;
+    public void toggleAggressive() {
+        aggressive = !aggressive;
     }
 
-    public boolean isInView() {
-        return inView;
+    public boolean isAggressive() {
+        return aggressive;
     }
 
     public boolean movementTimer() {
@@ -101,7 +101,7 @@ public class Creature implements Entity {
             moving = true;
             x += dx;
             y += dy;
-            if (!inView) {
+            if (!aggressive) {
                 prevX = x;
                 prevY = y;
             }
