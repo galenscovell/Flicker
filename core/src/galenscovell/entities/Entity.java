@@ -1,7 +1,10 @@
 package galenscovell.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import galenscovell.logic.Point;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.util.Stack;
 
 /**
  * ENTITY INTERFACE
@@ -21,6 +24,9 @@ public interface Entity {
     public boolean movementTimer();
     public void setBeingAttacked();
     public void setAttacking();
+
+    public void setPathStack(Stack<Point> path);
+    public Stack<Point> getPathStack();
 
     public void attack(double interpolation, Entity entity);
     public void interpolate(double interpolation);

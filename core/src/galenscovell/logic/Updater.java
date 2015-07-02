@@ -25,7 +25,6 @@ public class Updater {
     private Player player;
     private Inanimate stairs;
     private Pathfinder pathfinder;
-    private Stack<Point> playerPath;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
@@ -38,30 +37,43 @@ public class Updater {
         this.hud = hud;
     }
 
-    public boolean move(int[] destination, List<Entity> entities, List<Inanimate> inanimates) {
-        Tile playerTile = getTile(player.getX(), player.getY());
-        Tile endTile = getTile(destination[0], destination[1]);
-        if (endTile == null || playerTile == endTile) {
+    public boolean update(int[] destination, List<Entity> entities) {
+        if (!findPath(player, destination[0], destination[1])) {
             return false;
-        } else {
-            this.playerPath = pathfinder.findPath(tiles, playerTile, endTile);
         }
-        if (playerPath == null || playerPath.isEmpty()) {
+        if (player.getPathStack() == null || player.getPathStack().isEmpty()) {
             return false;
         } else {
-            Point nextMove = playerPath.pop();
-            entityMove(player, nextMove.x, nextMove.y);
+            Point nextMove = player.getPathStack().pop();
+            move(player, nextMove.x, nextMove.y);
+        }
+
+        for (Entity entity : entities) {
+            if (entity.movementTimer()) {
+                if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
+                    if (entity.isInView()) {
+                        findPath(entity, player.getX(), player.getY());
+                    } else {
+                        npcPassiveMove(entity);
+                    }
+                } else {
+                    Point nextMove = entity.getPathStack().pop();
+                    move(entity, nextMove.x, nextMove.y);
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean findPath(Entity entity, int destX, int destY) {
+        Tile startTile = getTile(entity.getX(), entity.getY());
+        Tile endTile = getTile(destX, destY);
+        if (endTile == null || startTile == endTile) {
+            return false;
+        } else {
+            entity.setPathStack(pathfinder.findPath(tiles, startTile, endTile));
             return true;
         }
-//        for (Entity entity : entities) {
-//            if (entity.movementTimer()) {
-//                if (entity.isInView()) {
-//                    entityAggressiveMove(entity);
-//                } else {
-//                    entityPassiveMove(entity);
-//                }
-//            }
-//        }
     }
 
     public void interact() {
@@ -78,7 +90,7 @@ public class Updater {
         return findTile(tileX, tileY);
     }
 
-    private void entityMove(Entity entity, int x, int y) {
+    private void move(Entity entity, int x, int y) {
         int entityX = (entity.getX() / tileSize);
         int entityY = (entity.getY() / tileSize);
         int diffX = x - entityX;

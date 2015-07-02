@@ -1,10 +1,13 @@
 package galenscovell.entities;
 
+import galenscovell.logic.Point;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * CREATURE ENTITY
@@ -23,6 +26,7 @@ public class Creature implements Entity {
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
     private int moveTimer, frame;
+    private Stack<Point> pathStack;
 
     @Override
     public String toString() {
@@ -81,6 +85,14 @@ public class Creature implements Entity {
 
     public void setAttacking() {
         attacking = true;
+    }
+
+    public void setPathStack(Stack<Point> path) {
+        this.pathStack = path;
+    }
+
+    public Stack<Point> getPathStack() {
+        return pathStack;
     }
 
     public void move(int dx, int dy, boolean possible) {
