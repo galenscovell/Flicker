@@ -22,12 +22,12 @@ public class Bitmasker {
         int value = 0;
         List<Point> neighbors = tile.getNeighbors();
 
-        // Analyzes neighboring tile states
-        // If tile of interest is floor or walls, checks if neighbors are walls
-        // If tile of interest is water, checks if neighbors are floor
+        // If analyzed tile is wall, checks if neighbors are walls
+        // If analyzed tile is floor, checks if neighbors are walls or water
+        // If analyzed tile is water, checks if neighbors are floors or walls
         for (Point neighbor : neighbors) {
             Tile neighborTile = tiles.get(neighbor.x * columns + neighbor.y);
-            if (neighborTile != null && (neighborTile.isWall() || (tile.isWater() && neighborTile.isFloor()))) {
+            if (neighborTile != null && (neighborTile.isWall() || (tile.isFloor() && neighborTile.isWater()) || (tile.isWater() && neighborTile.isFloor()))) {
                 int diffX = tile.x - neighborTile.x;
                 int diffY = tile.y - neighborTile.y;
 

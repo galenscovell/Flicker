@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * LEVEL
  * Level is composed of a HashMap with Tile object values and (x * level_columns + y) keys.
- * Optimization is an intensive procedure which should only occur when creating levels.
+ * Optimization is an expensive procedure which should only occur when creating levels.
  *
  * @author Galen Scovell
  */
@@ -81,16 +81,8 @@ public class Level {
             }
         }
         prune();
-        skin();
         placeWater();
-    }
-
-    private void skin() {
-        Bitmasker bitmasker = new Bitmasker();
-        for (Tile tile : tiles.values()) {
-            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
-            tile.findSprite();
-        }
+        skin();
     }
 
     private void prune() {
@@ -110,7 +102,7 @@ public class Level {
         Random generator = new Random();
         int waterPoints = generator.nextInt(3);
         List<Tile> waterTiles = new ArrayList<Tile>();
-        // Place initial water spawn points randomly
+        // Place water spawn points randomly
         for (int i = 0; i < waterPoints; i++) {
             Tile waterTile = findRandomTile();
             waterTile.state = 3;
@@ -125,14 +117,9 @@ public class Level {
                 expandWater(tile, addedTiles);
             }
         }
+        // Add expanded water tiles to water tile list
         for (Tile tile : addedTiles) {
             waterTiles.add(tile);
-        }
-        // Find water tile bitmasks and apply sprites
-        Bitmasker bitmasker = new Bitmasker();
-        for (Tile tile : waterTiles) {
-            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
-            tile.findSprite();
         }
     }
 
@@ -144,6 +131,14 @@ public class Level {
                 neighborTile.state = 3;
                 waterTiles.add(neighborTile);
             }
+        }
+    }
+
+    private void skin() {
+        Bitmasker bitmasker = new Bitmasker();
+        for (Tile tile : tiles.values()) {
+            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
+            tile.findSprite();
         }
     }
 
