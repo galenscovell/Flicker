@@ -101,10 +101,6 @@ public class Creature implements Entity {
             moving = true;
             x += dx;
             y += dy;
-            if (!aggressive) {
-                prevX = x;
-                prevY = y;
-            }
         }
     }
 
@@ -160,6 +156,9 @@ public class Creature implements Entity {
                 frame = 4;
             } else if (interpolation == 1.0) {
                 frame = 5;
+            }
+            if (frame >= currentSet.length) {
+                frame = 0;
             }
         }
         if (attacking) {

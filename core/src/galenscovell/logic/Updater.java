@@ -22,7 +22,6 @@ public class Updater {
     private HudStage hud;
     private Map<Integer, Tile> tiles;
     private Player player;
-    private Inanimate stairs;
     private Pathfinder pathfinder;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
@@ -37,32 +36,65 @@ public class Updater {
     }
 
     public boolean update(int[] destination, List<Entity> entities) {
-        if (!findPath(player, destination[0], destination[1])) {
-            return false;
-        }
-        if (player.getPathStack() == null || player.getPathStack().isEmpty()) {
+        if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
             return false;
         } else {
             Point nextMove = player.getPathStack().pop();
-            move(player, nextMove.x, nextMove.y);
-        }
+            if (move(player, nextMove.x, nextMove.y)) {
+                // TODO: Movement power usage and regeneration
+            } else {
+                player.setPathStack(null);
+                return false;
+            }
 
-        for (Entity entity : entities) {
-            if (entity.movementTimer()) {
-                if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
+            for (Entity entity : entities) {
+                if (entity.movementTimer()) {
                     if (entity.isAggressive()) {
                         findPath(entity, player.getX(), player.getY());
                     } else {
+                        findPath(entity, player.getX(), player.getY());
                         // TODO: Passive behavior, destination depends on entity
-                        // findPath(entity, DESTINATIONX, DESTINATIONY);
                     }
-                } else {
-                    Point nextMove = entity.getPathStack().pop();
-                    move(entity, nextMove.x, nextMove.y);
+                    if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
+                        continue;
+                    } else {
+                        nextMove = entity.getPathStack().pop();
+                        if (!move(entity, nextMove.x, nextMove.y)) {
+                            entity.setPathStack(null);
+                        }
+                    }
                 }
             }
         }
         return true;
+    }
+
+    public boolean interact(float x, float y, List<Inanimate> inanimates) {
+        Inanimate object = getObject((int) x / tileSize, (int) y / tileSize, inanimates);
+        if (object != null) {
+            hud.addToLog(object.interact(getTile(x, y)));
+            return true;
+        }
+        return false;
+    }
+
+    public boolean descend() {
+        return false;
+    }
+
+    public Tile getTile(float x, float y) {
+        int tileX = (int) (x / tileSize);
+        int tileY = (int) (y / tileSize);
+        return findTile(tileX, tileY);
+    }
+
+    public Inanimate getObject(int x, int y, List<Inanimate> inanimates) {
+        for (Inanimate object : inanimates) {
+            if (object.getX() == x && object.getY() == y) {
+                return object;
+            }
+        }
+        return null;
     }
 
     private boolean findPath(Entity entity, int destX, int destY) {
@@ -76,21 +108,7 @@ public class Updater {
         }
     }
 
-    public void interact() {
-
-    }
-
-    public boolean descend() {
-        return false;
-    }
-
-    public Tile getTile(float x, float y) {
-        int tileX = (int) (x / tileSize);
-        int tileY = (int) (y / tileSize);
-        return findTile(tileX, tileY);
-    }
-
-    private void move(Entity entity, int x, int y) {
+    private boolean move(Entity entity, int x, int y) {
         int entityX = (entity.getX() / tileSize);
         int entityY = (entity.getY() / tileSize);
         int diffX = x - entityX;
@@ -107,23 +125,19 @@ public class Updater {
         } else if (diffY < 0) {
             dy--;
         }
-        Tile nextTile = findTile(entityX + dx, entityY + dy);
+        Tile nextTile = findTile(x, y);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
-            Tile currentTile = findTile(entityX, entityY);
-            currentTile.toggleOccupied();
+            // Set current tile as unoccupied
+            findTile(entityX, entityY).toggleOccupied();
+            // Move to next tile and set it as occupied
             entity.move(dx * tileSize, dy * tileSize, true);
             nextTile.toggleOccupied();
+            return true;
         } else {
+            // Unable to move to tile, just turn in that direction
             entity.move(dx, dy, false);
+            return false;
         }
-    }
-
-    private void npcPassiveMove(Entity entity) {
-
-    }
-
-    private void npcAggressiveMove(Entity entity) {
-
     }
 
     private void npcAttack(Entity entity) {

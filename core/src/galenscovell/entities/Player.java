@@ -31,14 +31,4 @@ public class Player extends Creature {
         }
         currentSet = rightSprites;
     }
-
-    @Override
-    public void move(int dx, int dy, boolean possible) {
-        turn(dx, dy);
-        if (possible) {
-            moving = true;
-            x += dx;
-            y += dy;
-        }
-    }
 }

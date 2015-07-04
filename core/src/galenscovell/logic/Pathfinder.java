@@ -46,8 +46,8 @@ public class Pathfinder {
                 // Consider current node's neighbors
                 for (Point point : a.self.getNeighbors()) {
                     Tile neighbor = tiles.get(point.x * Constants.COLUMNS + point.y);
-                    // If node tile is unwalkable, ignore it
-                    if (neighbor == null || neighbor.isWall() || neighbor.isOccupied()|| neighbor.isBlocking() || neighbor.isWater() || closed.contains(neighbor)) {
+                    // Ignore walls, water and other blocked tiles
+                    if (neighbor == null || neighbor.isWater() || neighbor.isBlocking() || closed.contains(neighbor)) {
                         continue;
                     }
                     // If tile is already in open list, ignore it

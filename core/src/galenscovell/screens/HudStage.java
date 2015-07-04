@@ -150,11 +150,11 @@ public class HudStage extends Stage {
     }
 
     public void updatePower(int val) {
-
+        power.setValue(power.getValue() + val);
     }
 
     public void updateMatter(int val) {
-
+        matter.setValue(matter.getValue() + val);
     }
 
     public void examine() {
