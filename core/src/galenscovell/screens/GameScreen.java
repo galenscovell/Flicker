@@ -135,7 +135,10 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void findTile(float x, float y) {
-        updater.getTile(x, y);
+        // updater.getTile(x, y);
+        if (updater.interact(x, y, renderer.getInanimateList())) {
+            renderer.updateTileBody(x, y);
+        }
     }
 
     private void createNewLevel() {

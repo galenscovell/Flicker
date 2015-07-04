@@ -38,6 +38,7 @@ public class Renderer {
     private RayHandler rayHandler;
     private PointLight torch;
     private World world;
+    private Map<Integer, Body> bodies;
     private Box2DDebugRenderer debug;
 
     private OrthographicCamera camera;
@@ -90,11 +91,6 @@ public class Renderer {
         // Entity rendering: [x, y] are in custom units
         for (Entity entity : entities) {
             entity.draw(spriteBatch, tileSize, interpolation, player);
-            if (!entity.isAggressive()) {
-                entity.toggleAggressive();
-            } else if (entity.isAggressive()) {
-                entity.toggleAggressive();
-            }
         }
         // Player rendering: [x, y] are in custom units
         player.draw(spriteBatch, tileSize, interpolation, null);
@@ -115,7 +111,7 @@ public class Renderer {
         }
         torchFrames--;
 
-        // debug.render(world, camera.combined);
+        debug.render(world, camera.combined);
     }
 
     public OrthographicCamera getCamera() {
@@ -211,7 +207,7 @@ public class Renderer {
     }
 
     public void createTileBodies() {
-        Map<Tile, Body> bodies = new HashMap<Tile, Body>();
+        this.bodies = new HashMap<Integer, Body>();
         PolygonShape tileShape = new PolygonShape();
         tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
         BodyDef tileBodyDef = new BodyDef();
@@ -231,7 +227,31 @@ public class Renderer {
             tileBodyDef.position.set(tile.x * Constants.TILESIZE + (Constants.TILESIZE / 2f), tile.y * Constants.TILESIZE + (Constants.TILESIZE / 2f));
             Body tileBody = world.createBody(tileBodyDef);
             tileBody.createFixture(tileFixture);
+            bodies.put(tile.x * Constants.COLUMNS + tile.y, tileBody);
         }
+        tileShape.dispose();
+    }
+
+    public void updateTileBody(float x, float y) {
+        int tileX = (int) x / tileSize;
+        int tileY = (int) y / tileSize;
+        // Get body at object position
+        Body updatedBody = bodies.get(tileX * Constants.COLUMNS + tileY);
+        // Destory current fixture on body
+        updatedBody.destroyFixture(updatedBody.getFixtureList().first());
+
+        PolygonShape tileShape = new PolygonShape();
+        tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
+        FixtureDef tileFixture = new FixtureDef();
+        tileFixture.shape = tileShape;
+
+        Tile updated = tiles.get(tileX * Constants.COLUMNS + tileY);
+        if (updated.isBlocking()) {
+            tileFixture.filter.groupIndex = Constants.BIT_GROUP;
+        } else {
+            tileFixture.filter.groupIndex = -Constants.BIT_GROUP;
+        }
+        updatedBody.createFixture(tileFixture);
         tileShape.dispose();
     }
 }

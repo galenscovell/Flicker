@@ -17,7 +17,7 @@ public class Boulder implements Inanimate {
     private int x, y;
     private Sprite sprite;
     private Sprite[] sprites;
-    private boolean blocking, stateChanged;
+    private boolean blocking;
 
     public Boulder(int x, int y) {
         this.x = x;
@@ -28,7 +28,6 @@ public class Boulder implements Inanimate {
         this.sprites[1] = new Sprite(sheet.getSprite(97));
         this.sprite = sprites[0];
         this.blocking = true;
-        this.stateChanged = false;
     }
 
     public int getX() {
@@ -40,31 +39,18 @@ public class Boulder implements Inanimate {
     }
 
     public String getType() {
-        return "Door";
+        return "Boulder";
     }
 
     public String interact(Tile tile) {
-        if (blocking) {
-            this.sprite = sprites[1];
-            tile.toggleBlocking();
-            tile.toggleOccupied();
-            blocking = false;
-            stateChanged = true;
-            return "The door creaks open.";
-        } else {
-            this.sprite = sprites[0];
-            tile.toggleBlocking();
-            tile.toggleOccupied();
-            blocking = true;
-            stateChanged = true;
-            return "You close the door.";
-        }
+        this.sprite = sprites[1];
+        tile.toggleBlocking();
+        tile.toggleOccupied();
+        blocking = false;
+        return "The boulder shatters.";
     }
 
     public void draw(SpriteBatch batch, int tileSize) {
         batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
-        if (stateChanged) {
-            stateChanged = false;
-        }
     }
 }
