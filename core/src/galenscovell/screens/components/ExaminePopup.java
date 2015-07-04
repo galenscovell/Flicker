@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Align;
 
 public class ExaminePopup extends Table {
     private HudStage root;
-    private Table mainTable;
 
     public ExaminePopup(HudStage root) {
         this.root = root;
@@ -25,12 +24,12 @@ public class ExaminePopup extends Table {
 
     public void create() {
         this.setFillParent(true);
-        this.mainTable = new Table();
+        Table popup = new Table();
         this.padBottom(20);
-        mainTable.setBackground(ResourceManager.frameBG);
-        Label examineLabel = new Label("Examine mode.", ResourceManager.detailStyle);
+        popup.setBackground(ResourceManager.buttonDarkDown);
+        Label examineLabel = new Label("Examine mode", ResourceManager.detailStyle);
         examineLabel.setAlignment(Align.center);
-        mainTable.add(examineLabel).width(170).height(50).expand().fill().center();
-        this.add(mainTable).width(180).height(60).expand().bottom();
+        popup.add(examineLabel).width(170).height(50).expand().fill().center();
+        this.add(popup).width(180).height(60).expand().bottom();
     }
 }

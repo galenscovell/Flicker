@@ -54,23 +54,23 @@ public class ResourceManager {
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        smallParams.fontFileName = "ui/PressStart2P.ttf";
-        smallParams.fontParameters.size = 12;
+        smallParams.fontFileName = "ui/Akashi.ttf";
+        smallParams.fontParameters.size = 14;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        mediumParams.fontFileName = "ui/PressStart2P.ttf";
-        mediumParams.fontParameters.size = 16;
+        mediumParams.fontFileName = "ui/Akashi.ttf";
+        mediumParams.fontParameters.size = 18;
         assetManager.load("mediumFont.ttf", BitmapFont.class, mediumParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter largeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        largeParams.fontFileName = "ui/PressStart2P.ttf";
-        largeParams.fontParameters.size = 24;
+        largeParams.fontFileName = "ui/Akashi.ttf";
+        largeParams.fontParameters.size = 28;
         assetManager.load("largeFont.ttf", BitmapFont.class, largeParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        extraLargeParams.fontFileName = "ui/PressStart2P.ttf";
-        extraLargeParams.fontParameters.size = 48;
+        extraLargeParams.fontFileName = "ui/Akashi.ttf";
+        extraLargeParams.fontParameters.size = 56;
         assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
     }
 
