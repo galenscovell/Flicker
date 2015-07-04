@@ -111,7 +111,7 @@ public class Renderer {
         }
         torchFrames--;
 
-        debug.render(world, camera.combined);
+        // debug.render(world, camera.combined);
     }
 
     public OrthographicCamera getCamera() {
@@ -149,9 +149,9 @@ public class Renderer {
 
     private void placeInanimates() {
         for (Tile tile : tiles.values()) {
-            if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
+            if (tile.isFloor() && tile.getFloorNeighbors() >= 4) {
                 if (tile.getBitmask() == 1010 || tile.getBitmask() == 101) {
-                    inanimates.add(new Boulder(tile.x, tile.y));
+                    inanimates.add(new Boulder(this, tile.x, tile.y));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                 }
@@ -219,9 +219,7 @@ public class Renderer {
             if (tile.isBlocking()) {
                 tileFixture.filter.groupIndex = Constants.BIT_GROUP;
             } else {
-                continue;
-                // Set body to ignore all collisions
-                // tileFixture.filter.groupIndex = -Constants.BIT_GROUP;
+                tileFixture.filter.groupIndex = -Constants.BIT_GROUP;
             }
             // Body position: center of (tileX * TILESIZE), center of (tileY * TILESIZE)
             tileBodyDef.position.set(tile.x * Constants.TILESIZE + (Constants.TILESIZE / 2f), tile.y * Constants.TILESIZE + (Constants.TILESIZE / 2f));
@@ -232,9 +230,7 @@ public class Renderer {
         tileShape.dispose();
     }
 
-    public void updateTileBody(float x, float y) {
-        int tileX = (int) x / tileSize;
-        int tileY = (int) y / tileSize;
+    public void updateTileBody(int tileX, int tileY) {
         // Get body at object position
         Body updatedBody = bodies.get(tileX * Constants.COLUMNS + tileY);
         // Destory current fixture on body

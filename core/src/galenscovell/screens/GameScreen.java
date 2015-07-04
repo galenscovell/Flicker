@@ -134,11 +134,9 @@ public class GameScreen extends AbstractScreen {
         examineMode = !examineMode;
     }
 
-    public void findTile(float x, float y) {
+    public void examine(float x, float y) {
         // updater.getTile(x, y);
-        if (updater.interact(x, y, renderer.getInanimateList())) {
-            renderer.updateTileBody(x, y);
-        }
+        updater.interact(x, y, renderer.getInanimateList());
     }
 
     private void createNewLevel() {

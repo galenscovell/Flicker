@@ -69,13 +69,18 @@ public class Updater {
         return true;
     }
 
-    public boolean interact(float x, float y, List<Inanimate> inanimates) {
-        Inanimate object = getObject((int) x / tileSize, (int) y / tileSize, inanimates);
-        if (object != null) {
-            hud.addToLog(object.interact(getTile(x, y)));
-            return true;
+    public void interact(float x, float y, List<Inanimate> inanimates) {
+        int tileX = (int) x / tileSize;
+        int tileY = (int) y / tileSize;
+        Inanimate inanimate = null;
+        for (Inanimate object : inanimates) {
+            if (object.getX() == tileX && object.getY() == tileY) {
+                inanimate = object;
+            }
         }
-        return false;
+        if (inanimate != null) {
+            hud.addToLog(inanimate.interact(getTile(x, y)));
+        }
     }
 
     public boolean descend() {
@@ -86,15 +91,6 @@ public class Updater {
         int tileX = (int) (x / tileSize);
         int tileY = (int) (y / tileSize);
         return findTile(tileX, tileY);
-    }
-
-    public Inanimate getObject(int x, int y, List<Inanimate> inanimates) {
-        for (Inanimate object : inanimates) {
-            if (object.getX() == x && object.getY() == y) {
-                return object;
-            }
-        }
-        return null;
     }
 
     private boolean findPath(Entity entity, int destX, int destY) {
