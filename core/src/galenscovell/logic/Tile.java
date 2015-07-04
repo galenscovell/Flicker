@@ -1,6 +1,7 @@
 package galenscovell.logic;
 
 import galenscovell.graphics.SpriteSheet;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,7 +24,7 @@ public class Tile {
     private int bitmask;
     private Sprite[] sprites;
     private int currentFrame, frames;
-    private boolean occupied, blocking, unused;
+    private boolean occupied, blocking, unused, destination;
 
     public Tile(int x, int y, int columns, int rows) {
         this.x = x;
@@ -74,6 +75,14 @@ public class Tile {
 
     public void toggleBlocking() {
         blocking = !blocking;
+    }
+
+    public void setAsDestination() {
+        destination = true;
+    }
+
+    public void removeAsDestination() {
+        destination = false;
     }
 
     public void setFloorNeighbors(int value) {
@@ -276,6 +285,9 @@ public class Tile {
             frames -= frames;
         }
         batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
+        if (destination) {
+            batch.draw(ResourceManager.destinationMarker, x * tileSize, y * tileSize, tileSize, tileSize);
+        }
         frames++;
     }
 

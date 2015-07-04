@@ -3,86 +3,93 @@ playerAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-robo0_l
+destinationMarker
   rotate: false
   xy: 1, 1
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+robo0_l
+  rotate: false
+  xy: 51, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo0_r
   rotate: false
-  xy: 48, 1
+  xy: 98, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo1_l
   rotate: false
-  xy: 95, 1
+  xy: 145, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo1_r
   rotate: false
-  xy: 142, 1
+  xy: 192, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo2_l
   rotate: false
-  xy: 189, 1
+  xy: 239, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo2_r
   rotate: false
-  xy: 236, 1
+  xy: 286, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo3_l
   rotate: false
-  xy: 283, 1
+  xy: 333, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo3_r
   rotate: false
-  xy: 330, 1
+  xy: 380, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo4_l
   rotate: false
-  xy: 377, 1
+  xy: 427, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo4_r
   rotate: false
-  xy: 424, 1
+  xy: 474, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo5_l
   rotate: false
-  xy: 471, 1
+  xy: 521, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo5_r
   rotate: false
-  xy: 518, 1
+  xy: 568, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0

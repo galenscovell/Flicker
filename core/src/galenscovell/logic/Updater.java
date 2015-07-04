@@ -21,8 +21,11 @@ public class Updater {
     private int tileSize;
     private HudStage hud;
     private Map<Integer, Tile> tiles;
+    private List<Entity> entities;
+    private List<Inanimate> inanimates;
     private Player player;
     private Pathfinder pathfinder;
+    private Tile destinationMarker;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
@@ -35,14 +38,32 @@ public class Updater {
         this.hud = hud;
     }
 
-    public boolean update(int[] destination, List<Entity> entities) {
+    public void setLists(List<Entity> entities, List<Inanimate> inanimates) {
+        this.entities = entities;
+        this.inanimates = inanimates;
+    }
+
+    public Tile getCurrentDestination() {
+        return destinationMarker;
+    }
+
+    public boolean update(int[] destination) {
         if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
+            if (destinationMarker != null) {
+                destinationMarker.removeAsDestination();
+            }
             return false;
         } else {
+            if (destinationMarker != null) {
+                destinationMarker.removeAsDestination();
+            }
+            destinationMarker = getTile(destination[0], destination[1]);
+            destinationMarker.setAsDestination();
             Point nextMove = player.getPathStack().pop();
             if (move(player, nextMove.x, nextMove.y)) {
                 // TODO: Movement power usage and regeneration
             } else {
+                destinationMarker.removeAsDestination();
                 player.setPathStack(null);
                 return false;
             }
@@ -69,7 +90,7 @@ public class Updater {
         return true;
     }
 
-    public void interact(float x, float y, List<Inanimate> inanimates) {
+    public void interact(float x, float y) {
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
         Inanimate inanimate = null;

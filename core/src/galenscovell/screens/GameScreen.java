@@ -55,7 +55,7 @@ public class GameScreen extends AbstractScreen {
         if (accumulator > timestep) {
             accumulator = 0;
             if (!(destination[0] == (player.getX() / Constants.TILESIZE) && destination[1] == (player.getY() / Constants.TILESIZE))) {
-                if (!updater.update(destination, renderer.getEntityList())) {
+                if (!updater.update(destination)) {
                     destination[0] = player.getX() / Constants.TILESIZE;
                     destination[1] = player.getY() / Constants.TILESIZE;
                 }
@@ -136,21 +136,21 @@ public class GameScreen extends AbstractScreen {
 
     public void toggleMode(int mode) {
         if (mode == 0) {
-            examineMode = !examineMode;
-            if (attackMode) {
-                attackMode = false;
-            }
-        } else {
             attackMode = !attackMode;
             if (examineMode) {
                 examineMode = false;
+            }
+        } else {
+            examineMode = !examineMode;
+            if (attackMode) {
+                attackMode = false;
             }
         }
     }
 
     public void examine(float x, float y) {
         // updater.getTile(x, y);
-        updater.interact(x, y, renderer.getInanimateList());
+        updater.interact(x, y);
     }
 
     private void createNewLevel() {
@@ -168,6 +168,7 @@ public class GameScreen extends AbstractScreen {
         renderer.assembleLevel(player);
         renderer.createTileBodies();
         updater.setHud((HudStage) stage);
+        updater.setLists(renderer.getEntityList(), renderer.getInanimateList());
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
@@ -40,6 +41,8 @@ public class ResourceManager {
     public static TextButton.TextButtonStyle frameStyle;
     public static TextButton.TextButtonStyle frameCheckedStyle;
 
+    public static Sprite destinationMarker;
+
     public static void create() {
         assetManager = new AssetManager();
         load();
@@ -60,17 +63,17 @@ public class ResourceManager {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         mediumParams.fontFileName = "ui/Akashi.ttf";
-        mediumParams.fontParameters.size = 18;
+        mediumParams.fontParameters.size = 24;
         assetManager.load("mediumFont.ttf", BitmapFont.class, mediumParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter largeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         largeParams.fontFileName = "ui/Akashi.ttf";
-        largeParams.fontParameters.size = 28;
+        largeParams.fontParameters.size = 32;
         assetManager.load("largeFont.ttf", BitmapFont.class, largeParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         extraLargeParams.fontFileName = "ui/Akashi.ttf";
-        extraLargeParams.fontParameters.size = 56;
+        extraLargeParams.fontParameters.size = 64;
         assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
     }
 
@@ -97,6 +100,8 @@ public class ResourceManager {
         frameCheckedStyle.pressedOffsetX = 1;
         frameCheckedStyle.pressedOffsetY = -1;
 
+        destinationMarker = new Sprite(playerAtlas.findRegion("destinationMarker"));
+        destinationMarker.flip(false, true);
     }
 
     public static void dispose() {
