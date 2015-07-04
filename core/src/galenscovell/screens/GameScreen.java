@@ -34,7 +34,7 @@ public class GameScreen extends AbstractScreen {
     private World world;
     private RayHandler rayHandler;
 
-    private boolean examineMode;
+    private boolean attackMode, examineMode;
     private final int timestep = 20;
     private int accumulator = 0;
     private int[] destination;
@@ -130,8 +130,22 @@ public class GameScreen extends AbstractScreen {
         return examineMode;
     }
 
-    public void toggleExamineMode() {
-        examineMode = !examineMode;
+    public boolean attackMode() {
+        return attackMode;
+    }
+
+    public void toggleMode(int mode) {
+        if (mode == 0) {
+            examineMode = !examineMode;
+            if (attackMode) {
+                attackMode = false;
+            }
+        } else {
+            attackMode = !attackMode;
+            if (examineMode) {
+                examineMode = false;
+            }
+        }
     }
 
     public void examine(float x, float y) {

@@ -55,7 +55,7 @@ public class ResourceManager {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallParams.fontFileName = "ui/PressStart2P.ttf";
-        smallParams.fontParameters.size = 9;
+        smallParams.fontParameters.size = 12;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

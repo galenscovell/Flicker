@@ -23,7 +23,7 @@ public class Tile {
     private int bitmask;
     private Sprite[] sprites;
     private int currentFrame, frames;
-    private boolean occupied, blocking, unused, selected;
+    private boolean occupied, blocking, unused;
 
     public Tile(int x, int y, int columns, int rows) {
         this.x = x;
@@ -266,10 +266,6 @@ public class Tile {
         sprites[1] = new Sprite(sheet.getSprite(s2));
     }
 
-    public void toggleSelected() {
-        selected = !selected;
-    }
-
     public void draw(SpriteBatch batch, int tileSize) {
         if (frames == 60) {
             if (currentFrame == 0) {
@@ -279,13 +275,7 @@ public class Tile {
             }
             frames -= frames;
         }
-        if (selected) {
-            batch.setColor(0.0f, 1.0f, 0.0f, 1.0f);
-            batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
-            batch.setColor(1, 1, 1, 1);
-        } else {
-            batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
-        }
+        batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
         frames++;
     }
 
