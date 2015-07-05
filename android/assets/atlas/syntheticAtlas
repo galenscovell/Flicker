@@ -1,6 +1,6 @@
-name=playerAtlas
+name=syntheticAtlas
 filename=
-input=..\working\player
+input=..\working\synthetics
 output=
 
 alias=true

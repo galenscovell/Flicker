@@ -1,53 +1,46 @@
 
-playerAtlas.png
+syntheticAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-destinationMarker
-  rotate: false
-  xy: 1, 1
-  size: 48, 48
-  orig: 48, 48
-  offset: 0, 0
-  index: -1
 robo0
   rotate: false
-  xy: 51, 4
+  xy: 1, 1
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo1
   rotate: false
-  xy: 98, 4
+  xy: 48, 1
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo2
   rotate: false
-  xy: 145, 4
+  xy: 95, 1
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo3
   rotate: false
-  xy: 192, 4
+  xy: 142, 1
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo4
   rotate: false
-  xy: 239, 4
+  xy: 189, 1
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
 robo5
   rotate: false
-  xy: 286, 4
+  xy: 236, 1
   size: 45, 45
   orig: 45, 45
   offset: 0, 0

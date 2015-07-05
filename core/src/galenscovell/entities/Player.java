@@ -29,9 +29,9 @@ public class Player extends Creature {
 
         // Populate sprite sets
         for (int i = 0; i < 6; i++) {
-            rightSprites[i] = new Sprite(ResourceManager.playerAtlas.createSprite("robo" + i));
+            rightSprites[i] = new Sprite(ResourceManager.syntheticAtlas.createSprite("robo" + i));
             rightSprites[i].flip(false, true);
-            leftSprites[i] = new Sprite(ResourceManager.playerAtlas.createSprite("robo" + i));
+            leftSprites[i] = new Sprite(ResourceManager.syntheticAtlas.createSprite("robo" + i));
             leftSprites[i].flip(true, true);
         }
         currentSet = rightSprites;
