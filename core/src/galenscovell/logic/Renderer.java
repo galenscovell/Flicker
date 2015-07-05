@@ -14,9 +14,9 @@ import galenscovell.util.MonsterParser;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.*;
 
@@ -42,33 +42,32 @@ public class Renderer {
     private Box2DDebugRenderer debug;
 
     private OrthographicCamera camera;
-    private Viewport viewport;
+    private FitViewport viewport;
     private SpriteBatch spriteBatch;
 
-    private int tileSize, torchFrames;
+    private int tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(World world, RayHandler rayHandler, Map<Integer, Tile> tiles, SpriteBatch spriteBatch) {
-        this.tileSize = Constants.TILESIZE;
+    public Renderer(Map<Integer, Tile> tiles, SpriteBatch spriteBatch) {
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
 
+        this.tileSize = Constants.TILESIZE;
         this.tiles = tiles;
-        this.world = world;
         this.spriteBatch = spriteBatch;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
         this.fog = new Fog();
 
-        this.rayHandler = rayHandler;
+        // Box2D lighting
+        this.world = new World(new Vector2(0, 0), true);
+        this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f);
-        this.torch = new PointLight(rayHandler, 60, new Color(0.95f, 0.9f, 0.9f, 0.9f), Constants.TILESIZE * 8, 0, 0);
-        torch.setSoftnessLength(Constants.TILESIZE * 1.5f);
+        this.torch = new PointLight(rayHandler, 60, new Color(1.0f, 0.95f, 0.95f, 0.95f), tileSize * 6, 0, 0);
+        torch.setSoftnessLength(tileSize);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
-        this.torchFrames = 30;
-
         this.debug = new Box2DDebugRenderer();
     }
 
@@ -95,22 +94,13 @@ public class Renderer {
         // Player rendering: [x, y] are in custom units
         player.draw(spriteBatch, tileSize, interpolation, null);
         // Background effect rendering
-        fog.render(spriteBatch);
+        fog.draw(spriteBatch);
         spriteBatch.end();
 
-        // Set torch position centered on player
+        // Center torch on player
         torch.setPosition(player.getCurrentX() + (tileSize / 2), player.getCurrentY() + (tileSize / 2));
         rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
-        // Torch 'flicker' effect
-        if (torchFrames == 15) {
-            torch.setColor(0.95f, 0.9f, 0.9f, 0.85f);
-        } else if (torchFrames == 0) {
-            torch.setColor(0.95f, 0.9f, 0.9f, 0.9f);
-            torchFrames = 30;
-        }
-        torchFrames--;
-
         // debug.render(world, camera.combined);
     }
 
@@ -124,6 +114,14 @@ public class Renderer {
 
     public List<Inanimate> getInanimateList() {
         return inanimates;
+    }
+
+    public void toggleLight() {
+        if (torch.getDistance() == tileSize * 6) {
+            torch.setDistance(tileSize * 2);
+        } else {
+            torch.setDistance(tileSize * 6);
+        }
     }
 
     public void zoom(float value) {
@@ -145,6 +143,7 @@ public class Renderer {
             placeEntities(monsterParser);
         }
         monsterParser = null;
+        createTileBodies();
     }
 
     private void placeInanimates() {
@@ -190,16 +189,15 @@ public class Renderer {
     }
 
     private void findCameraBounds() {
-        centerOnPlayer();
+        // Center on player coordinates
+        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+        // Find camera upper left coordinates
         minCamX = camera.position.x - (camera.viewportWidth / 2) * camera.zoom;
         minCamY = camera.position.y - (camera.viewportHeight / 2) * camera.zoom;
+        // Find camera lower right coordinates
         maxCamX = minCamX + camera.viewportWidth * camera.zoom;
         maxCamY = minCamY + camera.viewportHeight * camera.zoom;
         camera.update();
-    }
-
-    private void centerOnPlayer() {
-        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
     }
 
     private boolean inViewport(int x, int y) {
@@ -209,7 +207,7 @@ public class Renderer {
     public void createTileBodies() {
         this.bodies = new HashMap<Integer, Body>();
         PolygonShape tileShape = new PolygonShape();
-        tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
+        tileShape.setAsBox(tileSize / 2f, tileSize / 2f);
         BodyDef tileBodyDef = new BodyDef();
         tileBodyDef.type = BodyDef.BodyType.StaticBody;
         FixtureDef tileFixture = new FixtureDef();
@@ -222,7 +220,7 @@ public class Renderer {
                 tileFixture.filter.groupIndex = -Constants.BIT_GROUP;
             }
             // Body position: center of (tileX * TILESIZE), center of (tileY * TILESIZE)
-            tileBodyDef.position.set(tile.x * Constants.TILESIZE + (Constants.TILESIZE / 2f), tile.y * Constants.TILESIZE + (Constants.TILESIZE / 2f));
+            tileBodyDef.position.set(tile.x * tileSize + (tileSize / 2f), tile.y * tileSize + (tileSize / 2f));
             Body tileBody = world.createBody(tileBodyDef);
             tileBody.createFixture(tileFixture);
             bodies.put(tile.x * Constants.COLUMNS + tile.y, tileBody);
@@ -233,11 +231,11 @@ public class Renderer {
     public void updateTileBody(int tileX, int tileY) {
         // Get body at object position
         Body updatedBody = bodies.get(tileX * Constants.COLUMNS + tileY);
-        // Destory current fixture on body
+        // Destroy current fixture on body
         updatedBody.destroyFixture(updatedBody.getFixtureList().first());
 
         PolygonShape tileShape = new PolygonShape();
-        tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
+        tileShape.setAsBox(tileSize / 2f, tileSize / 2f);
         FixtureDef tileFixture = new FixtureDef();
         tileFixture.shape = tileShape;
 
@@ -249,5 +247,10 @@ public class Renderer {
         }
         updatedBody.createFixture(tileFixture);
         tileShape.dispose();
+    }
+
+    public void dispose() {
+        world.dispose();
+        rayHandler.dispose();
     }
 }

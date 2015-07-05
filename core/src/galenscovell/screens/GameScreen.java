@@ -1,7 +1,5 @@
 package galenscovell.screens;
 
-import box2dLight.RayHandler;
-
 import galenscovell.entities.Player;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.logic.Renderer;
@@ -14,13 +12,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * GAME SCREEN
  * Main gameplay screen.
- * Has both a HUD (stage) and world (renderer). Updater handles logic.
+ * Renderer handles graphics and level setup, Updater handles core logic.
  *
  * @author Galen Scovell
  */
@@ -31,10 +27,7 @@ public class GameScreen extends AbstractScreen {
     private Updater updater;
     private InputMultiplexer fullInput;
 
-    private World world;
-    private RayHandler rayHandler;
-
-    private boolean attackMode, examineMode;
+    private boolean attackMode, examineMode, moving;
     private final int timestep = 20;
     private int accumulator = 0;
     private int[] destination;
@@ -54,19 +47,14 @@ public class GameScreen extends AbstractScreen {
     public void update(float delta) {
         if (accumulator > timestep) {
             accumulator = 0;
-            if (!(destination[0] == (player.getX() / Constants.TILESIZE) && destination[1] == (player.getY() / Constants.TILESIZE))) {
-                if (!updater.update(destination)) {
-                    destination[0] = player.getX() / Constants.TILESIZE;
-                    destination[1] = player.getY() / Constants.TILESIZE;
-                }
+            if (moving && !updater.update(destination)) {
+                moving = false;
             }
             if (updater.descend()) {
-                rayHandler.dispose();
-                world.dispose();
+                renderer.dispose();
                 createNewLevel();
             }
         }
-        world.step(delta, 6, 2);
         stage.act(delta);
     }
 
@@ -96,14 +84,17 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        world.dispose();
-        rayHandler.dispose();
+        renderer.dispose();
         stage.dispose();
     }
 
     public void playerMove(float x, float y) {
+        moving = true;
         destination[0] = (int) x;
         destination[1] = (int) y;
+        if (destination[0] / Constants.TILESIZE == player.getX() / Constants.TILESIZE && destination[1] / Constants.TILESIZE == player.getY() / Constants.TILESIZE) {
+            renderer.toggleLight();
+        }
     }
 
     public void screenZoom(boolean zoomOut) {
@@ -154,27 +145,24 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void createNewLevel() {
-        this.world = new World(new Vector2(0, 0), true);
-        this.rayHandler = new RayHandler(world);
-
         Level level = new Level();
         // Modify smoothing passes here
         for (int i = 0; i < 6; i++) {
             level.update();
         }
         level.optimize();
-        this.renderer = new Renderer(world, rayHandler, level.getTiles(), root.spriteBatch);
+        this.renderer = new Renderer(level.getTiles(), root.spriteBatch);
         this.updater = new Updater(player, level.getTiles());
         renderer.assembleLevel(player);
-        renderer.createTileBodies();
         updater.setHud((HudStage) stage);
         updater.setLists(renderer.getEntityList(), renderer.getInanimateList());
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);
-        fullInput.addProcessor(new GestureDetector(20, 0.4f, 0.1f, 0.15f, new GestureHandler(this, renderer.getCamera())));
+        fullInput.addProcessor(new GestureDetector(new GestureHandler(this, renderer.getCamera())));
         enableWorldInput();
-        // Set initial movement destination to player starting position
-        this.destination = new int[]{player.getX() / Constants.TILESIZE, player.getY() / Constants.TILESIZE};
+
+        this.destination = new int[2];
+        this.moving = false;
     }
 }

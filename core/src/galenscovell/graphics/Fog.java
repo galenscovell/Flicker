@@ -1,7 +1,6 @@
 package galenscovell.graphics;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,42 +14,35 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Fog {
     private Sprite sprite;
-    private int x, y, size;
-    private int frameSkip;
+    private int x, y;
+    private int frame;
 
     public Fog() {
-        Texture texture = new Texture(Gdx.files.internal("textures/fogAlpha.png"));
-        this.sprite = new Sprite(texture);
-
-        this.x = -1024;
-        this.y = -1024;
-        this.size = 8192;
-        this.frameSkip = 4;
+        this.sprite = new Sprite(new Texture(Gdx.files.internal("textures/fogAlpha.png")));
+        this.x = -256;
+        this.y = -256;
+        this.frame = 4;
     }
 
-    public void render(SpriteBatch spriteBatch) {
-        // Save original batch color
-        Color c = new Color(spriteBatch.getColor());
-        // Set new color for rendering fog sprite
-        spriteBatch.setColor(0.7f, 0.7f, 0.7f, 0.08f);
-        spriteBatch.draw(sprite, x, y, size, size);
-        // Return color to original
-        spriteBatch.setColor(c);
+    public void draw(SpriteBatch spriteBatch) {
+        spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.1f);
+        spriteBatch.draw(sprite, x, y, 2048, 2048);
+        spriteBatch.setColor(1, 1, 1, 1);
 
-        if (frameSkip == 0) {
+        if (frame == 0) {
             animate();
-            frameSkip = 4;
+            frame = 4;
         } else {
-            frameSkip--;
+            frame--;
         }
     }
 
     private void animate() {
         x--;
         y--;
-        if ((x < -size / 4)) {
-            x = -1024;
-            y = -1024;
+        if ((x < -512)) {
+            x = -256;
+            y = -256;
         }
     }
 }
