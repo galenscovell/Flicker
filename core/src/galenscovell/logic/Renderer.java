@@ -11,6 +11,8 @@ import galenscovell.inanimates.Inanimate;
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,33 +31,36 @@ import java.util.*;
  */
 
 public class Renderer {
+    private OrthographicCamera camera;
+    private FitViewport viewport;
+    private SpriteBatch spriteBatch;
+    private ShaderProgram flashShader;
+
+    private int tileSize;
+    private float minCamX, minCamY, maxCamX, maxCamY;
     private Map<Integer, Tile> tiles;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
-
-    private Player player;
     private Fog fog;
+    private Player player;
+
     private RayHandler rayHandler;
     private PointLight torch;
     private World world;
     private Map<Integer, Body> bodies;
     private Box2DDebugRenderer debug;
 
-    private OrthographicCamera camera;
-    private FitViewport viewport;
-    private SpriteBatch spriteBatch;
-
-    private int tileSize;
-    private float minCamX, minCamY, maxCamX, maxCamY;
-
     public Renderer(Map<Integer, Tile> tiles, SpriteBatch spriteBatch) {
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
+        this.spriteBatch = spriteBatch;
+        this.flashShader = new ShaderProgram(
+                Gdx.files.internal("shaders/flash-vertex.glsl").readString(),
+                Gdx.files.internal("shaders/flash-fragment.glsl").readString());
 
         this.tileSize = Constants.TILESIZE;
         this.tiles = tiles;
-        this.spriteBatch = spriteBatch;
         this.entities = new ArrayList<Entity>();
         this.inanimates = new ArrayList<Inanimate>();
         this.fog = new Fog();
@@ -150,7 +155,7 @@ public class Renderer {
     private void placeInanimates() {
         for (Tile tile : tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() >= 4) {
-                if (tile.getBitmask() == 1010 || tile.getBitmask() == 101) {
+                if (tile.getBitmask() == 5 || tile.getBitmask() == 10) {
                     inanimates.add(new Boulder(this, tile.x, tile.y));
                     tile.toggleBlocking();
                     tile.toggleOccupied();

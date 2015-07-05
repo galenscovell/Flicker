@@ -39,7 +39,6 @@ public class ResourceManager {
 
     public static TextButton.TextButtonStyle buttonStyle;
     public static TextButton.TextButtonStyle frameStyle;
-    public static TextButton.TextButtonStyle frameCheckedStyle;
 
     public static Sprite destinationMarker;
 
@@ -101,10 +100,6 @@ public class ResourceManager {
         frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, assetManager.get("mediumFont.ttf", BitmapFont.class));
         frameStyle.pressedOffsetX = 1;
         frameStyle.pressedOffsetY = -1;
-
-        frameCheckedStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameLit, assetManager.get("mediumFont.ttf", BitmapFont.class));
-        frameCheckedStyle.pressedOffsetX = 1;
-        frameCheckedStyle.pressedOffsetY = -1;
 
         destinationMarker = new Sprite(playerAtlas.createSprite("destinationMarker"));
         destinationMarker.flip(false, true);

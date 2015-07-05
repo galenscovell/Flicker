@@ -34,4 +34,5 @@ public interface Entity {
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
 
     public int getStat(String key);
+    public String examine();
 }

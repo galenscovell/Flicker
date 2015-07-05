@@ -98,7 +98,6 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void screenZoom(float zoom) {
-        moving = false;
         renderer.zoom(zoom);
     }
 
@@ -137,8 +136,11 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void examine(float x, float y) {
-        // updater.getTile(x, y);
-        updater.interact(x, y);
+        updater.examine(x, y);
+    }
+
+    public void attack(float x, float y) {
+        updater.attack(x, y);
     }
 
     private void createNewLevel() {

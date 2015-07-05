@@ -43,8 +43,8 @@ public class Boulder implements Inanimate {
         return y;
     }
 
-    public String getType() {
-        return "Boulder";
+    public String examine() {
+        return "A boulder blocks the path.";
     }
 
     public String interact(Tile tile) {

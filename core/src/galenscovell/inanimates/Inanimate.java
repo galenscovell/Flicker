@@ -16,6 +16,6 @@ public interface Inanimate {
     public int getX();
     public int getY();
     public String interact(Tile tile);
-    public String getType();
+    public String examine();
     public void draw(SpriteBatch batch, int tileSize);
 }

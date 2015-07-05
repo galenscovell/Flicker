@@ -29,7 +29,7 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
         if (game.examineMode()) {
             game.examine(worldCoordinates.x, worldCoordinates.y);
         } else if (game.attackMode()) {
-            // TODO: Attack handling
+            game.attack(worldCoordinates.x, worldCoordinates.y);
         } else {
             game.playerMove(worldCoordinates.x, worldCoordinates.y);
         }

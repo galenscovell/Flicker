@@ -18,6 +18,11 @@ public class Player extends Creature {
         setSprites();
     }
 
+    @Override
+    public String examine() {
+        return "A lonely probe.";
+    }
+
     private void setSprites() {
         rightSprites = new Sprite[6];
         leftSprites = new Sprite[6];

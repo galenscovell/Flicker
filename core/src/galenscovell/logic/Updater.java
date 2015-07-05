@@ -90,28 +90,48 @@ public class Updater {
         return true;
     }
 
+    public void examine(float x, float y) {
+        int tileX = (int) x / tileSize;
+        int tileY = (int) y / tileSize;
+        Entity entity = findEntity(tileX, tileY);
+        if (entity != null) {
+            hud.addToLog(entity.examine());
+        } else {
+            Inanimate inanimate = findInanimate(tileX, tileY);
+            if (inanimate != null) {
+                hud.addToLog(inanimate.examine());
+            } else {
+                hud.addToLog("There doesn't appear to be anything there.");
+            }
+        }
+    }
+
     public void interact(float x, float y) {
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
-        Inanimate inanimate = null;
-        for (Inanimate object : inanimates) {
-            if (object.getX() == tileX && object.getY() == tileY) {
-                inanimate = object;
-            }
-        }
+        Inanimate inanimate = findInanimate(tileX, tileY);
         if (inanimate != null) {
             hud.addToLog(inanimate.interact(getTile(x, y)));
         }
     }
 
-    public boolean descend() {
-        return false;
+    public void attack(float x, float y) {
+        int tileX = (int) x / tileSize;
+        int tileY = (int) y / tileSize;
+        Entity target = findEntity(tileX, tileY);
+        if (target != null) {
+            System.out.println(target);
+        }
     }
 
     public Tile getTile(float x, float y) {
         int tileX = (int) (x / tileSize);
         int tileY = (int) (y / tileSize);
         return findTile(tileX, tileY);
+    }
+
+    public boolean descend() {
+        return false;
     }
 
     private boolean findPath(Entity entity, int destX, int destY) {
@@ -162,6 +182,26 @@ public class Updater {
         entity.setAttacking();
         hud.updateChassis(entity.getStat("damage"));
         hud.addToLog(entity + " hits for " + entity.getStat("damage") + " damage.");
+    }
+
+    private Inanimate findInanimate(int x, int y) {
+        Inanimate inanimate = null;
+        for (Inanimate object : inanimates) {
+            if (object.getX() == x && object.getY() == y) {
+                inanimate = object;
+            }
+        }
+        return inanimate;
+    }
+
+    private Entity findEntity(int x, int y) {
+        Entity target = null;
+        for (Entity entity : entities) {
+            if ((entity.getX() / tileSize) == x && (entity.getY() / tileSize) == y) {
+                target = entity;
+            }
+        }
+        return target;
     }
 
     private Tile findTile(int x, int y) {

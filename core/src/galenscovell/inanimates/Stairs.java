@@ -34,12 +34,12 @@ public class Stairs implements Inanimate {
         return y;
     }
 
-    public String getType() {
-        return "Stairs";
+    public String examine() {
+        return "Stairs descend deeper.";
     }
 
     public String interact(Tile tile) {
-        return "The stairs descend deeper.";
+        return "Descending stairs...";
     }
 
     public void draw(SpriteBatch batch, int tileSize) {

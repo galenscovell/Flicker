@@ -38,12 +38,12 @@ public class Dead implements Inanimate {
         return y;
     }
 
-    public String getType() {
-        return "Dead";
+    public String examine() {
+        return "A corpse lies here.";
     }
 
     public String interact(Tile tile) {
-        return "A corpse lies here.";
+        return "Searching corpse...";
     }
 
     public void draw(SpriteBatch batch, int tileSize) {

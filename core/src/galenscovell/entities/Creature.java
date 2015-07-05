@@ -28,11 +28,6 @@ public class Creature implements Entity {
     private Stack<Point> pathStack;
     private int moveTimer, frame;
 
-    @Override
-    public String toString() {
-        return title;
-    }
-
     public void setPosition(int newX, int newY) {
         prevX = newX;
         prevY = newY;
@@ -40,6 +35,10 @@ public class Creature implements Entity {
         y = newY;
         currentX = newX;
         currentY = newY;
+    }
+
+    public String examine() {
+        return description;
     }
 
     public int getX() {
