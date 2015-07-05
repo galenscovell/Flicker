@@ -105,14 +105,14 @@ public class Tile {
     public void findSprite() {
         this.sprites = new Sprite[2];
         if (isWall()) {
-            sprites[0] = new Sprite(ResourceManager.tileAtlas.findRegion("wall" + bitmask));
-            sprites[1] = new Sprite(ResourceManager.tileAtlas.findRegion("wall" + bitmask));
+            sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("wall" + bitmask));
+            sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("wall" + bitmask));
         } else if (isFloor()) {
-            sprites[0] = new Sprite(ResourceManager.tileAtlas.findRegion("floor" + bitmask));
-            sprites[1] = new Sprite(ResourceManager.tileAtlas.findRegion("floor" + bitmask));
+            sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("floor" + bitmask));
+            sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("floor" + bitmask));
         } else if (isWater()) {
-            sprites[0] = new Sprite(ResourceManager.tileAtlas.findRegion("waterA" + bitmask));
-            sprites[1] = new Sprite(ResourceManager.tileAtlas.findRegion("waterB" + bitmask));
+            sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("waterA" + bitmask));
+            sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("waterB" + bitmask));
         }
         sprites[0].flip(false, true);
         sprites[1].flip(false, true);

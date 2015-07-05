@@ -86,9 +86,9 @@ public class Monster extends Creature {
 
         // Populate sprite animation sets
         for (int i = 0; i < 2; i++) {
-            rightSprites[i] = new Sprite(ResourceManager.organicAtlas.findRegion(spriteLocation + i));
+            rightSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(spriteLocation + i));
             rightSprites[i].flip(false, true);
-            leftSprites[i] = new Sprite(ResourceManager.organicAtlas.findRegion(spriteLocation + i));
+            leftSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(spriteLocation + i));
             leftSprites[i].flip(true, true);
         }
         currentSet = leftSprites;

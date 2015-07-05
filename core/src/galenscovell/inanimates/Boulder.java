@@ -27,9 +27,9 @@ public class Boulder implements Inanimate {
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
-        this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.findRegion("boulder0"));
+        this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.createSprite("boulder0"));
         sprites[0].flip(false, true);
-        this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.findRegion("boulder1"));
+        this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.createSprite("boulder1"));
         sprites[1].flip(false, true);
         this.sprite = sprites[0];
         this.blocking = true;

@@ -21,7 +21,7 @@ public class Stairs implements Inanimate {
     public Stairs(int x, int y) {
         this.x = x;
         this.y = y;
-        this.sprite = new Sprite(ResourceManager.inanimateAtlas.findRegion("stairs"));
+        this.sprite = new Sprite(ResourceManager.inanimateAtlas.createSprite("stairs"));
         sprite.flip(false, true);
         this.blocking = false;
     }

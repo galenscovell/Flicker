@@ -25,7 +25,7 @@ public class Dead implements Inanimate {
         this.y = y;
         Random random = new Random();
         int choice = random.nextInt(4);
-        this.sprite = new Sprite(ResourceManager.inanimateAtlas.findRegion("corpse" + choice));
+        this.sprite = new Sprite(ResourceManager.inanimateAtlas.createSprite("corpse" + choice));
         sprite.flip(false, true);
         this.blocking = false;
     }
