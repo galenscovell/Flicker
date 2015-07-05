@@ -186,7 +186,6 @@ public class HudStage extends Stage {
         barStyle.knobBefore = fill;
         bar.setValue(260);
         bar.setAnimateDuration(0.1f);
-        bar.validate();
         return bar;
     }
 

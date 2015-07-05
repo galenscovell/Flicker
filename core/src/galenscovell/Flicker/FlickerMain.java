@@ -1,7 +1,5 @@
 package galenscovell.flicker;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import galenscovell.screens.AbstractScreen;
 import galenscovell.screens.GameScreen;
 import galenscovell.screens.LoadingScreen;
@@ -9,6 +7,7 @@ import galenscovell.screens.MainMenuScreen;
 import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * FLICKER MAIN
@@ -32,6 +31,7 @@ public class FlickerMain extends Game {
     }
 
     public void newGame() {
+        loadingScreen.dispose();
         this.gameScreen = new GameScreen(this);
         setScreen(gameScreen);
     }

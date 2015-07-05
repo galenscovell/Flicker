@@ -106,7 +106,7 @@ public class ResourceManager {
         frameCheckedStyle.pressedOffsetX = 1;
         frameCheckedStyle.pressedOffsetY = -1;
 
-        destinationMarker = new Sprite(playerAtlas.findRegion("destinationMarker"));
+        destinationMarker = new Sprite(playerAtlas.createSprite("destinationMarker"));
         destinationMarker.flip(false, true);
     }
 
