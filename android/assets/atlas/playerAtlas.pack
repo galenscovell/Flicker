@@ -10,86 +10,44 @@ destinationMarker
   orig: 48, 48
   offset: 0, 0
   index: -1
-robo0_l
+robo0
   rotate: false
   xy: 51, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
-robo0_r
+robo1
   rotate: false
   xy: 98, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
-robo1_l
+robo2
   rotate: false
   xy: 145, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
-robo1_r
+robo3
   rotate: false
   xy: 192, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
-robo2_l
+robo4
   rotate: false
   xy: 239, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0
   index: -1
-robo2_r
+robo5
   rotate: false
   xy: 286, 4
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
-robo3_l
-  rotate: false
-  xy: 333, 4
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
-robo3_r
-  rotate: false
-  xy: 380, 4
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
-robo4_l
-  rotate: false
-  xy: 427, 4
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
-robo4_r
-  rotate: false
-  xy: 474, 4
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
-robo5_l
-  rotate: false
-  xy: 521, 4
-  size: 45, 45
-  orig: 45, 45
-  offset: 0, 0
-  index: -1
-robo5_r
-  rotate: false
-  xy: 568, 4
   size: 45, 45
   orig: 45, 45
   offset: 0, 0

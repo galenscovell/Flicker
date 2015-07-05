@@ -1,8 +1,8 @@
 package galenscovell.inanimates;
 
-import galenscovell.graphics.SpriteSheet;
 import galenscovell.logic.Renderer;
 import galenscovell.logic.Tile;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,10 +26,11 @@ public class Boulder implements Inanimate {
         this.renderer = renderer;
         this.x = x;
         this.y = y;
-        SpriteSheet sheet = SpriteSheet.tilesheet;
         this.sprites = new Sprite[2];
-        this.sprites[0] = new Sprite(sheet.getSprite(96));
-        this.sprites[1] = new Sprite(sheet.getSprite(97));
+        this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.findRegion("boulder0"));
+        sprites[0].flip(false, true);
+        this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.findRegion("boulder1"));
+        sprites[1].flip(false, true);
         this.sprite = sprites[0];
         this.blocking = true;
     }

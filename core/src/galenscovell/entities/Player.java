@@ -19,15 +19,15 @@ public class Player extends Creature {
     }
 
     private void setSprites() {
-        leftSprites = new Sprite[6];
         rightSprites = new Sprite[6];
+        leftSprites = new Sprite[6];
 
         // Populate sprite sets
         for (int i = 0; i < 6; i++) {
-            leftSprites[i] = new Sprite(ResourceManager.playerAtlas.findRegion("robo" + i + "_l"));
-            leftSprites[i].flip(false, true);
-            rightSprites[i] = new Sprite(ResourceManager.playerAtlas.findRegion("robo" + i + "_r"));
+            rightSprites[i] = new Sprite(ResourceManager.playerAtlas.findRegion("robo" + i));
             rightSprites[i].flip(false, true);
+            leftSprites[i] = new Sprite(ResourceManager.playerAtlas.findRegion("robo" + i));
+            leftSprites[i].flip(true, true);
         }
         currentSet = rightSprites;
     }

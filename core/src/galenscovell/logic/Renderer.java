@@ -125,6 +125,7 @@ public class Renderer {
     }
 
     public void zoom(float value) {
+        value /= 10000;
         if (camera.zoom + value > 1.5 || camera.zoom + value < 0.5) {
             return;
         }

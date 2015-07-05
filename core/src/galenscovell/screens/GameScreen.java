@@ -97,12 +97,9 @@ public class GameScreen extends AbstractScreen {
         }
     }
 
-    public void screenZoom(boolean zoomOut) {
-        if (zoomOut) {
-            renderer.zoom(0.02f);
-        } else {
-            renderer.zoom(-0.02f);
-        }
+    public void screenZoom(float zoom) {
+        moving = false;
+        renderer.zoom(zoom);
     }
 
     public void toMainMenu() {

@@ -37,13 +37,8 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
     }
 
     @Override
-    public boolean longPress(float x, float y) {
-        return false;
-    }
-
-    @Override
     public boolean zoom (float initialDistance, float endDistance){
-        game.screenZoom(endDistance < initialDistance);
+        game.screenZoom(endDistance - initialDistance);
         return true;
     }
 }

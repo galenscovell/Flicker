@@ -1,6 +1,6 @@
 package galenscovell.entities;
 
-import galenscovell.graphics.SpriteSheet;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -14,9 +14,9 @@ import java.util.Random;
  */
 
 public class Monster extends Creature {
-    private String type, desc;
+    private String type, desc, spriteLocation;
     public int level;
-    private int spriteLocation, vit, intel, vision, speed, evade, defense, attacks, damage, poison;
+    private int vit, intel, vision, speed, evade, defense, attacks, damage, poison;
 
     public Monster() {
         super();
@@ -81,14 +81,15 @@ public class Monster extends Creature {
     }
 
     private void setSprites() {
-        SpriteSheet sheet = SpriteSheet.charsheet;
-        leftSprites = new Sprite[2];
         rightSprites = new Sprite[2];
+        leftSprites = new Sprite[2];
 
         // Populate sprite animation sets
         for (int i = 0; i < 2; i++) {
-            leftSprites[i] = new Sprite(sheet.getSprite(i + spriteLocation));
-            rightSprites[i] = new Sprite(sheet.getSprite(i + (spriteLocation + 2)));
+            rightSprites[i] = new Sprite(ResourceManager.organicAtlas.findRegion(spriteLocation + i));
+            rightSprites[i].flip(false, true);
+            leftSprites[i] = new Sprite(ResourceManager.organicAtlas.findRegion(spriteLocation + i));
+            leftSprites[i].flip(true, true);
         }
         currentSet = leftSprites;
     }

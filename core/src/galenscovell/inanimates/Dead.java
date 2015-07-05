@@ -1,7 +1,7 @@
 package galenscovell.inanimates;
 
-import galenscovell.graphics.SpriteSheet;
 import galenscovell.logic.Tile;
+import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,18 +23,10 @@ public class Dead implements Inanimate {
     public Dead(int x, int y) {
         this.x = x;
         this.y = y;
-        SpriteSheet sheet = SpriteSheet.charsheet;
         Random random = new Random();
         int choice = random.nextInt(4);
-        if (choice == 0) {
-            this.sprite = new Sprite(sheet.getSprite(64));
-        } else if (choice == 1) {
-            this.sprite = new Sprite(sheet.getSprite(65));
-        } else if (choice == 2) {
-            this.sprite = new Sprite(sheet.getSprite(66));
-        } else {
-            this.sprite = new Sprite(sheet.getSprite(67));
-        }
+        this.sprite = new Sprite(ResourceManager.inanimateAtlas.findRegion("corpse" + choice));
+        sprite.flip(false, true);
         this.blocking = false;
     }
 
