@@ -25,7 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public class ResourceManager {
     public static AssetManager assetManager;
-    public static TextureAtlas uiAtlas, playerAtlas, organicAtlas, inanimateAtlas;
+    public static TextureAtlas uiAtlas, tileAtlas, playerAtlas, organicAtlas, inanimateAtlas;
 
     public static Label.LabelStyle detailStyle;
     public static Label.LabelStyle mediumStyle;
@@ -50,6 +50,7 @@ public class ResourceManager {
 
     public static void load() {
         assetManager.load("atlas/uiAtlas.pack", TextureAtlas.class);
+        assetManager.load("atlas/tileAtlas.pack", TextureAtlas.class);
         assetManager.load("atlas/playerAtlas.pack", TextureAtlas.class);
         assetManager.load("atlas/organicAtlas.pack", TextureAtlas.class);
         assetManager.load("atlas/inanimateAtlas.pack", TextureAtlas.class);
@@ -81,6 +82,7 @@ public class ResourceManager {
 
     public static void done() {
         uiAtlas = assetManager.get("atlas/uiAtlas.pack", TextureAtlas.class);
+        tileAtlas = assetManager.get("atlas/tileAtlas.pack", TextureAtlas.class);
         playerAtlas = assetManager.get("atlas/playerAtlas.pack", TextureAtlas.class);
         organicAtlas = assetManager.get("atlas/organicAtlas.pack", TextureAtlas.class);
         inanimateAtlas = assetManager.get("atlas/inanimateAtlas.pack", TextureAtlas.class);
@@ -111,6 +113,9 @@ public class ResourceManager {
     public static void dispose() {
         assetManager.dispose();
         uiAtlas.dispose();
+        tileAtlas.dispose();
         playerAtlas.dispose();
+        organicAtlas.dispose();
+        inanimateAtlas.dispose();
     }
 }
