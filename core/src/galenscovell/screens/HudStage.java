@@ -73,16 +73,14 @@ public class HudStage extends Stage {
         setIcon(attackButton, "sensor");
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                modeChange(attackButton);
-                game.toggleMode(0);
+                modeChange(0);
             }
         });
         this.examineButton = new Button(ResourceManager.buttonStyle);
         setIcon(examineButton, "sensor");
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                modeChange(examineButton);
-                game.toggleMode(1);
+                modeChange(1);
             }
         });
         this.inventoryButton = new Button(ResourceManager.buttonStyle);
@@ -148,6 +146,38 @@ public class HudStage extends Stage {
         game.toMainMenu();
     }
 
+    public void modeChange(int mode) {
+        if (mode == 1) {
+            game.toggleMode(mode);
+            if (examinePopup.hasParent()) {
+                examinePopup.remove();
+                inventoryButton.setTouchable(Touchable.enabled);
+                optionsButton.setTouchable(Touchable.enabled);
+            } else {
+                this.addActor(examinePopup);
+                inventoryButton.setTouchable(Touchable.disabled);
+                optionsButton.setTouchable(Touchable.disabled);
+            }
+            if (attackPopup.hasParent()) {
+                attackPopup.remove();
+            }
+        } else {
+            game.toggleMode(mode);
+            if (attackPopup.hasParent()) {
+                attackPopup.remove();
+                inventoryButton.setTouchable(Touchable.enabled);
+                optionsButton.setTouchable(Touchable.enabled);
+            } else {
+                this.addActor(attackPopup);
+                inventoryButton.setTouchable(Touchable.disabled);
+                optionsButton.setTouchable(Touchable.disabled);
+            }
+            if (examinePopup.hasParent()) {
+                examinePopup.remove();
+            }
+        }
+    }
+
     public void addToLog(String text) {
         if (eventLines == 5) {
             eventLog.setText(text);
@@ -187,36 +217,6 @@ public class HudStage extends Stage {
         bar.setValue(260);
         bar.setAnimateDuration(0.1f);
         return bar;
-    }
-
-    private void modeChange(Button button) {
-        if (button == examineButton) {
-            if (examinePopup.hasParent()) {
-                examinePopup.remove();
-                inventoryButton.setTouchable(Touchable.enabled);
-                optionsButton.setTouchable(Touchable.enabled);
-            } else {
-                this.addActor(examinePopup);
-                inventoryButton.setTouchable(Touchable.disabled);
-                optionsButton.setTouchable(Touchable.disabled);
-            }
-            if (attackPopup.hasParent()) {
-                attackPopup.remove();
-            }
-        } else {
-            if (attackPopup.hasParent()) {
-                attackPopup.remove();
-                inventoryButton.setTouchable(Touchable.enabled);
-                optionsButton.setTouchable(Touchable.enabled);
-            } else {
-                this.addActor(attackPopup);
-                inventoryButton.setTouchable(Touchable.disabled);
-                optionsButton.setTouchable(Touchable.disabled);
-            }
-            if (examinePopup.hasParent()) {
-                examinePopup.remove();
-            }
-        }
     }
 
     private void menuOperation(Table menu) {

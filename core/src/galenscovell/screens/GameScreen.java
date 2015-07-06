@@ -37,7 +37,8 @@ public class GameScreen extends AbstractScreen {
         create();
     }
 
-    protected void create() {
+    @Override
+    public void create() {
         // GLProfiler.enable();
         this.player = new Player();
         this.stage = new HudStage(this, player, root.spriteBatch);
@@ -140,6 +141,8 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void attack(float x, float y) {
+        // Accumulator reset for attack animations
+        accumulator = 0;
         updater.attack(x, y);
     }
 

@@ -8,7 +8,6 @@ import galenscovell.util.Constants;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * UPDATER
@@ -67,46 +66,31 @@ public class Updater {
                 player.setPathStack(null);
                 return false;
             }
-
-            for (Entity entity : entities) {
-                if (entity.movementTimer()) {
-                    if (entity.isAggressive()) {
-                        findPath(entity, player.getX(), player.getY());
-                    } else {
-                        findPath(entity, player.getX(), player.getY());
-                        // TODO: Passive behavior, destination depends on entity
-                    }
-                    if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
-                        continue;
-                    } else {
-                        nextMove = entity.getPathStack().pop();
-                        if (!move(entity, nextMove.x, nextMove.y)) {
-                            entity.setPathStack(null);
-                        }
-                    }
-                }
-            }
+            // End player's turn, move all other entities
+            npcTurn();
         }
         return true;
     }
 
     public void examine(float x, float y) {
+        // Pull info about entity or object at selection, if found turn off examine mode
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
         Entity entity = findEntity(tileX, tileY);
         if (entity != null) {
             hud.addToLog(entity.examine());
+            hud.modeChange(1);
         } else {
             Inanimate inanimate = findInanimate(tileX, tileY);
             if (inanimate != null) {
                 hud.addToLog(inanimate.examine());
-            } else {
-                hud.addToLog("There doesn't appear to be anything there.");
+                hud.modeChange(1);
             }
         }
     }
 
     public void interact(float x, float y) {
+        // Interact with selected object
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
         Inanimate inanimate = findInanimate(tileX, tileY);
@@ -116,11 +100,14 @@ public class Updater {
     }
 
     public void attack(float x, float y) {
+        // Attack a selected entity, if found turn off attack mode
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
         Entity target = findEntity(tileX, tileY);
         if (target != null) {
-            System.out.println(target);
+            hit(player, target);
+            npcTurn();
+            hud.modeChange(0);
         }
     }
 
@@ -132,6 +119,27 @@ public class Updater {
 
     public boolean descend() {
         return false;
+    }
+
+    private void npcTurn() {
+        for (Entity entity : entities) {
+            if (entity.movementTimer()) {
+                if (entity.isAggressive()) {
+                    findPath(entity, player.getX(), player.getY());
+                } else {
+                    findPath(entity, player.getX(), player.getY());
+                    // TODO: Passive behavior, destination depends on entity
+                }
+                if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
+                    continue;
+                } else {
+                    Point nextMove = entity.getPathStack().pop();
+                    if (!move(entity, nextMove.x, nextMove.y)) {
+                        entity.setPathStack(null);
+                    }
+                }
+            }
+        }
     }
 
     private boolean findPath(Entity entity, int destX, int destY) {
@@ -177,11 +185,10 @@ public class Updater {
         }
     }
 
-    private void npcAttack(Entity entity) {
-        player.setBeingAttacked();
+    private void hit(Entity entity, Entity target) {
         entity.setAttacking();
-        hud.updateChassis(entity.getStat("damage"));
-        hud.addToLog(entity + " hits for " + entity.getStat("damage") + " damage.");
+        target.setBeingAttacked();
+        hud.addToLog(entity + " hits " + target + " for " + entity.getStat("damage") + " damage.");
     }
 
     private Inanimate findInanimate(int x, int y) {

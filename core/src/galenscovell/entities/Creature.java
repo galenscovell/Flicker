@@ -114,20 +114,7 @@ public class Creature implements Entity {
     }
 
     public void attack(double interpolation, Entity entity) {
-        int diffX = entity.getCurrentX() - x;
-        int diffY = entity.getCurrentY() - y;
-        if (diffX > 0) {
-            currentSet = rightSprites;
-        } else if (diffX < 0) {
-            currentSet = leftSprites;
-        }
-        currentX = (int) (prevX + (diffX * interpolation));
-        currentY = (int) (prevY + (diffY * interpolation));
 
-        // Attack animation only covers small portion of target's tile
-        if (interpolation > 0.3) {
-            attacking = false;
-        }
     }
 
     public void interpolate(double interpolation) {
@@ -139,7 +126,7 @@ public class Creature implements Entity {
             moving = false;
             frame = 0;
         }
-        if (interpolation >= 0.6) {
+        if (interpolation > 0.8) {
             beingAttacked = false;
         }
     }
@@ -166,10 +153,11 @@ public class Creature implements Entity {
             attack(interpolation, entity);
         }
         if (beingAttacked) {
-            batch.setColor(1, 0, 0, 1.0f - (float) interpolation);
-        } else {
+            batch.setColor(1, (float) interpolation, (float) interpolation, 1);
+            batch.draw(currentSet[frame], currentX, currentY, tileSize, tileSize);
             batch.setColor(1, 1, 1, 1);
+        } else {
+            batch.draw(currentSet[frame], currentX, currentY, tileSize, tileSize);
         }
-        batch.draw(currentSet[frame], currentX, currentY, tileSize, tileSize);
     }
 }

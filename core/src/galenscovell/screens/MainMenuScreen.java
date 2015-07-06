@@ -32,7 +32,8 @@ public class MainMenuScreen extends AbstractScreen {
         super(root);
     }
 
-    protected void create() {
+    @Override
+    public void create() {
         this.stage = new Stage(new FitViewport(800, 480), root.spriteBatch);
 
         Table mainTable = new Table();

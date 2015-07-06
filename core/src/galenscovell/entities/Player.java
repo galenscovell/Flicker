@@ -16,8 +16,10 @@ public class Player extends Creature {
     public Player() {
         super();
         setSprites();
-        title = "You";
+        title = "Player";
         description = "A lonely probe.";
+        // Temporary for testing
+        stats.put("damage", 5);
     }
 
     private void setSprites() {
