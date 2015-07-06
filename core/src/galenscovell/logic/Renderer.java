@@ -34,7 +34,6 @@ public class Renderer {
     private OrthographicCamera camera;
     private FitViewport viewport;
     private SpriteBatch spriteBatch;
-    private ShaderProgram flashShader;
 
     private int tileSize;
     private float minCamX, minCamY, maxCamX, maxCamY;
@@ -55,9 +54,6 @@ public class Renderer {
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
         this.spriteBatch = spriteBatch;
-        this.flashShader = new ShaderProgram(
-                Gdx.files.internal("shaders/flash-vertex.glsl").readString(),
-                Gdx.files.internal("shaders/flash-fragment.glsl").readString());
 
         this.tileSize = Constants.TILESIZE;
         this.tiles = tiles;
@@ -69,8 +65,8 @@ public class Renderer {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
-        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f);
-        this.torch = new PointLight(rayHandler, 60, new Color(1.0f, 0.95f, 0.95f, 0.95f), tileSize * 6, 0, 0);
+        rayHandler.setAmbientLight(0, 0, 0, 1);
+        this.torch = new PointLight(rayHandler, 120, new Color(1, 1, 1, 1), tileSize * 8, 0, 0);
         torch.setSoftnessLength(tileSize);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
         this.debug = new Box2DDebugRenderer();
@@ -119,14 +115,6 @@ public class Renderer {
 
     public List<Inanimate> getInanimateList() {
         return inanimates;
-    }
-
-    public void toggleLight() {
-        if (torch.getDistance() == tileSize * 6) {
-            torch.setDistance(tileSize * 2);
-        } else {
-            torch.setDistance(tileSize * 6);
-        }
     }
 
     public void zoom(float value) {

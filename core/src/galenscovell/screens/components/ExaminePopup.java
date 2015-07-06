@@ -30,6 +30,6 @@ public class ExaminePopup extends Table {
         Label examineLabel = new Label("Examine mode", ResourceManager.detailStyle);
         examineLabel.setAlignment(Align.center);
         popup.add(examineLabel).width(170).height(50).expand().fill().center();
-        this.add(popup).width(180).height(60).expand().bottom();
+        this.add(popup).width(180).height(60).expand().top();
     }
 }

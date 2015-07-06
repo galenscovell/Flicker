@@ -29,8 +29,8 @@ public class HudStage extends Stage {
     private int eventLines = 1;
     private Label eventLog;
     private ProgressBar chassis, power, matter;
-    private Table attackPopup, examinePopup, inventoryMenu, optionsMenu;
-    private Button attackButton, examineButton, inventoryButton, optionsButton;
+    private Table attackPopup, examinePopup, inventoryMenu, optionsMenu, optionsButton;
+    private Button attackButton, examineButton, inventoryButton;
 
     public HudStage(GameScreen game, Player player, SpriteBatch spriteBatch) {
         super(new FitViewport(800, 480), spriteBatch);
@@ -52,6 +52,20 @@ public class HudStage extends Stage {
          **********************************/
         Table topTable = new Table();
 
+        // Options section
+        Table topLeft = new Table();
+        this.optionsButton = new Table();
+        optionsButton.setTouchable(Touchable.enabled);
+        setIcon(optionsButton, "hexagonal-nut", 32);
+        optionsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                menuOperation(optionsMenu);
+            }
+        });
+        topLeft.add(optionsButton).width(48).height(48).top().left();
+        topTable.add(topLeft).top().left();
+
+        // Event log section
         Table topRight = new Table();
         topRight.pad(8, 0, 0, 8);
         this.eventLog = new Label("Events displayed here.", ResourceManager.detailStyle);
@@ -64,58 +78,12 @@ public class HudStage extends Stage {
         mainTable.row();
 
         /**********************************
-         * MIDDLE TABLE                   *
-         **********************************/
-        Table middleTable = new Table();
-
-        Table left = new Table();
-        this.attackButton = new Button(ResourceManager.buttonStyle);
-        setIcon(attackButton, "sensor");
-        attackButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                modeChange(0);
-            }
-        });
-        this.examineButton = new Button(ResourceManager.buttonStyle);
-        setIcon(examineButton, "sensor");
-        examineButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                modeChange(1);
-            }
-        });
-        this.inventoryButton = new Button(ResourceManager.buttonStyle);
-        setIcon(inventoryButton, "microchip");
-        inventoryButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation(inventoryMenu);
-            }
-        });
-        this.optionsButton = new Button(ResourceManager.buttonStyle);
-        setIcon(optionsButton, "network");
-        optionsButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation(optionsMenu);
-            }
-        });
-        left.add(optionsButton).height(80).width(80).padBottom(4);
-        left.row();
-        left.add(inventoryButton).height(80).width(80).padBottom(4);
-        left.row();
-        left.add(examineButton).height(80).width(80).padBottom(4);
-        left.row();
-        left.add(attackButton).height(80).width(80).padBottom(8);
-        middleTable.add(left).expand().left();
-
-        mainTable.add(middleTable).fill();
-        mainTable.row();
-
-        /**********************************
          * BOTTOM TABLE                   *
          **********************************/
         Table bottomTable = new Table();
 
-        // Bottom left
-        Table bottomLeft = new Table();
+        // Bottom left section
+        Table statsTable = new Table();
         Table barTable = new Table();
         this.chassis = createBar("chassisFill");
         this.power = createBar("powerFill");
@@ -125,10 +93,40 @@ public class HudStage extends Stage {
         barTable.add(power).width(260).height(20);
         barTable.row();
         barTable.add(matter).width(260).height(20);
-        bottomLeft.add(barTable).width(260).height(60).expand().fill().bottom().left();
-        bottomTable.add(bottomLeft).expand().fill().left();
+        statsTable.add(barTable).width(260).height(60).expand().fill().bottom().left();
+        bottomTable.add(statsTable).expand().fill().left();
 
-        mainTable.add(bottomTable).bottom().fill();
+        // Bottom right section
+        Table actionTable = new Table();
+        Table actionButtons = new Table();
+        this.inventoryButton = new Button(ResourceManager.buttonStyle);
+        setIcon(inventoryButton, "processor", 64);
+        inventoryButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                menuOperation(inventoryMenu);
+            }
+        });
+        this.examineButton = new Button(ResourceManager.buttonStyle);
+        setIcon(examineButton, "radar-sweep", 64);
+        examineButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                modeChange(1);
+            }
+        });
+        this.attackButton = new Button(ResourceManager.buttonStyle);
+        setIcon(attackButton, "target", 64);
+        attackButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                modeChange(0);
+            }
+        });
+        actionButtons.add(inventoryButton).height(68).width(100);
+        actionButtons.add(examineButton).height(68).width(100).padLeft(4).padRight(4);
+        actionButtons.add(attackButton).height(68).width(100);
+        actionTable.add(actionButtons).width(312).right();
+        bottomTable.add(actionTable).expand().right();
+
+        mainTable.add(bottomTable).fill();
 
         mainTable.pack();
         this.addActor(mainTable);
@@ -202,10 +200,10 @@ public class HudStage extends Stage {
         matter.setValue(matter.getValue() + val);
     }
 
-    private void setIcon(Table table, String name) {
+    private void setIcon(Table table, String name, int height) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
-        icon.setScaling(Scaling.fit);
-        table.add(icon).expand().fill().center();
+        icon.setScaling(Scaling.fillX);
+        table.add(icon).height(height).expand().center();
     }
 
     private ProgressBar createBar(String path) {

@@ -7,6 +7,7 @@ import galenscovell.logic.Updater;
 import galenscovell.logic.Level;
 import galenscovell.util.Constants;
 import galenscovell.util.GestureHandler;
+import galenscovell.util.InputHandler;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,7 +17,9 @@ import com.badlogic.gdx.input.GestureDetector;
 /**
  * GAME SCREEN
  * Main gameplay screen.
+ * Creates Player instance used throughout application.
  * Renderer handles graphics and level setup, Updater handles core logic.
+ * HUD is a Stage rendered after Renderer and referenced by Updater.
  *
  * @author Galen Scovell
  */
@@ -93,9 +96,6 @@ public class GameScreen extends AbstractScreen {
         moving = true;
         destination[0] = (int) x;
         destination[1] = (int) y;
-        if (destination[0] / Constants.TILESIZE == player.getX() / Constants.TILESIZE && destination[1] / Constants.TILESIZE == player.getY() / Constants.TILESIZE) {
-            renderer.toggleLight();
-        }
     }
 
     public void screenZoom(float zoom) {
@@ -161,7 +161,9 @@ public class GameScreen extends AbstractScreen {
 
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);
-        fullInput.addProcessor(new GestureDetector(new GestureHandler(this, renderer.getCamera())));
+        fullInput.addProcessor(new InputHandler(this, renderer.getCamera()));
+        // Gestures disabled until I figure out a way to make them play nice with other input!
+        // fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
         enableWorldInput();
 
         this.destination = new int[2];

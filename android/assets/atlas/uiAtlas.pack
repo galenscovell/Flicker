@@ -3,6 +3,27 @@ uiAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+processor
+  rotate: false
+  xy: 1, 51
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+radar-sweep
+  rotate: false
+  xy: 67, 51
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+target
+  rotate: false
+  xy: 133, 51
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 destinationMarker
   rotate: false
   xy: 1, 1
@@ -12,7 +33,7 @@ destinationMarker
   index: -1
 button_down
   rotate: false
-  xy: 51, 13
+  xy: 199, 79
   size: 36, 36
   split: 6, 7, 8, 9
   orig: 36, 36
@@ -20,36 +41,22 @@ button_down
   index: -1
 button_up
   rotate: false
-  xy: 89, 13
+  xy: 51, 13
   size: 36, 36
   split: 6, 7, 6, 10
   orig: 36, 36
   offset: 0, 0
   index: -1
-microchip
+hexagonal-nut
   rotate: false
-  xy: 127, 17
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-network
-  rotate: false
-  xy: 161, 17
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-sensor
-  rotate: false
-  xy: 195, 17
+  xy: 89, 17
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 framedbg
   rotate: false
-  xy: 229, 31
+  xy: 199, 59
   size: 16, 18
   split: 7, 7, 7, 7
   orig: 16, 18
@@ -57,7 +64,7 @@ framedbg
   index: -1
 framedlit
   rotate: false
-  xy: 229, 11
+  xy: 237, 97
   size: 16, 18
   split: 7, 7, 7, 7
   orig: 16, 18
@@ -65,28 +72,28 @@ framedlit
   index: -1
 barEmpty
   rotate: false
-  xy: 247, 29
+  xy: 123, 29
   size: 2, 20
   orig: 2, 20
   offset: 0, 0
   index: -1
 chassisFill
   rotate: false
-  xy: 251, 29
+  xy: 127, 29
   size: 2, 20
   orig: 2, 20
   offset: 0, 0
   index: -1
 matterFill
   rotate: false
-  xy: 247, 7
+  xy: 131, 29
   size: 2, 20
   orig: 2, 20
   offset: 0, 0
   index: -1
 powerFill
   rotate: false
-  xy: 251, 7
+  xy: 135, 29
   size: 2, 20
   orig: 2, 20
   offset: 0, 0
