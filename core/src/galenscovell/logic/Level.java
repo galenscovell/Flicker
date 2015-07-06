@@ -39,7 +39,7 @@ public class Level {
     }
 
     public void optimize() {
-        // Remove walls without floor neighbors, also switch over any remaining corridor Tiles
+        // Remove walls without floor neighbors, also switch over any remaining corridor tiles
         for (Tile tile : tiles.values()) {
             if (tile.isWall()) {
                 if (tile.getFloorNeighbors() == 0) {
@@ -47,6 +47,16 @@ public class Level {
                 }
             } else if (tile.isCorridor()) {
                 tile.state = 1;
+            }
+        }
+        // Check if any floor tiles are adjacent to pruned tiles, if so make them wall
+        for (Tile tile : tiles.values()) {
+            if (tile.isFloor()) {
+                for (Point neighbor : tile.getNeighbors()) {
+                    if (tiles.get(neighbor.x * columns + neighbor.y).isUnused()) {
+                        tile.state = 0;
+                    }
+                }
             }
         }
         // If wall has one or zero connecting walls, make it floor

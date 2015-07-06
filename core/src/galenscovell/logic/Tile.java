@@ -35,7 +35,11 @@ public class Tile {
     }
 
     public void setUnused() {
-        this.unused = true;
+        this.unused = !unused;
+    }
+
+    public boolean isUnused() {
+        return unused;
     }
 
     public boolean isEmpty() {
