@@ -17,16 +17,26 @@ import java.util.Stack;
  */
 
 public class Creature implements Entity {
-    protected int x, y, prevX, prevY, currentX, currentY;
-    protected boolean aggressive, moving, attacking, beingAttacked;
-
-    protected Sprite[] currentSet;
-    protected Sprite[] leftSprites, rightSprites;
-
-    protected String title, description;
-    protected Map<String, Integer> stats = new HashMap<String, Integer>();
+    private int x, y, prevX, prevY, currentX, currentY;
     private Stack<Point> pathStack;
     private int moveTimer, frame;
+    private boolean aggressive, moving, attacking, beingAttacked;
+
+    protected Sprite[] currentSet, leftSprites, rightSprites;
+    protected String title, description;
+    protected Map<String, Integer> stats = new HashMap<String, Integer>();
+
+    public String toString() {
+        return title;
+    }
+
+    public String examine() {
+        return description;
+    }
+
+    public int getStat(String key) {
+        return stats.get(key);
+    }
 
     public void setPosition(int newX, int newY) {
         prevX = newX;
@@ -35,10 +45,6 @@ public class Creature implements Entity {
         y = newY;
         currentX = newX;
         currentY = newY;
-    }
-
-    public String examine() {
-        return description;
     }
 
     public int getX() {
@@ -55,10 +61,6 @@ public class Creature implements Entity {
 
     public int getCurrentY() {
         return currentY;
-    }
-
-    public int getStat(String key) {
-        return stats.get(key);
     }
 
     public void toggleAggressive() {
@@ -103,7 +105,7 @@ public class Creature implements Entity {
         }
     }
 
-    protected void turn(int dx, int dy) {
+    public void turn(int dx, int dy) {
         if (dx < 0 && currentSet != leftSprites) {
             currentSet = leftSprites;
         } else if (dx > 0 && currentSet != rightSprites) {

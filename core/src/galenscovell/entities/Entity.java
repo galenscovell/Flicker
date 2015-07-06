@@ -13,6 +13,9 @@ import java.util.Stack;
  */
 
 public interface Entity {
+    public String examine();
+    public int getStat(String key);
+
     public void setPosition(int newX, int newY);
     public int getX();
     public int getY();
@@ -28,11 +31,9 @@ public interface Entity {
     public void setPathStack(Stack<Point> path);
     public Stack<Point> getPathStack();
 
+    public void move(int dx, int dy, boolean possible);
+    public void turn(int dx, int dy);
     public void attack(double interpolation, Entity entity);
     public void interpolate(double interpolation);
-    public void move(int dx, int dy, boolean possible);
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
-
-    public int getStat(String key);
-    public String examine();
 }

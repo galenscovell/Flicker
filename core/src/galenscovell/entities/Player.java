@@ -16,11 +16,8 @@ public class Player extends Creature {
     public Player() {
         super();
         setSprites();
-    }
-
-    @Override
-    public String examine() {
-        return "A lonely probe.";
+        title = "You";
+        description = "A lonely probe.";
     }
 
     private void setSprites() {
