@@ -31,7 +31,7 @@ public class GameScreen extends AbstractScreen {
     private InputMultiplexer fullInput;
 
     private boolean attackMode, examineMode, moving;
-    private final int timestep = 20;
+    private final int timestep = 15;
     private int accumulator = 0;
     private int[] destination;
 
@@ -83,7 +83,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        enableWorldInput();
+        Gdx.input.setInputProcessor(fullInput);
     }
 
     @Override
@@ -104,14 +104,6 @@ public class GameScreen extends AbstractScreen {
 
     public void toMainMenu() {
         root.setScreen(root.mainMenuScreen);
-    }
-
-    public void disableWorldInput() {
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    public void enableWorldInput() {
-        Gdx.input.setInputProcessor(fullInput);
     }
 
     public boolean examineMode() {
@@ -164,7 +156,7 @@ public class GameScreen extends AbstractScreen {
         fullInput.addProcessor(new InputHandler(this, renderer.getCamera()));
         // Gestures disabled until I figure out a way to make them play nice with other input!
         // fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
-        enableWorldInput();
+        Gdx.input.setInputProcessor(fullInput);
 
         this.destination = new int[2];
         this.moving = false;

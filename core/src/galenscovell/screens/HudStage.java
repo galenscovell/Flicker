@@ -135,17 +135,19 @@ public class HudStage extends Stage {
     }
 
     public void modeChange(int mode) {
+        if (optionsMenu.hasParent()) {
+            optionsMenu.remove();
+        }
+        if (inventoryMenu.hasParent()) {
+            inventoryMenu.remove();
+        }
         if (mode == 1) {
             game.toggleMode(mode);
             if (examinePopup.hasParent()) {
                 examinePopup.remove();
-                inventoryButton.setTouchable(Touchable.enabled);
-                optionsButton.setTouchable(Touchable.enabled);
             } else {
                 this.addActor(examinePopup);
                 removeExamineInfo();
-                inventoryButton.setTouchable(Touchable.disabled);
-                optionsButton.setTouchable(Touchable.disabled);
             }
             if (attackPopup.hasParent()) {
                 attackPopup.remove();
@@ -154,24 +156,13 @@ public class HudStage extends Stage {
             game.toggleMode(mode);
             if (attackPopup.hasParent()) {
                 attackPopup.remove();
-                inventoryButton.setTouchable(Touchable.enabled);
-                optionsButton.setTouchable(Touchable.enabled);
             } else {
                 this.addActor(attackPopup);
                 removeExamineInfo();
-                inventoryButton.setTouchable(Touchable.disabled);
-                optionsButton.setTouchable(Touchable.disabled);
             }
             if (examinePopup.hasParent()) {
                 examinePopup.remove();
             }
-        }
-    }
-
-    public void removeExamineInfo() {
-        if (infoPopup != null && infoPopup.hasParent()) {
-            infoPopup.remove();
-            infoPopup = null;
         }
     }
 
@@ -180,6 +171,22 @@ public class HudStage extends Stage {
         flippedTarget.flip(false, true);
         this.infoPopup = new ExamineInfoPopup(this, info, flippedTarget);
         this.addActor(infoPopup);
+    }
+
+    public boolean clearMenus() {
+        if (optionsMenu.hasParent()) {
+            optionsMenu.remove();
+            return false;
+        } else if (inventoryMenu.hasParent()) {
+            inventoryMenu.remove();
+            return false;
+        } else if (infoPopup != null && infoPopup.hasParent()) {
+            infoPopup.remove();
+            infoPopup = null;
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void updateChassis(int val) {
@@ -211,11 +218,17 @@ public class HudStage extends Stage {
         return bar;
     }
 
+    private void removeExamineInfo() {
+        if (infoPopup != null && infoPopup.hasParent()) {
+            infoPopup.remove();
+            infoPopup = null;
+        }
+    }
+
     private void menuOperation(Table menu) {
         removeExamineInfo();
         if (menu.hasParent()) {
             menu.remove();
-            game.enableWorldInput();
         } else {
             if (optionsMenu != menu && optionsMenu.hasParent()) {
                 optionsMenu.remove();
@@ -223,7 +236,6 @@ public class HudStage extends Stage {
                 inventoryMenu.remove();
             }
             this.addActor(menu);
-            game.disableWorldInput();
         }
     }
 }

@@ -47,7 +47,9 @@ public class Updater {
     }
 
     public boolean update(int[] destination) {
-        hud.removeExamineInfo();
+        if (!hud.clearMenus()) {
+            return false;
+        }
         if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
             if (destinationMarker != null) {
                 destinationMarker.removeAsDestination();
@@ -74,7 +76,9 @@ public class Updater {
     }
 
     public void examine(float x, float y) {
-        hud.removeExamineInfo();
+        if (!hud.clearMenus()) {
+            return;
+        }
         // Pull info about entity or object at selection, if found turn off examine mode
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
@@ -94,7 +98,9 @@ public class Updater {
     }
 
     public void interact(float x, float y) {
-        hud.removeExamineInfo();
+        if (!hud.clearMenus()) {
+            return;
+        }
         // Interact with selected object
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
@@ -105,7 +111,9 @@ public class Updater {
     }
 
     public void attack(float x, float y) {
-        hud.removeExamineInfo();
+        if (!hud.clearMenus()) {
+            return;
+        }
         // Attack a selected entity, if found turn off attack mode
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
