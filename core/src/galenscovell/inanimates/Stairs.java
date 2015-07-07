@@ -26,6 +26,10 @@ public class Stairs implements Inanimate {
         this.blocking = false;
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     public int getX() {
         return x;
     }

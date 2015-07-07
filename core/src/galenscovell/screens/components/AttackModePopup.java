@@ -14,10 +14,10 @@ import com.badlogic.gdx.utils.Align;
  * @author Galen Scovell
  */
 
-public class AttackPopup extends Table {
+public class AttackModePopup extends Table {
     private HudStage root;
 
-    public AttackPopup(HudStage root) {
+    public AttackModePopup(HudStage root) {
         this.root = root;
         create();
     }
@@ -25,7 +25,7 @@ public class AttackPopup extends Table {
     public void create() {
         this.setFillParent(true);
         Table popup = new Table();
-        this.padBottom(20);
+        this.padTop(10);
         popup.setBackground(ResourceManager.buttonDarkDown);
         Label examineLabel = new Label("Attack mode", ResourceManager.detailStyle);
         examineLabel.setAlignment(Align.center);

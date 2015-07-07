@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 
 public interface Inanimate {
+    public Sprite getSprite();
     public int getX();
     public int getY();
     public String interact(Tile tile);

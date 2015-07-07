@@ -2,6 +2,7 @@ package galenscovell.entities;
 
 import galenscovell.logic.Point;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Stack;
@@ -15,6 +16,7 @@ import java.util.Stack;
 public interface Entity {
     public String examine();
     public int getStat(String key);
+    public Sprite getSprite();
 
     public void setPosition(int newX, int newY);
     public int getX();

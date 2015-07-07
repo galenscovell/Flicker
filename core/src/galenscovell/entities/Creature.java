@@ -34,6 +34,10 @@ public class Creature implements Entity {
         return description;
     }
 
+    public Sprite getSprite() {
+        return currentSet[0];
+    }
+
     public int getStat(String key) {
         return stats.get(key);
     }

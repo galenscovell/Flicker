@@ -4,6 +4,7 @@ import galenscovell.entities.Player;
 import galenscovell.screens.components.*;
 import galenscovell.util.ResourceManager;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
-import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -26,10 +26,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class HudStage extends Stage {
     private GameScreen game;
-    private int eventLines = 1;
-    private Label eventLog;
     private ProgressBar chassis, power, matter;
-    private Table attackPopup, examinePopup, inventoryMenu, optionsMenu, optionsButton;
+    private Table attackPopup, examinePopup, infoPopup, inventoryMenu, optionsMenu, optionsButton;
     private Button attackButton, examineButton, inventoryButton;
 
     public HudStage(GameScreen game, Player player, SpriteBatch spriteBatch) {
@@ -39,8 +37,8 @@ public class HudStage extends Stage {
     }
 
     public void create(Player player) {
-        this.attackPopup = new AttackPopup(this);
-        this.examinePopup = new ExaminePopup(this);
+        this.attackPopup = new AttackModePopup(this);
+        this.examinePopup = new ExamineModePopup(this);
         this.inventoryMenu = new HudInventoryMenu(this);
         this.optionsMenu = new HudOptionsMenu(this);
 
@@ -62,17 +60,8 @@ public class HudStage extends Stage {
                 menuOperation(optionsMenu);
             }
         });
-        topLeft.add(optionsButton).width(48).height(48).top().left();
-        topTable.add(topLeft).top().left();
-
-        // Event log section
-        Table topRight = new Table();
-        topRight.pad(8, 0, 0, 8);
-        this.eventLog = new Label("Events displayed here.", ResourceManager.detailStyle);
-        eventLog.setAlignment(Align.topRight, Align.topRight);
-        eventLog.setWrap(true);
-        topRight.add(eventLog).expand().fill().top().right();
-        topTable.add(topRight).height(180).width(400).expand().fill().top().right();
+        topLeft.add(optionsButton).width(48).height(48).expand().fill().top().left();
+        topTable.add(topLeft).expand().fill().top().left();
 
         mainTable.add(topTable).expand().fill().top();
         mainTable.row();
@@ -133,6 +122,7 @@ public class HudStage extends Stage {
     }
 
     public void dispose() {
+        removeExamineInfo();
         this.addActor(attackPopup);
         this.addActor(examinePopup);
         this.addActor(inventoryMenu);
@@ -153,6 +143,7 @@ public class HudStage extends Stage {
                 optionsButton.setTouchable(Touchable.enabled);
             } else {
                 this.addActor(examinePopup);
+                removeExamineInfo();
                 inventoryButton.setTouchable(Touchable.disabled);
                 optionsButton.setTouchable(Touchable.disabled);
             }
@@ -167,6 +158,7 @@ public class HudStage extends Stage {
                 optionsButton.setTouchable(Touchable.enabled);
             } else {
                 this.addActor(attackPopup);
+                removeExamineInfo();
                 inventoryButton.setTouchable(Touchable.disabled);
                 optionsButton.setTouchable(Touchable.disabled);
             }
@@ -176,16 +168,18 @@ public class HudStage extends Stage {
         }
     }
 
-    public void addToLog(String text) {
-        if (eventLines == 5) {
-            eventLog.setText(text);
-            eventLines = 1;
-        } else {
-            StringBuilder currentText = eventLog.getText();
-            String newText = currentText + "\n" + text;
-            eventLog.setText(newText);
-            eventLines++;
+    public void removeExamineInfo() {
+        if (infoPopup != null && infoPopup.hasParent()) {
+            infoPopup.remove();
+            infoPopup = null;
         }
+    }
+
+    public void displayExamineInfo(String info, Sprite sprite) {
+        Sprite flippedTarget = new Sprite(sprite);
+        flippedTarget.flip(false, true);
+        this.infoPopup = new ExamineInfoPopup(this, info, flippedTarget);
+        this.addActor(infoPopup);
     }
 
     public void updateChassis(int val) {
@@ -218,6 +212,7 @@ public class HudStage extends Stage {
     }
 
     private void menuOperation(Table menu) {
+        removeExamineInfo();
         if (menu.hasParent()) {
             menu.remove();
             game.enableWorldInput();

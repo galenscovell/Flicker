@@ -47,6 +47,7 @@ public class Updater {
     }
 
     public boolean update(int[] destination) {
+        hud.removeExamineInfo();
         if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
             if (destinationMarker != null) {
                 destinationMarker.removeAsDestination();
@@ -73,33 +74,38 @@ public class Updater {
     }
 
     public void examine(float x, float y) {
+        hud.removeExamineInfo();
         // Pull info about entity or object at selection, if found turn off examine mode
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
         Entity entity = findEntity(tileX, tileY);
         if (entity != null) {
-            hud.addToLog(entity.examine());
+            // Display examine info on HUD
+            hud.displayExamineInfo(entity.examine(), entity.getSprite());
             hud.modeChange(1);
         } else {
             Inanimate inanimate = findInanimate(tileX, tileY);
             if (inanimate != null) {
-                hud.addToLog(inanimate.examine());
+                // Display examine info on HUD
+                hud.displayExamineInfo(inanimate.examine(), inanimate.getSprite());
                 hud.modeChange(1);
             }
         }
     }
 
     public void interact(float x, float y) {
+        hud.removeExamineInfo();
         // Interact with selected object
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
         Inanimate inanimate = findInanimate(tileX, tileY);
         if (inanimate != null) {
-            hud.addToLog(inanimate.interact(getTile(x, y)));
+
         }
     }
 
     public void attack(float x, float y) {
+        hud.removeExamineInfo();
         // Attack a selected entity, if found turn off attack mode
         int tileX = (int) x / tileSize;
         int tileY = (int) y / tileSize;
@@ -188,7 +194,6 @@ public class Updater {
     private void hit(Entity entity, Entity target) {
         entity.setAttacking();
         target.setBeingAttacked();
-        hud.addToLog(entity + " hits " + target + " for " + entity.getStat("damage") + " damage.");
     }
 
     private Inanimate findInanimate(int x, int y) {

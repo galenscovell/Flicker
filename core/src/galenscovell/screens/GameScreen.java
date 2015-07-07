@@ -60,6 +60,7 @@ public class GameScreen extends AbstractScreen {
             }
         }
         stage.act(delta);
+        accumulator++;
     }
 
     @Override
@@ -70,7 +71,6 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.render((double) accumulator / timestep);
         stage.draw();
-        accumulator++;
         // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
         // GLProfiler.reset();
     }

@@ -35,6 +35,10 @@ public class Boulder implements Inanimate {
         this.blocking = true;
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     public int getX() {
         return x;
     }
