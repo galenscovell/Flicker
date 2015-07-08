@@ -1,5 +1,7 @@
 package galenscovell.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -10,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -26,8 +30,9 @@ public class ResourceManager {
     public static TextureAtlas uiAtlas, tileAtlas, syntheticAtlas, organicAtlas, inanimateAtlas;
     public static Label.LabelStyle detailStyle, mediumStyle, menuStyle, titleStyle;
     public static NinePatchDrawable buttonDarkUp, buttonDarkDown, frameBG, frameLit;
-    public static TextButton.TextButtonStyle buttonStyle, frameStyle;
+    public static TextButton.TextButtonStyle buttonStyle, frameStyle, toggleButtonStyle;
     public static Sprite destinationMarker;
+    public static Preferences prefs;
 
     public static void create() {
         assetManager = new AssetManager();
@@ -47,7 +52,7 @@ public class ResourceManager {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallParams.fontFileName = "ui/Akashi.ttf";
-        smallParams.fontParameters.size = 14;
+        smallParams.fontParameters.size = 16;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
@@ -62,7 +67,7 @@ public class ResourceManager {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         extraLargeParams.fontFileName = "ui/Akashi.ttf";
-        extraLargeParams.fontParameters.size = 64;
+        extraLargeParams.fontParameters.size = 72;
         assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
     }
 
@@ -82,6 +87,8 @@ public class ResourceManager {
         buttonDarkDown = new NinePatchDrawable(uiAtlas.createPatch("button_down"));
         buttonStyle = new TextButton.TextButtonStyle(buttonDarkUp, buttonDarkDown, buttonDarkUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
 
+        toggleButtonStyle = new TextButton.TextButtonStyle(buttonDarkUp, buttonDarkDown, buttonDarkDown, assetManager.get("mediumFont.ttf", BitmapFont.class));
+
         frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
         frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
         frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, assetManager.get("mediumFont.ttf", BitmapFont.class));
@@ -90,6 +97,12 @@ public class ResourceManager {
 
         destinationMarker = new Sprite(uiAtlas.createSprite("destinationMarker"));
         destinationMarker.flip(false, true);
+
+        // Load user preferences
+        prefs = Gdx.app.getPreferences("flicker_settings");
+        prefs.putBoolean("sfx", true);
+        prefs.putBoolean("music", true);
+        prefs.flush();
     }
 
     public static void dispose() {

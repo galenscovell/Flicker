@@ -20,7 +20,7 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean zoom (float initialDistance, float endDistance){
-        game.screenZoom(endDistance - initialDistance);
+        game.zoom(endDistance - initialDistance);
         return true;
     }
 }

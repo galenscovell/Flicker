@@ -5,7 +5,6 @@ import galenscovell.flicker.FlickerMain;
 import galenscovell.logic.Renderer;
 import galenscovell.logic.Updater;
 import galenscovell.logic.Level;
-import galenscovell.util.Constants;
 import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
 
@@ -98,7 +97,7 @@ public class GameScreen extends AbstractScreen {
         destination[1] = (int) y;
     }
 
-    public void screenZoom(float zoom) {
+    public void zoom(float zoom) {
         renderer.zoom(zoom);
     }
 
@@ -117,14 +116,10 @@ public class GameScreen extends AbstractScreen {
     public void toggleMode(int mode) {
         if (mode == 0) {
             attackMode = !attackMode;
-            if (examineMode) {
-                examineMode = false;
-            }
+            examineMode = false;
         } else {
             examineMode = !examineMode;
-            if (attackMode) {
-                attackMode = false;
-            }
+            attackMode = false;
         }
     }
 

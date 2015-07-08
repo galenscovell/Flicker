@@ -26,7 +26,6 @@ public class ExamineInfoPopup extends Table {
 
     public void create(String info, Sprite target) {
         this.setFillParent(true);
-        this.pad(10, 0, 0, 10);
         Table popup = new Table();
         popup.setBackground(ResourceManager.frameBG);
         Label examineLabel = new Label(info, ResourceManager.detailStyle);
@@ -35,6 +34,6 @@ public class ExamineInfoPopup extends Table {
         Image spriteImage = new Image(target);
         popup.add(spriteImage).width(48).height(48).padRight(10);
         popup.add(examineLabel).width(140).height(90);
-        this.add(popup).width(220).height(100).expand().top().right();
+        this.add(popup).width(220).height(100).expand().center();
     }
 }

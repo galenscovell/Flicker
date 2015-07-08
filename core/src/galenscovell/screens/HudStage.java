@@ -27,11 +27,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class HudStage extends Stage {
     private GameScreen game;
     private ProgressBar chassis, power, matter;
-    private Table attackPopup, examinePopup, infoPopup, inventoryMenu, optionsMenu, optionsButton;
-    private Button attackButton, examineButton, inventoryButton;
+    private Table attackPopup, examinePopup, infoPopup, inventoryMenu, optionsMenu;
 
     public HudStage(GameScreen game, Player player, SpriteBatch spriteBatch) {
-        super(new FitViewport(800, 480), spriteBatch);
+        super(new FitViewport(480, 800), spriteBatch);
         this.game = game;
         create(player);
     }
@@ -40,7 +39,7 @@ public class HudStage extends Stage {
         this.attackPopup = new AttackModePopup(this);
         this.examinePopup = new ExamineModePopup(this);
         this.inventoryMenu = new HudInventoryMenu(this);
-        this.optionsMenu = new HudOptionsMenu(this);
+        this.optionsMenu = new OptionsMenu(this);
 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -50,28 +49,7 @@ public class HudStage extends Stage {
          **********************************/
         Table topTable = new Table();
 
-        // Options section
-        Table topLeft = new Table();
-        this.optionsButton = new Table();
-        optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "hexagonal-nut", 32);
-        optionsButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                menuOperation(optionsMenu);
-            }
-        });
-        topLeft.add(optionsButton).width(48).height(48).expand().fill().top().left();
-        topTable.add(topLeft).expand().fill().top().left();
-
-        mainTable.add(topTable).expand().fill().top();
-        mainTable.row();
-
-        /**********************************
-         * BOTTOM TABLE                   *
-         **********************************/
-        Table bottomTable = new Table();
-
-        // Bottom left section
+        // Player stats section
         Table statsTable = new Table();
         Table barTable = new Table();
         this.chassis = createBar("chassisFill");
@@ -82,27 +60,48 @@ public class HudStage extends Stage {
         barTable.add(power).width(260).height(20);
         barTable.row();
         barTable.add(matter).width(260).height(20);
-        statsTable.add(barTable).width(260).height(60).expand().fill().bottom().left();
-        bottomTable.add(statsTable).expand().fill().left();
+        statsTable.add(barTable).width(260).height(60).expand().fill().top().left();
+        topTable.add(statsTable).expand().fill().left();
 
-        // Bottom right section
+        // Options section
+        Table topRight = new Table();
+        Table optionsButton = new Table();
+        optionsButton.setTouchable(Touchable.enabled);
+        setIcon(optionsButton, "hexagonal-nut", 32);
+        optionsButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                menuOperation(optionsMenu);
+            }
+        });
+        topRight.add(optionsButton).width(48).height(48).expand().fill().top().right();
+        topTable.add(topRight).expand().fill().top().right();
+
+        mainTable.add(topTable).expand().fill().top();
+        mainTable.row();
+
+        /**********************************
+         * BOTTOM TABLE                   *
+         **********************************/
+        Table bottomTable = new Table();
+
+        // Bottom section
         Table actionTable = new Table();
         Table actionButtons = new Table();
-        this.inventoryButton = new Button(ResourceManager.buttonStyle);
+        Button inventoryButton = new Button(ResourceManager.buttonStyle);
         setIcon(inventoryButton, "processor", 64);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
-        this.examineButton = new Button(ResourceManager.buttonStyle);
+        Button examineButton = new Button(ResourceManager.buttonStyle);
         setIcon(examineButton, "radar-sweep", 64);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 modeChange(1);
             }
         });
-        this.attackButton = new Button(ResourceManager.buttonStyle);
+        Button attackButton = new Button(ResourceManager.buttonStyle);
         setIcon(attackButton, "target", 64);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -112,8 +111,8 @@ public class HudStage extends Stage {
         actionButtons.add(inventoryButton).height(68).width(100);
         actionButtons.add(examineButton).height(68).width(100).padLeft(4).padRight(4);
         actionButtons.add(attackButton).height(68).width(100);
-        actionTable.add(actionButtons).width(312).right();
-        bottomTable.add(actionTable).expand().right();
+        actionTable.add(actionButtons).width(312).center();
+        bottomTable.add(actionTable).expand().center();
 
         mainTable.add(bottomTable).fill();
 

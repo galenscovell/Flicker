@@ -35,4 +35,10 @@ public class InputHandler extends InputAdapter {
         }
         return true;
     }
+
+    @Override
+    public boolean scrolled(int amount) {
+        game.zoom(amount * 1000);
+        return true;
+    }
 }
