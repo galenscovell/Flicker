@@ -23,14 +23,14 @@ public class Updater {
     private List<Entity> entities;
     private List<Inanimate> inanimates;
     private Player player;
-    private Pathfinder pathfinder;
+    private EntityPathfinder pathfinder;
     private Tile destinationMarker;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
-        this.pathfinder = new Pathfinder();
+        this.pathfinder = new EntityPathfinder();
     }
 
     public void setHud(HudStage hud) {

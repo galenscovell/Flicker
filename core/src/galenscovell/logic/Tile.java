@@ -19,7 +19,7 @@ import java.util.List;
 public class Tile {
     public int x, y, state;
     private int floorNeighbors;
-    private List<Point> neighborTilePoints;
+    private List<Point> neighborTilePoints, cardinalNeighbors;
     private short bitmask;
     private Sprite[] sprites;
     private int currentFrame, frames;
@@ -29,7 +29,8 @@ public class Tile {
         this.x = x;
         this.y = y;
         this.state = 0;
-        this.neighborTilePoints = findNeighbors(columns, rows);
+        this.neighborTilePoints = findAllNeighbors(columns, rows);
+        this.cardinalNeighbors = findCardinalNeighbors(columns, rows);
         this.frames = 0;
         this.currentFrame = 0;
     }
@@ -98,6 +99,10 @@ public class Tile {
         return neighborTilePoints;
     }
 
+    public List<Point> getCardinalNeighbors() {
+        return cardinalNeighbors;
+    }
+
     public void setBitmask(short value) {
         bitmask = value;
     }
@@ -138,18 +143,32 @@ public class Tile {
         frames++;
     }
 
-    private List<Point> findNeighbors(int columns, int rows) {
+    private List<Point> findAllNeighbors(int columns, int rows) {
         List<Point> points = new ArrayList<Point>();
-        int sumX, sumY;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                sumX = x + i;
-                sumY = y + j;
-                if ((sumX == x && sumY == y || (isOutOfBounds(sumX, sumY, columns, rows)))) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (((x + dx) == x && (y + dy) == y || (isOutOfBounds(x + dx, y + dy, columns, rows)))) {
                     continue;
                 }
-                points.add(new Point(sumX, sumY));
+                points.add(new Point(x + dx, y + dy));
             }
+        }
+        return points;
+    }
+
+    private List<Point> findCardinalNeighbors(int columns, int rows) {
+        List<Point> points = new ArrayList<Point>();
+        for (int dx = -1; dx <= 1; dx += 2) {
+            if (isOutOfBounds(x + dx, y, columns, rows)) {
+                continue;
+            }
+            points.add(new Point(x + dx, y));
+        }
+        for (int dy = -1; dy <= 1; dy += 2) {
+            if (isOutOfBounds(x, y + dy, columns, rows)) {
+                continue;
+            }
+            points.add(new Point(x, y + dy));
         }
         return points;
     }

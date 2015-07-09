@@ -11,7 +11,7 @@ import java.util.*;
  * @author Galen Scovell
  */
 
-public class Pathfinder {
+public class EntityPathfinder {
 
     private class Node {
         Node parent;
