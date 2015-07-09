@@ -135,11 +135,8 @@ public class GameScreen extends AbstractScreen {
 
     private void createNewLevel() {
         Level level = new Level();
-        // Modify smoothing passes here
-        for (int i = 0; i < 6; i++) {
-            level.update();
-        }
         level.optimize();
+
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch);
         this.updater = new Updater(player, level.getTiles());
         renderer.assembleLevel(player);

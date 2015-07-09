@@ -9,7 +9,7 @@ import java.util.Random;
  */
 
 public class Partition {
-    private final int MIN_SIZE = 5;
+    private final int MIN_SIZE = 7;
     public int x, y, width, height;
     public Partition leftChild, rightChild;
     private Random random;

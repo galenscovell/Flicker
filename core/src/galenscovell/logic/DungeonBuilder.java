@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * DUNGEON BUILDER
  * Constructs a new world tileset with dungeon features.
- * (Rectangular rooms connected by Tile-width corridors)
+ * (Rectangular rooms connected by corridors)
  *
  * @author Galen Scovell
  */
@@ -19,37 +19,37 @@ public class DungeonBuilder {
         this.columns = columns;
         this.grid = new Tile[rows][columns];
         build();
+        // Change number of rooms here
+        partition(10);
     }
 
     public Map<Integer, Tile> getTiles() {
+        // Translate Tile[][] grid to HashMap
         Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
-        int key;
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
-                key = x * columns + y;
+                int key = x * columns + y;
                 tiles.put(key, grid[y][x]);
             }
         }
         return tiles;
     }
 
-    public void smooth(Tile tile) {
-
-    }
-
     private void build() {
+        // Construct Tile[rows][columns] grid of all walls
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
-                // All tiles begin as walls
                 grid[y][x] = new Tile(x, y, columns, rows);
             }
         }
+    }
+
+    private void partition(int splits) {
         // Binary Space Partitioning
         Random random = new Random();
         List<Partition> partitions = new ArrayList<Partition>();
         Partition root = new Partition(0, 0, columns, rows);
         partitions.add(root);
-        int splits = 8;
         while (splits > 0) {
             int chosenPartition = random.nextInt(partitions.size());
             Partition toSplit = partitions.get(chosenPartition);
@@ -60,20 +60,10 @@ public class DungeonBuilder {
             }
         }
         generateInterior(root);
-        for (Tile[] row : grid) {
-            for (Tile tile : row) {
-                if (tile.state == 1) {
-                    System.out.print("F ");
-                } else {
-                    System.out.print(". ");
-                }
-            }
-            System.out.println();
-        }
-        System.exit(0);
     }
 
     private void generateInterior(Partition p) {
+        // Create interior within lowest children
         if (p.leftChild == null) {
             createRoom(p);
         } else {
@@ -83,14 +73,38 @@ public class DungeonBuilder {
     }
 
     private void createRoom(Partition p) {
-        for (int x = p.x; x < p.x + p.width; x++) {
-            for (int y = p.y; y < p.y + p.height; y++) {
+        // Create floor tiled room of random size within partition
+        Random random = new Random();
+        int interiorX = random.nextInt(2) + p.x;
+        int interiorY = random.nextInt(2) + p.y;
+        int interiorWidth = p.width - random.nextInt(2) - 2;
+        int interiorHeight = p.height - random.nextInt(2) - 2;
+        if (interiorWidth < 7) {
+            interiorWidth = 7;
+        }
+        if (interiorHeight < 7) {
+            interiorHeight = 7;
+        }
+        for (int x = interiorX; x < interiorX + interiorWidth; x++) {
+            for (int y = interiorY; y < interiorY + interiorHeight; y++) {
+                // If interior coordinate happens to fall out of bounds, ignore it
                 if (isOutOfBounds(x, y)) {
                     continue;
                 }
-                if (x == p.x || x == (p.x + p.width) - 1 || y == p.y || y == (p.y + p.height) - 1) {
-                    grid[y][x].state = 1;
+                // Round upper left corner
+                if (x == interiorX && y == interiorY) {
+                    continue;
+                // Round lower left corner
+                } else if (x == interiorX && y == interiorY + interiorHeight - 1) {
+                    continue;
+                // Round upper right corner
+                } else if (y == interiorY && x == interiorX + interiorWidth - 1) {
+                    continue;
+                // Round bottom right corner
+                } else if (x == interiorX + interiorWidth - 1 && y == interiorY + interiorHeight - 1) {
+                    continue;
                 }
+                grid[y][x].state = 1;
             }
         }
     }

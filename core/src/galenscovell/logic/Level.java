@@ -27,13 +27,6 @@ public class Level {
         this.tiles = builder.getTiles();
     }
 
-    public void update() {
-        checkAdjacent();
-        for (Tile tile : tiles.values()) {
-            builder.smooth(tile);
-        }
-    }
-
     public Map<Integer, Tile> getTiles() {
         return tiles;
     }
@@ -49,7 +42,7 @@ public class Level {
                 tile.state = 1;
             }
         }
-        // Check if any floor tiles are adjacent to pruned tiles, if so make them wall
+        // Check if floor tiles are adjacent to pruned tiles, if so make them wall
         for (Tile tile : tiles.values()) {
             if (tile.isFloor()) {
                 for (Point neighbor : tile.getNeighbors()) {
@@ -79,17 +72,6 @@ public class Level {
                 }
             }
         }
-        // Recheck floor neighbors, if floor exists with exactly one floor neighbor, make it wall
-        checkAdjacent();
-        for (Tile tile : tiles.values()) {
-            if (tile.isFloor()) {
-                if (tile.getFloorNeighbors() == 1) {
-                    tile.state = 0;
-                }
-            } else if (tile.isWall()) {
-                tile.toggleBlocking();
-            }
-        }
         prune();
         placeWater();
         skin();
@@ -110,7 +92,7 @@ public class Level {
 
     private void placeWater() {
         Random generator = new Random();
-        int waterPoints = generator.nextInt(3);
+        int waterPoints = generator.nextInt(5);
         List<Tile> waterTiles = new ArrayList<Tile>();
         // Place water spawn points randomly
         for (int i = 0; i < waterPoints; i++) {
@@ -149,19 +131,6 @@ public class Level {
         for (Tile tile : tiles.values()) {
             tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
             tile.findSprite();
-        }
-    }
-
-    private void checkAdjacent() {
-        for (Tile tile : tiles.values()) {
-            int value = 0;
-            List<Point> neighborPoints = tile.getNeighbors();
-            for (Point point : neighborPoints) {
-                if (tiles.get(point.x * columns + point.y).isFloor()) {
-                    value++;
-                }
-            }
-            tile.setFloorNeighbors(value);
         }
     }
 
