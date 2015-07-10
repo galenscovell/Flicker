@@ -25,7 +25,7 @@ public class AttackModePopup extends Table {
     public void create() {
         this.setFillParent(true);
         Table popup = new Table();
-        this.padBottom(10);
+        this.padBottom(90);
         popup.setBackground(ResourceManager.buttonDarkDown);
         Label examineLabel = new Label("Attack mode", ResourceManager.detailStyle);
         examineLabel.setAlignment(Align.center);

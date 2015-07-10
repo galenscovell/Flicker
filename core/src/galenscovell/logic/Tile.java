@@ -5,7 +5,6 @@ import galenscovell.util.ResourceManager;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,33 +17,18 @@ import java.util.List;
 
 public class Tile {
     public int x, y, state;
-    private int floorNeighbors;
-    private List<Point> neighborTilePoints, cardinalNeighbors;
+    private int floorNeighbors, currentFrame, frames;
+    private List<Point> neighborTilePoints;
     private short bitmask;
     private Sprite[] sprites;
-    private int currentFrame, frames;
     private boolean occupied, blocking, unused, destination;
 
-    public Tile(int x, int y, int columns, int rows) {
+    public Tile(int x, int y) {
         this.x = x;
         this.y = y;
         this.state = 0;
-        this.neighborTilePoints = findAllNeighbors(columns, rows);
-        this.cardinalNeighbors = findCardinalNeighbors(columns, rows);
         this.frames = 0;
         this.currentFrame = 0;
-    }
-
-    public void setUnused() {
-        this.unused = !unused;
-    }
-
-    public boolean isUnused() {
-        return unused;
-    }
-
-    public boolean isEmpty() {
-        return unused;
     }
 
     public boolean isWall() {
@@ -61,6 +45,14 @@ public class Tile {
 
     public boolean isWater() {
         return state == 3;
+    }
+
+    public boolean isUnused() {
+        return unused;
+    }
+
+    public void setUnused() {
+        this.unused = !unused;
     }
 
     public boolean isOccupied() {
@@ -95,12 +87,12 @@ public class Tile {
         return floorNeighbors;
     }
 
-    public List<Point> getNeighbors() {
-        return neighborTilePoints;
+    public void setNeighbors(List<Point> points) {
+        this.neighborTilePoints = points;
     }
 
-    public List<Point> getCardinalNeighbors() {
-        return cardinalNeighbors;
+    public List<Point> getNeighbors() {
+        return neighborTilePoints;
     }
 
     public void setBitmask(short value) {
@@ -141,39 +133,5 @@ public class Tile {
             batch.draw(ResourceManager.destinationMarker, x * tileSize, y * tileSize, tileSize, tileSize);
         }
         frames++;
-    }
-
-    private List<Point> findAllNeighbors(int columns, int rows) {
-        List<Point> points = new ArrayList<Point>();
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                if (((x + dx) == x && (y + dy) == y || (isOutOfBounds(x + dx, y + dy, columns, rows)))) {
-                    continue;
-                }
-                points.add(new Point(x + dx, y + dy));
-            }
-        }
-        return points;
-    }
-
-    private List<Point> findCardinalNeighbors(int columns, int rows) {
-        List<Point> points = new ArrayList<Point>();
-        for (int dx = -1; dx <= 1; dx += 2) {
-            if (isOutOfBounds(x + dx, y, columns, rows)) {
-                continue;
-            }
-            points.add(new Point(x + dx, y));
-        }
-        for (int dy = -1; dy <= 1; dy += 2) {
-            if (isOutOfBounds(x, y + dy, columns, rows)) {
-                continue;
-            }
-            points.add(new Point(x, y + dy));
-        }
-        return points;
-    }
-
-    private boolean isOutOfBounds(int x, int y, int columns, int rows) {
-        return (x < 0 || y < 0 || x >= columns || y >= rows);
     }
 }

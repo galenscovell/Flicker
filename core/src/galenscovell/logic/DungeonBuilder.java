@@ -13,14 +13,17 @@ import java.util.*;
 public class DungeonBuilder {
     private int rows, columns;
     private Tile[][] grid;
+    private List<Partition> rooms;
 
     public DungeonBuilder(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
         this.grid = new Tile[rows][columns];
+        this.rooms = new ArrayList<Partition>();
         build();
         // Change number of rooms here
-        partition(10);
+        partition(11);
+        setTileNeighbors();
     }
 
     public Map<Integer, Tile> getTiles() {
@@ -39,7 +42,7 @@ public class DungeonBuilder {
         // Construct Tile[rows][columns] grid of all walls
         for (int x = 0; x < columns; x++) {
             for (int y = 0; y < rows; y++) {
-                grid[y][x] = new Tile(x, y, columns, rows);
+                grid[y][x] = new Tile(x, y);
             }
         }
     }
@@ -65,6 +68,7 @@ public class DungeonBuilder {
     private void generateInterior(Partition p) {
         // Create interior within lowest children
         if (p.leftChild == null) {
+            rooms.add(p);
             createRoom(p);
         } else {
             generateInterior(p.leftChild);
@@ -74,6 +78,7 @@ public class DungeonBuilder {
 
     private void createRoom(Partition p) {
         // Create floor tiled room of random size within partition
+        List<Tile> interiorTiles = new ArrayList<Tile>();
         Random random = new Random();
         int interiorX = random.nextInt(2) + p.x;
         int interiorY = random.nextInt(2) + p.y;
@@ -104,7 +109,27 @@ public class DungeonBuilder {
                 } else if (x == interiorX + interiorWidth - 1 && y == interiorY + interiorHeight - 1) {
                     continue;
                 }
+                interiorTiles.add(grid[y][x]);
                 grid[y][x].state = 1;
+            }
+        }
+        // Save room Tiles for later usage
+        p.setInteriorTiles(interiorTiles);
+    }
+
+    private void setTileNeighbors() {
+        for (Tile[] row : grid) {
+            for (Tile tile : row) {
+                List<Point> points = new ArrayList<Point>();
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        if (tile.x + dx == tile.x && tile.y + dy == tile.y || isOutOfBounds(tile.x + dx, tile.y + dy)) {
+                            continue;
+                        }
+                        points.add(new Point(tile.x + dx, tile.y + dy));
+                    }
+                }
+                tile.setNeighbors(points);
             }
         }
     }

@@ -72,6 +72,12 @@ public class Level {
                 }
             }
         }
+        // Make sure all final wall tiles are set as blocking
+        for (Tile tile : tiles.values()) {
+            if (tile.isWall()) {
+                tile.toggleBlocking();
+            }
+        }
         prune();
         placeWater();
         skin();
@@ -81,7 +87,7 @@ public class Level {
         // Remove unused Tiles
         List<Integer> pruned = new ArrayList<Integer>();
         for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
-            if (entry.getValue().isEmpty()) {
+            if (entry.getValue().isUnused()) {
                 pruned.add(entry.getKey());
             }
         }

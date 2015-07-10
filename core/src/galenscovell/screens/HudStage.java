@@ -1,6 +1,5 @@
 package galenscovell.screens;
 
-import galenscovell.entities.Player;
 import galenscovell.screens.components.*;
 import galenscovell.util.ResourceManager;
 
@@ -29,13 +28,13 @@ public class HudStage extends Stage {
     private ProgressBar chassis, power, matter;
     private Table attackPopup, examinePopup, infoPopup, inventoryMenu, optionsMenu;
 
-    public HudStage(GameScreen game, Player player, SpriteBatch spriteBatch) {
+    public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
         this.game = game;
-        create(player);
+        create();
     }
 
-    public void create(Player player) {
+    public void create() {
         this.attackPopup = new AttackModePopup(this);
         this.examinePopup = new ExamineModePopup(this);
         this.inventoryMenu = new HudInventoryMenu(this);

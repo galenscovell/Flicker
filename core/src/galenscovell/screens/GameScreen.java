@@ -43,7 +43,7 @@ public class GameScreen extends AbstractScreen {
     public void create() {
         // GLProfiler.enable();
         this.player = new Player();
-        this.stage = new HudStage(this, player, root.spriteBatch);
+        this.stage = new HudStage(this, root.spriteBatch);
         createNewLevel();
     }
 
