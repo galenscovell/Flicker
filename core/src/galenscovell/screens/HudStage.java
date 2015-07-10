@@ -171,6 +171,10 @@ public class HudStage extends Stage {
         this.addActor(infoPopup);
     }
 
+    public boolean restrictMovement() {
+        return optionsMenu.hasParent() || inventoryMenu.hasParent();
+    }
+
     public boolean clearMenus() {
         if (optionsMenu.hasParent()) {
             optionsMenu.remove();

@@ -27,7 +27,7 @@ public class HudInventoryMenu extends Table {
         mainTable.setBackground(ResourceManager.frameBG);
 
 
-        this.add(mainTable).width(300).height(300).expand().center();
+        this.add(mainTable).width(400).height(500).expand().center();
     }
 }
 

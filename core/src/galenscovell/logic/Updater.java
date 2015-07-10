@@ -46,26 +46,29 @@ public class Updater {
         return destinationMarker;
     }
 
+    public void removeDestination() {
+        if (destinationMarker != null) {
+            destinationMarker.removeAsDestination();
+        }
+    }
+
     public boolean update(int[] destination) {
-        if (!hud.clearMenus()) {
+        if (hud.restrictMovement() || !hud.clearMenus()) {
+            removeDestination();
             return false;
         }
         if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
-            if (destinationMarker != null) {
-                destinationMarker.removeAsDestination();
-            }
+            removeDestination();
             return false;
         } else {
-            if (destinationMarker != null) {
-                destinationMarker.removeAsDestination();
-            }
+            removeDestination();
             destinationMarker = getTile(destination[0], destination[1]);
             destinationMarker.setAsDestination();
             Point nextMove = player.getPathStack().pop();
             if (move(player, nextMove.x, nextMove.y)) {
                 // TODO: Movement power usage and regeneration
             } else {
-                destinationMarker.removeAsDestination();
+                removeDestination();
                 player.setPathStack(null);
                 return false;
             }
