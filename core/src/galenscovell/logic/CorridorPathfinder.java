@@ -1,12 +1,11 @@
 package galenscovell.logic;
 
-import galenscovell.util.Constants;
-
 import java.util.*;
 
 /**
  * CORRIDOR PATHFINDER
  * Digs connecting corridors between rooms during level construction.
+ * Only analyzes cardinal directions for smooth corridors.
  *
  * @author Galen Scovell
  */
@@ -97,16 +96,14 @@ public class CorridorPathfinder {
     }
 
     private double estimateDistance(Node n, Node end) {
-        // Calculates Manhattan distance between nodes
-        double xs = (n.self.x - end.self.x) * (n.self.x - end.self.x);
-        double ys = (n.self.y - end.self.y) * (n.self.y - end.self.y);
-        return Math.sqrt(xs + ys);
+        // Orthogonal Manhattan distance
+        return Math.abs(end.self.x - n.self.x) + Math.abs(end.self.y - n.self.y);
     }
 
     private Stack<Tile> tracePath(Node n) {
-        // Returns ordered stack of points along movement path
+        // Returns ordered stack of tiles along movement path
         Stack<Tile> path = new Stack<Tile>();
-        // Chase parent of node until start point reached
+        // Chase parent of node until start tile reached
         while (n.parent != null) {
             path.push(n.self);
             n = n.parent;

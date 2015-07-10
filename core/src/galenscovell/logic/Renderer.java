@@ -63,7 +63,7 @@ public class Renderer {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
-        rayHandler.setAmbientLight(1, 1, 1, 1);
+        rayHandler.setAmbientLight(0.05f, 0.05f, 0.05f, 1);
         this.torch = new PointLight(rayHandler, 120, new Color(1.0f, 0.95f, 0.95f, 1), tileSize * 6, 0, 0);
         torch.setSoftnessLength(tileSize);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);

@@ -123,52 +123,54 @@ public class DungeonBuilder {
     }
 
     private void connect() {
-        // Using list of center tile in each room
-        // iterate through rooms and locate nearest room (manhattan distance)
-        // then use pathfinder to draw corridor between point
+        // Iterate through rooms, for each room locate its two nearest rooms
+        // Then use pathfinder to construct corridors connecting them
         List<Tile> roomCenters = new ArrayList<Tile>();
         for (Partition room : rooms) {
             roomCenters.add(room.centerTile);
         }
         for (Partition room : rooms) {
             Tile closest = null;
+            Tile secondClosest = null;
             for (Tile center : roomCenters) {
                 if (room.centerTile == center) {
                     continue;
                 }
                 if (closest == null || calcDistance(room.centerTile, center) < calcDistance(room.centerTile, closest)) {
                     closest = center;
+                } else if (secondClosest == null || calcDistance(room.centerTile, center) < calcDistance(room.centerTile, secondClosest)) {
+                    secondClosest = center;
                 }
             }
             createCorridor(room.centerTile, closest);
+            createCorridor(room.centerTile, secondClosest);
         }
     }
 
     private double calcDistance(Tile start, Tile end) {
-        double xs = (start.x - end.x) * (start.x - end.x);
-        double ys = (start.y - end.y) * (start.y - end.y);
-        return Math.sqrt(xs + ys);
+        // Orthogonal Manhattan distance
+        return Math.abs(end.x - start.x) + Math.abs(end.y - start.y);
     }
 
     private void createCorridor(Tile start, Tile end) {
+        // Pop off tiles along path until start tile reached
+        // At each tile, set it and all of its 8 neighbors as floor
         Stack<Tile> path = pathfinder.findPath(start, end);
         while (!path.isEmpty()) {
-            digCorridorPoint(path.pop());
-        }
-    }
-
-    private void digCorridorPoint(Tile tile) {
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                if (isOutOfBounds(tile.x + dx, tile.y + dy)) {
-                    continue;
+            Tile tile = path.pop();
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (isOutOfBounds(tile.x + dx, tile.y + dy)) {
+                        continue;
+                    }
+                    grid[tile.y + dy][tile.x + dx].state = 1;
                 }
-                grid[tile.y + dy][tile.x + dx].state = 1;
             }
         }
     }
 
     private void setTileNeighbors() {
+        // Set each tiles neighboring points for later usage
         for (Tile[] row : grid) {
             for (Tile tile : row) {
                 List<Point> points = new ArrayList<Point>();

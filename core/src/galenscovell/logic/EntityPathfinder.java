@@ -90,7 +90,7 @@ public class EntityPathfinder {
     }
 
     private double estimateDistance(Node n, Node end) {
-        // Calculates Manhattan distance between nodes
+        // Euclidean Manhattan distance between nodes
         double xs = (n.self.x - end.self.x) * (n.self.x - end.self.x);
         double ys = (n.self.y - end.self.y) * (n.self.y - end.self.y);
         return Math.sqrt(xs + ys);

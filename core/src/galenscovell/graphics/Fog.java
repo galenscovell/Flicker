@@ -21,7 +21,7 @@ public class Fog {
         this.sprite = new Sprite(new Texture(Gdx.files.internal("textures/fogAlpha.png")));
         this.x = -256;
         this.y = -256;
-        this.frame = 4;
+        this.frame = 3;
     }
 
     public void draw(SpriteBatch spriteBatch) {
@@ -31,7 +31,7 @@ public class Fog {
 
         if (frame == 0) {
             animate();
-            frame = 4;
+            frame = 3;
         } else {
             frame--;
         }
