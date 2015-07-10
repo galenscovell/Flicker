@@ -11,11 +11,10 @@ import java.util.Random;
  */
 
 public class Partition {
-    private final int MIN_SIZE = 7;
     public int x, y, width, height;
-    public boolean horizontal;
     public Partition leftChild, rightChild;
-    public List<Tile> interiorTiles, perimeterTiles;
+    public List<Tile> interiorTiles;
+    public Tile centerTile;
 
     public Partition(int x, int y, int width, int height) {
         this.x = x;
@@ -28,18 +27,19 @@ public class Partition {
         this.interiorTiles = tiles;
     }
 
-    public void setPerimeterTiles(List<Tile> tiles) {
-        this.perimeterTiles = tiles;
+    public void setCenterTile(Tile tile) {
+        this.centerTile = tile;
     }
 
     public boolean split() {
+        int MIN_SIZE = 7;
         Random random = new Random();
         // Already split
         if (leftChild != null || rightChild != null) {
             return false;
         }
         // Direction of split
-        this.horizontal = random.nextBoolean();
+        Boolean horizontal = random.nextBoolean();
         // Max height/width to split off
         int max = (horizontal ? height : width) - MIN_SIZE;
         // Area too small

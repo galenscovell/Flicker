@@ -12,6 +12,14 @@ import java.util.*;
  */
 
 public class CorridorPathfinder {
+    private Tile[][] grid;
+    private int columns, rows;
+
+    public CorridorPathfinder(Tile[][] grid, int columns, int rows) {
+        this.grid = grid;
+        this.columns = columns;
+        this.rows = rows;
+    }
 
     private class Node {
         Node parent;
@@ -24,7 +32,7 @@ public class CorridorPathfinder {
         }
     }
 
-    public Stack<Point> findPath(Map<Integer, Tile> tiles, Tile start, Tile end) {
+    public Stack<Tile> findPath(Tile start, Tile end) {
         List<Node> open = new ArrayList<Node>();
         List<Tile> closed = new ArrayList<Tile>();
         Node startNode = new Node(start);
@@ -44,10 +52,9 @@ public class CorridorPathfinder {
                 closed.add(a.self);
 
                 // Consider current node's neighbors
-                for (Point point : a.self.getCardinalNeighbors()) {
-                    Tile neighbor = tiles.get(point.x * Constants.COLUMNS + point.y);
+                for (Tile neighbor : getCardinalNeighbors(a.self)) {
                     // Ignore nulls and walls
-                    if (neighbor == null || neighbor.isWall() || closed.contains(neighbor)) {
+                    if (neighbor == null || closed.contains(neighbor)) {
                         continue;
                     }
                     // If tile is already in open list, ignore it
@@ -96,15 +103,36 @@ public class CorridorPathfinder {
         return Math.sqrt(xs + ys);
     }
 
-    private Stack<Point> tracePath(Node n) {
+    private Stack<Tile> tracePath(Node n) {
         // Returns ordered stack of points along movement path
-        Stack<Point> path = new Stack<Point>();
+        Stack<Tile> path = new Stack<Tile>();
         // Chase parent of node until start point reached
         while (n.parent != null) {
-            path.push(new Point(n.self.x, n.self.y));
+            path.push(n.self);
             n = n.parent;
         }
         return path;
+    }
+
+    private List<Tile> getCardinalNeighbors(Tile tile) {
+        List<Tile> neighbors = new ArrayList<Tile>();
+        for (int dx = -1; dx <= 1; dx += 2) {
+            if (isOutOfBounds(tile.x + dx, tile.y)) {
+                continue;
+            }
+            neighbors.add(grid[tile.y][tile.x + dx]);
+        }
+        for (int dy = -1; dy <= 1; dy += 2) {
+            if (isOutOfBounds(tile.x, tile.y + dy)) {
+                continue;
+            }
+            neighbors.add(grid[tile.y + dy][tile.x]);
+        }
+        return neighbors;
+    }
+
+    private boolean isOutOfBounds(int x, int y) {
+        return (x < 0 || y < 0 || x >= columns || y >= rows);
     }
 }
 
