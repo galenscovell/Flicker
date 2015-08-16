@@ -8,25 +8,26 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * DOOR INANIMATE
- * Loads boulder sprite and handles interaction events.
- * This object has access to Renderer for handling of Body collisin updates.
+ * OBSTRUCTION INANIMATE
+ * Loads obstruction sprite and handles interaction events.
+ * This object has access to Renderer for handling of Body collision updates.
  *
  * @author Galen Scovell
  */
 
-public class Boulder implements Inanimate {
+public class Obstruction implements Inanimate {
     private Renderer renderer;
     private int x, y;
     private Sprite sprite;
     private Sprite[] sprites;
     private boolean blocking;
 
-    public Boulder(Renderer renderer, int x, int y) {
+    public Obstruction(Renderer renderer, int x, int y) {
         this.renderer = renderer;
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
+        // TODO: Varied obstructions (depending on environs)
         this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.createSprite("boulder0"));
         sprites[0].flip(false, true);
         this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.createSprite("boulder1"));
@@ -48,6 +49,7 @@ public class Boulder implements Inanimate {
     }
 
     public String examine() {
+        // TODO: Change description based on obstruction type
         return "A boulder blocks the path.";
     }
 

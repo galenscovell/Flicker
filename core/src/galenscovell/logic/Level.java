@@ -32,6 +32,7 @@ public class Level {
     }
 
     public void optimize() {
+        setFloorNeighbors();
         // Remove walls without floor neighbors, also switch over any remaining corridor tiles
         for (Tile tile : tiles.values()) {
             if (tile.isWall()) {
@@ -80,6 +81,7 @@ public class Level {
         }
         prune();
         placeWater();
+        setFloorNeighbors();
         skin();
     }
 
@@ -137,6 +139,19 @@ public class Level {
         for (Tile tile : tiles.values()) {
             tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
             tile.findSprite();
+        }
+    }
+
+    private void setFloorNeighbors() {
+        for (Tile tile : tiles.values()) {
+            int floorNeighbors = 0;
+            for (Point neighborPoint : tile.getNeighbors()) {
+                Tile neighbor = tiles.get(neighborPoint.x * columns + neighborPoint.y);
+                if (neighbor != null && neighbor.isFloor()) {
+                    floorNeighbors++;
+                }
+            }
+            tile.setFloorNeighbors(floorNeighbors);
         }
     }
 

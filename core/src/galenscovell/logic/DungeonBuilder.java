@@ -154,7 +154,7 @@ public class DungeonBuilder {
 
     private void createCorridor(Tile start, Tile end) {
         // Pop off tiles along path until start tile reached
-        // At each tile, set it and all of its 8 neighbors as floor
+        // At each tile, set it and all of its 8 neighbors as floor (corridors 3 tiles thick)
         Stack<Tile> path = pathfinder.findPath(start, end);
         while (!path.isEmpty()) {
             Tile tile = path.pop();
@@ -166,6 +166,7 @@ public class DungeonBuilder {
                     grid[tile.y + dy][tile.x + dx].state = 1;
                 }
             }
+            // One tile thick corridors grid[tile.y][tile.x].state = 1;
         }
     }
 

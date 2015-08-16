@@ -113,6 +113,5 @@ public class ResourceManager {
         organicAtlas.dispose();
         inanimateAtlas.dispose();
         // plantAtlas.dispose();
-        // elementalAtlas.dispose();
     }
 }

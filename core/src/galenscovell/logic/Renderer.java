@@ -6,7 +6,7 @@ import box2dLight.RayHandler;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.graphics.Fog;
-import galenscovell.inanimates.Boulder;
+import galenscovell.inanimates.Obstruction;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
@@ -63,7 +63,7 @@ public class Renderer {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
-        rayHandler.setAmbientLight(0.05f, 0.05f, 0.05f, 1);
+        rayHandler.setAmbientLight(0, 0, 0, 0.1f);
         this.torch = new PointLight(rayHandler, 120, new Color(1.0f, 0.95f, 0.95f, 1), tileSize * 8, 0, 0);
         torch.setSoftnessLength(tileSize);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
@@ -139,13 +139,12 @@ public class Renderer {
     }
 
     private void placeInanimates() {
+        Random random = new Random();
         for (Tile tile : tiles.values()) {
-            if (tile.isFloor() && tile.getFloorNeighbors() >= 4) {
-                if (tile.getBitmask() == 5 || tile.getBitmask() == 10) {
-                    inanimates.add(new Boulder(this, tile.x, tile.y));
-                    tile.toggleBlocking();
-                    tile.toggleOccupied();
-                }
+            if (tile.isFloor() && !tile.isOccupied() && random.nextInt(100) > 92) {
+                inanimates.add(new Obstruction(this, tile.x, tile.y));
+                tile.toggleBlocking();
+                tile.toggleOccupied();
             }
         }
     }

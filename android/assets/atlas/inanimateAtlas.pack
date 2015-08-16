@@ -45,3 +45,17 @@ corpse3
   orig: 16, 16
   offset: 0, 0
   index: -1
+stairs0
+  rotate: false
+  xy: 109, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stairs1
+  rotate: false
+  xy: 127, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
