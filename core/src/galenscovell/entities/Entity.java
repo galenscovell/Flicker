@@ -37,5 +37,6 @@ public interface Entity {
     public void turn(int dx, int dy);
     public void attack(double interpolation, Entity entity);
     public void interpolate(double interpolation);
+    public void animate(double interpolation);
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
 }

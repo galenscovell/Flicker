@@ -42,7 +42,7 @@ public class MainMenuScreen extends AbstractScreen {
          **********************************/
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "hexagonal-nut", 32);
+        setIcon(optionsButton, "options", 32);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.addActor(optionsMenu);
@@ -64,22 +64,23 @@ public class MainMenuScreen extends AbstractScreen {
          * CENTER TABLE                   *
          **********************************/
         Table centerTable = new Table();
-        TextButton newGameButton = new TextButton("New Game", ResourceManager.buttonStyle);
+        centerTable.background(ResourceManager.buttonUp);
+        TextButton newGameButton = new TextButton("New Game", ResourceManager.frameStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.newGame();
             }
         });
-        TextButton continueButton = new TextButton("Continue", ResourceManager.buttonStyle);
+        TextButton continueButton = new TextButton("Continue", ResourceManager.frameStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Continue previous game
             }
         });
-        centerTable.add(newGameButton).width(300).height(70).expand().fill().padBottom(10);
+        centerTable.add(newGameButton).width(300).height(80).expand().fill();
         centerTable.row();
-        centerTable.add(continueButton).width(300).height(70).expand().fill().padBottom(10);
-        mainTable.add(centerTable).expand().fill();
+        centerTable.add(continueButton).width(300).height(80).expand().fill();
+        mainTable.add(centerTable).expand().fill().width(440).height(400);
         mainTable.row();
 
         Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ResourceManager.detailStyle);
@@ -96,7 +97,7 @@ public class MainMenuScreen extends AbstractScreen {
 
     private void setIcon(Table table, String name, int height) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
-        icon.setScaling(Scaling.fillX);
-        table.add(icon).height(height).expand().center();
+        icon.setScaling(Scaling.fillY);
+        table.add(icon).height(height).expand().fill().center();
     }
 }

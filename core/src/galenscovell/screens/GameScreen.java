@@ -30,7 +30,7 @@ public class GameScreen extends AbstractScreen {
     private InputMultiplexer fullInput;
 
     private boolean attackMode, examineMode, moving;
-    private final int timestep = 15;
+    private final int timestep = 20;
     private int accumulator = 0;
     private int[] destination;
 

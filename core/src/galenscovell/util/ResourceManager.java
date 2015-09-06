@@ -27,9 +27,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public class ResourceManager {
     public static AssetManager assetManager;
-    public static TextureAtlas uiAtlas, tileAtlas, syntheticAtlas, organicAtlas, inanimateAtlas;
+    public static TextureAtlas uiAtlas, tileAtlas, organicAtlas, inanimateAtlas;
     public static Label.LabelStyle detailStyle, mediumStyle, menuStyle, titleStyle;
-    public static NinePatchDrawable buttonDarkUp, buttonDarkDown, frameBG, frameLit;
+    public static NinePatchDrawable buttonUp, buttonDown, frameBG, frameLit;
     public static TextButton.TextButtonStyle buttonStyle, frameStyle, toggleButtonStyle;
     public static Sprite destinationMarker;
     public static Preferences prefs;
@@ -42,7 +42,6 @@ public class ResourceManager {
     public static void load() {
         assetManager.load("atlas/uiAtlas.pack", TextureAtlas.class);
         assetManager.load("atlas/tileAtlas.pack", TextureAtlas.class);
-        assetManager.load("atlas/syntheticAtlas.pack", TextureAtlas.class);
         assetManager.load("atlas/organicAtlas.pack", TextureAtlas.class);
         assetManager.load("atlas/inanimateAtlas.pack", TextureAtlas.class);
 
@@ -51,30 +50,29 @@ public class ResourceManager {
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        smallParams.fontFileName = "ui/Akashi.ttf";
-        smallParams.fontParameters.size = 16;
+        smallParams.fontFileName = "ui/kenpixel_mini_square.ttf";
+        smallParams.fontParameters.size = 12;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        mediumParams.fontFileName = "ui/Akashi.ttf";
-        mediumParams.fontParameters.size = 24;
+        mediumParams.fontFileName = "ui/kenpixel_square.ttf";
+        mediumParams.fontParameters.size = 18;
         assetManager.load("mediumFont.ttf", BitmapFont.class, mediumParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter largeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        largeParams.fontFileName = "ui/Akashi.ttf";
-        largeParams.fontParameters.size = 32;
+        largeParams.fontFileName = "ui/kenpixel_square.ttf";
+        largeParams.fontParameters.size = 24;
         assetManager.load("largeFont.ttf", BitmapFont.class, largeParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        extraLargeParams.fontFileName = "ui/Akashi.ttf";
-        extraLargeParams.fontParameters.size = 72;
+        extraLargeParams.fontFileName = "ui/kenpixel_blocks.ttf";
+        extraLargeParams.fontParameters.size = 48;
         assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
     }
 
     public static void done() {
         uiAtlas = assetManager.get("atlas/uiAtlas.pack", TextureAtlas.class);
         tileAtlas = assetManager.get("atlas/tileAtlas.pack", TextureAtlas.class);
-        syntheticAtlas = assetManager.get("atlas/syntheticAtlas.pack", TextureAtlas.class);
         organicAtlas = assetManager.get("atlas/organicAtlas.pack", TextureAtlas.class);
         inanimateAtlas = assetManager.get("atlas/inanimateAtlas.pack", TextureAtlas.class);
 
@@ -83,11 +81,11 @@ public class ResourceManager {
         menuStyle = new Label.LabelStyle(assetManager.get("largeFont.ttf", BitmapFont.class), Color.WHITE);
         titleStyle = new Label.LabelStyle(assetManager.get("extraLargeFont.ttf", BitmapFont.class), Color.WHITE);
 
-        buttonDarkUp = new NinePatchDrawable(uiAtlas.createPatch("button_up"));
-        buttonDarkDown = new NinePatchDrawable(uiAtlas.createPatch("button_down"));
-        buttonStyle = new TextButton.TextButtonStyle(buttonDarkUp, buttonDarkDown, buttonDarkUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
+        buttonUp = new NinePatchDrawable(uiAtlas.createPatch("button_up"));
+        buttonDown = new NinePatchDrawable(uiAtlas.createPatch("button_down"));
+        buttonStyle = new TextButton.TextButtonStyle(buttonUp, buttonDown, buttonUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
 
-        toggleButtonStyle = new TextButton.TextButtonStyle(buttonDarkUp, buttonDarkDown, buttonDarkDown, assetManager.get("mediumFont.ttf", BitmapFont.class));
+        toggleButtonStyle = new TextButton.TextButtonStyle(frameLit, frameBG, frameLit, assetManager.get("mediumFont.ttf", BitmapFont.class));
 
         frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
         frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
@@ -109,7 +107,6 @@ public class ResourceManager {
         assetManager.dispose();
         uiAtlas.dispose();
         tileAtlas.dispose();
-        syntheticAtlas.dispose();
         organicAtlas.dispose();
         inanimateAtlas.dispose();
         // plantAtlas.dispose();

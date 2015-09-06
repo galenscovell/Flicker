@@ -66,7 +66,7 @@ public class HudStage extends Stage {
         Table topRight = new Table();
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "hexagonal-nut", 32);
+        setIcon(optionsButton, "options", 32);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(optionsMenu);
@@ -87,21 +87,21 @@ public class HudStage extends Stage {
         Table actionTable = new Table();
         Table actionButtons = new Table();
         Button inventoryButton = new Button(ResourceManager.buttonStyle);
-        setIcon(inventoryButton, "processor", 64);
+        setIcon(inventoryButton, "inventory", 64);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
         Button examineButton = new Button(ResourceManager.buttonStyle);
-        setIcon(examineButton, "radar-sweep", 64);
+        setIcon(examineButton, "examine", 64);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 modeChange(1);
             }
         });
         Button attackButton = new Button(ResourceManager.buttonStyle);
-        setIcon(attackButton, "target", 64);
+        setIcon(attackButton, "attack", 64);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 modeChange(0);
@@ -205,8 +205,8 @@ public class HudStage extends Stage {
 
     private void setIcon(Table table, String name, int height) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
-        icon.setScaling(Scaling.fillX);
-        table.add(icon).height(height).expand().center();
+        icon.setScaling(Scaling.fillY);
+        table.add(icon).height(height).expand().fill().center();
     }
 
     private ProgressBar createBar(String path) {

@@ -17,20 +17,20 @@ public class Player extends Creature {
         super();
         setSprites();
         title = "Player";
-        description = "A lonely probe.";
+        description = "Player";
         // Temporary for testing
         stats.put("damage", 5);
     }
 
     private void setSprites() {
-        rightSprites = new Sprite[6];
-        leftSprites = new Sprite[6];
+        rightSprites = new Sprite[2];
+        leftSprites = new Sprite[2];
 
         // Populate sprite sets
-        for (int i = 0; i < 6; i++) {
-            rightSprites[i] = new Sprite(ResourceManager.syntheticAtlas.createSprite("robo" + i));
+        for (int i = 0; i < 2; i++) {
+            rightSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite("player" + i));
             rightSprites[i].flip(false, true);
-            leftSprites[i] = new Sprite(ResourceManager.syntheticAtlas.createSprite("robo" + i));
+            leftSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite("player" + i));
             leftSprites[i].flip(true, true);
         }
         currentSet = rightSprites;

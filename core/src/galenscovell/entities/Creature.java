@@ -19,8 +19,8 @@ import java.util.Stack;
 public class Creature implements Entity {
     private int x, y, prevX, prevY, currentX, currentY;
     private Stack<Point> pathStack;
-    private int moveTimer, frame;
-    private boolean aggressive, moving, attacking, beingAttacked;
+    private int moveTimer, animateFrames, frame;
+    private boolean aggressive, attacking, beingAttacked;
 
     protected Sprite[] currentSet, leftSprites, rightSprites;
     protected String title, description;
@@ -103,7 +103,6 @@ public class Creature implements Entity {
     public void move(int dx, int dy, boolean possible) {
         turn(dx, dy);
         if (possible) {
-            moving = true;
             x += dx;
             y += dy;
         }
@@ -122,37 +121,33 @@ public class Creature implements Entity {
     }
 
     public void interpolate(double interpolation) {
+        animate(interpolation);
         currentX = (int) (prevX + ((x - prevX) * interpolation));
         currentY = (int) (prevY + ((y - prevY) * interpolation));
         if (currentX == x && currentY == y) {
             prevX = x;
             prevY = y;
-            moving = false;
-            frame = 0;
         }
         if (interpolation > 0.8) {
             beingAttacked = false;
         }
     }
 
-    public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
-        interpolate(interpolation);
-        if (moving) {
-            if (interpolation == 0.2) {
+    public void animate(double interpolation) {
+        if (animateFrames == 30) {
+            if (frame == 0) {
                 frame = 1;
-            } else if (interpolation == 0.4) {
-                frame = 2;
-            } else if (interpolation == 0.6) {
-                frame = 3;
-            } else if (interpolation == 0.8) {
-                frame = 4;
-            } else if (interpolation == 1.0) {
-                frame = 5;
-            }
-            if (frame >= currentSet.length) {
+            } else {
                 frame = 0;
             }
+            animateFrames = 0;
+        } else {
+            animateFrames++;
         }
+    }
+
+    public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
+        interpolate(interpolation);
         if (attacking) {
             attack(interpolation, entity);
         }

@@ -75,7 +75,7 @@ public class LoadingScreen extends AbstractScreen {
         TextureRegionDrawable fill = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("textures/loadingFill.png"))));
         TextureRegionDrawable empty = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("textures/loadingEmpty.png"))));
         ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(empty, fill);
-        ProgressBar bar = new ProgressBar(0, 15, 1, false, barStyle);
+        ProgressBar bar = new ProgressBar(0, 14, 1, false, barStyle);
         barStyle.knobBefore = fill;
         bar.setValue(0);
         bar.setAnimateDuration(0.1f);
