@@ -1,5 +1,7 @@
 package galenscovell.logic;
 
+import galenscovell.util.Constants;
+
 import java.util.*;
 
 /**
@@ -11,39 +13,61 @@ import java.util.*;
  */
 
 public class DungeonBuilder {
-    private int rows, columns;
     private Tile[][] grid;
     private ArrayList<Room> rooms;
 
-    public DungeonBuilder(int columns, int rows) {
-        this.rows = rows;
-        this.columns = columns;
-        this.grid = new Tile[64][64];
+    public DungeonBuilder() {
+        this.grid = new Tile[Constants.MAPSIZE][Constants.MAPSIZE];
         build();
     }
 
     private void build() {
-        // Construct Tile[rows][columns] grid of all walls
-        int mapSize = 64;
-        for (int x = 0; x < mapSize; x++) {
-            for (int y = 0; y < mapSize; y++) {
+        // Construct Tile[MAPSIZE][MAPSIZE] grid of all walls
+        for (int x = 0; x < Constants.MAPSIZE; x++) {
+            for (int y = 0; y < Constants.MAPSIZE; y++) {
                 grid[y][x] = new Tile(x, y);
             }
         }
+        int roomCount = getRandom(10, 15);
+        placeRooms(roomCount);
+        squashRooms();
+        connectRooms(roomCount);
+        // Set all Tiles within each Room as floor
+        for (int i = 0; i < roomCount; i++) {
+            Room room = this.rooms.get(i);
+            for (int x = room.x; x < room.x + room.width; x++) {
+                for (int y = room.y; y < room.y + room.height; y++) {
+                    this.grid[y][x].state = 1;
+                }
+            }
+        }
+    }
+
+    public Map<Integer, Tile> getTiles() {
+        // Translate Tile[][] grid to HashMap
+        Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
+        for (int x = 0; x < Constants.MAPSIZE; x++) {
+            for (int y = 0; y < Constants.MAPSIZE; y++) {
+                int key = x * Constants.MAPSIZE + y;
+                tiles.put(key, grid[y][x]);
+            }
+        }
+        return tiles;
+    }
+
+    private void placeRooms(int roomCount) {
         // Place random Rooms, ensuring that they do not collide
         // Minus one from width and height at end so rooms are separated
-        System.out.println("Placing rooms...");
         this.rooms = new ArrayList<Room>();
-        int roomCount = getRandom(10, 15);
         int minSize = 8;
         int maxSize = 15;
         for (int i = 0; i < roomCount; i++) {
-            int x = getRandom(1, mapSize - maxSize - 1);
-            int y = getRandom(1, mapSize - maxSize - 1);
+            int x = getRandom(1, Constants.MAPSIZE - maxSize - 1);
+            int y = getRandom(1, Constants.MAPSIZE - maxSize - 1);
             int w = getRandom(minSize, maxSize);
             int h = getRandom(minSize, maxSize);
             Room room = new Room(x, y, w, h);
-            if (doesCollide(room)) {
+            if (doesCollide(room, -1)) {
                 i--;
                 continue;
             }
@@ -51,9 +75,36 @@ public class DungeonBuilder {
             room.height--;
             this.rooms.add(room);
         }
-        squashRooms();
+    }
+
+    private void squashRooms() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < this.rooms.size(); j++) {
+                Room room = this.rooms.get(j);
+                while (true) {
+                    int oldX = room.x;
+                    int oldY = room.y;
+                    if (room.x > 1) {
+                        room.x--;
+                    }
+                    if (room.y > 1) {
+                        room.y--;
+                    }
+                    if ((room.x == 1) && (room.y == 1)) {
+                        break;
+                    }
+                    if (doesCollide(room, j)) {
+                        room.x = oldX;
+                        room.y = oldY;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void connectRooms(int roomCount) {
         // Construct corridors between each Room and its closest neighboring Room
-        System.out.println("Connecting rooms...");
         for (int i = 0; i < roomCount; i++) {
             Room roomA = this.rooms.get(i);
             Room roomB = findClosestRoom(roomA);
@@ -76,72 +127,6 @@ public class DungeonBuilder {
                     }
                 }
                 this.grid[pointBY][pointBX].state = 1;
-            }
-        }
-        // Set all Tiles within each Room as floor
-        System.out.println("Filling rooms...");
-        for (int i = 0; i < roomCount; i++) {
-            Room room = this.rooms.get(i);
-            for (int x = room.x; x < room.x + room.width; x++) {
-                for (int y = room.y; y < room.y + room.height; y++) {
-                    this.grid[y][x].state = 1;
-                }
-            }
-        }
-    }
-
-    public Map<Integer, Tile> getTiles() {
-        // Translate Tile[][] grid to HashMap
-        Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
-        for (int x = 0; x < columns; x++) {
-            for (int y = 0; y < rows; y++) {
-                int key = x * columns + y;
-                tiles.put(key, grid[y][x]);
-            }
-        }
-        return tiles;
-    }
-
-    private void setTileNeighbors() {
-        // Set each tiles neighboring points for later usage
-        for (Tile[] row : grid) {
-            for (Tile tile : row) {
-                List<Point> points = new ArrayList<Point>();
-                for (int dx = -1; dx <= 1; dx++) {
-                    for (int dy = -1; dy <= 1; dy++) {
-                        if (tile.x + dx == tile.x && tile.y + dy == tile.y || isOutOfBounds(tile.x + dx, tile.y + dy)) {
-                            continue;
-                        }
-                        points.add(new Point(tile.x + dx, tile.y + dy));
-                    }
-                }
-                tile.setNeighbors(points);
-            }
-        }
-    }
-
-    private void squashRooms() {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < this.rooms.size(); j++) {
-                Room room = this.rooms.get(i);
-                while (true) {
-                    int oldX = room.x;
-                    int oldY = room.y;
-                    if (room.x > 1) {
-                        room.x--;
-                    }
-                    if (room.y > 1) {
-                        room.y--;
-                    }
-                    if ((room.x == 1) && (room.y == 1)) {
-                        break;
-                    }
-                    if (doesCollide(room, j)) {
-                        room.x = oldX;
-                        room.y = oldY;
-                        break;
-                    }
-                }
             }
         }
     }
@@ -167,16 +152,6 @@ public class DungeonBuilder {
         return closest;
     }
 
-    private boolean doesCollide(Room room) {
-        for (int i = 0; i < this.rooms.size(); i++) {
-            Room check = this.rooms.get(i);
-            if (!((room.x + room.width < check.x) || (room.x > check.x + check.width) || (room.y + room.height < check.y) || (room.y > check.y + check.height))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean doesCollide(Room room, int ignore) {
         for (int i = 0; i < this.rooms.size(); i++) {
             if (i == ignore) {
@@ -194,12 +169,7 @@ public class DungeonBuilder {
         return (int)(Math.random() * (hi - lo)) + lo;
     }
 
-    private boolean isOutOfBounds(int x, int y) {
-        return (x < 0 || y < 0 || x >= columns || y >= rows);
-    }
-
     public void print() {
-        System.out.println("Beginning map print");
         for (Tile[] row : grid) {
             System.out.println();
             for (Tile tile : row) {

@@ -19,6 +19,5 @@ public class Constants {
     public static final int SCREEN_Y = 400;
     public static final int TILESIZE = 20;
 
-    public static final int ROWS = 40;
-    public static final int COLUMNS = 40;
+    public static final int MAPSIZE = 64;
 }

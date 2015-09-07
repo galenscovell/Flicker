@@ -16,14 +16,11 @@ import java.util.Random;
  */
 
 public class Level {
-    private int columns, rows;
     private DungeonBuilder builder;
     private Map<Integer, Tile> tiles;
 
     public Level() {
-        this.rows = Constants.ROWS;
-        this.columns = Constants.COLUMNS;
-        this.builder = new DungeonBuilder(columns, rows);
+        this.builder = new DungeonBuilder();
         this.tiles = builder.getTiles();
     }
 
@@ -47,7 +44,7 @@ public class Level {
         for (Tile tile : tiles.values()) {
             if (tile.isFloor()) {
                 for (Point neighbor : tile.getNeighbors()) {
-                    if (tiles.get(neighbor.x * columns + neighbor.y).isUnused()) {
+                    if (tiles.get(neighbor.x * Constants.MAPSIZE + neighbor.y).isUnused()) {
                         tile.state = 0;
                     }
                 }
@@ -60,7 +57,7 @@ public class Level {
             wallNeighbors = 0;
             if (tile.isWall()) {
                 for (Point neighbor : tile.getNeighbors()) {
-                    if (tiles.get(neighbor.x * columns + neighbor.y).isWall()) {
+                    if (tiles.get(neighbor.x * Constants.MAPSIZE + neighbor.y).isWall()) {
                         wallNeighbors++;
                     }
                 }
@@ -126,7 +123,7 @@ public class Level {
     private void expandWater(Tile tile, List<Tile> waterTiles) {
         List<Point> neighbors = tile.getNeighbors();
         for (Point point : neighbors) {
-            Tile neighborTile = tiles.get(point.x * columns + point.y);
+            Tile neighborTile = tiles.get(point.x * Constants.MAPSIZE + point.y);
             if (neighborTile != null && neighborTile.isFloor()) {
                 neighborTile.state = 3;
                 waterTiles.add(neighborTile);
@@ -137,7 +134,7 @@ public class Level {
     private void skin() {
         Bitmasker bitmasker = new Bitmasker();
         for (Tile tile : tiles.values()) {
-            tile.setBitmask(bitmasker.findBitmask(tile, tiles, columns));
+            tile.setBitmask(bitmasker.findBitmask(tile, tiles));
             tile.findSprite();
         }
     }
@@ -146,7 +143,7 @@ public class Level {
         for (Tile tile : tiles.values()) {
             int floorNeighbors = 0;
             for (Point neighborPoint : tile.getNeighbors()) {
-                Tile neighbor = tiles.get(neighborPoint.x * columns + neighborPoint.y);
+                Tile neighbor = tiles.get(neighborPoint.x * Constants.MAPSIZE + neighborPoint.y);
                 if (neighbor != null && neighbor.isFloor()) {
                     floorNeighbors++;
                 }
@@ -158,9 +155,9 @@ public class Level {
     private Tile findRandomTile() {
         Random random = new Random();
         while (true) {
-            int choiceY = random.nextInt(rows);
-            int choiceX = random.nextInt(columns);
-            Tile tile = tiles.get(choiceX * columns + choiceY);
+            int choiceY = random.nextInt(Constants.MAPSIZE);
+            int choiceX = random.nextInt(Constants.MAPSIZE);
+            Tile tile = tiles.get(choiceX * Constants.MAPSIZE + choiceY);
             if (tile != null && tile.isFloor() && !tile.isOccupied()) {
                 return tile;
             }

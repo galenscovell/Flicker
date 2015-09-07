@@ -228,6 +228,6 @@ public class Updater {
     }
 
     private Tile findTile(int x, int y) {
-        return tiles.get(x * Constants.COLUMNS + y);
+        return tiles.get(x * Constants.MAPSIZE + y);
     }
 }

@@ -167,9 +167,9 @@ public class Renderer {
     private Tile findRandomTile() {
         Random random = new Random();
         while (true) {
-            int choiceY = random.nextInt(Constants.ROWS);
-            int choiceX = random.nextInt(Constants.COLUMNS);
-            Tile tile = tiles.get(choiceX * Constants.COLUMNS + choiceY);
+            int choiceY = random.nextInt(Constants.MAPSIZE);
+            int choiceX = random.nextInt(Constants.MAPSIZE);
+            Tile tile = tiles.get(choiceX * Constants.MAPSIZE + choiceY);
             if (tile != null && tile.isFloor()) {
                 if (tile.isOccupied()) {
                     continue;
@@ -214,14 +214,14 @@ public class Renderer {
             tileBodyDef.position.set(tile.x * tileSize + (tileSize / 2f), tile.y * tileSize + (tileSize / 2f));
             Body tileBody = world.createBody(tileBodyDef);
             tileBody.createFixture(tileFixture);
-            bodies.put(tile.x * Constants.COLUMNS + tile.y, tileBody);
+            bodies.put(tile.x * Constants.MAPSIZE + tile.y, tileBody);
         }
         tileShape.dispose();
     }
 
     public void updateTileBody(int tileX, int tileY) {
         // Get body at object position
-        Body updatedBody = bodies.get(tileX * Constants.COLUMNS + tileY);
+        Body updatedBody = bodies.get(tileX * Constants.MAPSIZE + tileY);
         // Destroy current fixture on body
         updatedBody.destroyFixture(updatedBody.getFixtureList().first());
 
@@ -230,7 +230,7 @@ public class Renderer {
         FixtureDef tileFixture = new FixtureDef();
         tileFixture.shape = tileShape;
 
-        Tile updated = tiles.get(tileX * Constants.COLUMNS + tileY);
+        Tile updated = tiles.get(tileX * Constants.MAPSIZE + tileY);
         if (updated.isBlocking()) {
             tileFixture.filter.groupIndex = Constants.BIT_GROUP;
         } else {

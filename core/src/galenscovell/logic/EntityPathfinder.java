@@ -45,7 +45,7 @@ public class EntityPathfinder {
 
                 // Consider current node's neighbors
                 for (Point point : a.self.getNeighbors()) {
-                    Tile neighbor = tiles.get(point.x * Constants.COLUMNS + point.y);
+                    Tile neighbor = tiles.get(point.x * Constants.MAPSIZE + point.y);
                     // Ignore walls, water and other blocked tiles
                     if (neighbor == null || neighbor.isWater() || neighbor.isBlocking() || closed.contains(neighbor)) {
                         continue;
