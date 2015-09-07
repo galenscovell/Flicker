@@ -26,10 +26,10 @@ public class ExamineModePopup extends Table {
         this.setFillParent(true);
         Table popup = new Table();
         this.padBottom(90);
-        popup.setBackground(ResourceManager.buttonDown);
+        popup.setBackground(ResourceManager.frameUp);
         Label examineLabel = new Label("Examine mode", ResourceManager.detailStyle);
         examineLabel.setAlignment(Align.center);
-        popup.add(examineLabel).width(170).height(50).expand().fill().center();
-        this.add(popup).width(180).height(60).expand().bottom();
+        popup.add(examineLabel).width(170).height(60).expand().fill().center();
+        this.add(popup).width(180).height(70).expand().bottom();
     }
 }

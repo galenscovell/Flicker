@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -29,8 +30,8 @@ public class ResourceManager {
     public static AssetManager assetManager;
     public static TextureAtlas uiAtlas, tileAtlas, organicAtlas, inanimateAtlas;
     public static Label.LabelStyle detailStyle, mediumStyle, menuStyle, titleStyle;
-    public static NinePatchDrawable buttonUp, buttonDown, frameBG, frameLit;
-    public static TextButton.TextButtonStyle buttonStyle, frameStyle, toggleButtonStyle;
+    public static NinePatchDrawable buttonUp, buttonDown, panelUp, panelDown, frameUp, frameDown, frameUpDec;
+    public static TextButton.TextButtonStyle buttonStyle, panelStyle, frameStyle, toggleButtonStyle;
     public static Sprite destinationMarker;
     public static Preferences prefs;
 
@@ -50,23 +51,31 @@ public class ResourceManager {
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        smallParams.fontFileName = "ui/kenpixel_mini_square.ttf";
-        smallParams.fontParameters.size = 12;
+        smallParams.fontFileName = "ui/nevis.ttf";
+        smallParams.fontParameters.size = 16;
+        smallParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
+        smallParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        mediumParams.fontFileName = "ui/kenpixel_square.ttf";
-        mediumParams.fontParameters.size = 18;
+        mediumParams.fontFileName = "ui/nevis.ttf";
+        mediumParams.fontParameters.size = 26;
+        mediumParams.fontParameters.color = new Color(0.9f, 0.7f, 0.41f, 1);
+        mediumParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
+        mediumParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
         assetManager.load("mediumFont.ttf", BitmapFont.class, mediumParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter largeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        largeParams.fontFileName = "ui/kenpixel_square.ttf";
-        largeParams.fontParameters.size = 24;
+        largeParams.fontFileName = "ui/nevis.ttf";
+        largeParams.fontParameters.size = 48;
+        largeParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
+        largeParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
         assetManager.load("largeFont.ttf", BitmapFont.class, largeParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        extraLargeParams.fontFileName = "ui/kenpixel_blocks.ttf";
-        extraLargeParams.fontParameters.size = 48;
+        extraLargeParams.fontFileName = "ui/nevis.ttf";
+        extraLargeParams.fontParameters.size = 72;
+        extraLargeParams.fontParameters.color = new Color(0.9f, 0.7f, 0.41f, 1);
         assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
     }
 
@@ -81,18 +90,24 @@ public class ResourceManager {
         menuStyle = new Label.LabelStyle(assetManager.get("largeFont.ttf", BitmapFont.class), Color.WHITE);
         titleStyle = new Label.LabelStyle(assetManager.get("extraLargeFont.ttf", BitmapFont.class), Color.WHITE);
 
-        buttonUp = new NinePatchDrawable(uiAtlas.createPatch("button_up"));
-        buttonDown = new NinePatchDrawable(uiAtlas.createPatch("button_down"));
+        buttonUp = new NinePatchDrawable(uiAtlas.createPatch("buttonup_brown"));
+        buttonDown = new NinePatchDrawable(uiAtlas.createPatch("buttondown_brown"));
         buttonStyle = new TextButton.TextButtonStyle(buttonUp, buttonDown, buttonUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
+        buttonStyle.pressedOffsetY = -2;
 
-        toggleButtonStyle = new TextButton.TextButtonStyle(frameLit, frameBG, frameLit, assetManager.get("mediumFont.ttf", BitmapFont.class));
+        toggleButtonStyle = new TextButton.TextButtonStyle(frameUp, frameDown, frameDown, assetManager.get("mediumFont.ttf", BitmapFont.class));
 
-        frameBG = new NinePatchDrawable(uiAtlas.createPatch("framedbg"));
-        frameLit = new NinePatchDrawable(uiAtlas.createPatch("framedlit"));
-        frameStyle = new TextButton.TextButtonStyle(frameBG, frameLit, frameBG, assetManager.get("mediumFont.ttf", BitmapFont.class));
-        frameStyle.pressedOffsetX = 1;
+        frameUp = new NinePatchDrawable(uiAtlas.createPatch("frameup_brown"));
+        frameDown = new NinePatchDrawable(uiAtlas.createPatch("framedown_brown"));
+        frameStyle = new TextButton.TextButtonStyle(frameUp, frameDown, frameUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
         frameStyle.pressedOffsetY = -1;
 
+        panelUp = new NinePatchDrawable(uiAtlas.createPatch("paneldown_brown"));
+        panelDown = new NinePatchDrawable(uiAtlas.createPatch("paneldown_brown"));
+        panelStyle = new TextButton.TextButtonStyle(panelUp, panelDown, panelUp, assetManager.get("mediumFont.ttf", BitmapFont.class));
+        panelStyle.pressedOffsetY = -2;
+
+        frameUpDec = new NinePatchDrawable(uiAtlas.createPatch("frameup_dec_brown"));
         destinationMarker = new Sprite(uiAtlas.createSprite("destinationMarker"));
         destinationMarker.flip(false, true);
 

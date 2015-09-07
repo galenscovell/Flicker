@@ -38,14 +38,8 @@ public class LoadingScreen extends AbstractScreen {
 
         Table labelTable = new Table();
         Image loadingImage = new Image(new Texture(Gdx.files.internal("textures/loading.png")));
-        labelTable.add(loadingImage).width(200).height(50).expand().fill().bottom();
+        labelTable.add(loadingImage).width(200).height(50).expand().fill();
         loadingMain.add(labelTable).expand().fill();
-        loadingMain.row();
-
-        Table barTable = new Table();
-        this.loadingBar = createBar();
-        barTable.add(loadingBar).width(200).height(60).expand().fill().top();
-        loadingMain.add(barTable).expand().fill();
 
         stage.addActor(loadingMain);
     }
@@ -60,7 +54,6 @@ public class LoadingScreen extends AbstractScreen {
             ResourceManager.done();
             stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.4f), toMainMenuScreen));
         }
-        loadingBar.setValue(ResourceManager.assetManager.getLoadedAssets());
     }
 
     @Override
@@ -68,18 +61,7 @@ public class LoadingScreen extends AbstractScreen {
         ResourceManager.create();
         create();
         stage.getRoot().getColor().a = 0;
-        stage.getRoot().addAction(Actions.sequence(Actions.fadeIn(0.2f)));
-    }
-
-    private ProgressBar createBar() {
-        TextureRegionDrawable fill = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("textures/loadingFill.png"))));
-        TextureRegionDrawable empty = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("textures/loadingEmpty.png"))));
-        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(empty, fill);
-        ProgressBar bar = new ProgressBar(0, 14, 1, false, barStyle);
-        barStyle.knobBefore = fill;
-        bar.setValue(0);
-        bar.setAnimateDuration(0.1f);
-        return bar;
+        stage.getRoot().addAction(Actions.sequence(Actions.fadeIn(0.4f)));
     }
 
     Action toMainMenuScreen = new Action() {

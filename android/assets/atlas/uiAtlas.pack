@@ -3,106 +3,210 @@ uiAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-destinationMarker
+options
   rotate: false
-  xy: 1, 1
-  size: 48, 48
-  orig: 48, 48
-  offset: 0, 0
-  index: -1
-mainbg
-  rotate: false
-  xy: 51, 1
-  size: 48, 48
-  split: 6, 6, 6, 12
-  orig: 48, 48
+  xy: 1, 235
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 attack
   rotate: false
-  xy: 101, 31
+  xy: 19, 233
   size: 16, 18
-  orig: 16, 18
-  offset: 0, 0
-  index: -1
-button_down
-  rotate: false
-  xy: 101, 11
-  size: 16, 18
-  split: 7, 7, 7, 7
-  orig: 16, 18
-  offset: 0, 0
-  index: -1
-button_up
-  rotate: false
-  xy: 119, 31
-  size: 16, 18
-  split: 7, 7, 7, 7
   orig: 16, 18
   offset: 0, 0
   index: -1
 examine
   rotate: false
-  xy: 119, 11
+  xy: 37, 233
   size: 16, 18
-  orig: 16, 18
-  offset: 0, 0
-  index: -1
-framedbg
-  rotate: false
-  xy: 137, 31
-  size: 16, 18
-  split: 7, 7, 7, 7
-  orig: 16, 18
-  offset: 0, 0
-  index: -1
-framedlit
-  rotate: false
-  xy: 137, 11
-  size: 16, 18
-  split: 7, 7, 7, 7
   orig: 16, 18
   offset: 0, 0
   index: -1
 inventory
   rotate: false
-  xy: 155, 31
+  xy: 55, 233
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
-options
+bar
   rotate: false
-  xy: 155, 13
-  size: 16, 16
-  orig: 16, 16
+  xy: 73, 210
+  size: 136, 41
+  orig: 136, 41
   offset: 0, 0
   index: -1
-barEmpty
+bar_blue
   rotate: false
-  xy: 173, 29
-  size: 2, 20
-  orig: 2, 20
+  xy: 211, 210
+  size: 136, 41
+  orig: 136, 41
   offset: 0, 0
   index: -1
-chassisFill
+bar_brown
   rotate: false
-  xy: 177, 29
-  size: 2, 20
-  orig: 2, 20
+  xy: 349, 210
+  size: 136, 41
+  orig: 136, 41
   offset: 0, 0
   index: -1
-matterFill
+bar_brown_empty
   rotate: false
-  xy: 181, 29
-  size: 2, 20
-  orig: 2, 20
+  xy: 487, 210
+  size: 136, 41
+  orig: 136, 41
   offset: 0, 0
   index: -1
-powerFill
+destinationMarker
   rotate: false
-  xy: 185, 29
-  size: 2, 20
-  orig: 2, 20
+  xy: 625, 203
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+framedown
+  rotate: false
+  xy: 675, 172
+  size: 75, 79
+  split: 15, 15, 17, 24
+  orig: 75, 79
+  offset: 0, 0
+  index: -1
+framedown_blue
+  rotate: false
+  xy: 752, 172
+  size: 75, 79
+  split: 15, 15, 17, 24
+  orig: 75, 79
+  offset: 0, 0
+  index: -1
+framedown_brown
+  rotate: false
+  xy: 829, 172
+  size: 75, 79
+  split: 15, 15, 17, 24
+  orig: 75, 79
+  offset: 0, 0
+  index: -1
+frameup
+  rotate: false
+  xy: 906, 172
+  size: 75, 79
+  split: 15, 15, 20, 24
+  orig: 75, 79
+  offset: 0, 0
+  index: -1
+frameup_blue
+  rotate: false
+  xy: 1, 129
+  size: 75, 79
+  split: 15, 15, 20, 24
+  orig: 75, 79
+  offset: 0, 0
+  index: -1
+frameup_brown
+  rotate: false
+  xy: 78, 129
+  size: 75, 79
+  split: 15, 15, 20, 24
+  orig: 75, 79
+  offset: 0, 0
+  index: -1
+frameup_dec
+  rotate: false
+  xy: 155, 106
+  size: 115, 102
+  split: 41, 41, 55, 24
+  orig: 115, 102
+  offset: 0, 0
+  index: -1
+frameup_dec_blue
+  rotate: false
+  xy: 272, 106
+  size: 115, 102
+  split: 41, 41, 55, 24
+  orig: 115, 102
+  offset: 0, 0
+  index: -1
+frameup_dec_brown
+  rotate: false
+  xy: 389, 106
+  size: 115, 102
+  split: 41, 41, 55, 24
+  orig: 115, 102
+  offset: 0, 0
+  index: -1
+buttondown
+  rotate: false
+  xy: 506, 105
+  size: 100, 103
+  split: 20, 20, 14, 30
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+buttondown_blue
+  rotate: false
+  xy: 608, 67
+  size: 100, 103
+  split: 20, 20, 14, 30
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+buttondown_brown
+  rotate: false
+  xy: 710, 67
+  size: 100, 103
+  split: 20, 20, 14, 30
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+buttonup
+  rotate: false
+  xy: 812, 67
+  size: 100, 103
+  split: 20, 20, 10, 33
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+buttonup_blue
+  rotate: false
+  xy: 914, 67
+  size: 100, 103
+  split: 20, 20, 10, 33
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+buttonup_brown
+  rotate: false
+  xy: 1, 24
+  size: 100, 103
+  split: 20, 20, 10, 33
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+paneldown
+  rotate: false
+  xy: 103, 1
+  size: 100, 103
+  split: 15, 15, 10, 18
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+paneldown_blue
+  rotate: false
+  xy: 205, 1
+  size: 100, 103
+  split: 15, 15, 10, 18
+  orig: 100, 103
+  offset: 0, 0
+  index: -1
+paneldown_brown
+  rotate: false
+  xy: 307, 1
+  size: 100, 103
+  split: 15, 15, 10, 18
+  orig: 100, 103
   offset: 0, 0
   index: -1

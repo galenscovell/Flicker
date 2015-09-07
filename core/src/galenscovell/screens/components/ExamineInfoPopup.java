@@ -27,7 +27,7 @@ public class ExamineInfoPopup extends Table {
     public void create(String info, Sprite target) {
         this.setFillParent(true);
         Table popup = new Table();
-        popup.setBackground(ResourceManager.frameBG);
+        popup.setBackground(ResourceManager.frameUp);
         Label examineLabel = new Label(info, ResourceManager.detailStyle);
         examineLabel.setWrap(true);
         examineLabel.setAlignment(Align.left);

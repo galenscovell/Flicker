@@ -24,7 +24,7 @@ public class InteractPopup extends Table {
     public void create() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ResourceManager.frameBG);
+        mainTable.setBackground(ResourceManager.frameUp);
 
         this.add(mainTable).width(60).height(60).expand().right();
     }

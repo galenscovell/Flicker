@@ -1,5 +1,6 @@
 package galenscovell.screens;
 
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import galenscovell.screens.components.*;
 import galenscovell.util.ResourceManager;
 
@@ -25,7 +26,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class HudStage extends Stage {
     private GameScreen game;
-    private ProgressBar chassis, power, matter;
+    private ProgressBar health;
     private Table attackPopup, examinePopup, infoPopup, inventoryMenu, optionsMenu;
 
     public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
@@ -51,22 +52,16 @@ public class HudStage extends Stage {
         // Player stats section
         Table statsTable = new Table();
         Table barTable = new Table();
-        this.chassis = createBar("chassisFill");
-        this.power = createBar("powerFill");
-        this.matter = createBar("matterFill");
-        barTable.add(chassis).width(260).height(20);
-        barTable.row();
-        barTable.add(power).width(260).height(20);
-        barTable.row();
-        barTable.add(matter).width(260).height(20);
-        statsTable.add(barTable).width(260).height(60).expand().fill().top().left();
+        barTable.setBackground(new TextureRegionDrawable(ResourceManager.uiAtlas.findRegion("bar_brown_empty")));
+
+        statsTable.add(barTable).width(136).height(41).expand().fill().top().left();
         topTable.add(statsTable).expand().fill().left();
 
         // Options section
         Table topRight = new Table();
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "options", 32);
+        setIcon(optionsButton, "options", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(optionsMenu);
@@ -83,37 +78,39 @@ public class HudStage extends Stage {
          **********************************/
         Table bottomTable = new Table();
 
-        // Bottom section
-        Table actionTable = new Table();
-        Table actionButtons = new Table();
-        Button inventoryButton = new Button(ResourceManager.buttonStyle);
-        setIcon(inventoryButton, "inventory", 64);
+        // Bottom left
+        Table bottomLeft = new Table();
+        Button inventoryButton = new Button(ResourceManager.panelStyle);
+        setIcon(inventoryButton, "inventory", 48, 1.0f);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
-        Button examineButton = new Button(ResourceManager.buttonStyle);
-        setIcon(examineButton, "examine", 64);
+        Button examineButton = new Button(ResourceManager.panelStyle);
+        setIcon(examineButton, "examine", 48, 1.0f);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 modeChange(1);
             }
         });
-        Button attackButton = new Button(ResourceManager.buttonStyle);
-        setIcon(attackButton, "attack", 64);
+        bottomLeft.add(inventoryButton).height(64).width(80).expand().left().padRight(4);
+        bottomLeft.add(examineButton).height(64).width(80).expand().left();
+        bottomTable.add(bottomLeft).expand().bottom().left();
+
+        // Bottom right
+        Table bottomRight = new Table();
+        Button attackButton = new Button(ResourceManager.panelStyle);
+        setIcon(attackButton, "attack", 48, 1.0f);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 modeChange(0);
             }
         });
-        actionButtons.add(inventoryButton).height(68).width(100);
-        actionButtons.add(examineButton).height(68).width(100).padLeft(4).padRight(4);
-        actionButtons.add(attackButton).height(68).width(100);
-        actionTable.add(actionButtons).width(312).center();
-        bottomTable.add(actionTable).expand().center();
+        bottomRight.add(attackButton).height(64).width(80).expand().right();
+        bottomTable.add(bottomRight).expand().bottom().right();
 
-        mainTable.add(bottomTable).fill();
+        mainTable.add(bottomTable).fill().bottom();
 
         mainTable.pack();
         this.addActor(mainTable);
@@ -191,21 +188,14 @@ public class HudStage extends Stage {
         }
     }
 
-    public void updateChassis(int val) {
-        chassis.setValue(chassis.getValue() + val);
+    public void updateHealth(int val) {
+        health.setValue(health.getValue() + val);
     }
 
-    public void updatePower(int val) {
-        power.setValue(power.getValue() + val);
-    }
-
-    public void updateMatter(int val) {
-        matter.setValue(matter.getValue() + val);
-    }
-
-    private void setIcon(Table table, String name, int height) {
+    private void setIcon(Table table, String name, int height, float opacity) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fillY);
+        icon.setColor(1, 1, 1, opacity);
         table.add(icon).height(height).expand().fill().center();
     }
 

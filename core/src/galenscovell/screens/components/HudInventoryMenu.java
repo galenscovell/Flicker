@@ -24,10 +24,10 @@ public class HudInventoryMenu extends Table {
     public void create() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ResourceManager.frameBG);
+        mainTable.setBackground(ResourceManager.frameUpDec);
 
 
-        this.add(mainTable).width(400).height(500).expand().center();
+        this.add(mainTable).width(300).height(400).expand().center();
     }
 }
 

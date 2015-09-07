@@ -35,9 +35,9 @@ public class OptionsMenu extends Table {
     public void createGameVersion() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ResourceManager.frameBG);
+        mainTable.setBackground(ResourceManager.frameUpDec);
 
-        TextButton sfxButton = new TextButton("  Sound", ResourceManager.toggleButtonStyle);
+        TextButton sfxButton = new TextButton("Sound", ResourceManager.toggleButtonStyle);
         sfxButton.setChecked(ResourceManager.prefs.getBoolean("sfx"));
         sfxButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -48,7 +48,7 @@ public class OptionsMenu extends Table {
                 }
             }
         });
-        TextButton musicButton = new TextButton("  Music", ResourceManager.toggleButtonStyle);
+        TextButton musicButton = new TextButton("Music", ResourceManager.toggleButtonStyle);
         musicButton.setChecked(ResourceManager.prefs.getBoolean("music"));
         musicButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -72,23 +72,23 @@ public class OptionsMenu extends Table {
             }
         });
 
-        mainTable.add(sfxButton).width(260).height(50).padBottom(2).expand().fill().left();
+        mainTable.add(sfxButton).width(260).height(80).padBottom(8).expand().fill();
         mainTable.row();
-        mainTable.add(musicButton).width(260).height(50).padBottom(2).expand().fill().left();
+        mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
         mainTable.row();
-        mainTable.add(mainMenuButton).width(260).height(50).padBottom(2).expand().fill();
+        mainTable.add(mainMenuButton).width(260).height(80).padBottom(8).expand().fill();
         mainTable.row();
-        mainTable.add(quitButton).width(260).height(50).expand().fill();
+        mainTable.add(quitButton).width(260).height(80).expand().fill();
 
-        this.add(mainTable).width(280).height(220).expand().center();
+        this.add(mainTable).width(340).height(400).expand().center();
     }
 
     public void createMainVersion() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ResourceManager.frameBG);
+        mainTable.setBackground(ResourceManager.frameUpDec);
 
-        TextButton sfxButton = new TextButton("  Sound", ResourceManager.toggleButtonStyle);
+        TextButton sfxButton = new TextButton("Sound", ResourceManager.toggleButtonStyle);
         sfxButton.setChecked(ResourceManager.prefs.getBoolean("sfx"));
         sfxButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -117,12 +117,12 @@ public class OptionsMenu extends Table {
             }
         });
 
-        mainTable.add(sfxButton).width(260).height(50).padBottom(2).expand().fill().left();
+        mainTable.add(sfxButton).width(260).height(80).padBottom(8).expand().fill();
         mainTable.row();
-        mainTable.add(musicButton).width(260).height(50).padBottom(2).expand().fill().left();
+        mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
         mainTable.row();
-        mainTable.add(returnButton).width(260).height(50).expand().fill();
+        mainTable.add(returnButton).width(260).height(80).expand().fill();
 
-        this.add(mainTable).width(280).height(170).expand().center();
+        this.add(mainTable).width(340).height(360).expand().center();
     }
 }
