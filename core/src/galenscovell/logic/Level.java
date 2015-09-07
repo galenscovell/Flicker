@@ -166,4 +166,8 @@ public class Level {
             }
         }
     }
+
+    public void print() {
+        builder.print();
+    }
 }
