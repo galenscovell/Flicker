@@ -136,7 +136,6 @@ public class GameScreen extends AbstractScreen {
     private void createNewLevel() {
         Level level = new Level();
         level.print();
-        System.exit(0);
         level.optimize();
 
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch);

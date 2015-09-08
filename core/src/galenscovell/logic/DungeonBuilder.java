@@ -28,38 +28,43 @@ public class DungeonBuilder {
                 grid[y][x] = new Tile(x, y);
             }
         }
-        int roomCount = getRandom(10, 15);
+        int roomCount = getRandom(10, 20);
         placeRooms(roomCount);
         squashRooms();
         connectRooms(roomCount);
         // Set all Tiles within each Room as floor
         for (int i = 0; i < roomCount; i++) {
+            ArrayList<Tile> roomTiles = new ArrayList<Tile>();
             Room room = this.rooms.get(i);
             for (int x = room.x; x < room.x + room.width; x++) {
                 for (int y = room.y; y < room.y + room.height; y++) {
                     this.grid[y][x].state = 1;
+                    roomTiles.add(this.grid[y][x]);
+                }
+            }
+            room.setTiles(roomTiles);
+        }
+
+        for (int x = 0; x < Constants.MAPSIZE; x++) {
+            for (int y = 0; y < Constants.MAPSIZE; y++) {
+                if (this.grid[x][y].state == 1) {
+                    for (int xx = x - 1; xx <= x + 1; xx++) {
+                        for (int yy = y - 1; yy <= y + 1; yy++) {
+                            if (this.grid[xx][yy].state == 0) {
+                                this.grid[xx][yy].state = 2;
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-
-    public Map<Integer, Tile> getTiles() {
-        // Translate Tile[][] grid to HashMap
-        Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
-        for (int x = 0; x < Constants.MAPSIZE; x++) {
-            for (int y = 0; y < Constants.MAPSIZE; y++) {
-                int key = x * Constants.MAPSIZE + y;
-                tiles.put(key, grid[y][x]);
-            }
-        }
-        return tiles;
     }
 
     private void placeRooms(int roomCount) {
         // Place random Rooms, ensuring that they do not collide
         // Minus one from width and height at end so rooms are separated
         this.rooms = new ArrayList<Room>();
-        int minSize = 8;
+        int minSize = 5;
         int maxSize = 15;
         for (int i = 0; i < roomCount; i++) {
             int x = getRandom(1, Constants.MAPSIZE - maxSize - 1);
@@ -71,13 +76,14 @@ public class DungeonBuilder {
                 i--;
                 continue;
             }
-            room.width--;
-            room.height--;
+            room.width -= 2;
+            room.height -= 2;
             this.rooms.add(room);
         }
     }
 
     private void squashRooms() {
+        // Shift each Room towards upper left corner to reduce distance between Rooms
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < this.rooms.size(); j++) {
                 Room room = this.rooms.get(j);
@@ -132,6 +138,7 @@ public class DungeonBuilder {
     }
 
     private Room findClosestRoom(Room room) {
+        // Return nearest Room to target Room
         int midX = room.x + (room.width / 2);
         int midY = room.y + (room.height / 2);
         Room closest = null;
@@ -153,6 +160,7 @@ public class DungeonBuilder {
     }
 
     private boolean doesCollide(Room room, int ignore) {
+        // Return if target Room overlaps already placed Room
         for (int i = 0; i < this.rooms.size(); i++) {
             if (i == ignore) {
                 continue;
@@ -166,20 +174,36 @@ public class DungeonBuilder {
     }
 
     private int getRandom(int lo, int hi) {
+        // Return random int between low and high
         return (int)(Math.random() * (hi - lo)) + lo;
     }
 
+    public Map<Integer, Tile> getTiles() {
+        // Translate Tile[][] grid to HashMap
+        Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
+        for (int x = 0; x < Constants.MAPSIZE; x++) {
+            for (int y = 0; y < Constants.MAPSIZE; y++) {
+                int key = x * Constants.MAPSIZE + y;
+                tiles.put(key, grid[y][x]);
+            }
+        }
+        return tiles;
+    }
+
     public void print() {
+        // Debug method: print built dungeon to console and exit
         for (Tile[] row : grid) {
             System.out.println();
             for (Tile tile : row) {
-                if (tile.state == 0) {
-                    System.out.print(' ');
-                } else {
+                if (tile.state == 1) {
+                    System.out.print('.');
+                } else if (tile.state == 2){
                     System.out.print('#');
+                } else {
+                    System.out.print(' ');
                 }
             }
         }
-        System.out.println();
+        System.exit(0);
     }
 }
