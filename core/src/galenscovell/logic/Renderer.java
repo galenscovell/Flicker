@@ -139,23 +139,35 @@ public class Renderer {
     }
 
     private void placeInanimates() {
-        // Place doors on floors with hallway bitmask and more than 2 adjacent floor neighbors
+        // Place doors on floors with hallway bitmask, no adjacent doors, and more than 2 adjacent floor neighbors
         Random random = new Random();
         for (Tile tile : tiles.values()) {
-            if (tile.isFloor() && tile.getFloorNeighbors() > 3) {
-                if (tile.getBitmask() == 5) {
+            if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
+                if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
                     inanimates.add(new Door(this, tile.x, tile.y, "h"));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
+                    tile.toggleDoor();
                     tile.state = 4;
-                } else if (tile.getBitmask() == 10) {
+                } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
                     inanimates.add(new Door(this, tile.x, tile.y, "v"));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
+                    tile.toggleDoor();
                     tile.state = 4;
                 }
             }
         }
+    }
+
+    private boolean suitableForDoor(Tile tile) {
+        for (Point p : tile.getNeighbors()) {
+            Tile n = tiles.get(p.x * Constants.MAPSIZE + p.y);
+            if (n != null && (n.isWater() || n.hasDoor())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void placePlayer(Player playerInstance) {

@@ -65,8 +65,8 @@ public class DungeonBuilder {
         // Place random Rooms, ensuring that they do not collide
         // Minus one from width and height at end so rooms are separated
         this.rooms = new ArrayList<Room>();
-        int minSize = 5;
-        int maxSize = 15;
+        int minSize = 7;
+        int maxSize = 14;
         for (int i = 0; i < roomCount; i++) {
             int x = getRandom(1, Constants.MAPSIZE - maxSize - 1);
             int y = getRandom(1, Constants.MAPSIZE - maxSize - 1);
@@ -224,6 +224,8 @@ public class DungeonBuilder {
                     System.out.print('#');
                 } else if (tile.state == 4) {
                     System.out.print('D');
+                } else if (tile.isWater()) {
+                    System.out.print('W');
                 } else {
                     System.out.print(' ');
                 }

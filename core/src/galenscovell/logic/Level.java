@@ -9,8 +9,7 @@ import java.util.Random;
 
 /**
  * LEVEL
- * Level is composed of a HashMap with Tile object values and (x * level_columns + y) keys.
- * Optimization is an expensive procedure which should only occur when creating levels.
+ * Level is composed of a HashMap { x * MAPSIZE + y : Tile object }
  *
  * @author Galen Scovell
  */
@@ -29,31 +28,21 @@ public class Level {
     }
 
     public void optimize() {
-        // Make sure all final wall tiles are set as blocking
-        for (Tile tile : tiles.values()) {
-            if (tile.isWall()) {
-                tile.toggleBlocking();
-            }
-        }
-        System.out.println("Tiles before prune: " + tiles.size());
-        prune();
-        System.out.println("Tiles after prune: " + tiles.size());
-        placeWater();
-        setFloorNeighbors();
-        skin();
-    }
-
-    private void prune() {
-        // Remove unused Tiles
+        // Prune unused Tiles and ensure Walls are set to blocking
         List<Integer> pruned = new ArrayList<Integer>();
         for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
             if (entry.getValue().isUnused()) {
                 pruned.add(entry.getKey());
+            } else if (entry.getValue().isWall()) {
+                entry.getValue().toggleBlocking();
             }
         }
         for (int key : pruned) {
             tiles.remove(key);
         }
+        placeWater();
+        setFloorNeighbors();
+        skin();
     }
 
     private void placeWater() {

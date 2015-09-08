@@ -21,7 +21,7 @@ public class Tile {
     private List<Point> neighborTilePoints;
     private short bitmask;
     private Sprite[] sprites;
-    private boolean occupied, blocking, destination;
+    private boolean occupied, blocking, destination, door;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -45,6 +45,14 @@ public class Tile {
 
     public boolean isWater() {
         return state == 3;
+    }
+
+    public boolean hasDoor() {
+        return door;
+    }
+
+    public void toggleDoor() {
+        door = !door;
     }
 
     public boolean isOccupied() {
