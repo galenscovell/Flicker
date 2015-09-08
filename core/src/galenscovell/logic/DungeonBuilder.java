@@ -19,6 +19,7 @@ public class DungeonBuilder {
     public DungeonBuilder() {
         this.grid = new Tile[Constants.MAPSIZE][Constants.MAPSIZE];
         build();
+        setTileNeighbors();
     }
 
     private void build() {
@@ -178,6 +179,28 @@ public class DungeonBuilder {
         return (int)(Math.random() * (hi - lo)) + lo;
     }
 
+    private void setTileNeighbors() {
+        // Set each tiles neighboring points
+        for (Tile[] row : grid) {
+            for (Tile tile : row) {
+                List<Point> points = new ArrayList<Point>();
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        if (tile.x + dx == tile.x && tile.y + dy == tile.y || isOutOfBounds(tile.x + dx, tile.y + dy)) {
+                            continue;
+                        }
+                        points.add(new Point(tile.x + dx, tile.y + dy));
+                    }
+                }
+                tile.setNeighbors(points);
+            }
+        }
+    }
+
+    private boolean isOutOfBounds(int x, int y) {
+        return (x < 0 || y < 0 || x >= Constants.MAPSIZE || y >= Constants.MAPSIZE);
+    }
+
     public Map<Integer, Tile> getTiles() {
         // Translate Tile[][] grid to HashMap
         Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
@@ -195,10 +218,12 @@ public class DungeonBuilder {
         for (Tile[] row : grid) {
             System.out.println();
             for (Tile tile : row) {
-                if (tile.state == 1) {
+                if (tile.isFloor()) {
                     System.out.print('.');
-                } else if (tile.state == 2){
+                } else if (tile.isWall()) {
                     System.out.print('#');
+                } else if (tile.state == 4) {
+                    System.out.print('D');
                 } else {
                     System.out.print(' ');
                 }

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * TILE
  * Keeps track of tile position, state and rendering.
- * State can be Wall(0), Floor(1), Corridor(2), or Water(3)
+ * State can be Floor(1), Wall(2) or Water(3)
  *
  * @author Galen Scovell
  */
@@ -21,7 +21,7 @@ public class Tile {
     private List<Point> neighborTilePoints;
     private short bitmask;
     private Sprite[] sprites;
-    private boolean occupied, blocking, unused, destination;
+    private boolean occupied, blocking, destination;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -31,7 +31,7 @@ public class Tile {
         this.currentFrame = 0;
     }
 
-    public boolean isWall() {
+    public boolean isUnused() {
         return state == 0;
     }
 
@@ -39,20 +39,12 @@ public class Tile {
         return state == 1;
     }
 
-    public boolean isCorridor() {
+    public boolean isWall() {
         return state == 2;
     }
 
     public boolean isWater() {
         return state == 3;
-    }
-
-    public boolean isUnused() {
-        return unused;
-    }
-
-    public void setUnused() {
-        this.unused = !unused;
     }
 
     public boolean isOccupied() {

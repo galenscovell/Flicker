@@ -8,29 +8,28 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * OBSTRUCTION INANIMATE
- * Loads obstruction sprite and handles interaction events.
+ * DOOR
+ * Loads door sprite and handles interaction events.
  * This object has access to Renderer for handling of Body collision updates.
  *
  * @author Galen Scovell
  */
 
-public class Obstruction implements Inanimate {
+public class Door implements Inanimate {
     private Renderer renderer;
     private int x, y;
     private Sprite sprite;
     private Sprite[] sprites;
     private boolean blocking;
 
-    public Obstruction(Renderer renderer, int x, int y) {
+    public Door(Renderer renderer, int x, int y, String type) {
         this.renderer = renderer;
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
-        // TODO: Varied obstructions (depending on environs)
-        this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.createSprite("boulder0"));
+        this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.createSprite("door" + type + "0"));
         sprites[0].flip(false, true);
-        this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.createSprite("boulder1"));
+        this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.createSprite("door" + type + "1"));
         sprites[1].flip(false, true);
         this.sprite = sprites[0];
         this.blocking = true;
@@ -49,8 +48,7 @@ public class Obstruction implements Inanimate {
     }
 
     public String examine() {
-        // TODO: Change description based on obstruction type
-        return "A boulder blocks the path.";
+        return "A closed door.";
     }
 
     public String interact(Tile tile) {
@@ -60,9 +58,14 @@ public class Obstruction implements Inanimate {
             tile.toggleOccupied();
             blocking = false;
             renderer.updateTileBody(tile.x, tile.y);
-            return "The boulder shatters.";
+            return "The door opens.";
         } else {
-            return "A pile of rubble.";
+            this.sprite = sprites[0];
+            tile.toggleBlocking();
+            tile.toggleOccupied();
+            blocking = true;
+            renderer.updateTileBody(tile.x, tile.y);
+            return "The door closes.";
         }
     }
 

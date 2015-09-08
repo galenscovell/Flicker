@@ -6,7 +6,7 @@ import box2dLight.RayHandler;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.graphics.Fog;
-import galenscovell.inanimates.Obstruction;
+import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
@@ -64,7 +64,7 @@ public class Renderer {
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
         rayHandler.setAmbientLight(0, 0, 0, 1);
-        this.torch = new PointLight(rayHandler, 60, new Color(0.75f, 0.95f, 0.95f, 0.95f), tileSize * 7, 0, 0);
+        this.torch = new PointLight(rayHandler, 60, new Color(0.9f, 0.98f, 0.98f, 1), tileSize * 8, 0, 0);
         torch.setSoftnessLength(tileSize);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
         this.debug = new Box2DDebugRenderer();
@@ -139,12 +139,21 @@ public class Renderer {
     }
 
     private void placeInanimates() {
+        // Place doors on floors with hallway bitmask and more than 2 adjacent floor neighbors
         Random random = new Random();
         for (Tile tile : tiles.values()) {
-            if (tile.isFloor() && !tile.isOccupied() && random.nextInt(100) > 92) {
-                inanimates.add(new Obstruction(this, tile.x, tile.y));
-                tile.toggleBlocking();
-                tile.toggleOccupied();
+            if (tile.isFloor() && tile.getFloorNeighbors() > 3) {
+                if (tile.getBitmask() == 5) {
+                    inanimates.add(new Door(this, tile.x, tile.y, "h"));
+                    tile.toggleBlocking();
+                    tile.toggleOccupied();
+                    tile.state = 4;
+                } else if (tile.getBitmask() == 10) {
+                    inanimates.add(new Door(this, tile.x, tile.y, "v"));
+                    tile.toggleBlocking();
+                    tile.toggleOccupied();
+                    tile.state = 4;
+                }
             }
         }
     }

@@ -29,54 +29,15 @@ public class Level {
     }
 
     public void optimize() {
-        setFloorNeighbors();
-        // Remove walls without floor neighbors, also switch over any remaining corridor tiles
-        for (Tile tile : tiles.values()) {
-            if (tile.isWall()) {
-                if (tile.getFloorNeighbors() == 0) {
-                    tile.setUnused();
-                }
-            } else if (tile.isCorridor()) {
-                tile.state = 1;
-            }
-        }
-        // Check if floor tiles are adjacent to pruned tiles, if so make them wall
-        for (Tile tile : tiles.values()) {
-            if (tile.isFloor()) {
-                for (Point neighbor : tile.getNeighbors()) {
-                    if (tiles.get(neighbor.x * Constants.MAPSIZE + neighbor.y).isUnused()) {
-                        tile.state = 0;
-                    }
-                }
-            }
-        }
-        // If wall has one or zero connecting walls, make it floor
-        // If floor is on level boundary, make it wall
-        int wallNeighbors;
-        for (Tile tile : tiles.values()) {
-            wallNeighbors = 0;
-            if (tile.isWall()) {
-                for (Point neighbor : tile.getNeighbors()) {
-                    if (tiles.get(neighbor.x * Constants.MAPSIZE + neighbor.y).isWall()) {
-                        wallNeighbors++;
-                    }
-                }
-                if (wallNeighbors == 0) {
-                    tile.state = 1;
-                }
-             } else if (tile.isFloor()) {
-                if (tile.getNeighbors().size() < 8) {
-                    tile.state = 0;
-                }
-            }
-        }
         // Make sure all final wall tiles are set as blocking
         for (Tile tile : tiles.values()) {
             if (tile.isWall()) {
                 tile.toggleBlocking();
             }
         }
+        System.out.println("Tiles before prune: " + tiles.size());
         prune();
+        System.out.println("Tiles after prune: " + tiles.size());
         placeWater();
         setFloorNeighbors();
         skin();
