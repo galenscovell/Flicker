@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 public class Room {
     public int x, y, width, height;
-    private ArrayList<Tile> tiles;
+    public ArrayList<Tile> tiles;
+    private String type;
 
     public Room(int topLeftX, int topLeftY, int width, int height) {
         this.x = topLeftX;
@@ -22,5 +23,13 @@ public class Room {
 
     public void setTiles(ArrayList<Tile> tiles) {
         this.tiles = tiles;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return this.type;
     }
 }

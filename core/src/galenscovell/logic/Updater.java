@@ -24,7 +24,6 @@ public class Updater {
     private List<Inanimate> inanimates;
     private Player player;
     private EntityPathfinder pathfinder;
-    private Tile destinationMarker;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
@@ -42,33 +41,17 @@ public class Updater {
         this.inanimates = inanimates;
     }
 
-    public Tile getCurrentDestination() {
-        return destinationMarker;
-    }
-
-    public void removeDestination() {
-        if (destinationMarker != null) {
-            destinationMarker.removeAsDestination();
-        }
-    }
-
     public boolean update(int[] destination) {
         if (hud.restrictMovement() || !hud.clearMenus()) {
-            removeDestination();
             return false;
         }
         if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
-            removeDestination();
             return false;
         } else {
-            removeDestination();
-            destinationMarker = getTile(destination[0], destination[1]);
-            destinationMarker.setAsDestination();
             Point nextMove = player.getPathStack().pop();
             if (move(player, nextMove.x, nextMove.y)) {
                 // TODO: Movement power usage and regeneration
             } else {
-                removeDestination();
                 player.setPathStack(null);
                 return false;
             }

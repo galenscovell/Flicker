@@ -21,7 +21,7 @@ public class Tile {
     private List<Point> neighborTilePoints;
     private short bitmask;
     private Sprite[] sprites;
-    private boolean occupied, blocking, destination, door;
+    private boolean occupied, blocking, door;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -69,14 +69,6 @@ public class Tile {
 
     public void toggleBlocking() {
         blocking = !blocking;
-    }
-
-    public void setAsDestination() {
-        destination = true;
-    }
-
-    public void removeAsDestination() {
-        destination = false;
     }
 
     public void setFloorNeighbors(int value) {
@@ -129,9 +121,6 @@ public class Tile {
             frames -= frames;
         }
         batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
-        if (destination) {
-            batch.draw(ResourceManager.destinationMarker, x * tileSize, y * tileSize, tileSize, tileSize);
-        }
         frames++;
     }
 }

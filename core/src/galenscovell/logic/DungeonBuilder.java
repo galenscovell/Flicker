@@ -45,7 +45,7 @@ public class DungeonBuilder {
             }
             room.setTiles(roomTiles);
         }
-
+        // Make empty Tiles around floor Tiles walls
         for (int x = 0; x < Constants.MAPSIZE; x++) {
             for (int y = 0; y < Constants.MAPSIZE; y++) {
                 if (this.grid[x][y].state == 1) {
