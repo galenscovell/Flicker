@@ -116,6 +116,7 @@ public class GameScreen extends AbstractScreen {
     public void toggleMode(int mode) {
         if (mode == 0) {
             attackMode = !attackMode;
+            updater.attackMode();
             examineMode = false;
         } else {
             examineMode = !examineMode;

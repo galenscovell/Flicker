@@ -59,7 +59,7 @@ bar_brown_empty
   orig: 136, 41
   offset: 0, 0
   index: -1
-destinationMarker
+highlight
   rotate: false
   xy: 625, 203
   size: 48, 48

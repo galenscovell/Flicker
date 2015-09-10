@@ -82,9 +82,9 @@ public class Level {
     }
 
     private void skin() {
-        Bitmasker bitmasker = new Bitmasker();
+        BitmaskKit bitmaskKit = new BitmaskKit();
         for (Tile tile : tiles.values()) {
-            tile.setBitmask(bitmasker.findBitmask(tile, tiles));
+            tile.setBitmask(bitmaskKit.findBitmask(tile, tiles));
             tile.findSprite();
         }
     }

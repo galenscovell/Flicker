@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * BITMASKER
+ * BITMASK KIT
  * Handles calculation of bitmask value for Tiles.
  *
  *    1         1       Total = (Sum of occupied values)
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Galen Scovell
  */
 
-public class Bitmasker {
+public class BitmaskKit {
     public short findBitmask(Tile tile, Map<Integer, Tile> tiles) {
         short value = 0;
         List<Point> neighbors = tile.getNeighbors();

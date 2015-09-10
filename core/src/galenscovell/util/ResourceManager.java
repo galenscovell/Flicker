@@ -32,7 +32,7 @@ public class ResourceManager {
     public static Label.LabelStyle detailStyle, mediumStyle, menuStyle, titleStyle;
     public static NinePatchDrawable buttonUp, buttonDown, panelUp, panelDown, frameUp, frameDown, frameUpDec;
     public static TextButton.TextButtonStyle buttonStyle, panelStyle, frameStyle, toggleButtonStyle;
-    public static Sprite destinationMarker;
+    public static Sprite highlight;
     public static Preferences prefs;
 
     public static void create() {
@@ -108,8 +108,9 @@ public class ResourceManager {
         panelStyle.pressedOffsetY = -2;
 
         frameUpDec = new NinePatchDrawable(uiAtlas.createPatch("frameup_dec_brown"));
-        destinationMarker = new Sprite(uiAtlas.createSprite("destinationMarker"));
-        destinationMarker.flip(false, true);
+
+        highlight = new Sprite(uiAtlas.createSprite("highlight"));
+        highlight.flip(false, true);
 
         // Load user preferences
         prefs = Gdx.app.getPreferences("flicker_settings");

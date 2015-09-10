@@ -21,7 +21,7 @@ public class Tile {
     private List<Point> neighborTilePoints;
     private short bitmask;
     private Sprite[] sprites;
-    private boolean occupied, blocking, door;
+    private boolean occupied, blocking, door, highlighted;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -53,6 +53,14 @@ public class Tile {
 
     public void toggleDoor() {
         door = !door;
+    }
+
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void toggleHighlighted() {
+        highlighted = !highlighted;
     }
 
     public boolean isOccupied() {
@@ -121,6 +129,9 @@ public class Tile {
             frames -= frames;
         }
         batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
+        if (highlighted) {
+            batch.draw(ResourceManager.highlight, x * tileSize, y * tileSize, tileSize, tileSize);
+        }
         frames++;
     }
 }

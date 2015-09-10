@@ -24,12 +24,14 @@ public class Updater {
     private List<Inanimate> inanimates;
     private Player player;
     private EntityPathfinder pathfinder;
+    private CombatKit combatKit;
 
     public Updater(Player player, Map<Integer, Tile> tiles) {
         this.player = player;
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
         this.pathfinder = new EntityPathfinder();
+        this.combatKit = new CombatKit(tiles);
     }
 
     public void setHud(HudStage hud) {
@@ -94,6 +96,10 @@ public class Updater {
         if (inanimate != null) {
 
         }
+    }
+
+    public void attackMode() {
+        combatKit.displayRange(player, "bash");
     }
 
     public void attack(float x, float y) {
