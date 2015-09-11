@@ -2,9 +2,9 @@ package galenscovell.graphics;
 
 import galenscovell.entities.Player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import galenscovell.util.ResourceManager;
 
 /**
  * TORCHLIGHT
@@ -18,10 +18,10 @@ public class Torchlight {
     private int[][] mult;
     private float[][] resistanceMap;
     private float[][] lightMap;
-    private Texture rect = new Texture(Gdx.files.internal("textures/blank.png"));
+    private TextureRegion rect = ResourceManager.uiAtlas.findRegion("blank");
 
-    public Torchlight(float[][] resistanceMap, Player player) {
-        this.radius = player.getStat("vision");
+    public Torchlight(float[][] resistanceMap) {
+        this.radius = 4;
         this.mult = new int[][]{{1, 0, 0, -1, -1, 0, 0, 1},
                 {0, 1, -1, 0, 0, -1, 1, 0},
                 {0, 1, 1, 0, 0, -1, -1, 0},
@@ -52,6 +52,7 @@ public class Torchlight {
                     spriteBatch.setColor(0.0f, 0.0f, 0.0f, 1.0f - lightMap[y][x]);
                     spriteBatch.draw(rect, x * tileSize, y * tileSize, tileSize, tileSize);
                 }
+                // Reset values for next frame, seen tiles remain slightly visible
                 if (lightMap[y][x] > 0.0f) {
                     lightMap[y][x] = 0.1f;
                 } else {

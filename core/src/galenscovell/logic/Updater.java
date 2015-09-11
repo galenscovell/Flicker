@@ -99,7 +99,7 @@ public class Updater {
     }
 
     public void attackMode() {
-        combatKit.displayRange(player, "bash");
+        combatKit.displayRange(player, "leap");
     }
 
     public void attack(float x, float y) {

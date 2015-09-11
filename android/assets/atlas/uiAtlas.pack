@@ -3,72 +3,79 @@ uiAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-options
+blank
   rotate: false
   xy: 1, 235
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-attack
+options
   rotate: false
-  xy: 19, 233
-  size: 16, 18
-  orig: 16, 18
+  xy: 19, 235
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
-examine
+attack
   rotate: false
   xy: 37, 233
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
-inventory
+examine
   rotate: false
   xy: 55, 233
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
+inventory
+  rotate: false
+  xy: 73, 233
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
 bar
   rotate: false
-  xy: 73, 210
+  xy: 91, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 bar_blue
   rotate: false
-  xy: 211, 210
+  xy: 229, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 bar_brown
   rotate: false
-  xy: 349, 210
+  xy: 367, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 bar_brown_empty
   rotate: false
-  xy: 487, 210
+  xy: 505, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 highlight
   rotate: false
-  xy: 625, 203
+  xy: 643, 203
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 framedown
   rotate: false
-  xy: 675, 172
+  xy: 693, 172
   size: 75, 79
   split: 15, 15, 17, 24
   orig: 75, 79
@@ -76,7 +83,7 @@ framedown
   index: -1
 framedown_blue
   rotate: false
-  xy: 752, 172
+  xy: 770, 172
   size: 75, 79
   split: 15, 15, 17, 24
   orig: 75, 79
@@ -84,7 +91,7 @@ framedown_blue
   index: -1
 framedown_brown
   rotate: false
-  xy: 829, 172
+  xy: 847, 172
   size: 75, 79
   split: 15, 15, 17, 24
   orig: 75, 79
@@ -92,7 +99,7 @@ framedown_brown
   index: -1
 frameup
   rotate: false
-  xy: 906, 172
+  xy: 924, 172
   size: 75, 79
   split: 15, 15, 20, 24
   orig: 75, 79
@@ -100,7 +107,7 @@ frameup
   index: -1
 frameup_blue
   rotate: false
-  xy: 1, 129
+  xy: 1, 152
   size: 75, 79
   split: 15, 15, 20, 24
   orig: 75, 79
