@@ -21,8 +21,8 @@ public interface Entity {
     public void setPosition(int newX, int newY);
     public int getX();
     public int getY();
-    public int getCurrentX();
-    public int getCurrentY();
+    public float getCurrentX();
+    public float getCurrentY();
 
     public void toggleAggressive();
     public boolean isAggressive();

@@ -6,7 +6,6 @@ import box2dLight.RayHandler;
 import galenscovell.entities.Entity;
 import galenscovell.entities.Player;
 import galenscovell.graphics.Fog;
-import galenscovell.graphics.Torchlight;
 import galenscovell.inanimates.Door;
 import galenscovell.inanimates.Inanimate;
 import galenscovell.util.Constants;
@@ -24,7 +23,7 @@ import java.util.*;
 /**
  * RENDERER
  * Handles game graphics.
- * Renderer uses custom units (400, 240) rather than pixel dimensions.
+ * Renderer uses custom units (48, 80) rather than pixel dimensions.
  *
  * @author Galen Scovell
  */
@@ -41,8 +40,6 @@ public class Renderer {
     private List<Inanimate> inanimates;
     private Fog fog;
     private Player player;
-
-    private Torchlight torchlight;
 
     private RayHandler rayHandler;
     private PointLight torch;
@@ -67,7 +64,7 @@ public class Renderer {
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
         rayHandler.setAmbientLight(0, 0, 0, 1);
-        this.torch = new PointLight(rayHandler, 60, new Color(0.85f, 0.96f, 0.96f, 1), tileSize * 6, 0, 0);
+        this.torch = new PointLight(rayHandler, 120, new Color(0.85f, 0.96f, 0.96f, 1), tileSize * 7, 0, 0);
         torch.setSoftnessLength(tileSize);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
         this.debug = new Box2DDebugRenderer();
@@ -95,9 +92,6 @@ public class Renderer {
         }
         // Player rendering: [x, y] are in custom units
         player.draw(spriteBatch, tileSize, interpolation, null);
-
-        // torchlight.findFOV(player, tileSize);
-        // torchlight.drawLight(spriteBatch, (int) minCamX, (int) maxCamX, (int) minCamY, (int) maxCamY, tileSize);
 
         // Background effect rendering
         fog.draw(spriteBatch);
@@ -136,7 +130,6 @@ public class Renderer {
 
     public void assembleLevel(Player player) {
         placeInanimates();
-        // createResistanceMap();
         placePlayer(player);
         MonsterParser monsterParser = new MonsterParser();
         for (int i = 0; i < 3; i++) {
@@ -272,18 +265,5 @@ public class Renderer {
     public void dispose() {
         world.dispose();
         rayHandler.dispose();
-    }
-
-    // Old style lighting
-    private void createResistanceMap() {
-        float[][] resistanceMap = new float[Constants.MAPSIZE][Constants.MAPSIZE];
-        for (Tile tile : tiles.values()) {
-            if (tile.isBlocking()) {
-                resistanceMap[tile.y][tile.x] = 2.0f;
-            } else {
-                resistanceMap[tile.y][tile.x] = 0.0f;
-            }
-        }
-        this.torchlight = new Torchlight(resistanceMap);
     }
 }

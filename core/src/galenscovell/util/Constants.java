@@ -15,9 +15,9 @@ public class Constants {
     public static final short BIT_GROUP = 5;
 
     // Custom units
-    public static final int SCREEN_X = 240;
-    public static final int SCREEN_Y = 400;
-    public static final int TILESIZE = 20;
+    public static final int SCREEN_X = 48;
+    public static final int SCREEN_Y = 80;
+    public static final int TILESIZE = 4;
 
     public static final int MAPSIZE = 64;
 }

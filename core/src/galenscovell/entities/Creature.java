@@ -17,7 +17,8 @@ import java.util.Stack;
  */
 
 public class Creature implements Entity {
-    private int x, y, prevX, prevY, currentX, currentY;
+    private int x, y, prevX, prevY;
+    private float currentX, currentY;
     private Stack<Point> pathStack;
     private int moveTimer, animateFrames, frame;
     private boolean aggressive, attacking, beingAttacked;
@@ -47,8 +48,8 @@ public class Creature implements Entity {
         prevY = newY;
         x = newX;
         y = newY;
-        currentX = newX;
-        currentY = newY;
+        currentX = (float) newX;
+        currentY = (float) newY;
     }
 
     public int getX() {
@@ -59,11 +60,11 @@ public class Creature implements Entity {
         return y;
     }
 
-    public int getCurrentX() {
+    public float getCurrentX() {
         return currentX;
     }
 
-    public int getCurrentY() {
+    public float getCurrentY() {
         return currentY;
     }
 
@@ -122,13 +123,13 @@ public class Creature implements Entity {
 
     public void interpolate(double interpolation) {
         animate(interpolation);
-        currentX = (int) (prevX + ((x - prevX) * interpolation));
-        currentY = (int) (prevY + ((y - prevY) * interpolation));
-        if (currentX == x && currentY == y) {
+        currentX = (float) (prevX + ((x - prevX) * interpolation));
+        currentY = (float) (prevY + ((y - prevY) * interpolation));
+        if (currentX == (float) x && currentY == (float) y) {
             prevX = x;
             prevY = y;
         }
-        if (interpolation > 0.8) {
+        if (interpolation == 1) {
             beingAttacked = false;
         }
     }
