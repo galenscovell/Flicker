@@ -33,7 +33,7 @@ public class Renderer {
     private FitViewport viewport;
     private SpriteBatch spriteBatch;
 
-    private int tileSize;
+    private int tileSize, torchFrame;
     private float minCamX, minCamY, maxCamX, maxCamY;
     private Map<Integer, Tile> tiles;
     private List<Entity> entities;
@@ -63,10 +63,12 @@ public class Renderer {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
-        rayHandler.setAmbientLight(0, 0, 0, 1);
-        this.torch = new PointLight(rayHandler, 120, new Color(0.85f, 0.96f, 0.96f, 1), tileSize * 7, 0, 0);
-        torch.setSoftnessLength(tileSize);
+        rayHandler.setAmbientLight(0, 0.1f, 0.1f, 1);
+        this.torch = new PointLight(rayHandler, 40, new Color(0.98f, 0.9f, 0.9f, 1), 27, 0, 0);
+        torch.setSoftnessLength(4);
+        rayHandler.setCulling(false);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
+        this.torchFrame = 0;
         this.debug = new Box2DDebugRenderer();
     }
 
@@ -101,7 +103,26 @@ public class Renderer {
         torch.setPosition(player.getCurrentX() + (tileSize / 2), player.getCurrentY() + (tileSize / 2));
         rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
+        animateTorch();
         // debug.render(world, camera.combined);
+    }
+
+    private void animateTorch() {
+        torchFrame++;
+        if (torchFrame == 6) {
+            torch.setDistance(26.5f);
+        } else if (torchFrame == 12) {
+            torch.setDistance(26);
+        } else if (torchFrame == 18) {
+            torch.setDistance(25.5f);
+        } else if (torchFrame == 24) {
+            torch.setDistance(26);
+        } else if (torchFrame == 30) {
+            torch.setDistance(26.5f);
+        } else if (torchFrame == 36) {
+            torch.setDistance(27);
+            torchFrame = 0;
+        }
     }
 
     public OrthographicCamera getCamera() {

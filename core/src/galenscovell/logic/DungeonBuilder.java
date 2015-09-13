@@ -29,7 +29,7 @@ public class DungeonBuilder {
                 grid[y][x] = new Tile(x, y);
             }
         }
-        int roomCount = getRandom(10, 20);
+        int roomCount = getRandom(8, 14);
         placeRooms(roomCount);
         squashRooms();
         connectRooms(roomCount);
@@ -65,8 +65,8 @@ public class DungeonBuilder {
         // Place random Rooms, ensuring that they do not collide
         // Minus one from width and height at end so rooms are separated
         this.rooms = new ArrayList<Room>();
-        int minSize = 7;
-        int maxSize = 14;
+        int minSize = 6;
+        int maxSize = 12;
         for (int i = 0; i < roomCount; i++) {
             int x = getRandom(1, Constants.MAPSIZE - maxSize - 1);
             int y = getRandom(1, Constants.MAPSIZE - maxSize - 1);
@@ -77,15 +77,15 @@ public class DungeonBuilder {
                 i--;
                 continue;
             }
-            room.width -= 2;
-            room.height -= 2;
+            room.width--;
+            room.height--;
             this.rooms.add(room);
         }
     }
 
     private void squashRooms() {
         // Shift each Room towards upper left corner to reduce distance between Rooms
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < this.rooms.size(); j++) {
                 Room room = this.rooms.get(j);
                 while (true) {
@@ -135,6 +135,8 @@ public class DungeonBuilder {
                 }
                 this.grid[pointBY][pointBX].state = 1;
             }
+            roomA.addConnection(roomB);
+            roomB.addConnection(roomA);
         }
     }
 
@@ -146,7 +148,7 @@ public class DungeonBuilder {
         int closestDistance = 1000;
         for (int i = 0; i < this.rooms.size(); i++) {
             Room check = this.rooms.get(i);
-            if (check == room) {
+            if (check == room || room.getConnections().contains(check)) {
                 continue;
             }
             int checkMidX = check.x + (check.width / 2);
@@ -167,7 +169,7 @@ public class DungeonBuilder {
                 continue;
             }
             Room check = this.rooms.get(i);
-            if (!((room.x + room.width < check.x) || (room.x > check.x + check.width) || (room.y + room.height < check.y) || (room.y > check.y + check.height))) {
+            if (!((room.x + room.width < check.x - 2) || (room.x - 2 > check.x + check.width) || (room.y + room.height < check.y - 2) || (room.y - 2 > check.y + check.height))) {
                 return true;
             }
         }
@@ -225,12 +227,11 @@ public class DungeonBuilder {
                 } else if (tile.state == 4) {
                     System.out.print('D');
                 } else if (tile.isWater()) {
-                    System.out.print('W');
+                    System.out.print('~');
                 } else {
                     System.out.print(' ');
                 }
             }
         }
-        System.exit(0);
     }
 }

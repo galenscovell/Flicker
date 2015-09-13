@@ -3,6 +3,7 @@ package galenscovell.logic;
 import galenscovell.entities.Entity;
 import galenscovell.util.Constants;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -14,27 +15,30 @@ import java.util.Map;
 
 public class CombatKit {
     private Map<Integer, Tile> tiles;
+    private ArrayList<Tile> range;
 
     public CombatKit(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
     }
 
-    public void displayRange(Entity entity, String move) {
-        int centerX = entity.getX() / Constants.TILESIZE;
-        int centerY = entity.getY() / Constants.TILESIZE;
+    public void setRange(Entity entity, String move) {
+        this.range = new ArrayList<Tile>();
+        float centerX = entity.getX() / Constants.TILESIZE;
+        float centerY = entity.getY() / Constants.TILESIZE;
         Tile center = findTile(centerX, centerY);
+
         if (move.equals("lunge")) {
             // Range: 2 tiles cardinal
-            for (int dx = -2; dx <= 2; dx++) {
+            for (int dx = -2; dx <= 2; dx += 2) {
                 Tile tile = findTile(centerX + dx, centerY);
                 if (tile != null && tile != center && tile.isFloor()) {
-                    tile.toggleHighlighted();
+                    range.add(tile);
                 }
             }
-            for (int dy = -2; dy <= 2; dy++) {
+            for (int dy = -2; dy <= 2; dy += 2) {
                 Tile tile = findTile(centerX, centerY + dy);
                 if (tile != null && tile != center && tile.isFloor()) {
-                    tile.toggleHighlighted();
+                    range.add(tile);
                 }
             }
         } else if (move.equals("roll")) {
@@ -46,7 +50,7 @@ public class CombatKit {
                     }
                     Tile tile = findTile(centerX + dx, centerY + dy);
                     if (tile != null && tile != center && tile.isFloor()) {
-                        tile.toggleHighlighted();
+                        range.add(tile);
                     }
                 }
             }
@@ -56,7 +60,7 @@ public class CombatKit {
                 for (int dy = -1; dy <= 1; dy++) {
                     Tile tile = findTile(centerX + dx, centerY + dy);
                     if (tile != null && tile != center && tile.isFloor()) {
-                        tile.toggleHighlighted();
+                        range.add(tile);
                     }
                 }
             }
@@ -69,10 +73,16 @@ public class CombatKit {
                     }
                     Tile tile = findTile(centerX + dx, centerY + dy);
                     if (tile != null && tile != center && tile.isFloor()) {
-                        tile.toggleHighlighted();
+                        range.add(tile);
                     }
                 }
             }
+        }
+    }
+
+    public void toggleDisplay() {
+        for (Tile tile : range) {
+            tile.toggleHighlighted();
         }
     }
 
@@ -92,7 +102,9 @@ public class CombatKit {
 
     }
 
-    private Tile findTile(int x, int y) {
-        return tiles.get(x * Constants.MAPSIZE + y);
+    private Tile findTile(float x, float y) {
+        int tileX = (int) x;
+        int tileY = (int) y;
+        return tiles.get(tileX * Constants.MAPSIZE + tileY);
     }
 }

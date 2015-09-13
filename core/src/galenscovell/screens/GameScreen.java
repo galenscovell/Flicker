@@ -141,7 +141,7 @@ public class GameScreen extends AbstractScreen {
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch);
         this.updater = new Updater(player, level.getTiles());
         renderer.assembleLevel(player);
-        // level.print();
+        level.print();
         updater.setHud((HudStage) stage);
         updater.setLists(renderer.getEntityList(), renderer.getInanimateList());
 

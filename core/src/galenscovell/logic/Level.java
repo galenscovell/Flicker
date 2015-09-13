@@ -34,7 +34,22 @@ public class Level {
             if (entry.getValue().isUnused()) {
                 pruned.add(entry.getKey());
             } else if (entry.getValue().isWall()) {
-                entry.getValue().toggleBlocking();
+                int wallNeighbors = 0;
+                // If wall has no wall neighbors, make it floor
+                // If all of its neighbors are also walls, remove it
+                for (Point p : entry.getValue().getNeighbors()) {
+                    Tile neighbor = getTile(p.x, p.y);
+                    if (neighbor.isWall()) {
+                        wallNeighbors++;
+                    }
+                }
+                if (wallNeighbors <= 1) {
+                    entry.getValue().state = 1;
+                } else if (wallNeighbors == 8) {
+                    pruned.add(entry.getKey());
+                } else {
+                    entry.getValue().toggleBlocking();
+                }
             }
         }
         for (int key : pruned) {
@@ -107,11 +122,15 @@ public class Level {
         while (true) {
             int choiceY = random.nextInt(Constants.MAPSIZE);
             int choiceX = random.nextInt(Constants.MAPSIZE);
-            Tile tile = tiles.get(choiceX * Constants.MAPSIZE + choiceY);
+            Tile tile = getTile(choiceX, choiceY);
             if (tile != null && tile.isFloor() && !tile.isOccupied()) {
                 return tile;
             }
         }
+    }
+
+    private Tile getTile(int x, int y) {
+        return tiles.get(x * Constants.MAPSIZE + y);
     }
 
     public void print() {

@@ -99,7 +99,8 @@ public class Updater {
     }
 
     public void attackMode() {
-        combatKit.displayRange(player, "leap");
+        combatKit.setRange(player, "lunge");
+        combatKit.toggleDisplay();
     }
 
     public void attack(float x, float y) {
@@ -113,6 +114,9 @@ public class Updater {
         if (target != null) {
             hit(player, target);
             npcTurn();
+            hud.modeChange(0);
+        } else {
+            combatKit.toggleDisplay();
             hud.modeChange(0);
         }
     }
