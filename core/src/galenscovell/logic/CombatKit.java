@@ -16,26 +16,35 @@ import java.util.Map;
 public class CombatKit {
     private Map<Integer, Tile> tiles;
     private ArrayList<Tile> range;
+    private String currentMove;
 
     public CombatKit(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
     }
 
     public void setRange(Entity entity, String move) {
-        this.range = new ArrayList<Tile>();
+        if (currentMove != null && currentMove.equals(move)) {
+            removeRange();
+            return;
+        }
+        if (range != null && range.size() > 0) {
+            removeRange();
+        }
+        range = new ArrayList<Tile>();
+        currentMove = move;
         float centerX = entity.getX() / Constants.TILESIZE;
         float centerY = entity.getY() / Constants.TILESIZE;
         Tile center = findTile(centerX, centerY);
 
         if (move.equals("lunge")) {
             // Range: 2 tiles cardinal
-            for (int dx = -2; dx <= 2; dx += 2) {
+            for (int dx = -2; dx <= 2; dx++) {
                 Tile tile = findTile(centerX + dx, centerY);
                 if (tile != null && tile != center && tile.isFloor()) {
                     range.add(tile);
                 }
             }
-            for (int dy = -2; dy <= 2; dy += 2) {
+            for (int dy = -2; dy <= 2; dy++) {
                 Tile tile = findTile(centerX, centerY + dy);
                 if (tile != null && tile != center && tile.isFloor()) {
                     range.add(tile);
@@ -78,11 +87,38 @@ public class CombatKit {
                 }
             }
         }
+        toggleDisplay();
+    }
+
+    public void removeRange() {
+        toggleDisplay();
+        range.clear();
+        currentMove = null;
     }
 
     public void toggleDisplay() {
         for (Tile tile : range) {
             tile.toggleHighlighted();
+        }
+    }
+
+    public String getLastMove() {
+        return currentMove;
+    }
+
+    public Tile getTileInRange(float x, float y) {
+        return findTileInRange(x, y);
+    }
+
+    public void finalizeMove(Entity entity, Tile target) {
+        if (currentMove.equals("lunge")) {
+            lunge(entity, target);
+        } else if (currentMove.equals("roll")) {
+            roll(entity, target);
+        } else if (currentMove.equals("bash")) {
+            bash(entity, target);
+        } else if (currentMove.equals("leap")) {
+            leap(entity, target);
         }
     }
 
@@ -103,8 +139,16 @@ public class CombatKit {
     }
 
     private Tile findTile(float x, float y) {
-        int tileX = (int) x;
-        int tileY = (int) y;
-        return tiles.get(tileX * Constants.MAPSIZE + tileY);
+        return tiles.get((int) x * Constants.MAPSIZE + (int) y);
+    }
+
+    private Tile findTileInRange(float x, float y) {
+        Tile tile = null;
+        for (Tile t : range) {
+            if (t.x == x && t.y == y) {
+                tile = t;
+            }
+        }
+        return tile;
     }
 }

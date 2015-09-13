@@ -26,10 +26,10 @@ public class InputHandler extends InputAdapter {
     public boolean touchDown(int x, int y, int pointer, int button) {
         Vector3 worldCoordinates = new Vector3(x, y, 0);
         camera.unproject(worldCoordinates);
-        if (game.examineMode()) {
-            game.examine(worldCoordinates.x, worldCoordinates.y);
-        } else if (game.attackMode()) {
-            game.attack(worldCoordinates.x, worldCoordinates.y);
+        if (game.isExamineMode()) {
+
+        } else if (game.isAttackMode()) {
+
         } else {
             game.playerMove(worldCoordinates.x, worldCoordinates.y);
         }

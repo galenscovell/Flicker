@@ -65,7 +65,6 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         update(delta);
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.render((double) accumulator / timestep);
@@ -105,33 +104,16 @@ public class GameScreen extends AbstractScreen {
         root.setScreen(root.mainMenuScreen);
     }
 
-    public boolean examineMode() {
-        return examineMode;
+    public void setAttack(String move) {
+        updater.toggleAttackMode(move);
     }
 
-    public boolean attackMode() {
+    public boolean isAttackMode() {
         return attackMode;
     }
 
-    public void toggleMode(int mode) {
-        if (mode == 0) {
-            attackMode = !attackMode;
-            updater.attackMode();
-            examineMode = false;
-        } else {
-            examineMode = !examineMode;
-            attackMode = false;
-        }
-    }
-
-    public void examine(float x, float y) {
-        updater.examine(x, y);
-    }
-
-    public void attack(float x, float y) {
-        // Accumulator reset for attack animations
-        accumulator = 0;
-        updater.attack(x, y);
+    public boolean isExamineMode() {
+        return examineMode;
     }
 
     private void createNewLevel() {
@@ -141,7 +123,7 @@ public class GameScreen extends AbstractScreen {
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch);
         this.updater = new Updater(player, level.getTiles());
         renderer.assembleLevel(player);
-        level.print();
+        // level.print();
         updater.setHud((HudStage) stage);
         updater.setLists(renderer.getEntityList(), renderer.getInanimateList());
 

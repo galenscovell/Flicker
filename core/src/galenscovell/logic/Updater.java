@@ -63,62 +63,8 @@ public class Updater {
         return true;
     }
 
-    public void examine(float x, float y) {
-        if (!hud.clearMenus()) {
-            return;
-        }
-        // Pull info about entity or object at selection, if found turn off examine mode
-        int tileX = (int) x / tileSize;
-        int tileY = (int) y / tileSize;
-        Entity entity = findEntity(tileX, tileY);
-        if (entity != null) {
-            // Display examine info on HUD
-            hud.displayExamineInfo(entity.examine(), entity.getSprite());
-            hud.modeChange(1);
-        } else {
-            Inanimate inanimate = findInanimate(tileX, tileY);
-            if (inanimate != null) {
-                // Display examine info on HUD
-                hud.displayExamineInfo(inanimate.examine(), inanimate.getSprite());
-                hud.modeChange(1);
-            }
-        }
-    }
-
-    public void interact(float x, float y) {
-        if (!hud.clearMenus()) {
-            return;
-        }
-        // Interact with selected object
-        int tileX = (int) x / tileSize;
-        int tileY = (int) y / tileSize;
-        Inanimate inanimate = findInanimate(tileX, tileY);
-        if (inanimate != null) {
-
-        }
-    }
-
-    public void attackMode() {
-        combatKit.setRange(player, "lunge");
-        combatKit.toggleDisplay();
-    }
-
-    public void attack(float x, float y) {
-        if (!hud.clearMenus()) {
-            return;
-        }
-        // Attack a selected entity, if found turn off attack mode
-        int tileX = (int) x / tileSize;
-        int tileY = (int) y / tileSize;
-        Entity target = findEntity(tileX, tileY);
-        if (target != null) {
-            hit(player, target);
-            npcTurn();
-            hud.modeChange(0);
-        } else {
-            combatKit.toggleDisplay();
-            hud.modeChange(0);
-        }
+    public void toggleAttackMode(String move) {
+        combatKit.setRange(player, move);
     }
 
     public Tile getTile(float x, float y) {

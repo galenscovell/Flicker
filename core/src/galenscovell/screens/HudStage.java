@@ -1,6 +1,5 @@
 package galenscovell.screens;
 
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import galenscovell.screens.components.*;
 import galenscovell.util.ResourceManager;
 
@@ -27,7 +26,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class HudStage extends Stage {
     private GameScreen game;
     private ProgressBar health;
-    private Table attackPopup, examinePopup, infoPopup, inventoryMenu, optionsMenu;
+    private Table examinePopup, infoPopup, inventoryMenu, optionsMenu, movePanel;
 
     public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
@@ -36,10 +35,10 @@ public class HudStage extends Stage {
     }
 
     public void create() {
-        this.attackPopup = new AttackModePopup(this);
         this.examinePopup = new ExamineModePopup(this);
         this.inventoryMenu = new HudInventoryMenu(this);
         this.optionsMenu = new OptionsMenu(this);
+        this.movePanel = new MovePanel(this);
 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -91,7 +90,7 @@ public class HudStage extends Stage {
         setIcon(examineButton, "examine", 48, 1.0f);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                modeChange(1);
+
             }
         });
         bottomLeft.add(inventoryButton).height(64).width(80).expand().left().padRight(4);
@@ -104,7 +103,7 @@ public class HudStage extends Stage {
         setIcon(attackButton, "attack", 48, 1.0f);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                modeChange(0);
+                menuOperation(movePanel);
             }
         });
         bottomRight.add(attackButton).height(64).width(80).expand().right();
@@ -118,7 +117,6 @@ public class HudStage extends Stage {
 
     public void dispose() {
         removeExamineInfo();
-        this.addActor(attackPopup);
         this.addActor(examinePopup);
         this.addActor(inventoryMenu);
         this.addActor(optionsMenu);
@@ -129,36 +127,8 @@ public class HudStage extends Stage {
         game.toMainMenu();
     }
 
-    public void modeChange(int mode) {
-        if (optionsMenu.hasParent()) {
-            optionsMenu.remove();
-        }
-        if (inventoryMenu.hasParent()) {
-            inventoryMenu.remove();
-        }
-        if (mode == 1) {
-            game.toggleMode(mode);
-            if (examinePopup.hasParent()) {
-                examinePopup.remove();
-            } else {
-                this.addActor(examinePopup);
-                removeExamineInfo();
-            }
-            if (attackPopup.hasParent()) {
-                attackPopup.remove();
-            }
-        } else {
-            game.toggleMode(mode);
-            if (attackPopup.hasParent()) {
-                attackPopup.remove();
-            } else {
-                this.addActor(attackPopup);
-                removeExamineInfo();
-            }
-            if (examinePopup.hasParent()) {
-                examinePopup.remove();
-            }
-        }
+    public void selectAttackMove(String move) {
+        game.setAttack(move);
     }
 
     public void displayExamineInfo(String info, Sprite sprite) {
@@ -169,7 +139,7 @@ public class HudStage extends Stage {
     }
 
     public boolean restrictMovement() {
-        return optionsMenu.hasParent() || inventoryMenu.hasParent();
+        return optionsMenu.hasParent() || inventoryMenu.hasParent() || movePanel.hasParent();
     }
 
     public boolean clearMenus() {
@@ -178,6 +148,9 @@ public class HudStage extends Stage {
             return false;
         } else if (inventoryMenu.hasParent()) {
             inventoryMenu.remove();
+            return false;
+        } else if (movePanel.hasParent()) {
+            movePanel.remove();
             return false;
         } else if (infoPopup != null && infoPopup.hasParent()) {
             infoPopup.remove();
@@ -226,6 +199,8 @@ public class HudStage extends Stage {
                 optionsMenu.remove();
             } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
                 inventoryMenu.remove();
+            } else if (movePanel != menu && movePanel.hasParent()) {
+                movePanel.remove();
             }
             this.addActor(menu);
         }
