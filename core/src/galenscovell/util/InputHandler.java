@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 public class InputHandler extends InputAdapter {
     private GameScreen game;
     private OrthographicCamera camera;
+    private int startX, startY;
 
     public InputHandler(GameScreen game, OrthographicCamera camera) {
         this.game = game;
@@ -24,16 +25,27 @@ public class InputHandler extends InputAdapter {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        Vector3 worldCoordinates = new Vector3(x, y, 0);
-        camera.unproject(worldCoordinates);
-        if (game.isExamineMode()) {
+        startX = x;
+        startY = y;
+        return false;
+    }
 
-        } else if (game.isAttackMode()) {
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        if (Math.abs(x - startX) < 10 && Math.abs(y - startY) < 10) {
+            Vector3 worldCoordinates = new Vector3(x, y, 0);
+            camera.unproject(worldCoordinates);
+            if (game.isExamineMode()) {
 
+            } else if (game.isAttackMode()) {
+
+            } else {
+                game.playerMove(worldCoordinates.x, worldCoordinates.y);
+            }
+            return true;
         } else {
-            game.playerMove(worldCoordinates.x, worldCoordinates.y);
+            return false;
         }
-        return true;
     }
 
     @Override

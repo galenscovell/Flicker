@@ -100,6 +100,10 @@ public class GameScreen extends AbstractScreen {
         renderer.zoom(zoom);
     }
 
+    public void screenPan(float dx, float dy) {
+        renderer.pan(dx, dy);
+    }
+
     public void toMainMenu() {
         root.setScreen(root.mainMenuScreen);
     }
@@ -130,8 +134,7 @@ public class GameScreen extends AbstractScreen {
         this.fullInput = new InputMultiplexer();
         fullInput.addProcessor(stage);
         fullInput.addProcessor(new InputHandler(this, renderer.getCamera()));
-        // Gestures disabled until I figure out a way to make them play nice with other input!
-        // fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
+        fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
         Gdx.input.setInputProcessor(fullInput);
 
         this.destination = new int[2];

@@ -145,8 +145,13 @@ public class Renderer {
         camera.zoom += value;
     }
 
+    public void pan(float dx, float dy) {
+        camera.translate(-dx / (tileSize * 3), -dy / (tileSize * 3), 0);
+    }
+
     public void resize(int width, int height) {
         viewport.update(width, height, true);
+        centerOnPlayer();
     }
 
     public void assembleLevel(Player player) {
@@ -222,9 +227,11 @@ public class Renderer {
         }
     }
 
-    private void findCameraBounds() {
-        // Center on player coordinates
+    private void centerOnPlayer() {
         camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+    }
+
+    private void findCameraBounds() {
         // Find camera upper left coordinates
         minCamX = camera.position.x - (camera.viewportWidth / 2) * camera.zoom;
         minCamY = camera.position.y - (camera.viewportHeight / 2) * camera.zoom;

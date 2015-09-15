@@ -16,14 +16,14 @@ import java.util.Map;
 public class CombatKit {
     private Map<Integer, Tile> tiles;
     private ArrayList<Tile> range;
-    private String currentMove;
+    private String lastMove;
 
     public CombatKit(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
     }
 
     public void setRange(Entity entity, String move) {
-        if (currentMove != null && currentMove.equals(move)) {
+        if (lastMove != null && lastMove.equals(move)) {
             removeRange();
             return;
         }
@@ -31,7 +31,7 @@ public class CombatKit {
             removeRange();
         }
         range = new ArrayList<Tile>();
-        currentMove = move;
+        lastMove = move;
         float centerX = entity.getX() / Constants.TILESIZE;
         float centerY = entity.getY() / Constants.TILESIZE;
         Tile center = findTile(centerX, centerY);
@@ -93,7 +93,7 @@ public class CombatKit {
     public void removeRange() {
         toggleDisplay();
         range.clear();
-        currentMove = null;
+        lastMove = null;
     }
 
     public void toggleDisplay() {
@@ -103,7 +103,7 @@ public class CombatKit {
     }
 
     public String getLastMove() {
-        return currentMove;
+        return lastMove;
     }
 
     public Tile getTileInRange(float x, float y) {
@@ -111,13 +111,13 @@ public class CombatKit {
     }
 
     public void finalizeMove(Entity entity, Tile target) {
-        if (currentMove.equals("lunge")) {
+        if (lastMove.equals("lunge")) {
             lunge(entity, target);
-        } else if (currentMove.equals("roll")) {
+        } else if (lastMove.equals("roll")) {
             roll(entity, target);
-        } else if (currentMove.equals("bash")) {
+        } else if (lastMove.equals("bash")) {
             bash(entity, target);
-        } else if (currentMove.equals("leap")) {
+        } else if (lastMove.equals("leap")) {
             leap(entity, target);
         }
     }
