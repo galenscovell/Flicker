@@ -42,7 +42,7 @@ public class MainMenuScreen extends AbstractScreen {
          **********************************/
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "options", 32, 0.5f);
+        setIcon(optionsButton, "scroll", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 stage.addActor(optionsMenu);

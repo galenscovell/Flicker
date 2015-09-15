@@ -60,7 +60,7 @@ public class HudStage extends Stage {
         Table topRight = new Table();
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "options", 32, 0.5f);
+        setIcon(optionsButton, "scroll", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(optionsMenu);
@@ -80,33 +80,33 @@ public class HudStage extends Stage {
         // Bottom left
         Table bottomLeft = new Table();
         Button inventoryButton = new Button(ResourceManager.panelStyle);
-        setIcon(inventoryButton, "inventory", 48, 1.0f);
+        setIcon(inventoryButton, "inventory", 48, 1);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(inventoryMenu);
             }
         });
         Button examineButton = new Button(ResourceManager.panelStyle);
-        setIcon(examineButton, "examine", 48, 1.0f);
+        setIcon(examineButton, "examine", 48, 1);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
 
             }
         });
-        bottomLeft.add(inventoryButton).height(64).width(80).expand().left().padRight(4);
-        bottomLeft.add(examineButton).height(64).width(80).expand().left();
+        bottomLeft.add(inventoryButton).width(80).height(64).expand().left().padRight(4);
+        bottomLeft.add(examineButton).width(80).height(64).expand().left();
         bottomTable.add(bottomLeft).expand().bottom().left();
 
         // Bottom right
         Table bottomRight = new Table();
         Button attackButton = new Button(ResourceManager.panelStyle);
-        setIcon(attackButton, "attack", 48, 1.0f);
+        setIcon(attackButton, "tome", 48, 1);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 menuOperation(movePanel);
             }
         });
-        bottomRight.add(attackButton).height(64).width(80).expand().right();
+        bottomRight.add(attackButton).width(80).height(64).expand().right();
         bottomTable.add(bottomRight).expand().bottom().right();
 
         mainTable.add(bottomTable).fill().bottom();
@@ -165,7 +165,7 @@ public class HudStage extends Stage {
         health.setValue(health.getValue() + val);
     }
 
-    private void setIcon(Table table, String name, int height, float opacity) {
+    public void setIcon(Table table, String name, int height, float opacity) {
         Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fillY);
         icon.setColor(1, 1, 1, opacity);

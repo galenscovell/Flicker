@@ -3,79 +3,107 @@ uiAtlas.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-blank
+boot
   rotate: false
   xy: 1, 235
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-options
+examine
   rotate: false
   xy: 19, 235
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-attack
+horn
   rotate: false
-  xy: 37, 233
-  size: 16, 18
-  orig: 16, 18
+  xy: 37, 235
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
-examine
+scroll
   rotate: false
-  xy: 55, 233
-  size: 16, 18
-  orig: 16, 18
+  xy: 55, 235
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+shield
+  rotate: false
+  xy: 73, 235
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
   index: -1
 inventory
   rotate: false
-  xy: 73, 233
+  xy: 91, 233
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+largebook
+  rotate: false
+  xy: 109, 233
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+spear
+  rotate: false
+  xy: 127, 233
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+tome
+  rotate: false
+  xy: 145, 233
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
 bar
   rotate: false
-  xy: 91, 210
+  xy: 163, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 bar_blue
   rotate: false
-  xy: 229, 210
+  xy: 301, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 bar_brown
   rotate: false
-  xy: 367, 210
+  xy: 439, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 bar_brown_empty
   rotate: false
-  xy: 505, 210
+  xy: 577, 210
   size: 136, 41
   orig: 136, 41
   offset: 0, 0
   index: -1
 highlight
   rotate: false
-  xy: 643, 203
+  xy: 715, 203
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 framedown
   rotate: false
-  xy: 693, 172
+  xy: 765, 172
   size: 75, 79
   split: 15, 15, 17, 24
   orig: 75, 79
@@ -83,7 +111,7 @@ framedown
   index: -1
 framedown_blue
   rotate: false
-  xy: 770, 172
+  xy: 842, 172
   size: 75, 79
   split: 15, 15, 17, 24
   orig: 75, 79
@@ -91,7 +119,7 @@ framedown_blue
   index: -1
 framedown_brown
   rotate: false
-  xy: 847, 172
+  xy: 919, 172
   size: 75, 79
   split: 15, 15, 17, 24
   orig: 75, 79
@@ -99,7 +127,7 @@ framedown_brown
   index: -1
 frameup
   rotate: false
-  xy: 924, 172
+  xy: 1, 154
   size: 75, 79
   split: 15, 15, 20, 24
   orig: 75, 79
@@ -107,7 +135,7 @@ frameup
   index: -1
 frameup_blue
   rotate: false
-  xy: 1, 152
+  xy: 78, 152
   size: 75, 79
   split: 15, 15, 20, 24
   orig: 75, 79
@@ -115,7 +143,7 @@ frameup_blue
   index: -1
 frameup_brown
   rotate: false
-  xy: 78, 129
+  xy: 155, 129
   size: 75, 79
   split: 15, 15, 20, 24
   orig: 75, 79
@@ -123,7 +151,7 @@ frameup_brown
   index: -1
 frameup_dec
   rotate: false
-  xy: 155, 106
+  xy: 232, 106
   size: 115, 102
   split: 41, 41, 55, 24
   orig: 115, 102
@@ -131,7 +159,7 @@ frameup_dec
   index: -1
 frameup_dec_blue
   rotate: false
-  xy: 272, 106
+  xy: 349, 106
   size: 115, 102
   split: 41, 41, 55, 24
   orig: 115, 102
@@ -139,7 +167,7 @@ frameup_dec_blue
   index: -1
 frameup_dec_brown
   rotate: false
-  xy: 389, 106
+  xy: 466, 106
   size: 115, 102
   split: 41, 41, 55, 24
   orig: 115, 102
@@ -147,7 +175,7 @@ frameup_dec_brown
   index: -1
 buttondown
   rotate: false
-  xy: 506, 105
+  xy: 583, 105
   size: 100, 103
   split: 20, 20, 14, 30
   orig: 100, 103
@@ -155,7 +183,7 @@ buttondown
   index: -1
 buttondown_blue
   rotate: false
-  xy: 608, 67
+  xy: 685, 67
   size: 100, 103
   split: 20, 20, 14, 30
   orig: 100, 103
@@ -163,7 +191,7 @@ buttondown_blue
   index: -1
 buttondown_brown
   rotate: false
-  xy: 710, 67
+  xy: 787, 67
   size: 100, 103
   split: 20, 20, 14, 30
   orig: 100, 103
@@ -171,7 +199,7 @@ buttondown_brown
   index: -1
 buttonup
   rotate: false
-  xy: 812, 67
+  xy: 889, 67
   size: 100, 103
   split: 20, 20, 10, 33
   orig: 100, 103
@@ -179,7 +207,7 @@ buttonup
   index: -1
 buttonup_blue
   rotate: false
-  xy: 914, 67
+  xy: 1, 47
   size: 100, 103
   split: 20, 20, 10, 33
   orig: 100, 103
@@ -187,7 +215,7 @@ buttonup_blue
   index: -1
 buttonup_brown
   rotate: false
-  xy: 1, 24
+  xy: 103, 24
   size: 100, 103
   split: 20, 20, 10, 33
   orig: 100, 103
@@ -195,7 +223,7 @@ buttonup_brown
   index: -1
 paneldown
   rotate: false
-  xy: 103, 1
+  xy: 205, 1
   size: 100, 103
   split: 15, 15, 10, 18
   orig: 100, 103
@@ -203,7 +231,7 @@ paneldown
   index: -1
 paneldown_blue
   rotate: false
-  xy: 205, 1
+  xy: 307, 1
   size: 100, 103
   split: 15, 15, 10, 18
   orig: 100, 103
@@ -211,7 +239,7 @@ paneldown_blue
   index: -1
 paneldown_brown
   rotate: false
-  xy: 307, 1
+  xy: 409, 1
   size: 100, 103
   split: 15, 15, 10, 18
   orig: 100, 103
