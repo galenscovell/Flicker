@@ -23,13 +23,6 @@ public class CombatKit {
     }
 
     public void setRange(Entity entity, String move) {
-        if (lastMove != null && lastMove.equals(move)) {
-            removeRange();
-            return;
-        }
-        if (range != null && range.size() > 0) {
-            removeRange();
-        }
         range = new ArrayList<Tile>();
         lastMove = move;
         float centerX = entity.getX() / Constants.TILESIZE;

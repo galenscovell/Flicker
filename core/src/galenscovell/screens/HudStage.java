@@ -128,7 +128,7 @@ public class HudStage extends Stage {
     }
 
     public void selectAttackMove(String move) {
-        game.setAttack(move);
+        game.setAttackMode(move);
     }
 
     public void displayExamineInfo(String info, Sprite sprite) {

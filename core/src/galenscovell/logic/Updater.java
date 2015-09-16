@@ -63,8 +63,22 @@ public class Updater {
         return true;
     }
 
-    public void toggleAttackMode(String move) {
+    public void startAttackMode(String move) {
         combatKit.setRange(player, move);
+    }
+
+    public void attack(float x, float y) {
+        int targetX = (int) x / tileSize;
+        int targetY = (int) y / tileSize;
+        Entity targetEntity = findEntity(targetX, targetY);
+        Tile targetTile = findTile(targetX, targetY);
+        if (targetEntity != null && targetTile != null) {
+            combatKit.finalizeMove(targetEntity, targetTile);
+        }
+    }
+
+    public void endAttackMode() {
+        combatKit.removeRange();
     }
 
     public Tile getTile(float x, float y) {
@@ -139,11 +153,6 @@ public class Updater {
             entity.move(dx, dy, false);
             return false;
         }
-    }
-
-    private void hit(Entity entity, Entity target) {
-        entity.setAttacking();
-        target.setBeingAttacked();
     }
 
     private Inanimate findInanimate(int x, int y) {

@@ -36,9 +36,9 @@ public class InputHandler extends InputAdapter {
             Vector3 worldCoordinates = new Vector3(x, y, 0);
             camera.unproject(worldCoordinates);
             if (game.isExamineMode()) {
-
+                // game.playerExamine(worldCoordinates.x, worldCoordinates.y);
             } else if (game.isAttackMode()) {
-
+                game.playerAttack(worldCoordinates.x, worldCoordinates.y);
             } else {
                 game.playerMove(worldCoordinates.x, worldCoordinates.y);
             }

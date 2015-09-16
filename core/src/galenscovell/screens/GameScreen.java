@@ -90,12 +90,6 @@ public class GameScreen extends AbstractScreen {
         stage.dispose();
     }
 
-    public void playerMove(float x, float y) {
-        moving = true;
-        destination[0] = (int) x;
-        destination[1] = (int) y;
-    }
-
     public void zoom(float zoom) {
         renderer.zoom(zoom);
     }
@@ -108,8 +102,38 @@ public class GameScreen extends AbstractScreen {
         root.setScreen(root.mainMenuScreen);
     }
 
-    public void setAttack(String move) {
-        updater.toggleAttackMode(move);
+    public void playerMove(float x, float y) {
+        moving = true;
+        destination[0] = (int) x;
+        destination[1] = (int) y;
+    }
+
+    public void playerAttack(float x, float y) {
+        updater.attack(x, y);
+    }
+
+    public void playerExamine(float x, float y) {
+//        updater.examine(x, y);
+    }
+
+    public void setAttackMode(String move) {
+        if (attackMode) {
+            attackMode = false;
+            updater.endAttackMode();
+        } else {
+            attackMode = true;
+            updater.startAttackMode(move);
+        }
+    }
+
+    public void setExamineMode() {
+//        if (examineMode) {
+//            examineMode = false;
+//            updater.endexamineMode();
+//        } else {
+//            examineMode = true;
+//            updater.startexamineMode(move);
+//        }
     }
 
     public boolean isAttackMode() {
