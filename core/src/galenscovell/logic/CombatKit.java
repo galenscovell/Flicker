@@ -14,19 +14,23 @@ import java.util.Map;
  */
 
 public class CombatKit {
+    private Updater updater;
     private Map<Integer, Tile> tiles;
     private ArrayList<Tile> range;
     private String lastMove;
+    private int tileSize;
 
-    public CombatKit(Map<Integer, Tile> tiles) {
+    public CombatKit(Updater updater, Map<Integer, Tile> tiles) {
+        this.updater = updater;
         this.tiles = tiles;
+        this.tileSize = Constants.TILESIZE;
     }
 
     public void setRange(Entity entity, String move) {
         range = new ArrayList<Tile>();
         lastMove = move;
-        float centerX = entity.getX() / Constants.TILESIZE;
-        float centerY = entity.getY() / Constants.TILESIZE;
+        int centerX = entity.getX() / Constants.TILESIZE;
+        int centerY = entity.getY() / Constants.TILESIZE;
         Tile center = findTile(centerX, centerY);
 
         if (move.equals("lunge")) {
@@ -99,43 +103,55 @@ public class CombatKit {
         return lastMove;
     }
 
-    public Tile getTileInRange(float x, float y) {
+    public Tile getTileInRange(int x, int y) {
         return findTileInRange(x, y);
     }
 
-    public void finalizeMove(Entity entity, Tile target) {
+    public void finalizeMove(Entity entity, Entity targetEntity, Tile targetTile) {
         if (lastMove.equals("lunge")) {
-            lunge(entity, target);
+            lunge(entity, targetEntity, targetTile);
         } else if (lastMove.equals("roll")) {
-            roll(entity, target);
+            roll(entity, targetEntity, targetTile);
         } else if (lastMove.equals("bash")) {
-            bash(entity, target);
+            bash(entity, targetEntity, targetTile);
         } else if (lastMove.equals("leap")) {
-            leap(entity, target);
+            leap(entity, targetEntity, targetTile);
         }
     }
 
-    public void lunge(Entity entity, Tile target) {
+    public void lunge(Entity entity, Entity targetEntity, Tile targetTile) {
+        if (targetEntity == null) {
+            return;
+        }
+        int entityX = (entity.getX() / tileSize);
+        int entityY = (entity.getY() / tileSize);
+        int targetEntityX = (targetEntity.getX() / tileSize);
+        int targetEntityY = (targetEntity.getY() / tileSize);
+        int newX = entityX + ((targetEntityX - entityX) / 2);
+        int newY = entityY + ((targetEntityY - entityY) / 2);
+        updater.move(entity, newX, newY);
+    }
+
+    public void roll(Entity entity, Entity targetEntity, Tile targetTile) {
+        if (targetEntity != null) {
+            return;
+        }
+        updater.move(entity, targetTile.x, targetTile.y);
+    }
+
+    public void bash(Entity entity, Entity targetEntity, Tile targetTile) {
 
     }
 
-    public void roll(Entity entity, Tile target) {
+    public void leap(Entity entity, Entity targetEntity, Tile targetTile) {
 
     }
 
-    public void bash(Entity entity, Tile target) {
-
+    private Tile findTile(int x, int y) {
+        return tiles.get(x * Constants.MAPSIZE + y);
     }
 
-    public void leap(Entity entity, Tile target) {
-
-    }
-
-    private Tile findTile(float x, float y) {
-        return tiles.get((int) x * Constants.MAPSIZE + (int) y);
-    }
-
-    private Tile findTileInRange(float x, float y) {
+    private Tile findTileInRange(int x, int y) {
         Tile tile = null;
         for (Tile t : range) {
             if (t.x == x && t.y == y) {

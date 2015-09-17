@@ -31,7 +31,7 @@ public class Updater {
         this.tiles = tiles;
         this.tileSize = Constants.TILESIZE;
         this.pathfinder = new EntityPathfinder();
-        this.combatKit = new CombatKit(tiles);
+        this.combatKit = new CombatKit(this, tiles);
     }
 
     public void setHud(HudStage hud) {
@@ -57,7 +57,6 @@ public class Updater {
                 player.setPathStack(null);
                 return false;
             }
-            // End player's turn, move all other entities
             npcTurn();
         }
         return true;
@@ -72,13 +71,14 @@ public class Updater {
         int targetY = (int) y / tileSize;
         Entity targetEntity = findEntity(targetX, targetY);
         Tile targetTile = findTile(targetX, targetY);
-        if (targetEntity != null && targetTile != null) {
-            combatKit.finalizeMove(targetEntity, targetTile);
-        }
+        combatKit.finalizeMove(player, targetEntity, targetTile);
+        endAttackMode();
     }
 
     public void endAttackMode() {
         combatKit.removeRange();
+        hud.clearMenus();
+        hud.finishAttackMove();
     }
 
     public Tile getTile(float x, float y) {
@@ -123,34 +123,19 @@ public class Updater {
         }
     }
 
-    private boolean move(Entity entity, int x, int y) {
+    public boolean move(Entity entity, int x, int y) {
         int entityX = (entity.getX() / tileSize);
         int entityY = (entity.getY() / tileSize);
         int diffX = x - entityX;
         int diffY = y - entityY;
-        int dx = 0;
-        int dy = 0;
-        if (diffX > 0) {
-            dx++;
-        } else if (diffX < 0) {
-            dx--;
-        }
-        if (diffY > 0) {
-            dy++;
-        } else if (diffY < 0) {
-            dy--;
-        }
         Tile nextTile = findTile(x, y);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
-            // Set current tile as unoccupied
             findTile(entityX, entityY).toggleOccupied();
-            // Move to next tile and set it as occupied
-            entity.move(dx * tileSize, dy * tileSize, true);
+            entity.move(diffX * tileSize, diffY * tileSize, true);
             nextTile.toggleOccupied();
             return true;
         } else {
-            // Unable to move to tile, just turn in that direction
-            entity.move(dx, dy, false);
+            entity.move(diffX, diffY, false);
             return false;
         }
     }

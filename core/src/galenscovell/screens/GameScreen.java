@@ -108,41 +108,39 @@ public class GameScreen extends AbstractScreen {
         destination[1] = (int) y;
     }
 
+    public boolean isAttackMode() {
+        return attackMode;
+    }
+
     public void playerAttack(float x, float y) {
         updater.attack(x, y);
     }
 
-    public void playerExamine(float x, float y) {
-//        updater.examine(x, y);
+    public void startAttackMode(String move) {
+        attackMode = true;
+        updater.startAttackMode(move);
     }
 
-    public void setAttackMode(String move) {
-        if (attackMode) {
-            attackMode = false;
-            updater.endAttackMode();
-        } else {
-            attackMode = true;
-            updater.startAttackMode(move);
-        }
-    }
-
-    public void setExamineMode() {
-//        if (examineMode) {
-//            examineMode = false;
-//            updater.endexamineMode();
-//        } else {
-//            examineMode = true;
-//            updater.startexamineMode(move);
-//        }
-    }
-
-    public boolean isAttackMode() {
-        return attackMode;
+    public void endAttackMode() {
+        attackMode = false;
     }
 
     public boolean isExamineMode() {
         return examineMode;
     }
+
+//  public void playerExamine(float x, float y) {
+//        updater.examine(x, y);
+//  }
+
+//  public void startExamineMode(String move) {
+//      examineMode = true;
+//      updater.startExamineMode(move);
+//  }
+//
+//  public void endExamineMode() {
+//      examineMode = false;
+//  }
 
     private void createNewLevel() {
         Level level = new Level();
