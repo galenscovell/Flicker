@@ -1,7 +1,6 @@
 package galenscovell.things.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import galenscovell.processing.Point;
 
 import java.util.Stack;

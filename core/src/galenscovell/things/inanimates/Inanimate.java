@@ -1,7 +1,6 @@
 package galenscovell.things.inanimates;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import galenscovell.world.Tile;
 
 public interface Inanimate {

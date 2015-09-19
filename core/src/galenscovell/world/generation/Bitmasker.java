@@ -4,8 +4,7 @@ import galenscovell.processing.Point;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Bitmasker {
     /**

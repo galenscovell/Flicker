@@ -1,30 +1,17 @@
 package galenscovell.processing.actions;
 
-import galenscovell.processing.Pathfinder;
-import galenscovell.processing.Point;
-import galenscovell.processing.Updater;
+import galenscovell.processing.*;
 import galenscovell.things.entities.Entity;
-import galenscovell.things.entities.Hero;
 import galenscovell.world.Tile;
 
-import java.util.List;
-import java.util.Map;
-
 public class MoveAction {
-    private Updater updater;
-    private Map<Integer, Tile> tiles;
-    private List<Entity> entities;
-    private Hero hero;
     private Pathfinder pathfinder;
 
-    public MoveAction(Updater updater, Hero hero, Map<Integer, Tile> tiles) {
-        this.updater = updater;
-        this.hero = hero;
-        this.tiles = tiles;
+    public MoveAction() {
         this.pathfinder = new Pathfinder();
     }
 
-    public boolean updateMovement(int[] destination) {
+    public void act(int[] destination) {
         if (!findPath(hero, destination[0], destination[1]) || hero.getPathStack() == null || hero.getPathStack().isEmpty()) {
             return false;
         } else {

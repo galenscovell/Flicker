@@ -1,12 +1,9 @@
 package galenscovell.things.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import galenscovell.processing.Point;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class Creature implements Entity {
     private int x, y, prevX, prevY;

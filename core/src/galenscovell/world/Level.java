@@ -2,13 +2,9 @@ package galenscovell.world;
 
 import galenscovell.processing.Point;
 import galenscovell.util.Constants;
-import galenscovell.world.generation.Bitmasker;
-import galenscovell.world.generation.DungeonBuilder;
+import galenscovell.world.generation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Level {
     private DungeonBuilder builder;

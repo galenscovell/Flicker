@@ -1,20 +1,15 @@
 package galenscovell.processing;
 
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import box2dLight.*;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import galenscovell.graphics.Fog;
-import galenscovell.things.entities.Entity;
-import galenscovell.things.entities.Hero;
-import galenscovell.things.inanimates.Door;
-import galenscovell.things.inanimates.Inanimate;
-import galenscovell.util.Constants;
-import galenscovell.util.MonsterParser;
+import galenscovell.things.entities.*;
+import galenscovell.things.inanimates.*;
+import galenscovell.util.*;
 import galenscovell.world.Tile;
 
 import java.util.*;

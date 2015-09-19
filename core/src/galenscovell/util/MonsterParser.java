@@ -1,17 +1,11 @@
 package galenscovell.util;
 
 import com.badlogic.gdx.Gdx;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import galenscovell.things.entities.Monster;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 public class MonsterParser {
     private List<Monster> createMonsterList() {

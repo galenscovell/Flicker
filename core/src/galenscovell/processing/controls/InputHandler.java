@@ -1,4 +1,4 @@
-package galenscovell.util;
+package galenscovell.processing.controls;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;

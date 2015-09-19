@@ -2,13 +2,9 @@ package galenscovell.world.generation;
 
 import galenscovell.processing.Point;
 import galenscovell.util.Constants;
-import galenscovell.world.Room;
-import galenscovell.world.Tile;
+import galenscovell.world.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DungeonBuilder {
     private Tile[][] grid;

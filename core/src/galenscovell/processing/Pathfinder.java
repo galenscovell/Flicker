@@ -3,10 +3,7 @@ package galenscovell.processing;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class Pathfinder {
 

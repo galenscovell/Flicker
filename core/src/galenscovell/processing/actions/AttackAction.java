@@ -1,24 +1,16 @@
 package galenscovell.processing.actions;
 
-import galenscovell.processing.Updater;
 import galenscovell.things.entities.Entity;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class AttackAction {
-    private Updater updater;
-    private Map<Integer, Tile> tiles;
     private ArrayList<Tile> range;
     private String currentMove;
-    private int tileSize;
 
-    public AttackAction(Updater updater, Map<Integer, Tile> tiles) {
-        this.updater = updater;
-        this.tiles = tiles;
-        this.tileSize = Constants.TILESIZE;
+    public AttackAction() {
         this.currentMove = "";
     }
 

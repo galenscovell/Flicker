@@ -2,10 +2,7 @@ package galenscovell.flicker;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import galenscovell.ui.screens.AbstractScreen;
-import galenscovell.ui.screens.GameScreen;
-import galenscovell.ui.screens.LoadScreen;
-import galenscovell.ui.screens.MainMenuScreen;
+import galenscovell.ui.screens.*;
 import galenscovell.util.ResourceManager;
 
 public class FlickerMain extends Game {

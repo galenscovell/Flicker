@@ -1,28 +1,27 @@
 package galenscovell.ui.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.processing.Renderer;
-import galenscovell.processing.Updater;
+import galenscovell.processing.controls.*;
+import galenscovell.processing.states.*;
 import galenscovell.things.entities.Hero;
 import galenscovell.ui.HudStage;
-import galenscovell.util.GestureHandler;
-import galenscovell.util.InputHandler;
-import galenscovell.world.Level;
+import galenscovell.world.*;
+
+import java.util.Map;
 
 public class GameScreen extends AbstractScreen {
     private Hero hero;
     private Renderer renderer;
-    private Updater updater;
-    private InputMultiplexer fullInput;
+    private State state, movementState, combatState, menuState;
+    private InputMultiplexer input;
+    private Map<Integer, Tile> tiles;
 
-    private boolean attackMode, examineMode, moving;
     private final int timestep = 20;
     private int accumulator = 0;
-    private int[] destination;
 
     public GameScreen(FlickerMain root) {
         super(root);
@@ -31,32 +30,21 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void create() {
-        // GLProfiler.enable();
         this.hero = new Hero();
         this.stage = new HudStage(this, root.spriteBatch);
         createNewLevel();
     }
 
-    public void update(float delta) {
-        if (accumulator > timestep) {
-            accumulator = 0;
-            if (moving && !updater.update(destination)) {
-                moving = false;
-            }
-        }
-        stage.act(delta);
-        accumulator++;
-    }
-
     @Override
     public void render(float delta) {
-        update(delta);
+        state.update(delta);
+        stage.act(delta);
+        accumulator++;
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.render((double) accumulator / timestep);
         stage.draw();
-        // System.out.println("Draw calls: " + GLProfiler.drawCalls + ", Texture binds: " + GLProfiler.textureBindings);
-        // GLProfiler.reset();
     }
 
     @Override
@@ -67,7 +55,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(fullInput);
+        Gdx.input.setInputProcessor(input);
     }
 
     @Override
@@ -76,7 +64,28 @@ public class GameScreen extends AbstractScreen {
         stage.dispose();
     }
 
-    public void zoom(float zoom) {
+    public void changeState(StateType stateType) {
+        // Call from HUD stage
+        state.exit();
+        switch (stateType) {
+            case MOVEMENT:
+                state = movementState;
+                break;
+            case COMBAT:
+                state = combatState;
+                break;
+            case MENU:
+                state = menuState;
+                break;
+        }
+        state.enter();
+    }
+
+    public void passInputToState(float x, float y) {
+        state.handleInput(x, y);
+    }
+
+    public void screenZoom(float zoom) {
         renderer.zoom(zoom);
     }
 
@@ -88,64 +97,24 @@ public class GameScreen extends AbstractScreen {
         root.setScreen(root.mainMenuScreen);
     }
 
-    public void playerMove(float x, float y) {
-        moving = true;
-        destination[0] = (int) x;
-        destination[1] = (int) y;
-    }
-
-    public boolean isAttackMode() {
-        return attackMode;
-    }
-
-    public void playerAttack(float x, float y) {
-        updater.attack(x, y);
-    }
-
-    public void startAttackMode(String move) {
-        attackMode = true;
-        updater.displayAttackRange(move);
-    }
-
-    public void endAttackMode() {
-        attackMode = false;
-    }
-
-    public boolean isExamineMode() {
-        return examineMode;
-    }
-
-//  public void playerExamine(float x, float y) {
-//        updater.examine(x, y);
-//  }
-
-//  public void startExamineMode(String move) {
-//      examineMode = true;
-//      updater.startExamineMode(move);
-//  }
-//
-//  public void endExamineMode() {
-//      examineMode = false;
-//  }
-
     private void createNewLevel() {
         Level level = new Level();
         level.optimize();
+        this.tiles = level.getTiles();
 
-        this.renderer = new Renderer(level.getTiles(), root.spriteBatch);
-        this.updater = new Updater(this, hero, level.getTiles());
+        this.renderer = new Renderer(tiles, root.spriteBatch);
         renderer.assembleLevel(hero);
         // level.testPrint();
-        updater.setHud((HudStage) stage);
-        updater.setLists(renderer.getEntityList(), renderer.getInanimateList());
 
-        this.fullInput = new InputMultiplexer();
-        fullInput.addProcessor(stage);
-        fullInput.addProcessor(new InputHandler(this, renderer.getCamera()));
-        fullInput.addProcessor(new GestureDetector(new GestureHandler(this)));
-        Gdx.input.setInputProcessor(fullInput);
+        this.movementState = new MovementState(tiles);
+        this.combatState = new CombatState(tiles);
+        this.menuState = new MenuState();
+        this.state = movementState;
 
-        this.destination = new int[2];
-        this.moving = false;
+        this.input = new InputMultiplexer();
+        input.addProcessor(stage);
+        input.addProcessor(new InputHandler(this, renderer.getCamera()));
+        input.addProcessor(new GestureDetector(new GestureHandler(this)));
+        Gdx.input.setInputProcessor(input);
     }
 }
