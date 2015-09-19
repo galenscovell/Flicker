@@ -27,7 +27,7 @@ public class Level {
         // Prune unused Tiles and ensure Walls are set to blocking
         List<Integer> pruned = new ArrayList<Integer>();
         for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
-            if (entry.getValue().isUnused()) {
+            if (entry.getValue().isEmpty()) {
                 pruned.add(entry.getKey());
             } else if (entry.getValue().isWall()) {
                 int wallNeighbors = 0;
@@ -40,7 +40,7 @@ public class Level {
                     }
                 }
                 if (wallNeighbors <= 1) {
-                    entry.getValue().state = 1;
+                    entry.getValue().becomeFloor();
                 } else if (wallNeighbors == 8) {
                     pruned.add(entry.getKey());
                 } else {
@@ -63,7 +63,7 @@ public class Level {
         // Place water spawn points randomly
         for (int i = 0; i < waterPoints; i++) {
             Tile waterTile = findRandomTile();
-            waterTile.state = 3;
+            waterTile.becomeWater();
             waterTiles.add(waterTile);
             // Expand each point out one layer initially
             expandWater(waterTile, waterTiles);
@@ -86,7 +86,7 @@ public class Level {
         for (Point point : neighbors) {
             Tile neighborTile = tiles.get(point.x * Constants.MAPSIZE + point.y);
             if (neighborTile != null && neighborTile.isFloor()) {
-                neighborTile.state = 3;
+                neighborTile.becomeWater();
                 waterTiles.add(neighborTile);
             }
         }

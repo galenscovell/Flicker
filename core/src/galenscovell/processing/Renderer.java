@@ -167,13 +167,11 @@ public class Renderer {
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
-                    tile.state = 4;
                 } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
                     inanimates.add(new Door(this, tile.x, tile.y, "v"));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
-                    tile.state = 4;
                 }
             }
         }

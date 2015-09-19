@@ -8,7 +8,8 @@ import galenscovell.util.ResourceManager;
 import java.util.List;
 
 public class Tile {
-    public int x, y, state;
+    public int x, y;
+    private TileType type;
     private int floorNeighbors, currentFrame, frames;
     private List<Point> neighborTilePoints;
     private short bitmask;
@@ -18,25 +19,41 @@ public class Tile {
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
-        this.state = 0;
+        this.type = TileType.EMPTY;
         this.frames = 0;
         this.currentFrame = 0;
     }
 
-    public boolean isUnused() {
-        return state == 0;
+    public boolean isEmpty() {
+        return type == TileType.EMPTY;
+    }
+
+    public void becomeEmpty() {
+        type = TileType.EMPTY;
     }
 
     public boolean isFloor() {
-        return state == 1;
+        return type == TileType.FLOOR;
+    }
+
+    public void becomeFloor() {
+        type = TileType.FLOOR;
     }
 
     public boolean isWall() {
-        return state == 2;
+        return type == TileType.WALL;
+    }
+
+    public void becomeWall() {
+        type = TileType.WALL;
     }
 
     public boolean isWater() {
-        return state == 3;
+        return type == TileType.WATER;
+    }
+
+    public void becomeWater() {
+        type = TileType.WATER;
     }
 
     public boolean hasDoor() {

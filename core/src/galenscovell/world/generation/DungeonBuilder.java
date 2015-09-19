@@ -37,7 +37,7 @@ public class DungeonBuilder {
             Room room = this.rooms.get(i);
             for (int x = room.x; x < room.x + room.width; x++) {
                 for (int y = room.y; y < room.y + room.height; y++) {
-                    this.grid[y][x].state = 1;
+                    this.grid[y][x].becomeFloor();
                     roomTiles.add(this.grid[y][x]);
                 }
             }
@@ -46,11 +46,11 @@ public class DungeonBuilder {
         // Make empty Tiles around floor Tiles walls
         for (int x = 0; x < Constants.MAPSIZE; x++) {
             for (int y = 0; y < Constants.MAPSIZE; y++) {
-                if (this.grid[x][y].state == 1) {
+                if (this.grid[x][y].isFloor()) {
                     for (int xx = x - 1; xx <= x + 1; xx++) {
                         for (int yy = y - 1; yy <= y + 1; yy++) {
-                            if (this.grid[xx][yy].state == 0) {
-                                this.grid[xx][yy].state = 2;
+                            if (this.grid[xx][yy].isEmpty()) {
+                                this.grid[xx][yy].becomeWall();
                             }
                         }
                     }
@@ -131,7 +131,7 @@ public class DungeonBuilder {
                         pointBY++;
                     }
                 }
-                this.grid[pointBY][pointBX].state = 1;
+                this.grid[pointBY][pointBX].becomeFloor();
             }
             roomA.addConnection(roomB);
             roomB.addConnection(roomA);
@@ -222,7 +222,7 @@ public class DungeonBuilder {
                     System.out.print('.');
                 } else if (tile.isWall()) {
                     System.out.print('#');
-                } else if (tile.state == 4) {
+                } else if (tile.hasDoor()) {
                     System.out.print('D');
                 } else if (tile.isWater()) {
                     System.out.print('~');
