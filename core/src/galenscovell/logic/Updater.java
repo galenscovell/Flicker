@@ -1,9 +1,13 @@
 package galenscovell.logic;
 
-import galenscovell.entities.Entity;
-import galenscovell.entities.Player;
-import galenscovell.inanimates.Inanimate;
-import galenscovell.screens.HudStage;
+import galenscovell.logic.actions.AttackAction;
+import galenscovell.logic.actions.MoveAction;
+import galenscovell.logic.world.Tile;
+import galenscovell.things.entities.Entity;
+import galenscovell.things.entities.Player;
+import galenscovell.things.inanimates.Inanimate;
+import galenscovell.ui.screens.GameScreen;
+import galenscovell.ui.HudStage;
 import galenscovell.util.Constants;
 
 import java.util.List;
@@ -17,21 +21,23 @@ import java.util.Map;
  */
 
 public class Updater {
-    private int tileSize;
+    private GameScreen game;
     private HudStage hud;
     private Map<Integer, Tile> tiles;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
     private Player player;
-    private EntityPathfinder pathfinder;
-    private CombatKit combatKit;
+    private Pathfinder pathfinder;
+    private AttackAction attackAction;
+    private MoveAction moveAction;
 
-    public Updater(Player player, Map<Integer, Tile> tiles) {
+    public Updater(GameScreen game, Player player, Map<Integer, Tile> tiles) {
+        this.game = game;
         this.player = player;
         this.tiles = tiles;
-        this.tileSize = Constants.TILESIZE;
-        this.pathfinder = new EntityPathfinder();
-        this.combatKit = new CombatKit(this, tiles);
+        this.pathfinder = new Pathfinder();
+        this.attackAction = new AttackAction(this, tiles);
+        this.moveAction = new MoveAction(this, tiles);
     }
 
     public void setHud(HudStage hud) {
@@ -47,97 +53,21 @@ public class Updater {
         if (hud.restrictMovement() || !hud.clearMenus()) {
             return false;
         }
-        if (!findPath(player, destination[0], destination[1]) || player.getPathStack() == null || player.getPathStack().isEmpty()) {
-            return false;
-        } else {
-            Point nextMove = player.getPathStack().pop();
-            if (move(player, nextMove.x, nextMove.y)) {
-                // TODO: Movement power usage and regeneration
-            } else {
-                player.setPathStack(null);
-                return false;
-            }
-            npcTurn();
-        }
-        return true;
+        return moveAction.updateMovement(destination);
     }
 
-    public void startAttackMode(String move) {
-        combatKit.setRange(player, move);
+    public void displayAttackRange(String move) {
+        attackAction.setRange(player, move);
     }
 
     public void attack(float x, float y) {
+        hud.clearMenus();
         int targetX = (int) x / tileSize;
         int targetY = (int) y / tileSize;
         Entity targetEntity = findEntity(targetX, targetY);
         Tile targetTile = findTile(targetX, targetY);
-        combatKit.finalizeMove(player, targetEntity, targetTile);
-        endAttackMode();
-    }
-
-    public void endAttackMode() {
-        combatKit.removeRange();
-        hud.clearMenus();
-        hud.finishAttackMove();
-    }
-
-    public Tile getTile(float x, float y) {
-        int tileX = (int) (x / tileSize);
-        int tileY = (int) (y / tileSize);
-        return findTile(tileX, tileY);
-    }
-
-    public boolean descend() {
-        return false;
-    }
-
-    private void npcTurn() {
-        for (Entity entity : entities) {
-            if (entity.movementTimer()) {
-                if (entity.isAggressive()) {
-                    findPath(entity, player.getX(), player.getY());
-                } else {
-                    findPath(entity, player.getX(), player.getY());
-                    // TODO: Passive behavior, destination depends on entity
-                }
-                if (entity.getPathStack() == null || entity.getPathStack().isEmpty()) {
-                    continue;
-                } else {
-                    Point nextMove = entity.getPathStack().pop();
-                    if (!move(entity, nextMove.x, nextMove.y)) {
-                        entity.setPathStack(null);
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean findPath(Entity entity, int destX, int destY) {
-        Tile startTile = getTile(entity.getX(), entity.getY());
-        Tile endTile = getTile(destX, destY);
-        if (endTile == null || startTile == endTile) {
-            return false;
-        } else {
-            entity.setPathStack(pathfinder.findPath(tiles, startTile, endTile));
-            return true;
-        }
-    }
-
-    public boolean move(Entity entity, int x, int y) {
-        int entityX = (entity.getX() / tileSize);
-        int entityY = (entity.getY() / tileSize);
-        int diffX = x - entityX;
-        int diffY = y - entityY;
-        Tile nextTile = findTile(x, y);
-        if (nextTile.isFloor() && !nextTile.isOccupied()) {
-            findTile(entityX, entityY).toggleOccupied();
-            entity.move(diffX * tileSize, diffY * tileSize, true);
-            nextTile.toggleOccupied();
-            return true;
-        } else {
-            entity.move(diffX, diffY, false);
-            return false;
-        }
+        attackAction.finalizeMove(player, targetEntity, targetTile);
+        game.endAttackMode();
     }
 
     private Inanimate findInanimate(int x, int y) {
@@ -158,9 +88,5 @@ public class Updater {
             }
         }
         return target;
-    }
-
-    private Tile findTile(int x, int y) {
-        return tiles.get(x * Constants.MAPSIZE + y);
     }
 }

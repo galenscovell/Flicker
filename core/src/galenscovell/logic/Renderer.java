@@ -3,11 +3,12 @@ package galenscovell.logic;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
-import galenscovell.entities.Entity;
-import galenscovell.entities.Player;
+import galenscovell.logic.world.Tile;
+import galenscovell.things.entities.Entity;
+import galenscovell.things.entities.Player;
 import galenscovell.graphics.Fog;
-import galenscovell.inanimates.Door;
-import galenscovell.inanimates.Inanimate;
+import galenscovell.things.inanimates.Door;
+import galenscovell.things.inanimates.Inanimate;
 import galenscovell.util.Constants;
 import galenscovell.util.MonsterParser;
 

@@ -1,9 +1,9 @@
 package galenscovell.flicker;
 
-import galenscovell.screens.AbstractScreen;
-import galenscovell.screens.GameScreen;
-import galenscovell.screens.LoadingScreen;
-import galenscovell.screens.MainMenuScreen;
+import galenscovell.ui.screens.AbstractScreen;
+import galenscovell.ui.screens.GameScreen;
+import galenscovell.ui.screens.LoadingScreen;
+import galenscovell.ui.screens.MainMenuScreen;
 import galenscovell.util.ResourceManager;
 
 import com.badlogic.gdx.Game;

@@ -1,6 +1,6 @@
 package galenscovell.util;
 
-import galenscovell.screens.GameScreen;
+import galenscovell.ui.screens.GameScreen;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;

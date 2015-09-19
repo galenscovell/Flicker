@@ -1,9 +1,8 @@
 package galenscovell.util;
 
-import galenscovell.entities.Monster;
+import galenscovell.things.entities.Monster;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
