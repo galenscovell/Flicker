@@ -1,28 +1,22 @@
 package galenscovell.ui;
 
-import galenscovell.ui.components.*;
-import galenscovell.ui.screens.GameScreen;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-/**
- * HUD STAGE
- * Creates HUD and handles HUD updates.
- * HUD camera uses exact pixel dimensions (480, 800).
- *
- * @author Galen Scovell
- */
+import galenscovell.ui.components.*;
+import galenscovell.ui.screens.GameScreen;
+import galenscovell.util.ResourceManager;
 
 public class HudStage extends Stage {
     private GameScreen game;
@@ -36,10 +30,10 @@ public class HudStage extends Stage {
     }
 
     public void create() {
-        this.examinePopup = new ExamineModePopup(this);
-        this.inventoryMenu = new HudInventoryMenu(this);
-        this.optionsMenu = new OptionsMenu(this);
-        this.movePanel = new MovePanel(this);
+        this.examinePopup = new ExaminePopup(this);
+        this.inventoryMenu = new InventoryMenu(this);
+        this.optionsMenu = new OptionMenu(this);
+        this.movePanel = new SkillMenu(this);
 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -135,7 +129,7 @@ public class HudStage extends Stage {
     public void displayExamineInfo(String info, Sprite sprite) {
         Sprite flippedTarget = new Sprite(sprite);
         flippedTarget.flip(false, true);
-        this.infoPopup = new ExamineInfoPopup(this, info, flippedTarget);
+        this.infoPopup = new ExamineInfo(this, info, flippedTarget);
         this.addActor(infoPopup);
     }
 

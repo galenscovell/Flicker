@@ -1,13 +1,6 @@
-package galenscovell.logic.world;
+package galenscovell.world;
 
 import java.util.ArrayList;
-
-/**
- * ROOM DATA STRUCTURE
- * Stores Room position, dimensions, containing Tiles and directly connected Rooms
- *
- * @author Galen Scovell
- */
 
 public class Room {
     public int x, y, width, height;

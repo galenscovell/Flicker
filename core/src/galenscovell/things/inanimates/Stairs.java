@@ -1,17 +1,9 @@
 package galenscovell.things.inanimates;
 
-import galenscovell.logic.world.Tile;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-/**
- * STAIRS INANIMATE
- * Loads stair sprite and handles interaction events.
- *
- * @author Galen Scovell
- */
+import galenscovell.util.ResourceManager;
+import galenscovell.world.Tile;
 
 public class Stairs implements Inanimate {
     private int x, y;

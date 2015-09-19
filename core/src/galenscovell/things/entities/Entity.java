@@ -1,17 +1,10 @@
 package galenscovell.things.entities;
 
-import galenscovell.logic.Point;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import galenscovell.processing.Point;
 
 import java.util.Stack;
-
-/**
- * ENTITY INTERFACE
- *
- * @author Galen Scovell
- */
 
 public interface Entity {
     public String examine();

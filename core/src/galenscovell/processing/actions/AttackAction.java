@@ -1,19 +1,12 @@
-package galenscovell.logic.actions;
+package galenscovell.processing.actions;
 
-import galenscovell.logic.Updater;
-import galenscovell.logic.world.Tile;
+import galenscovell.processing.Updater;
 import galenscovell.things.entities.Entity;
 import galenscovell.util.Constants;
+import galenscovell.world.Tile;
 
 import java.util.ArrayList;
 import java.util.Map;
-
-/**
- * COMBAT KIT
- * Combat component handler
- *
- * @author Galen Scovell
- */
 
 public class AttackAction {
     private Updater updater;

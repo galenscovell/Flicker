@@ -1,33 +1,25 @@
 package galenscovell.ui.components;
 
-import galenscovell.ui.HudStage;
-import galenscovell.ui.screens.MainMenuScreen;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import galenscovell.ui.HudStage;
+import galenscovell.ui.screens.MainMenuScreen;
+import galenscovell.util.ResourceManager;
 
-/**
- * OPTIONS MENU
- * HUD popup table for saving/quitting.
- *
- * @author Galen Scovell
- */
-
-public class OptionsMenu extends Table {
+public class OptionMenu extends Table {
     private HudStage root;
     private MainMenuScreen mainMenu;
     private Table mainTable;
 
-    public OptionsMenu(HudStage root) {
+    public OptionMenu(HudStage root) {
         this.root = root;
         createGameVersion();
     }
 
-    public OptionsMenu(MainMenuScreen mainMenu) {
+    public OptionMenu(MainMenuScreen mainMenu) {
         this.mainMenu = mainMenu;
         createMainVersion();
     }

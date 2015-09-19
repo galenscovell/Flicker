@@ -1,18 +1,10 @@
 package galenscovell.ui.screens;
 
-import galenscovell.flicker.FlickerMain;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
-/**
- * ABSTRACT SCREEN
- * Basic screen functionality.
- *
- * @author Galen Scovell
- */
+import galenscovell.flicker.FlickerMain;
 
 public class AbstractScreen implements Screen {
     protected FlickerMain root;

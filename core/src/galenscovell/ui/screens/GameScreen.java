@@ -1,31 +1,20 @@
 package galenscovell.ui.screens;
 
-import galenscovell.things.entities.Player;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.input.GestureDetector;
 import galenscovell.flicker.FlickerMain;
-import galenscovell.logic.Renderer;
-import galenscovell.logic.Updater;
-import galenscovell.logic.world.Level;
+import galenscovell.processing.Renderer;
+import galenscovell.processing.Updater;
+import galenscovell.things.entities.Hero;
 import galenscovell.ui.HudStage;
 import galenscovell.util.GestureHandler;
 import galenscovell.util.InputHandler;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.input.GestureDetector;
-
-/**
- * GAME SCREEN
- * Main gameplay screen.
- * Creates Player instance used throughout application.
- * Renderer handles graphics and level setup, Updater handles core logic.
- * HUD is a Stage rendered after Renderer and referenced by Updater.
- *
- * @author Galen Scovell
- */
+import galenscovell.world.Level;
 
 public class GameScreen extends AbstractScreen {
-    private Player player;
+    private Hero hero;
     private Renderer renderer;
     private Updater updater;
     private InputMultiplexer fullInput;
@@ -43,7 +32,7 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void create() {
         // GLProfiler.enable();
-        this.player = new Player();
+        this.hero = new Hero();
         this.stage = new HudStage(this, root.spriteBatch);
         createNewLevel();
     }
@@ -144,8 +133,8 @@ public class GameScreen extends AbstractScreen {
         level.optimize();
 
         this.renderer = new Renderer(level.getTiles(), root.spriteBatch);
-        this.updater = new Updater(this, player, level.getTiles());
-        renderer.assembleLevel(player);
+        this.updater = new Updater(this, hero, level.getTiles());
+        renderer.assembleLevel(hero);
         // level.testPrint();
         updater.setHud((HudStage) stage);
         updater.setLists(renderer.getEntityList(), renderer.getInanimateList());

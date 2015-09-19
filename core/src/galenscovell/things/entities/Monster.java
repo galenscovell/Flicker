@@ -1,17 +1,9 @@
 package galenscovell.things.entities;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import galenscovell.util.ResourceManager;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import java.util.Random;
-
-/**
- * MONSTER CREATURE
- * Utilizes MonsterParser to create Creatures based on JSON data.
- *
- * @author Galen Scovell
- */
 
 public class Monster extends Creature {
     private String type, desc, spriteLocation;
@@ -83,8 +75,6 @@ public class Monster extends Creature {
     private void setSprites() {
         rightSprites = new Sprite[2];
         leftSprites = new Sprite[2];
-
-        // Populate sprite animation sets
         for (int i = 0; i < 2; i++) {
             rightSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(spriteLocation + i));
             rightSprites[i].flip(false, true);

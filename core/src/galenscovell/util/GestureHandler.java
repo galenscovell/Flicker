@@ -1,15 +1,7 @@
 package galenscovell.util;
 
-import galenscovell.ui.screens.GameScreen;
-
 import com.badlogic.gdx.input.GestureDetector;
-
-/**
- * GESTURE HANDLER
- * Handles gesture input.
- *
- * @author Galen Scovell
- */
+import galenscovell.ui.screens.GameScreen;
 
 public class GestureHandler extends GestureDetector.GestureAdapter {
     private GameScreen game;

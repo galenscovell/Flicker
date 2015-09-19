@@ -1,20 +1,12 @@
 package galenscovell.things.entities;
 
-import galenscovell.logic.Point;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import galenscovell.processing.Point;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-
-/**
- * CREATURE ENTITY
- * Superclass of all mobile entities.
- *
- * @author Galen Scovell
- */
 
 public class Creature implements Entity {
     private int x, y, prevX, prevY;

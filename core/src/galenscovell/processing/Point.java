@@ -1,12 +1,4 @@
-package galenscovell.logic;
-
-/**
- * POINT
- * Stores [x, y] coordinates from grid.
- * Used as List item for easily storing grid coordinates across objects.
- *
- * @author Galen Scovell
- */
+package galenscovell.processing;
 
 public class Point {
     public int x, y;

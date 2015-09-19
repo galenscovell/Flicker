@@ -1,21 +1,14 @@
-package galenscovell.logic.world;
+package galenscovell.world;
 
-import galenscovell.logic.world.generation.Bitmasker;
-import galenscovell.logic.world.generation.DungeonBuilder;
-import galenscovell.logic.Point;
+import galenscovell.processing.Point;
 import galenscovell.util.Constants;
+import galenscovell.world.generation.Bitmasker;
+import galenscovell.world.generation.DungeonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-/**
- * LEVEL
- * Level is composed of a HashMap { x * MAPSIZE + y : Tile object }
- *
- * @author Galen Scovell
- */
 
 public class Level {
     private DungeonBuilder builder;

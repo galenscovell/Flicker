@@ -1,30 +1,22 @@
 package galenscovell.ui.screens;
 
-import galenscovell.flicker.FlickerMain;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import galenscovell.flicker.FlickerMain;
+import galenscovell.util.ResourceManager;
 
-/**
- * LOADING SCREEN
- * Displays loading animation asynchronously while game resources are loading.
- *
- * @author Galen Scovell
- */
-
-public class LoadingScreen extends AbstractScreen {
+public class LoadScreen extends AbstractScreen {
     private ProgressBar loadingBar;
 
-    public LoadingScreen(FlickerMain root) {
+    public LoadScreen(FlickerMain root) {
         super(root);
     }
 

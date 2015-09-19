@@ -1,17 +1,9 @@
 package galenscovell.util;
 
-import galenscovell.ui.screens.GameScreen;
-
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-
-/**
- * INPUT HANDLER
- * Handles basic input not relating to gestures.
- *
- * @author Galen Scovell
- */
+import galenscovell.ui.screens.GameScreen;
 
 public class InputHandler extends InputAdapter {
     private GameScreen game;

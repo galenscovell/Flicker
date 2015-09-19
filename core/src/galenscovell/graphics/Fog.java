@@ -5,13 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-/**
- * FOG
- * Displays and animates transparent fog sprite.
- *
- * @author Galen Scovell
- */
-
 public class Fog {
     private Sprite sprite;
     private float x, y;

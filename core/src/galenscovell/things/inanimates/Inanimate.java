@@ -1,16 +1,8 @@
 package galenscovell.things.inanimates;
 
-import galenscovell.logic.world.Tile;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-/**
- * INANIMATE INTERFACE
- * All inanimates interact(), getType(), draw() and getX()/getY().
- *
- * @author Galen Scovell
- */
+import galenscovell.world.Tile;
 
 public interface Inanimate {
     public Sprite getSprite();

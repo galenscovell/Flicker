@@ -1,20 +1,12 @@
 package galenscovell.flicker;
 
-import galenscovell.ui.screens.AbstractScreen;
-import galenscovell.ui.screens.GameScreen;
-import galenscovell.ui.screens.LoadingScreen;
-import galenscovell.ui.screens.MainMenuScreen;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-/**
- * FLICKER MAIN
- * Main entry for application.
- *
- * @author Galen Scovell
- */
+import galenscovell.ui.screens.AbstractScreen;
+import galenscovell.ui.screens.GameScreen;
+import galenscovell.ui.screens.LoadScreen;
+import galenscovell.ui.screens.MainMenuScreen;
+import galenscovell.util.ResourceManager;
 
 public class FlickerMain extends Game {
     public SpriteBatch spriteBatch;
@@ -25,7 +17,7 @@ public class FlickerMain extends Game {
     public void create () {
         // Initialize spriteBatch used throughout game
         this.spriteBatch = new SpriteBatch();
-        this.loadingScreen = new LoadingScreen(this);
+        this.loadingScreen = new LoadScreen(this);
         this.mainMenuScreen = new MainMenuScreen(this);
         setScreen(loadingScreen);
     }

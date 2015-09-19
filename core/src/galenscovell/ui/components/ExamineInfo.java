@@ -1,25 +1,17 @@
 package galenscovell.ui.components;
 
-import galenscovell.ui.HudStage;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import galenscovell.ui.HudStage;
+import galenscovell.util.ResourceManager;
 
-/**
- * EXAMINEINFO POPUP
- * Displays examined entity/object info, focused on entity/object location.
- *
- * @author Galen Scovell
- */
-
-public class ExamineInfoPopup extends Table {
+public class ExamineInfo extends Table {
     private HudStage root;
 
-    public ExamineInfoPopup(HudStage root, String info, Sprite target) {
+    public ExamineInfo(HudStage root, String info, Sprite target) {
         this.root = root;
         create(info, target);
     }

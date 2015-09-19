@@ -1,24 +1,16 @@
-package galenscovell.logic;
+package galenscovell.processing;
 
-import galenscovell.logic.actions.AttackAction;
-import galenscovell.logic.actions.MoveAction;
-import galenscovell.logic.world.Tile;
+import galenscovell.processing.actions.AttackAction;
+import galenscovell.processing.actions.MoveAction;
 import galenscovell.things.entities.Entity;
-import galenscovell.things.entities.Player;
+import galenscovell.things.entities.Hero;
 import galenscovell.things.inanimates.Inanimate;
-import galenscovell.ui.screens.GameScreen;
 import galenscovell.ui.HudStage;
-import galenscovell.util.Constants;
+import galenscovell.ui.screens.GameScreen;
+import galenscovell.world.Tile;
 
 import java.util.List;
 import java.util.Map;
-
-/**
- * UPDATER
- * Handles game logic: interactions, movements, behaviors and HUD updates.
- *
- * @author Galen Scovell
- */
 
 public class Updater {
     private GameScreen game;
@@ -26,14 +18,14 @@ public class Updater {
     private Map<Integer, Tile> tiles;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
-    private Player player;
+    private Hero hero;
     private Pathfinder pathfinder;
     private AttackAction attackAction;
     private MoveAction moveAction;
 
-    public Updater(GameScreen game, Player player, Map<Integer, Tile> tiles) {
+    public Updater(GameScreen game, Hero hero, Map<Integer, Tile> tiles) {
         this.game = game;
-        this.player = player;
+        this.hero = hero;
         this.tiles = tiles;
         this.pathfinder = new Pathfinder();
         this.attackAction = new AttackAction(this, tiles);
@@ -57,7 +49,7 @@ public class Updater {
     }
 
     public void displayAttackRange(String move) {
-        attackAction.setRange(player, move);
+        attackAction.setRange(hero, move);
     }
 
     public void attack(float x, float y) {
@@ -66,7 +58,7 @@ public class Updater {
         int targetY = (int) y / tileSize;
         Entity targetEntity = findEntity(targetX, targetY);
         Tile targetTile = findTile(targetX, targetY);
-        attackAction.finalizeMove(player, targetEntity, targetTile);
+        attackAction.finalizeMove(hero, targetEntity, targetTile);
         game.endAttackMode();
     }
 

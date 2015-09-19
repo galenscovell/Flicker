@@ -2,25 +2,16 @@ package galenscovell.ui.components;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import galenscovell.ui.HudStage;
 import galenscovell.util.ResourceManager;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
-
-/**
- * MOVE PANEL
- * Displays current available moves to player.
- *
- * @author Galen Scovell
- */
-
-public class MovePanel extends Table {
+public class SkillMenu extends Table {
     private HudStage root;
     private Table mainTable;
 
-    public MovePanel(HudStage root) {
+    public SkillMenu(HudStage root) {
         this.root = root;
         create();
     }

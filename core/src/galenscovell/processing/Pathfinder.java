@@ -1,16 +1,12 @@
-package galenscovell.logic;
+package galenscovell.processing;
 
-import galenscovell.logic.world.Tile;
 import galenscovell.util.Constants;
+import galenscovell.world.Tile;
 
-import java.util.*;
-
-/**
- * PATHFINDER
- * Takes in particular behavior arguments and utilizes A* algorithm for entity movement.
- *
- * @author Galen Scovell
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 public class Pathfinder {
 

@@ -1,28 +1,23 @@
 package galenscovell.ui.screens;
 
-import galenscovell.flicker.FlickerMain;
-import galenscovell.ui.components.OptionsMenu;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-/**
- * MAINMENU SCREEN
- * Displays primary game menu.
- *
- * @author Galen Scovell
- */
+import galenscovell.flicker.FlickerMain;
+import galenscovell.ui.components.OptionMenu;
+import galenscovell.util.ResourceManager;
 
 public class MainMenuScreen extends AbstractScreen {
-    private OptionsMenu optionsMenu;
+    private OptionMenu optionMenu;
 
     public MainMenuScreen(FlickerMain root){
         super(root);
@@ -31,7 +26,7 @@ public class MainMenuScreen extends AbstractScreen {
     @Override
     public void create() {
         this.stage = new Stage(new FitViewport(480, 800), root.spriteBatch);
-        this.optionsMenu = new OptionsMenu(this);
+        this.optionMenu = new OptionMenu(this);
 
         Table mainTable = new Table();
         mainTable.padBottom(4);
@@ -45,7 +40,7 @@ public class MainMenuScreen extends AbstractScreen {
         setIcon(optionsButton, "scroll", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                stage.addActor(optionsMenu);
+                stage.addActor(optionMenu);
             }
         });
         mainTable.add(optionsButton).width(48).height(48).expand().fill().top().right();
@@ -92,7 +87,7 @@ public class MainMenuScreen extends AbstractScreen {
     }
 
     public void closeOptions() {
-        optionsMenu.remove();
+        optionMenu.remove();
     }
 
     private void setIcon(Table table, String name, int height, float opacity) {

@@ -1,33 +1,23 @@
-package galenscovell.logic;
+package galenscovell.processing;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
-
-import galenscovell.logic.world.Tile;
-import galenscovell.things.entities.Entity;
-import galenscovell.things.entities.Player;
-import galenscovell.graphics.Fog;
-import galenscovell.things.inanimates.Door;
-import galenscovell.things.inanimates.Inanimate;
-import galenscovell.util.Constants;
-import galenscovell.util.MonsterParser;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import galenscovell.graphics.Fog;
+import galenscovell.things.entities.Entity;
+import galenscovell.things.entities.Hero;
+import galenscovell.things.inanimates.Door;
+import galenscovell.things.inanimates.Inanimate;
+import galenscovell.util.Constants;
+import galenscovell.util.MonsterParser;
+import galenscovell.world.Tile;
 
 import java.util.*;
-
-/**
- * RENDERER
- * Handles game graphics.
- * Renderer uses custom units (48, 80) rather than pixel dimensions.
- *
- * @author Galen Scovell
- */
 
 public class Renderer {
     private OrthographicCamera camera;
@@ -40,7 +30,7 @@ public class Renderer {
     private List<Entity> entities;
     private List<Inanimate> inanimates;
     private Fog fog;
-    private Player player;
+    private Hero hero;
 
     private RayHandler rayHandler;
     private PointLight torch;
@@ -49,6 +39,7 @@ public class Renderer {
     private Box2DDebugRenderer debug;
 
     public Renderer(Map<Integer, Tile> tiles, SpriteBatch spriteBatch) {
+        // Uses custom dimensions (48, 80) rather than exact pixels (480, 800)
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
@@ -91,17 +82,17 @@ public class Renderer {
         }
         // Entity rendering: [x, y] are in custom units
         for (Entity entity : entities) {
-            entity.draw(spriteBatch, tileSize, interpolation, player);
+            entity.draw(spriteBatch, tileSize, interpolation, hero);
         }
         // Player rendering: [x, y] are in custom units
-        player.draw(spriteBatch, tileSize, interpolation, null);
+        hero.draw(spriteBatch, tileSize, interpolation, null);
 
         // Background effect rendering
         fog.draw(spriteBatch);
         spriteBatch.end();
 
         // Center torch on player
-        torch.setPosition(player.getCurrentX() + (tileSize / 2), player.getCurrentY() + (tileSize / 2));
+        torch.setPosition(hero.getCurrentX() + (tileSize / 2), hero.getCurrentY() + (tileSize / 2));
         rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
         animateTorch();
@@ -155,9 +146,9 @@ public class Renderer {
         centerOnPlayer();
     }
 
-    public void assembleLevel(Player player) {
+    public void assembleLevel(Hero hero) {
         placeInanimates();
-        placePlayer(player);
+        placePlayer(hero);
         MonsterParser monsterParser = new MonsterParser();
         for (int i = 0; i < 3; i++) {
             placeEntities(monsterParser);
@@ -198,10 +189,10 @@ public class Renderer {
         return true;
     }
 
-    private void placePlayer(Player playerInstance) {
+    private void placePlayer(Hero heroInstance) {
         Tile randomTile = findRandomTile();
-        this.player = playerInstance;
-        player.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
+        this.hero = heroInstance;
+        hero.setPosition(randomTile.x * tileSize, randomTile.y * tileSize);
         randomTile.toggleOccupied();
     }
 
@@ -229,7 +220,7 @@ public class Renderer {
     }
 
     private void centerOnPlayer() {
-        camera.position.set(player.getCurrentX(), player.getCurrentY(), 0);
+        camera.position.set(hero.getCurrentX(), hero.getCurrentY(), 0);
     }
 
     private void findCameraBounds() {

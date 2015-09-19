@@ -1,19 +1,14 @@
-package galenscovell.logic.world.generation;
+package galenscovell.world.generation;
 
-import galenscovell.logic.Point;
-import galenscovell.logic.world.Room;
-import galenscovell.logic.world.Tile;
+import galenscovell.processing.Point;
 import galenscovell.util.Constants;
+import galenscovell.world.Room;
+import galenscovell.world.Tile;
 
-import java.util.*;
-
-/**
- * DUNGEON BUILDER
- * Constructs a new world tileset with dungeon features.
- * (Rectangular rooms connected by corridors)
- *
- * @author Galen Scovell
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DungeonBuilder {
     private Tile[][] grid;

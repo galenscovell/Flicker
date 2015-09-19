@@ -1,23 +1,15 @@
 package galenscovell.ui.components;
 
-import galenscovell.ui.HudStage;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import galenscovell.ui.HudStage;
+import galenscovell.util.ResourceManager;
 
-/**
- * EXAMINE MENU
- * HUD popup table for examine mode.
- *
- * @author Galen Scovell
- */
-
-public class ExamineModePopup extends Table {
+public class ExaminePopup extends Table {
     private HudStage root;
 
-    public ExamineModePopup(HudStage root) {
+    public ExaminePopup(HudStage root) {
         this.root = root;
         create();
     }

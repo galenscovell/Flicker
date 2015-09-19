@@ -1,20 +1,11 @@
-package galenscovell.logic.world;
-
-import galenscovell.logic.Point;
-import galenscovell.util.ResourceManager;
+package galenscovell.world;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import galenscovell.processing.Point;
+import galenscovell.util.ResourceManager;
 
 import java.util.List;
-
-/**
- * TILE
- * Keeps track of tile position, state and rendering.
- * State can be Floor(1), Wall(2) or Water(3)
- *
- * @author Galen Scovell
- */
 
 public class Tile {
     public int x, y, state;

@@ -1,26 +1,17 @@
 package galenscovell.util;
 
-import galenscovell.things.entities.Monster;
-
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import galenscovell.things.entities.Monster;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-/**
- * MONSTER PARSER
- * Deserializes monster JSON data.
- *
- * @author Galen Scovell
- */
 
 public class MonsterParser {
     private List<Monster> createMonsterList() {

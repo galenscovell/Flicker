@@ -1,19 +1,11 @@
 package galenscovell.things.inanimates;
 
-import galenscovell.logic.world.Tile;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import galenscovell.util.ResourceManager;
+import galenscovell.world.Tile;
 
 import java.util.Random;
-
-/**
- * DEAD INANIMATE
- * Enemy death sprite loading and location.
- *
- * @author Galen Scovell
- */
 
 public class Dead implements Inanimate {
     private int x, y;

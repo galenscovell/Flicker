@@ -1,19 +1,10 @@
 package galenscovell.things.inanimates;
 
-import galenscovell.logic.Renderer;
-import galenscovell.logic.world.Tile;
-import galenscovell.util.ResourceManager;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-/**
- * DOOR
- * Loads door sprite and handles interaction events.
- * This object has access to Renderer for handling of Body collision updates.
- *
- * @author Galen Scovell
- */
+import galenscovell.processing.Renderer;
+import galenscovell.util.ResourceManager;
+import galenscovell.world.Tile;
 
 public class Door implements Inanimate {
     private Renderer renderer;
