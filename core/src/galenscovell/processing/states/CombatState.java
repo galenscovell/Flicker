@@ -1,17 +1,12 @@
 package galenscovell.processing.states;
 
-import galenscovell.processing.actions.AttackAction;
-import galenscovell.world.Tile;
-
-import java.util.Map;
+import galenscovell.processing.actions.*;
 
 public class CombatState implements State {
-    private AttackAction attackAction;
-    private Map<Integer, Tile> tiles;
+    private Action attackAction;
 
-    public CombatState(Map<Integer, Tile> tiles) {
+    public CombatState() {
         this.attackAction = new AttackAction();
-        this.tiles = tiles;
     }
 
     public void enter() {

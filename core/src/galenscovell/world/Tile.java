@@ -21,6 +21,7 @@ public class Tile {
         this.type = TileType.EMPTY;
         this.frames = 0;
         this.currentFrame = 0;
+        this.door = false;
     }
 
     public boolean isEmpty() {

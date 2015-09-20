@@ -115,7 +115,7 @@ public class HudStage extends Stage {
     }
 
     public void selectAttackMove(String move) {
-        game.startAttackMode(move);
+
     }
 
     public void displayExamineInfo(String info, Sprite sprite) {
@@ -138,7 +138,6 @@ public class HudStage extends Stage {
             return false;
         } else if (movePanel.hasParent()) {
             movePanel.remove();
-            game.endAttackMode();
             return false;
         } else if (infoPopup != null && infoPopup.hasParent()) {
             infoPopup.remove();
@@ -189,7 +188,6 @@ public class HudStage extends Stage {
                 inventoryMenu.remove();
             } else if (movePanel != menu && movePanel.hasParent()) {
                 movePanel.remove();
-                game.endAttackMode();
             }
             this.addActor(menu);
         }

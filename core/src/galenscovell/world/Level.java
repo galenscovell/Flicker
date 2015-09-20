@@ -1,7 +1,9 @@
 package galenscovell.world;
 
 import galenscovell.processing.Point;
-import galenscovell.util.Constants;
+import galenscovell.things.entities.*;
+import galenscovell.things.inanimates.*;
+import galenscovell.util.*;
 import galenscovell.world.generation.*;
 
 import java.util.*;
@@ -9,14 +11,25 @@ import java.util.*;
 public class Level {
     private DungeonBuilder builder;
     private Map<Integer, Tile> tiles;
+    private List<Entity> entities;
+    private List<Inanimate> inanimates;
 
     public Level() {
         this.builder = new DungeonBuilder();
         this.tiles = builder.getTiles();
+        optimize();
     }
 
     public Map<Integer, Tile> getTiles() {
         return tiles;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public List<Inanimate> getInanimates() {
+        return inanimates;
     }
 
     public void optimize() {
@@ -127,5 +140,63 @@ public class Level {
 
     public void testPrint() {
         builder.print();
+    }
+
+    public void assembleLevel(Hero hero) {
+        this.inanimates = new ArrayList<Inanimate>();
+        this.entities = new ArrayList<Entity>();
+        placeInanimates();
+        placePlayer(hero);
+        MonsterParser monsterParser = new MonsterParser();
+        // TODO: Modify entity placement
+        for (int i = 0; i < 3; i++) {
+            placeEntities(monsterParser);
+        }
+    }
+
+    private void placeInanimates() {
+        // Place doors on floors with hallway bitmask, no adjacent doors, and more than 2 adjacent floor neighbors
+        Random random = new Random();
+        for (Tile tile : tiles.values()) {
+            if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
+                if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
+                    inanimates.add(new Door(tile.x, tile.y, "h"));
+                    tile.toggleBlocking();
+                    tile.toggleOccupied();
+                    tile.toggleDoor();
+                    System.out.println("Door placed");
+                } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
+                    inanimates.add(new Door(tile.x, tile.y, "v"));
+                    tile.toggleBlocking();
+                    tile.toggleOccupied();
+                    tile.toggleDoor();
+                    System.out.println("Door placed");
+                }
+            }
+        }
+    }
+
+    private boolean suitableForDoor(Tile tile) {
+        for (Point p : tile.getNeighbors()) {
+            Tile n = tiles.get(p.x * Constants.MAPSIZE + p.y);
+            if (n != null && (n.isWater() || n.hasDoor())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void placePlayer(Hero hero) {
+        Tile randomTile = findRandomTile();
+        hero.setPosition(randomTile.x * Constants.TILESIZE, randomTile.y * Constants.TILESIZE);
+        randomTile.toggleOccupied();
+    }
+
+    private void placeEntities(MonsterParser parser) {
+        Tile randomTile = findRandomTile();
+        Entity monster = parser.spawn(2);
+        monster.setPosition(randomTile.x * Constants.TILESIZE, randomTile.y * Constants.TILESIZE);
+        entities.add(monster);
+        randomTile.toggleOccupied();
     }
 }

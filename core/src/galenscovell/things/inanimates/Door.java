@@ -1,19 +1,17 @@
 package galenscovell.things.inanimates;
 
 import com.badlogic.gdx.graphics.g2d.*;
-import galenscovell.processing.Renderer;
+import galenscovell.graphics.Lighting;
 import galenscovell.util.ResourceManager;
 import galenscovell.world.Tile;
 
 public class Door implements Inanimate {
-    private Renderer renderer;
     private int x, y;
     private Sprite sprite;
     private Sprite[] sprites;
     private boolean blocking;
 
-    public Door(Renderer renderer, int x, int y, String type) {
-        this.renderer = renderer;
+    public Door(int x, int y, String type) {
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
@@ -47,14 +45,14 @@ public class Door implements Inanimate {
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = false;
-            renderer.updateTileBody(tile.x, tile.y);
+            Lighting.updateTileBody(tile.x, tile.y);
             return "The door opens.";
         } else {
             this.sprite = sprites[0];
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = true;
-            renderer.updateTileBody(tile.x, tile.y);
+            Lighting.updateTileBody(tile.x, tile.y);
             return "The door closes.";
         }
     }

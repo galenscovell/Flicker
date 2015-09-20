@@ -8,25 +8,27 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class Repository {
-    private Map<Integer, Tile> tiles;
-    private List<Entity> entities;
-    private List<Inanimate> inanimates;
+    public static Map<Integer, Tile> tiles;
+    public static List<Entity> entities;
+    public static List<Inanimate> inanimates;
 
-    public Repository(Map<Integer, Tile> ti, List<Entity> en, List<Inanimate> in) {
-        this.tiles = ti;
-        this.entities = en;
-        this.inanimates = in;
+    public static void fill(Map<Integer, Tile> tiles, List<Entity> entities, List<Inanimate> inanimates) {
+        Repository.tiles = tiles;
+        Repository.entities = entities;
+        Repository.inanimates = inanimates;
     }
 
-    public List<Entity> getEntities() {
-        return entities;
+    public static Entity findEntity(int x, int y) {
+        Entity target = null;
+        for (Entity entity : entities) {
+            if ((entity.getX() / Constants.MAPSIZE) == x && (entity.getY() / Constants.MAPSIZE) == y) {
+                target = entity;
+            }
+        }
+        return target;
     }
 
-    public List<Inanimate> getInanimates() {
-        return inanimates;
-    }
-
-    public Inanimate findInanimate(int x, int y) {
+    public static Inanimate findInanimate(int x, int y) {
         Inanimate inanimate = null;
         for (Inanimate object : inanimates) {
             if (object.getX() == x && object.getY() == y) {
@@ -36,17 +38,22 @@ public class Repository {
         return inanimate;
     }
 
-    public Entity findEntity(int x, int y) {
-        Entity target = null;
-        for (Entity entity : entities) {
-            if ((entity.getX() / tileSize) == x && (entity.getY() / tileSize) == y) {
-                target = entity;
-            }
-        }
-        return target;
+    public static Tile findTile(int x, int y) {
+        return tiles.get(x * Constants.MAPSIZE + y);
     }
 
-    public Tile findTile(int x, int y) {
-        return tiles.get(x * Constants.MAPSIZE + y);
+    public static Tile findRandomTile() {
+        Random random = new Random();
+        while (true) {
+            int choiceY = random.nextInt(Constants.MAPSIZE);
+            int choiceX = random.nextInt(Constants.MAPSIZE);
+            Tile tile = tiles.get(choiceX * Constants.MAPSIZE + choiceY);
+            if (tile != null && tile.isFloor()) {
+                if (tile.isOccupied()) {
+                    continue;
+                }
+                return tile;
+            }
+        }
     }
 }

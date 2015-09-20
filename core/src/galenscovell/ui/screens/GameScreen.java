@@ -4,21 +4,19 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
 import galenscovell.flicker.FlickerMain;
-import galenscovell.processing.Renderer;
+import galenscovell.graphics.Lighting;
+import galenscovell.processing.*;
 import galenscovell.processing.controls.*;
 import galenscovell.processing.states.*;
 import galenscovell.things.entities.Hero;
 import galenscovell.ui.HudStage;
-import galenscovell.world.*;
-
-import java.util.Map;
+import galenscovell.world.Level;
 
 public class GameScreen extends AbstractScreen {
     private Hero hero;
     private Renderer renderer;
     private State state, movementState, combatState, menuState;
     private InputMultiplexer input;
-    private Map<Integer, Tile> tiles;
 
     private final int timestep = 20;
     private int accumulator = 0;
@@ -60,7 +58,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        renderer.dispose();
+        Lighting.dispose();
         stage.dispose();
     }
 
@@ -99,15 +97,15 @@ public class GameScreen extends AbstractScreen {
 
     private void createNewLevel() {
         Level level = new Level();
-        level.optimize();
-        this.tiles = level.getTiles();
-
-        this.renderer = new Renderer(tiles, root.spriteBatch);
-        renderer.assembleLevel(hero);
+        level.assembleLevel(hero);
         // level.testPrint();
 
-        this.movementState = new MovementState(tiles);
-        this.combatState = new CombatState(tiles);
+        Repository.fill(level.getTiles(), level.getEntities(), level.getInanimates());
+        Lighting.light();
+
+        this.renderer = new Renderer(hero, root.spriteBatch);
+        this.movementState = new MovementState();
+        this.combatState = new CombatState();
         this.menuState = new MenuState();
         this.state = movementState;
 
