@@ -27,13 +27,7 @@ public class InputHandler extends InputAdapter {
         if (Math.abs(x - startX) < 10 && Math.abs(y - startY) < 10) {
             Vector3 worldCoordinates = new Vector3(x, y, 0);
             camera.unproject(worldCoordinates);
-//            if (game.isExamineMode()) {
-//                // game.playerExamine(worldCoordinates.x, worldCoordinates.y);
-//            } else if (game.isAttackMode()) {
-//                game.playerAttack(worldCoordinates.x, worldCoordinates.y);
-//            } else {
-//                game.playerMove(worldCoordinates.x, worldCoordinates.y);
-//            }
+            game.passInputToState(worldCoordinates.x, worldCoordinates.y);
             return true;
         } else {
             return false;

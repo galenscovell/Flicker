@@ -1,7 +1,7 @@
 package galenscovell.graphics;
 
 import box2dLight.*;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import galenscovell.processing.Repository;
@@ -11,30 +11,36 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class Lighting {
-    public static RayHandler rayHandler;
-    public static PointLight torch;
-    public static World world;
-    public static Map<Integer, Body> bodies;
-    public static int torchFrame;
+    private World world;
+    private RayHandler rayHandler;
+    private PointLight torch;
+    private Map<Integer, Body> bodies;
+    private int torchFrame;
     // private Box2DDebugRenderer debug;
 
-    public static void light() {
-        world = new World(new Vector2(0, 0), true);
-        rayHandler = new RayHandler(world);
+    public Lighting() {
+        this.world = new World(new Vector2(0, 0), true);
+        this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
         rayHandler.setAmbientLight(0, 0.1f, 0.1f, 1);
-        torch = new PointLight(rayHandler, 40, new Color(0.98f, 0.9f, 0.9f, 1), 27, 0, 0);
+        this.torch = new PointLight(rayHandler, 40, new Color(0.98f, 0.9f, 0.9f, 1), 27, 0, 0);
         torch.setSoftnessLength(4);
         rayHandler.setCulling(false);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
-        torchFrame = 0;
+        this.torchFrame = 0;
         // debug = new Box2DDebugRenderer();
-
         createTileBodies();
     }
 
-    public static void update() {
+    public void update(float x, float y, OrthographicCamera camera) {
+        torch.setPosition(x, y);
+        rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
+        animateTorch();
+        // debug.render(world, camera.combined);
+    }
+
+    public void animateTorch() {
         torchFrame++;
         if (torchFrame == 6) {
             torch.setDistance(26.5f);
@@ -50,11 +56,10 @@ public class Lighting {
             torch.setDistance(27);
             torchFrame = 0;
         }
-        // debug.render(world, camera.combined);
     }
 
-    public static void createTileBodies() {
-        bodies = new HashMap<Integer, Body>();
+    public void createTileBodies() {
+        this.bodies = new HashMap<Integer, Body>();
         PolygonShape tileShape = new PolygonShape();
         tileShape.setAsBox(Constants.TILESIZE / 2f, Constants.TILESIZE / 2f);
         BodyDef tileBodyDef = new BodyDef();
@@ -77,7 +82,7 @@ public class Lighting {
         tileShape.dispose();
     }
 
-    public static void updateTileBody(int tileX, int tileY) {
+    public void updateTileBody(int tileX, int tileY) {
         // Get body at object position
         Body updatedBody = bodies.get(tileX * Constants.MAPSIZE + tileY);
         // Destroy current fixture on body
@@ -98,7 +103,7 @@ public class Lighting {
         tileShape.dispose();
     }
 
-    public static void dispose() {
+    public void dispose() {
         world.dispose();
         rayHandler.dispose();
     }

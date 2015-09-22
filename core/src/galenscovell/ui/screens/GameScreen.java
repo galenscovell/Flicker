@@ -35,10 +35,14 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        state.update(delta);
+        // Update
+        if (accumulator > timestep) {
+            accumulator = 0;
+            state.update(delta);
+        }
         stage.act(delta);
         accumulator++;
-
+        // Render
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.render((double) accumulator / timestep);
@@ -58,8 +62,8 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        Lighting.dispose();
         stage.dispose();
+        renderer.dispose();
     }
 
     public void changeState(StateType stateType) {
@@ -95,24 +99,30 @@ public class GameScreen extends AbstractScreen {
         root.setScreen(root.mainMenuScreen);
     }
 
-    private void createNewLevel() {
-        Level level = new Level();
-        level.assembleLevel(hero);
-        // level.testPrint();
-
-        Repository.fill(level.getTiles(), level.getEntities(), level.getInanimates());
-        Lighting.light();
-
-        this.renderer = new Renderer(hero, root.spriteBatch);
-        this.movementState = new MovementState();
-        this.combatState = new CombatState();
-        this.menuState = new MenuState();
-        this.state = movementState;
-
+    private void setupInputProcessor() {
         this.input = new InputMultiplexer();
         input.addProcessor(stage);
         input.addProcessor(new InputHandler(this, renderer.getCamera()));
         input.addProcessor(new GestureDetector(new GestureHandler(this)));
         Gdx.input.setInputProcessor(input);
+    }
+
+
+    private void createNewLevel() {
+        Level level = new Level();
+        level.assembleLevel(hero);
+        // level.testPrint();
+
+        Repository.create(level.getTiles(), level.getEntities(), level.getInanimates());
+        Lighting lighting = new Lighting();
+        level.placeInanimates(lighting);
+
+        this.renderer = new Renderer(hero, lighting, root.spriteBatch);
+        this.movementState = new MovementState(hero);
+        this.combatState = new CombatState(hero);
+        this.menuState = new MenuState();
+        this.state = movementState;
+
+        setupInputProcessor();
     }
 }

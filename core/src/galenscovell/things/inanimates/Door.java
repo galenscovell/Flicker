@@ -10,8 +10,9 @@ public class Door implements Inanimate {
     private Sprite sprite;
     private Sprite[] sprites;
     private boolean blocking;
+    private Lighting lighting;
 
-    public Door(int x, int y, String type) {
+    public Door(int x, int y, String type, Lighting lighting) {
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
@@ -21,6 +22,7 @@ public class Door implements Inanimate {
         sprites[1].flip(false, true);
         this.sprite = sprites[0];
         this.blocking = true;
+        this.lighting = lighting;
     }
 
     public Sprite getSprite() {
@@ -45,14 +47,14 @@ public class Door implements Inanimate {
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = false;
-            Lighting.updateTileBody(tile.x, tile.y);
+            lighting.updateTileBody(tile.x, tile.y);
             return "The door opens.";
         } else {
             this.sprite = sprites[0];
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = true;
-            Lighting.updateTileBody(tile.x, tile.y);
+            lighting.updateTileBody(tile.x, tile.y);
             return "The door closes.";
         }
     }

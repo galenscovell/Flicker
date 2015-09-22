@@ -14,17 +14,18 @@ public class Renderer {
     private FitViewport viewport;
     private SpriteBatch spriteBatch;
     private Hero hero;
+    private Lighting lighting;
     private Fog fog;
-    private int torchFrame;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(Hero hero, SpriteBatch spriteBatch) {
-        // Uses custom dimensions (48, 80) rather than exact pixels (480, 800)
+    public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch) {
+        // Uses custom units (48, 80) rather than exact pixels (480, 800)
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
         this.spriteBatch = spriteBatch;
         this.hero = hero;
+        this.lighting = lighting;
         this.fog = new Fog();
     }
 
@@ -50,15 +51,11 @@ public class Renderer {
         }
         // Player rendering: [x, y] are in custom units
         hero.draw(spriteBatch, Constants.TILESIZE, interpolation, null);
-
         // Background effect rendering
         fog.draw(spriteBatch);
         spriteBatch.end();
-
-        // Center torch on player
-        Lighting.torch.setPosition(hero.getCurrentX() + (Constants.TILESIZE / 2), hero.getCurrentY() + (Constants.TILESIZE / 2));
-        Lighting.rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
-        Lighting.update();
+        // Lighting rendering
+        lighting.update(hero.getCurrentX() + (Constants.TILESIZE / 2), hero.getCurrentY() + (Constants.TILESIZE / 2), camera);
     }
 
     public OrthographicCamera getCamera() {
@@ -98,5 +95,9 @@ public class Renderer {
 
     private boolean inViewport(int x, int y) {
         return ((x + Constants.TILESIZE) >= minCamX && x <= maxCamX && (y + Constants.TILESIZE) >= minCamY && y <= maxCamY);
+    }
+
+    public void dispose() {
+        lighting.dispose();
     }
 }

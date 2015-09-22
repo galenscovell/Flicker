@@ -12,7 +12,7 @@ public class Repository {
     public static List<Entity> entities;
     public static List<Inanimate> inanimates;
 
-    public static void fill(Map<Integer, Tile> tiles, List<Entity> entities, List<Inanimate> inanimates) {
+    public static void create(Map<Integer, Tile> tiles, List<Entity> entities, List<Inanimate> inanimates) {
         Repository.tiles = tiles;
         Repository.entities = entities;
         Repository.inanimates = inanimates;
@@ -36,6 +36,12 @@ public class Repository {
             }
         }
         return inanimate;
+    }
+
+    public static Tile findTile(float x, float y) {
+        int convertX = (int) x / Constants.TILESIZE;
+        int convertY = (int) y / Constants.TILESIZE;
+        return tiles.get(convertX * Constants.MAPSIZE + convertY);
     }
 
     public static Tile findTile(int x, int y) {

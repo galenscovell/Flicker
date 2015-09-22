@@ -1,5 +1,6 @@
 package galenscovell.world;
 
+import galenscovell.graphics.Lighting;
 import galenscovell.processing.Point;
 import galenscovell.things.entities.*;
 import galenscovell.things.inanimates.*;
@@ -18,6 +19,9 @@ public class Level {
         this.builder = new DungeonBuilder();
         this.tiles = builder.getTiles();
         optimize();
+        placeWater();
+        setFloorNeighbors();
+        skin();
     }
 
     public Map<Integer, Tile> getTiles() {
@@ -60,9 +64,6 @@ public class Level {
         for (int key : pruned) {
             tiles.remove(key);
         }
-        placeWater();
-        setFloorNeighbors();
-        skin();
     }
 
     private void placeWater() {
@@ -128,7 +129,7 @@ public class Level {
             int choiceY = random.nextInt(Constants.MAPSIZE);
             int choiceX = random.nextInt(Constants.MAPSIZE);
             Tile tile = getTile(choiceX, choiceY);
-            if (tile != null && tile.isFloor() && !tile.isOccupied()) {
+            if (tile != null && tile.isFloor() && !tile.isOccupied() && !tile.hasDoor()) {
                 return tile;
             }
         }
@@ -145,7 +146,6 @@ public class Level {
     public void assembleLevel(Hero hero) {
         this.inanimates = new ArrayList<Inanimate>();
         this.entities = new ArrayList<Entity>();
-        placeInanimates();
         placePlayer(hero);
         MonsterParser monsterParser = new MonsterParser();
         // TODO: Modify entity placement
@@ -154,23 +154,21 @@ public class Level {
         }
     }
 
-    private void placeInanimates() {
+    public void placeInanimates(Lighting lighting) {
         // Place doors on floors with hallway bitmask, no adjacent doors, and more than 2 adjacent floor neighbors
         Random random = new Random();
         for (Tile tile : tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
                 if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
-                    inanimates.add(new Door(tile.x, tile.y, "h"));
+                    inanimates.add(new Door(tile.x, tile.y, "h", lighting));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
-                    System.out.println("Door placed");
                 } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
-                    inanimates.add(new Door(tile.x, tile.y, "v"));
+                    inanimates.add(new Door(tile.x, tile.y, "v", lighting));
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
-                    System.out.println("Door placed");
                 }
             }
         }
