@@ -113,12 +113,12 @@ public class GameScreen extends AbstractScreen {
         level.assembleLevel(hero);
         // level.testPrint();
 
-        Repository.create(level.getTiles(), level.getEntities(), level.getInanimates());
-        Lighting lighting = new Lighting();
+        Repository repo = new Repository(level.getTiles(), level.getEntities(), level.getInanimates());
+        Lighting lighting = new Lighting(repo);
         level.placeInanimates(lighting);
 
-        this.renderer = new Renderer(hero, lighting, root.spriteBatch);
-        this.movementState = new MovementState(hero);
+        this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
+        this.movementState = new MovementState(hero, repo);
         this.combatState = new CombatState(hero);
         this.menuState = new MenuState();
         this.state = movementState;

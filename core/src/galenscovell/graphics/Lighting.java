@@ -15,10 +15,11 @@ public class Lighting {
     private RayHandler rayHandler;
     private PointLight torch;
     private Map<Integer, Body> bodies;
+    private Repository repo;
     private int torchFrame;
     // private Box2DDebugRenderer debug;
 
-    public Lighting() {
+    public Lighting(Repository repo) {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
@@ -27,6 +28,7 @@ public class Lighting {
         torch.setSoftnessLength(4);
         rayHandler.setCulling(false);
         torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
+        this.repo = repo;
         this.torchFrame = 0;
         // debug = new Box2DDebugRenderer();
         createTileBodies();
@@ -67,7 +69,7 @@ public class Lighting {
         FixtureDef tileFixture = new FixtureDef();
         tileFixture.shape = tileShape;
 
-        for (Tile tile : Repository.tiles.values()) {
+        for (Tile tile : repo.tiles.values()) {
             if (tile.isBlocking()) {
                 tileFixture.filter.groupIndex = Constants.BIT_GROUP;
             } else {
@@ -93,7 +95,7 @@ public class Lighting {
         FixtureDef tileFixture = new FixtureDef();
         tileFixture.shape = tileShape;
 
-        Tile updated = Repository.findTile(tileX, tileY);
+        Tile updated = repo.findTile(tileX, tileY);
         if (updated.isBlocking()) {
             tileFixture.filter.groupIndex = Constants.BIT_GROUP;
         } else {

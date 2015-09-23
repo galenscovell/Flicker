@@ -1,6 +1,5 @@
 package galenscovell.processing;
 
-import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 import java.util.*;
@@ -18,7 +17,7 @@ public class Pathfinder {
         }
     }
 
-    public Stack<Point> findPath(Map<Integer, Tile> tiles, Tile start, Tile end) {
+    public Stack<Point> findPath(Tile start, Tile end, Repository repo) {
         List<Node> open = new ArrayList<Node>();
         List<Tile> closed = new ArrayList<Tile>();
         Node startNode = new Node(start);
@@ -39,7 +38,7 @@ public class Pathfinder {
 
                 // Consider current node's neighbors
                 for (Point point : a.self.getNeighbors()) {
-                    Tile neighbor = tiles.get(point.x * Constants.MAPSIZE + point.y);
+                    Tile neighbor = repo.findTile(point.x, point.y);
                     // Ignore walls, water and other blocked tiles
                     if (neighbor == null || neighbor.isWater() || neighbor.isBlocking() || closed.contains(neighbor)) {
                         continue;

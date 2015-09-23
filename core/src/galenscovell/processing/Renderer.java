@@ -13,17 +13,19 @@ public class Renderer {
     private OrthographicCamera camera;
     private FitViewport viewport;
     private SpriteBatch spriteBatch;
+    private Repository repo;
     private Hero hero;
     private Lighting lighting;
     private Fog fog;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
-    public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch) {
+    public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch, Repository repo) {
         // Uses custom units (48, 80) rather than exact pixels (480, 800)
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
         this.spriteBatch = spriteBatch;
+        this.repo = repo;
         this.hero = hero;
         this.lighting = lighting;
         this.fog = new Fog();
@@ -34,19 +36,19 @@ public class Renderer {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         // Tile rendering: [x, y] are in Tiles, convert to custom units
-        for (Tile tile : Repository.tiles.values()) {
+        for (Tile tile : repo.tiles.values()) {
             if (inViewport(tile.x * Constants.TILESIZE, tile.y * Constants.TILESIZE)) {
                 tile.draw(spriteBatch, Constants.TILESIZE);
             }
         }
         // Object rendering: [x, y] are in Tiles, convert to custom units
-        for (Inanimate inanimate : Repository.inanimates) {
+        for (Inanimate inanimate : repo.inanimates) {
             if (inViewport(inanimate.getX() * Constants.TILESIZE, inanimate.getY() * Constants.TILESIZE)) {
                 inanimate.draw(spriteBatch, Constants.TILESIZE);
             }
         }
         // Entity rendering: [x, y] are in custom units
-        for (Entity entity : Repository.entities) {
+        for (Entity entity : repo.entities) {
             entity.draw(spriteBatch, Constants.TILESIZE, interpolation, hero);
         }
         // Player rendering: [x, y] are in custom units

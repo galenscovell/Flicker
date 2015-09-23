@@ -7,11 +7,13 @@ import galenscovell.world.Tile;
 
 public class MovementState implements State {
     private Hero hero;
+    private Repository repo;
     private Pathfinder pathfinder;
     private Tile destination;
 
-    public MovementState(Hero hero) {
+    public MovementState(Hero hero, Repository repo) {
         this.hero = hero;
+        this.repo = repo;
         this.pathfinder = new Pathfinder();
         this.destination = null;
     }
@@ -38,19 +40,19 @@ public class MovementState implements State {
     }
 
     public void handleInput(float x, float y) {
-        System.out.println(x + ", " + y);
-        destination = Repository.findTile(x, y);
-        destination.toggleHighlighted();
+        int convertX = (int) (x / Constants.TILESIZE);
+        int convertY = (int) (y / Constants.TILESIZE);
+        destination = repo.findTile(convertX, convertY);
     }
 
     private void npcTurn() {
-        for (Entity entity : Repository.entities) {
+        for (Entity entity : repo.entities) {
             if (entity.movementTimer()) {
                 if (entity.isAggressive()) {
-                    Tile heroTile = Repository.findTile(hero.getX(), hero.getY());
+                    Tile heroTile = repo.findTile(hero.getX(), hero.getY());
                     findPath(entity, heroTile);
                 } else {
-                    Tile heroTile = Repository.findTile(hero.getX(), hero.getY());
+                    Tile heroTile = repo.findTile(hero.getX(), hero.getY());
                     findPath(entity, heroTile);
                     // TODO: Passive behavior, destination depends on entity
                 }
@@ -67,23 +69,25 @@ public class MovementState implements State {
     }
 
     private boolean findPath(Entity entity, Tile endTile) {
-        Tile startTile = Repository.findTile(entity.getX(), entity.getY());
+        int convertX = entity.getX() / Constants.TILESIZE;
+        int convertY = entity.getY() / Constants.TILESIZE;
+        Tile startTile = repo.findTile(convertX, convertY);
         if (endTile == null || startTile == endTile) {
             return false;
         } else {
-            entity.setPathStack(pathfinder.findPath(Repository.tiles, startTile, endTile));
+            entity.setPathStack(pathfinder.findPath(startTile, endTile, repo));
             return true;
         }
     }
 
     public boolean move(Entity entity, int x, int y) {
-        int entityX = (entity.getX() / Constants.TILESIZE);
-        int entityY = (entity.getY() / Constants.TILESIZE);
+        int entityX = entity.getX() / Constants.TILESIZE;
+        int entityY = entity.getY() / Constants.TILESIZE;
         int diffX = x - entityX;
         int diffY = y - entityY;
-        Tile nextTile = Repository.findTile(x, y);
+        Tile nextTile = repo.findTile(x, y);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
-            Repository.findTile(entityX, entityY).toggleOccupied();
+            repo.findTile(entityX, entityY).toggleOccupied();
             entity.move(diffX * Constants.TILESIZE, diffY * Constants.TILESIZE, true);
             nextTile.toggleOccupied();
             return true;
