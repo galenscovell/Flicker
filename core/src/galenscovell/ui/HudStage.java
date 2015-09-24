@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import galenscovell.processing.states.StateType;
 import galenscovell.ui.components.*;
 import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.ResourceManager;
@@ -13,7 +14,7 @@ import galenscovell.util.ResourceManager;
 public class HudStage extends Stage {
     private GameScreen game;
     private ProgressBar health;
-    private Table examinePopup, infoPopup, inventoryMenu, optionsMenu, movePanel;
+    private Table examinePopup, infoPopup, inventoryMenu, optionsMenu, skillMenu;
 
     public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
@@ -25,7 +26,7 @@ public class HudStage extends Stage {
         this.examinePopup = new ExaminePopup(this);
         this.inventoryMenu = new InventoryMenu(this);
         this.optionsMenu = new OptionMenu(this);
-        this.movePanel = new SkillMenu(this);
+        this.skillMenu = new SkillMenu(this);
 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -90,7 +91,13 @@ public class HudStage extends Stage {
         setIcon(attackButton, "tome", 48, 1);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                menuOperation(movePanel);
+                if (skillMenu.hasParent()) {
+                    selectAttackMove("clear");
+                    game.changeState(StateType.MOVEMENT);
+                } else {
+                    game.changeState(StateType.COMBAT);
+                }
+                menuOperation(skillMenu);
             }
         });
         bottomRight.add(attackButton).width(80).height(64).expand().right();
@@ -103,10 +110,10 @@ public class HudStage extends Stage {
     }
 
     public void dispose() {
-        removeExamineInfo();
         this.addActor(examinePopup);
         this.addActor(inventoryMenu);
         this.addActor(optionsMenu);
+        this.addActor(skillMenu);
     }
 
     public void returnToMainMenu() {
@@ -114,38 +121,8 @@ public class HudStage extends Stage {
         game.toMainMenu();
     }
 
-    public void selectAttackMove(String move) {
-
-    }
-
-    public void displayExamineInfo(String info, Sprite sprite) {
-        Sprite flippedTarget = new Sprite(sprite);
-        flippedTarget.flip(false, true);
-        this.infoPopup = new ExamineInfo(this, info, flippedTarget);
-        this.addActor(infoPopup);
-    }
-
-    public boolean restrictMovement() {
-        return optionsMenu.hasParent() || inventoryMenu.hasParent() || movePanel.hasParent();
-    }
-
-    public boolean clearMenus() {
-        if (optionsMenu.hasParent()) {
-            optionsMenu.remove();
-            return false;
-        } else if (inventoryMenu.hasParent()) {
-            inventoryMenu.remove();
-            return false;
-        } else if (movePanel.hasParent()) {
-            movePanel.remove();
-            return false;
-        } else if (infoPopup != null && infoPopup.hasParent()) {
-            infoPopup.remove();
-            infoPopup = null;
-            return false;
-        } else {
-            return true;
-        }
+    public void selectAttackMove(String event) {
+        game.passInterfaceEventToState(event);
     }
 
     public void updateHealth(int val) {
@@ -170,15 +147,7 @@ public class HudStage extends Stage {
         return bar;
     }
 
-    private void removeExamineInfo() {
-        if (infoPopup != null && infoPopup.hasParent()) {
-            infoPopup.remove();
-            infoPopup = null;
-        }
-    }
-
     private void menuOperation(Table menu) {
-        removeExamineInfo();
         if (menu.hasParent()) {
             menu.remove();
         } else {
@@ -186,8 +155,8 @@ public class HudStage extends Stage {
                 optionsMenu.remove();
             } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
                 inventoryMenu.remove();
-            } else if (movePanel != menu && movePanel.hasParent()) {
-                movePanel.remove();
+            } else if (skillMenu != menu && skillMenu.hasParent()) {
+                skillMenu.remove();
             }
             this.addActor(menu);
         }

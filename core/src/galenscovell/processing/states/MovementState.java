@@ -19,7 +19,7 @@ public class MovementState implements State {
     }
 
     public void enter() {
-
+        destination = null;
     }
 
     public void exit() {
@@ -43,6 +43,10 @@ public class MovementState implements State {
         int convertX = (int) (x / Constants.TILESIZE);
         int convertY = (int) (y / Constants.TILESIZE);
         destination = repo.findTile(convertX, convertY);
+    }
+
+    public void handleInterfaceEvent(String event) {
+
     }
 
     private void npcTurn() {
@@ -80,7 +84,7 @@ public class MovementState implements State {
         }
     }
 
-    public boolean move(Entity entity, int x, int y) {
+    private boolean move(Entity entity, int x, int y) {
         int entityX = entity.getX() / Constants.TILESIZE;
         int entityY = entity.getY() / Constants.TILESIZE;
         int diffX = x - entityX;

@@ -67,7 +67,6 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void changeState(StateType stateType) {
-        // Call from HUD stage
         state.exit();
         switch (stateType) {
             case MOVEMENT:
@@ -85,6 +84,10 @@ public class GameScreen extends AbstractScreen {
 
     public void passInputToState(float x, float y) {
         state.handleInput(x, y);
+    }
+
+    public void passInterfaceEventToState(String event) {
+        state.handleInterfaceEvent(event);
     }
 
     public void screenZoom(float zoom) {
@@ -119,7 +122,7 @@ public class GameScreen extends AbstractScreen {
 
         this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
         this.movementState = new MovementState(hero, repo);
-        this.combatState = new CombatState(hero);
+        this.combatState = new CombatState(hero, repo);
         this.menuState = new MenuState();
         this.state = movementState;
 

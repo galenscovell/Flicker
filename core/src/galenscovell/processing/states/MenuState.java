@@ -21,4 +21,8 @@ public class MenuState implements State {
     public void handleInput(float x, float y) {
 
     }
+
+    public void handleInterfaceEvent(String event) {
+
+    }
 }
