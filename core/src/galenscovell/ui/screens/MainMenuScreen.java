@@ -1,9 +1,10 @@
 package galenscovell.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import galenscovell.flicker.FlickerMain;
@@ -23,6 +24,7 @@ public class MainMenuScreen extends AbstractScreen {
         this.optionMenu = new OptionMenu(this);
 
         Table mainTable = new Table();
+        mainTable.setBackground(new TextureRegionDrawable(ResourceManager.mainMenuBG));
         mainTable.padBottom(4);
         mainTable.setFillParent(true);
 
@@ -43,7 +45,7 @@ public class MainMenuScreen extends AbstractScreen {
         Table topTable = new Table();
         Label titleLabel = new Label("FLICKER", ResourceManager.titleStyle);
         titleLabel.setAlignment(Align.center, Align.center);
-        topTable.add(titleLabel).width(400).expand().fill();
+        topTable.add(titleLabel).width(400).expand().fill().padTop(80);
 
         mainTable.add(topTable).expand().fill().top();
         mainTable.row();
@@ -69,12 +71,12 @@ public class MainMenuScreen extends AbstractScreen {
         centerTable.add(newGameButton).width(300).height(80).expand().fill();
         centerTable.row();
         centerTable.add(continueButton).width(300).height(80).expand().fill();
-        mainTable.add(centerTable).expand().fill().width(440).height(300);
+        mainTable.add(centerTable).expand().fill().width(440).height(300).bottom();
         mainTable.row();
 
         Label detailLabel = new Label("Flicker v0.1a \u00a9 2015, Galen Scovell", ResourceManager.detailStyle);
         detailLabel.setAlignment(Align.bottom);
-        mainTable.add(detailLabel).width(150).expand().fill();
+        mainTable.add(detailLabel).width(150).fill().padTop(20).padBottom(10);
         mainTable.pack();
 
         stage.addActor(mainTable);

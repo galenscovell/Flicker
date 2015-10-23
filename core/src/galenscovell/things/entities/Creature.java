@@ -137,16 +137,17 @@ public class Creature implements Entity {
     }
 
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
+        float offsetTileHeight = currentY - (tileSize / 3);
         interpolate(interpolation);
         if (attacking) {
             attack(interpolation, entity);
         }
         if (beingAttacked) {
             batch.setColor(1, (float) interpolation, (float) interpolation, 1);
-            batch.draw(currentSet[frame], currentX, currentY, tileSize, tileSize);
+            batch.draw(currentSet[frame], currentX, offsetTileHeight, tileSize, tileSize);
             batch.setColor(1, 1, 1, 1);
         } else {
-            batch.draw(currentSet[frame], currentX, currentY, tileSize, tileSize);
+            batch.draw(currentSet[frame], currentX, offsetTileHeight, tileSize, tileSize);
         }
     }
 }

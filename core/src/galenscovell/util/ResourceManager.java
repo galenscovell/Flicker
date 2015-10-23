@@ -17,6 +17,7 @@ public class ResourceManager {
     public static NinePatchDrawable buttonUp, buttonDown, panelUp, panelDown, frameUp, frameDown, frameUpDec;
     public static TextButton.TextButtonStyle buttonStyle, panelStyle, frameStyle, toggleButtonStyle;
     public static Sprite highlight;
+    public static TextureRegion mainMenuBG;
     public static Preferences prefs;
 
     public static void create() {
@@ -36,9 +37,10 @@ public class ResourceManager {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallParams.fontFileName = "ui/nevis.ttf";
-        smallParams.fontParameters.size = 16;
+        smallParams.fontParameters.size = 18;
         smallParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
         smallParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        smallParams.fontParameters.color = Color.DARK_GRAY;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
@@ -59,6 +61,8 @@ public class ResourceManager {
         FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         extraLargeParams.fontFileName = "ui/nevis.ttf";
         extraLargeParams.fontParameters.size = 72;
+        extraLargeParams.fontParameters.borderWidth = 4;
+        extraLargeParams.fontParameters.borderColor = new Color(0.35f, 0.28f, 0.16f, 1);
         extraLargeParams.fontParameters.color = new Color(0.9f, 0.7f, 0.41f, 1);
         assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
     }
@@ -95,6 +99,8 @@ public class ResourceManager {
 
         highlight = new Sprite(uiAtlas.createSprite("highlight"));
         highlight.flip(false, true);
+
+        mainMenuBG = new TextureRegion(uiAtlas.findRegion("clouds_bg"));
 
         // Load user preferences
         prefs = Gdx.app.getPreferences("flicker_settings");
