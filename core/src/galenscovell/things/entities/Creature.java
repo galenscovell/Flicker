@@ -90,6 +90,14 @@ public class Creature implements Entity {
         return pathStack;
     }
 
+    public Point nextPathPoint() {
+        return pathStack.pop();
+    }
+
+    public boolean pathStackEmpty() {
+        return pathStack == null || pathStack.isEmpty();
+    }
+
     public void move(int dx, int dy, boolean possible) {
         turn(dx, dy);
         if (possible) {

@@ -24,6 +24,8 @@ public interface Entity {
 
     public void setPathStack(Stack<Point> path);
     public Stack<Point> getPathStack();
+    public Point nextPathPoint();
+    public boolean pathStackEmpty();
 
     public void move(int dx, int dy, boolean possible);
     public void turn(int dx, int dy);

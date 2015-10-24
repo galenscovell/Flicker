@@ -93,9 +93,7 @@ public class HudStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (skillMenu.hasParent()) {
                     selectAttackMove("clear");
-                    game.changeState(StateType.MOVEMENT);
-                } else {
-                    game.changeState(StateType.COMBAT);
+                    game.changeState(StateType.ACTION);
                 }
                 menuOperation(skillMenu);
             }

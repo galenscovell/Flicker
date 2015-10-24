@@ -1,5 +1,6 @@
 package galenscovell.processing;
 
+import galenscovell.processing.actions.Event;
 import galenscovell.things.entities.Entity;
 import galenscovell.things.inanimates.Inanimate;
 import galenscovell.util.Constants;
@@ -11,11 +12,29 @@ public class Repository {
     public Map<Integer, Tile> tiles;
     public List<Entity> entities;
     public List<Inanimate> inanimates;
+    public List<Event> events;
 
     public Repository(Map<Integer, Tile> tiles, List<Entity> entities, List<Inanimate> inanimates) {
         this.tiles = tiles;
         this.entities = entities;
         this.inanimates = inanimates;
+        this.events = new ArrayList<Event>();
+    }
+
+    public boolean eventsEmpty() {
+        return events.isEmpty();
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+
+    public void removeEvent(Event event) {
+        events.remove(event);
+    }
+
+    public Event nextEvent() {
+        return events.get(0);
     }
 
     public Entity findEntity(int x, int y) {

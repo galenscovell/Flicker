@@ -15,7 +15,7 @@ import galenscovell.world.Level;
 public class GameScreen extends AbstractScreen {
     private Hero hero;
     private Renderer renderer;
-    private State state, movementState, combatState, menuState;
+    private State state, actionState, menuState;
     private InputMultiplexer input;
 
     private final int timestep = 20;
@@ -68,16 +68,10 @@ public class GameScreen extends AbstractScreen {
 
     public void changeState(StateType stateType) {
         state.exit();
-        switch (stateType) {
-            case MOVEMENT:
-                state = movementState;
-                break;
-            case COMBAT:
-                state = combatState;
-                break;
-            case MENU:
-                state = menuState;
-                break;
+        if (stateType == StateType.ACTION) {
+            state = actionState;
+        } else {
+            state = menuState;
         }
         state.enter();
     }
@@ -121,10 +115,9 @@ public class GameScreen extends AbstractScreen {
         level.placeInanimates(lighting);
 
         this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
-        this.movementState = new MovementState(hero, repo);
-        this.combatState = new CombatState(hero, repo);
+        this.actionState = new ActionState(hero, repo);
         this.menuState = new MenuState();
-        this.state = movementState;
+        this.state = actionState;
 
         setupInputProcessor();
     }
