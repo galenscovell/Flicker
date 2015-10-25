@@ -51,6 +51,11 @@ public class HudStage extends Stage {
         setIcon(optionsButton, "scroll", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+                if (optionsMenu.hasParent()) {
+                    game.changeState(StateType.ACTION);
+                } else {
+                    game.changeState(StateType.MENU);
+                }
                 menuOperation(optionsMenu);
             }
         });
@@ -71,6 +76,11 @@ public class HudStage extends Stage {
         setIcon(inventoryButton, "inventory", 48, 1);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+                if (inventoryMenu.hasParent()) {
+                    game.changeState(StateType.ACTION);
+                } else {
+                    game.changeState(StateType.MENU);
+                }
                 menuOperation(inventoryMenu);
             }
         });
@@ -78,7 +88,12 @@ public class HudStage extends Stage {
         setIcon(examineButton, "examine", 48, 1);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-
+                if (examinePopup.hasParent()) {
+                    game.changeState(StateType.ACTION);
+                } else {
+                    game.changeState(StateType.MENU);
+                }
+                menuOperation(examinePopup);
             }
         });
         bottomLeft.add(inventoryButton).width(80).height(64).expand().left().padRight(4);
@@ -94,6 +109,8 @@ public class HudStage extends Stage {
                 if (skillMenu.hasParent()) {
                     selectAttackMove("clear");
                     game.changeState(StateType.ACTION);
+                } else {
+                    game.changeState(StateType.MENU);
                 }
                 menuOperation(skillMenu);
             }
