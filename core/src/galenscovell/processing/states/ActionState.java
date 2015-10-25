@@ -29,12 +29,22 @@ public class ActionState implements State {
         if (repo.eventsEmpty()) {
             return;
         } else {
-            while (!repo.eventsEmpty()) {
-                Event nextEvent = repo.nextEvent();
-                if (!nextEvent.act()) {
-                    nextEvent.resolve();
-                    repo.removeEvent(nextEvent);
+            Stack<Event> finishedEvents = new Stack<Event>();
+            Event heroEvent = repo.nextEvent();
+            if (heroEvent.act()) {
+                npcTurn();
+                for (Event event : repo.getEvents()) {
+                    if (!event.act()) {
+                        event.resolve();
+                        finishedEvents.push(event);
+                    }
                 }
+                while (!finishedEvents.isEmpty()) {
+                    repo.removeEvent(finishedEvents.pop());
+                }
+            } else {
+                heroEvent.resolve();
+                repo.removeEvent(heroEvent);
             }
         }
     }
@@ -45,7 +55,6 @@ public class ActionState implements State {
         Event newEvent = new Event(hero, repo.findTile(convertX, convertY), new Move(repo));
         if (newEvent.initialized()) {
             repo.addEvent(newEvent);
-            npcTurn();
         }
     }
 
@@ -55,21 +64,17 @@ public class ActionState implements State {
 
     private void npcTurn() {
         for (Entity entity : repo.entities) {
-            if (entity.movementTimer()) {
-                Event npcEvent = null;
-                if (entity.isAggressive()) {
-                    Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                    npcEvent = new Event(entity, targetTile, new Move(repo));
-                } else {
-                    Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                    npcEvent = new Event(entity, targetTile, new Move(repo));
-                    // TODO: Passive behavior, destination depends on entity
-                }
-                if (npcEvent != null) {
-                    if (npcEvent.initialized()) {
-                        repo.addEvent(npcEvent);
-                    }
-                }
+            Event npcEvent = null;
+            if (entity.isAggressive()) {
+                Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
+                npcEvent = new Event(entity, targetTile, new Move(repo));
+            } else {
+                Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
+                npcEvent = new Event(entity, targetTile, new Move(repo));
+                // TODO: Passive behavior, destination depends on entity
+            }
+            if (npcEvent != null && npcEvent.initialized()) {
+                repo.addEvent(npcEvent);
             }
         }
     }

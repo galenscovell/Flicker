@@ -22,8 +22,7 @@ public interface Entity {
     public void setBeingAttacked();
     public void setAttacking();
 
-    public void setPathStack(Stack<Point> path);
-    public Stack<Point> getPathStack();
+    public void populatePathStack(Stack<Point> path);
     public Point nextPathPoint();
     public boolean pathStackEmpty();
 

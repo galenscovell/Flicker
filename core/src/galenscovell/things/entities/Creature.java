@@ -82,12 +82,8 @@ public class Creature implements Entity {
         attacking = true;
     }
 
-    public void setPathStack(Stack<Point> path) {
+    public void populatePathStack(Stack<Point> path) {
         this.pathStack = path;
-    }
-
-    public Stack<Point> getPathStack() {
-        return pathStack;
     }
 
     public Point nextPathPoint() {

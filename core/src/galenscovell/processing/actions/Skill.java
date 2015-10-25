@@ -1,7 +1,7 @@
 package galenscovell.processing.actions;
 
 import galenscovell.processing.*;
-import galenscovell.things.entities.Entity;
+import galenscovell.things.entities.*;
 import galenscovell.world.Tile;
 
 import java.util.*;
@@ -26,7 +26,9 @@ public class Skill implements Action {
     }
 
     public void resolve(Entity entity) {
-        entity.setPathStack(null);
+        if (entity instanceof Hero) {
+            repo.clearEvents();
+        }
     }
 
 

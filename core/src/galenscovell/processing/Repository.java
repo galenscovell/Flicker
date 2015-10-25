@@ -26,11 +26,22 @@ public class Repository {
     }
 
     public void addEvent(Event event) {
+        System.out.println("Add: " + event.entity + " to " + event.target.x + ", " + event.target.y);
         events.add(event);
     }
 
     public void removeEvent(Event event) {
+        System.out.println("Remove: " + event.entity + " to " + event.target.x + ", " + event.target.y);
         events.remove(event);
+    }
+
+    public void clearEvents() {
+        System.out.println("Clearing all events");
+        this.events = new ArrayList<Event>();
+    }
+
+    public List<Event> getEvents() {
+        return this.events;
     }
 
     public Event nextEvent() {

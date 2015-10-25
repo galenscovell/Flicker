@@ -1,7 +1,7 @@
 package galenscovell.processing.actions;
 
 import galenscovell.processing.*;
-import galenscovell.things.entities.Entity;
+import galenscovell.things.entities.*;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
@@ -16,14 +16,14 @@ public class Move implements Action {
         this.pathfinder = new Pathfinder();
     }
 
-    public boolean initialized(Entity entity, Tile endTile) {
+    public boolean initialized(Entity entity, Tile targetTile) {
         int convertX = entity.getX() / Constants.TILESIZE;
         int convertY = entity.getY() / Constants.TILESIZE;
         Tile startTile = repo.findTile(convertX, convertY);
-        if (endTile == null || startTile == endTile) {
+        if (targetTile == null || startTile == targetTile) {
             return false;
         } else {
-            entity.setPathStack(pathfinder.findPath(startTile, endTile, repo));
+            entity.populatePathStack(pathfinder.findPath(startTile, targetTile, repo));
             return true;
         }
     }
@@ -50,6 +50,8 @@ public class Move implements Action {
     }
 
     public void resolve(Entity entity) {
-        entity.setPathStack(null);
+        if (entity instanceof Hero) {
+            repo.clearEvents();
+        }
     }
 }

@@ -4,8 +4,8 @@ import galenscovell.things.entities.Entity;
 import galenscovell.world.Tile;
 
 public class Event {
-    private Entity entity;
-    private Tile target;
+    public Entity entity;
+    public Tile target;
     private Action action;
 
     public Event(Entity entity, Tile target, Move move) {
