@@ -14,15 +14,15 @@ public class Event {
         this.action = move;
     }
 
-    public boolean initialized() {
+    public boolean start() {
         return action.initialized(entity, target);
     }
 
-    public boolean act() {
+    public boolean step() {
         return action.act(entity, target);
     }
 
-    public void resolve() {
+    public void finish() {
         action.resolve(entity);
     }
 }

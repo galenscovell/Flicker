@@ -31,7 +31,7 @@ public class ActionState implements State {
         } else {
             Stack<Event> finishedEvents = new Stack<Event>();
             Event heroEvent = repo.nextEvent();  // Hero event is always first in event list
-            if (heroEvent.act()) {
+            if (heroEvent.step()) {
                 npcTurn();
                 // Iterate through each event and step one act forward
                 for (Event event : repo.getEvents()) {
@@ -40,8 +40,8 @@ public class ActionState implements State {
                         continue;
                     }
                     // If an event is unable to act, resolve it and add it to finished events
-                    if (!event.act()) {
-                        event.resolve();
+                    if (!event.step()) {
+                        event.finish();
                         finishedEvents.push(event);
                     }
                 }
@@ -51,7 +51,7 @@ public class ActionState implements State {
                 }
             } else {
                 // Once heroEvent is unable to act, resolve it and remove it from event list
-                heroEvent.resolve();
+                heroEvent.finish();
                 repo.removeEvent(heroEvent);
             }
         }
@@ -61,7 +61,7 @@ public class ActionState implements State {
         int convertX = (int) (x / Constants.TILESIZE);
         int convertY = (int) (y / Constants.TILESIZE);
         Event newEvent = new Event(hero, repo.findTile(convertX, convertY), new Move(repo));
-        if (newEvent.initialized()) {
+        if (newEvent.start()) {
             repo.addEvent(newEvent);
         }
     }
@@ -82,7 +82,7 @@ public class ActionState implements State {
                 Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
                 npcEvent = new Event(entity, targetTile, new Move(repo));
             }
-            if (npcEvent != null && npcEvent.initialized()) {
+            if (npcEvent != null && npcEvent.start()) {
                 repo.addEvent(npcEvent);
             }
         }
