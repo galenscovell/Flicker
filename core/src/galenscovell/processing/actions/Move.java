@@ -48,9 +48,6 @@ public class Move implements Action {
     }
 
     public void resolve(Entity entity) {
-        if (entity instanceof Hero) {
-            System.out.println("Hero reached destination");
-            repo.clearEvents();
-        }
+
     }
 }

@@ -30,7 +30,7 @@ public class ActionState implements State {
             return;
         } else {
             Stack<Event> finishedEvents = new Stack<Event>();
-            Event heroEvent = repo.nextEvent();  // Hero event is always first in event list
+            Event heroEvent = repo.getFirstEvent();  // Hero event is always first in event list
             if (heroEvent.step()) {
                 npcTurn();
                 // Iterate through each event and step one act forward
@@ -50,9 +50,9 @@ public class ActionState implements State {
                     repo.removeEvent(finishedEvents.pop());
                 }
             } else {
-                // Once heroEvent is unable to act, resolve it and remove it from event list
+                // Once heroEvent is unable to act, resolve it and clear event list
                 heroEvent.finish();
-                repo.removeEvent(heroEvent);
+                repo.clearEvents();
             }
         }
     }
@@ -62,6 +62,10 @@ public class ActionState implements State {
         int convertY = (int) (y / Constants.TILESIZE);
         Event newEvent = new Event(hero, repo.findTile(convertX, convertY), new Move(repo));
         if (newEvent.start()) {
+            // If event currently being processed, replace old user event with new event
+            if (!repo.eventsEmpty()) {
+                repo.clearEvents();
+            }
             repo.addEvent(newEvent);
         }
     }
@@ -72,18 +76,20 @@ public class ActionState implements State {
 
     private void npcTurn() {
         for (Entity entity : repo.entities) {
-            Event npcEvent = null;
-            if (entity.isAggressive()) {
-                // TODO: Aggressive behavior depending on entity
-                Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                npcEvent = new Event(entity, targetTile, new Move(repo));
-            } else {
-                // TODO: Passive behavior depending on entity
-                Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                npcEvent = new Event(entity, targetTile, new Move(repo));
-            }
-            if (npcEvent != null && npcEvent.start()) {
-                repo.addEvent(npcEvent);
+            if (entity.movementTimer()) {
+                Event npcEvent = null;
+                if (entity.isAggressive()) {
+                    // TODO: Aggressive behavior depending on entity
+                    Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
+                    npcEvent = new Event(entity, targetTile, new Move(repo));
+                } else {
+                    // TODO: Passive behavior depending on entity
+                    Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
+                    npcEvent = new Event(entity, targetTile, new Move(repo));
+                }
+                if (npcEvent != null && npcEvent.start()) {
+                    repo.addEvent(npcEvent);
+                }
             }
         }
     }
