@@ -5,8 +5,6 @@ import galenscovell.things.entities.*;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
-import java.util.Stack;
-
 public class Move implements Action {
     private Repository repo;
     private Pathfinder pathfinder;
@@ -51,6 +49,7 @@ public class Move implements Action {
 
     public void resolve(Entity entity) {
         if (entity instanceof Hero) {
+            System.out.println("Hero reached destination");
             repo.clearEvents();
         }
     }

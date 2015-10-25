@@ -7,11 +7,11 @@ public class MenuState implements State {
     }
 
     public void enter() {
-        System.out.println("Entering menu state.");
+        System.out.println("\tEntering MENU state.");
     }
 
     public void exit() {
-        System.out.println("Leaving menu state.");
+        System.out.println("\tLeaving MENU state.");
     }
 
     public void update(float delta) {
