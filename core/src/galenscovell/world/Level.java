@@ -143,20 +143,19 @@ public class Level {
         builder.print();
     }
 
-    public void assembleLevel(Hero hero) {
-        this.inanimates = new ArrayList<Inanimate>();
+    public void placeEntities(Hero hero) {
         this.entities = new ArrayList<Entity>();
         placePlayer(hero);
         MonsterParser monsterParser = new MonsterParser();
-        // TODO: Modify entity placement
+        // TODO: Modify monster placement
         for (int i = 0; i < 3; i++) {
-            placeEntities(monsterParser);
+            placeMonsters(monsterParser);
         }
     }
 
     public void placeInanimates(Lighting lighting) {
         // Place doors on floors with hallway bitmask, no adjacent doors, and more than 2 adjacent floor neighbors
-        Random random = new Random();
+        this.inanimates = new ArrayList<Inanimate>();
         for (Tile tile : tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
                 if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
@@ -190,7 +189,7 @@ public class Level {
         randomTile.toggleOccupied();
     }
 
-    private void placeEntities(MonsterParser parser) {
+    private void placeMonsters(MonsterParser parser) {
         Tile randomTile = findRandomTile();
         Entity monster = parser.spawn(2);
         monster.setPosition(randomTile.x * Constants.TILESIZE, randomTile.y * Constants.TILESIZE);

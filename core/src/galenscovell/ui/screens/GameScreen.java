@@ -19,7 +19,7 @@ public class GameScreen extends AbstractScreen {
     private InputMultiplexer input;
 
     private final int timestep = 20;
-    private int accumulator = 0;
+    private int accumulator;
 
     public GameScreen(FlickerMain root) {
         super(root);
@@ -28,8 +28,8 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void create() {
-        this.hero = new Hero();
-        this.stage = new HudStage(this, root.spriteBatch);
+        hero = new Hero();
+        stage = new HudStage(this, root.spriteBatch);
         createNewLevel();
     }
 
@@ -97,7 +97,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     private void setupInputProcessor() {
-        this.input = new InputMultiplexer();
+        input = new InputMultiplexer();
         input.addProcessor(stage);
         input.addProcessor(new InputHandler(this, renderer.getCamera()));
         input.addProcessor(new GestureDetector(new GestureHandler(this)));
@@ -107,17 +107,18 @@ public class GameScreen extends AbstractScreen {
 
     private void createNewLevel() {
         Level level = new Level();
-        level.assembleLevel(hero);
         // level.testPrint();
 
-        Repository repo = new Repository(level.getTiles(), level.getEntities(), level.getInanimates());
+        Repository repo = new Repository(level.getTiles());
         Lighting lighting = new Lighting(repo);
         level.placeInanimates(lighting);
+        level.placeEntities(hero);
+        repo.addActors(level.getEntities(), level.getInanimates());
 
-        this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
-        this.actionState = new ActionState(hero, repo);
-        this.menuState = new MenuState();
-        this.state = actionState;
+        renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
+        actionState = new ActionState(hero, repo);
+        menuState = new MenuState();
+        state = actionState;
 
         setupInputProcessor();
     }

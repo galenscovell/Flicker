@@ -14,11 +14,14 @@ public class Repository {
     public List<Inanimate> inanimates;
     public List<Event> events;
 
-    public Repository(Map<Integer, Tile> tiles, List<Entity> entities, List<Inanimate> inanimates) {
+    public Repository(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
+        this.events = new ArrayList<Event>();
+    }
+
+    public void addActors(List<Entity> entities, List<Inanimate> inanimates) {
         this.entities = entities;
         this.inanimates = inanimates;
-        this.events = new ArrayList<Event>();
     }
 
     public boolean eventsEmpty() {
@@ -26,17 +29,14 @@ public class Repository {
     }
 
     public void addEvent(Event event) {
-        System.out.println("Add: " + event.entity + " to (" + event.target.x + ", " + event.target.y + ")");
         events.add(event);
     }
 
     public void removeEvent(Event event) {
-        System.out.println("Remove: " + event.entity + " to (" + event.target.x + ", " + event.target.y + ")");
         events.remove(event);
     }
 
     public void clearEvents() {
-        System.out.println("Clearing all events");
         this.events = new ArrayList<Event>();
     }
 
@@ -44,7 +44,7 @@ public class Repository {
         return this.events;
     }
 
-    public Event nextEvent() {
+    public Event getFirstEvent() {
         return events.get(0);
     }
 
