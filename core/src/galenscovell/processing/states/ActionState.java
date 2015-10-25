@@ -77,6 +77,17 @@ public class ActionState implements State {
     private void npcTurn() {
         for (Entity entity : repo.entities) {
             if (entity.movementTimer()) {
+                // Check if entity has another event in event list and remove it
+                Event previousEvent = null;
+                for (Event event : repo.getEvents()) {
+                    if (event.entity == entity) {
+                        previousEvent = event;
+                    }
+                }
+                if (previousEvent != null) {
+                    repo.removeEvent(previousEvent);
+                }
+                // Create new entity event with entity behaviors
                 Event npcEvent = null;
                 if (entity.isAggressive()) {
                     // TODO: Aggressive behavior depending on entity
