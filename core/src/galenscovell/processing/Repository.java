@@ -54,7 +54,7 @@ public class Repository {
     public Entity findEntity(int x, int y) {
         Entity target = null;
         for (Entity entity : entities) {
-            if ((entity.getX() / Constants.MAPSIZE) == x && (entity.getY() / Constants.MAPSIZE) == y) {
+            if ((entity.getX() / Constants.TILESIZE) == x && (entity.getY() / Constants.TILESIZE) == y) {
                 target = entity;
             }
         }

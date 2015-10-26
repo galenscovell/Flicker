@@ -14,6 +14,10 @@ public class Event {
         this.action = action;
     }
 
+    public void setTarget(Tile target) {
+        this.target = target;
+    }
+
     public boolean start() {
         return action.initialized(entity, target);
     }

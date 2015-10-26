@@ -1,7 +1,7 @@
 package galenscovell.processing.actions;
 
 import galenscovell.processing.*;
-import galenscovell.things.entities.*;
+import galenscovell.things.entities.Entity;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 

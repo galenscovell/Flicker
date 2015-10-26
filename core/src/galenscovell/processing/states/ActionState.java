@@ -3,16 +3,19 @@ package galenscovell.processing.states;
 import galenscovell.processing.Repository;
 import galenscovell.processing.actions.*;
 import galenscovell.things.entities.*;
+import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 import java.util.Stack;
 
 public class ActionState implements State {
+    private GameScreen root;
     private Hero hero;
     private Repository repo;
 
-    public ActionState(Hero hero, Repository repo) {
+    public ActionState(GameScreen root, Hero hero, Repository repo) {
+        this.root = root;
         this.hero = hero;
         this.repo = repo;
     }
@@ -22,7 +25,6 @@ public class ActionState implements State {
     }
 
     public void exit() {
-        repo.clearEvents();
         System.out.println("\tLeaving ACTION state.");
     }
 

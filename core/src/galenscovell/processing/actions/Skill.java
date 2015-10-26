@@ -1,7 +1,7 @@
 package galenscovell.processing.actions;
 
 import galenscovell.processing.*;
-import galenscovell.things.entities.*;
+import galenscovell.things.entities.Entity;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
@@ -30,6 +30,15 @@ public class Skill implements Action {
     }
 
     public boolean act(Entity entity, Tile target) {
+        if (definition.equals("lunge")) {
+            return lunge(entity, target);
+        } else if (definition.equals("roll")) {
+            return roll(entity, target);
+        } else if (definition.equals("bash")) {
+            return bash(entity, target);
+        } else if (definition.equals("leap")) {
+            return leap(entity, target);
+        }
         return false;
     }
 
@@ -104,51 +113,39 @@ public class Skill implements Action {
         }
     }
 
-    public void finalizeMove(Entity entity, Entity targetEntity, Tile targetTile) {
-//        if (currentMove.equals("lunge")) {
-//            lunge(entity, targetEntity, targetTile);
-//        } else if (currentMove.equals("roll")) {
-//            roll(entity, targetEntity, targetTile);
-//        } else if (currentMove.equals("bash")) {
-//            bash(entity, targetEntity, targetTile);
-//        } else if (currentMove.equals("leap")) {
-//            leap(entity, targetEntity, targetTile);
-//        }
-//        removeRangeDisplay();
-    }
-
-    public void lunge(Entity entity, Entity targetEntity, Tile targetTile) {
-//        if (!range.contains(targetTile) || targetEntity == null) {
-//            return;
-//        }
-//        int entityX = (entity.getX() / Constants.TILESIZE);
-//        int entityY = (entity.getY() / Constants.TILESIZE);
-//        int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
-//        int targetEntityY = (targetEntity.getY() / Constants.TILESIZE);
-//        int newX = entityX + ((targetEntityX - entityX) / 2);
-//        int newY = entityY + ((targetEntityY - entityY) / 2);
-//        mover.move(hero, newX, newY);
-    }
-
-    public void roll(Entity entity, Entity targetEntity, Tile targetTile) {
-
-    }
-
-    public void bash(Entity entity, Entity targetEntity, Tile targetTile) {
-
-    }
-
-    public void leap(Entity entity, Entity targetEntity, Tile targetTile) {
-
-    }
-
-    private Tile findTileInRange(int x, int y) {
-        Tile tile = null;
-        for (Tile t : range) {
-            if (t.x == x && t.y == y) {
-                tile = t;
-            }
+    public boolean lunge(Entity entity, Tile target) {
+        Entity targetEntity = repo.findEntity(target.x, target.y);
+        if (!range.contains(target) || targetEntity == null) {
+            return false;
         }
-        return tile;
+        int entityX = (entity.getX() / Constants.TILESIZE);
+        int entityY = (entity.getY() / Constants.TILESIZE);
+        int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
+        int targetEntityY = (targetEntity.getY() / Constants.TILESIZE);
+        int newX = entityX + ((targetEntityX - entityX) / 2);
+        int newY = entityY + ((targetEntityY - entityY) / 2);
+        return finalizeSkill(entity, newX, newY);
+    }
+
+    public boolean roll(Entity entity, Tile target) {
+        return false;
+    }
+
+    public boolean bash(Entity entity, Tile target) {
+        return false;
+    }
+
+    public boolean leap(Entity entity, Tile target) {
+        return false;
+    }
+
+    private boolean finalizeSkill(Entity entity, int newX, int newY) {
+        Move skillMovement = new Move(repo);
+        Tile skillTarget = repo.findTile(newX, newY);
+        if (skillMovement.initialized(entity, skillTarget)) {
+            return skillMovement.act(entity, skillTarget);
+        } else {
+            return false;
+        }
     }
 }

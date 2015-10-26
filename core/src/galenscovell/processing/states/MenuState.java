@@ -3,12 +3,17 @@ package galenscovell.processing.states;
 import galenscovell.processing.Repository;
 import galenscovell.processing.actions.*;
 import galenscovell.things.entities.Hero;
+import galenscovell.ui.screens.GameScreen;
+import galenscovell.util.Constants;
+import galenscovell.world.Tile;
 
 public class MenuState implements State {
+    private GameScreen root;
     private Hero hero;
     private Repository repo;
 
-    public MenuState(Hero hero, Repository repo) {
+    public MenuState(GameScreen root, Hero hero, Repository repo) {
+        this.root = root;
         this.hero = hero;
         this.repo = repo;
     }
@@ -18,7 +23,6 @@ public class MenuState implements State {
     }
 
     public void exit() {
-        repo.clearEvents();
         System.out.println("\tLeaving MENU state.");
     }
 
@@ -27,7 +31,16 @@ public class MenuState implements State {
     }
 
     public void handleInput(float x, float y) {
-
+        if (!repo.eventsEmpty()) {
+            Event heroEvent = repo.getFirstEvent();  // Hero event is always first in event list
+            int convertX = (int) (x / Constants.TILESIZE);
+            int convertY = (int) (y / Constants.TILESIZE);
+            Tile target = repo.findTile(convertX, convertY);
+            heroEvent.setTarget(target);
+            heroEvent.step();
+            heroEvent.finish();
+            root.changeState(StateType.ACTION);
+        }
     }
 
     public void handleInterfaceEvent(String definition) {

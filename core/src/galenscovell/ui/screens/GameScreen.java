@@ -116,8 +116,8 @@ public class GameScreen extends AbstractScreen {
         repo.addActors(level.getEntities(), level.getInanimates());
 
         renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
-        actionState = new ActionState(hero, repo);
-        menuState = new MenuState(hero, repo);
+        actionState = new ActionState(this, hero, repo);
+        menuState = new MenuState(this, hero, repo);
         state = actionState;
 
         setupInputProcessor();
