@@ -23,6 +23,7 @@ public interface Entity {
     public void setAttacking();
 
     public void populatePathStack(Stack<Point> path);
+    public void pushToPathStack(Point p);
     public Point nextPathPoint();
     public boolean pathStackEmpty();
 

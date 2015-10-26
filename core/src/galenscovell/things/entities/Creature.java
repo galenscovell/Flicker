@@ -86,6 +86,10 @@ public class Creature implements Entity {
         this.pathStack = path;
     }
 
+    public void pushToPathStack(Point p) {
+        pathStack.push(p);
+    }
+
     public Point nextPathPoint() {
         return pathStack.pop();
     }

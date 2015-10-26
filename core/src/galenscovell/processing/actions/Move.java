@@ -30,7 +30,7 @@ public class Move implements Action {
         }
     }
 
-    public boolean act(Entity entity, Tile tile) {
+    public boolean act(Entity entity, Tile target) {
         if (entity.pathStackEmpty()) {
             return false;
         }

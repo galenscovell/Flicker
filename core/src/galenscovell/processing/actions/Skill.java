@@ -128,7 +128,10 @@ public class Skill implements Action {
     }
 
     public boolean roll(Entity entity, Tile target) {
-        return false;
+        if (!range.contains(target) || target.isOccupied()) {
+            return false;
+        }
+        return finalizeSkill(entity, target.x, target.y);
     }
 
     public boolean bash(Entity entity, Tile target) {
@@ -136,13 +139,21 @@ public class Skill implements Action {
     }
 
     public boolean leap(Entity entity, Tile target) {
-        return false;
+        if (!range.contains(target) || target.isOccupied()) {
+            return false;
+        }
+        return finalizeSkill(entity, target.x, target.y);
     }
 
     private boolean finalizeSkill(Entity entity, int newX, int newY) {
         Move skillMovement = new Move(repo);
         Tile skillTarget = repo.findTile(newX, newY);
         if (skillMovement.initialized(entity, skillTarget)) {
+            Point finalPoint = null;
+            while (!entity.pathStackEmpty()) {
+                finalPoint = entity.nextPathPoint();
+            }
+            entity.pushToPathStack(finalPoint);
             return skillMovement.act(entity, skillTarget);
         } else {
             return false;

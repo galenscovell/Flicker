@@ -37,8 +37,6 @@ public class MenuState implements State {
             int convertY = (int) (y / Constants.TILESIZE);
             Tile target = repo.findTile(convertX, convertY);
             heroEvent.setTarget(target);
-            heroEvent.step();
-            heroEvent.finish();
             root.changeState(StateType.ACTION);
         }
     }
