@@ -37,10 +37,14 @@ public class Repository {
     }
 
     public void clearEvents() {
+        resolveEvents();
+        this.events = new ArrayList<Event>();
+    }
+
+    public void resolveEvents() {
         for (Event event : events) {
             event.finish();
         }
-        this.events = new ArrayList<Event>();
     }
 
     public List<Event> getEvents() {

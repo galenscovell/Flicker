@@ -23,6 +23,7 @@ public class MenuState implements State {
     }
 
     public void exit() {
+        repo.resolveEvents();
         System.out.println("\tLeaving MENU state.");
     }
 

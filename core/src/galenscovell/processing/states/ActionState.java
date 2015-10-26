@@ -25,6 +25,7 @@ public class ActionState implements State {
     }
 
     public void exit() {
+        repo.clearEvents();
         System.out.println("\tLeaving ACTION state.");
     }
 
