@@ -8,10 +8,10 @@ public class Event {
     public Tile target;
     private Action action;
 
-    public Event(Entity entity, Tile target, Move move) {
+    public Event(Entity entity, Tile target, Action action) {
         this.entity = entity;
         this.target = target;
-        this.action = move;
+        this.action = action;
     }
 
     public boolean start() {

@@ -2,6 +2,7 @@ package galenscovell.processing.actions;
 
 import galenscovell.processing.*;
 import galenscovell.things.entities.*;
+import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 import java.util.*;
@@ -10,6 +11,7 @@ public class Skill implements Action {
     private Repository repo;
     private Pathfinder pathfinder;
     private List<Tile> range;
+    private String definition;
 
     public Skill(Repository repo) {
         this.repo = repo;
@@ -17,102 +19,89 @@ public class Skill implements Action {
         this.range = new ArrayList<Tile>();
     }
 
+    public void define(String definition) {
+        this.definition = definition;
+    }
+
     public boolean initialized(Entity entity, Tile target) {
+        setRange(entity);
+        toggleRangeDisplay();
         return true;
     }
 
     public boolean act(Entity entity, Tile target) {
-        return true;
+        return false;
     }
 
     public void resolve(Entity entity) {
-        if (entity instanceof Hero) {
-            repo.clearEvents();
+        toggleRangeDisplay();
+    }
+
+    private void toggleRangeDisplay() {
+        for (Tile tile : range) {
+            tile.toggleHighlighted();
         }
     }
 
+    private void setRange(Entity entity) {
+        int centerX = entity.getX() / Constants.TILESIZE;
+        int centerY = entity.getY() / Constants.TILESIZE;
+        Tile center = repo.findTile(centerX, centerY);
 
-    private void initMove(Entity entity, String move) {
-//        for (Tile tile : range) {
-//            tile.toggleHighlighted();
-//        }
-//        range.clear();
-//        tileTarget = null;
-//        targetEntity = null;
-//        if (move.equals("clear") || currentMove.equals(move)) {
-//            currentMove = "";
-//        } else {
-//            setRange(entity, move);
-//        }
-    }
-
-    private void setRange(Entity entity, String move) {
-//        currentMove = move;
-//        int centerX = entity.getX() / Constants.TILESIZE;
-//        int centerY = entity.getY() / Constants.TILESIZE;
-//        Tile center = repo.findTile(centerX, centerY);
-//
-//        if (move.equals("lunge")) {
-//            // Range: 2 tiles cardinal
-//            for (int dx = -2; dx <= 2; dx++) {
-//                Tile tile = repo.findTile(centerX + dx, centerY);
-//                if (tile != null && tile != center && tile.isFloor()) {
-//                    range.add(tile);
-//                }
-//            }
-//            for (int dy = -2; dy <= 2; dy++) {
-//                Tile tile = repo.findTile(centerX, centerY + dy);
-//                if (tile != null && tile != center && tile.isFloor()) {
-//                    range.add(tile);
-//                }
-//            }
-//        } else if (move.equals("roll")) {
-//            // Range: 2 tiles diagonal
-//            for (int dx = -2; dx <= 2; dx++) {
-//                for (int dy = -2; dy <= 2; dy++) {
-//                    if (Math.abs(dx) != Math.abs(dy)) {
-//                        continue;
-//                    }
-//                    Tile tile = repo.findTile(centerX + dx, centerY + dy);
-//                    if (tile != null && tile != center && tile.isFloor()) {
-//                        range.add(tile);
-//                    }
-//                }
-//            }
-//        } else if (move.equals("bash")) {
-//            // Range: 1 tile all
-//            for (int dx = -1; dx <= 1; dx++) {
-//                for (int dy = -1; dy <= 1; dy++) {
-//                    Tile tile = repo.findTile(centerX + dx, centerY + dy);
-//                    if (tile != null && tile != center && tile.isFloor()) {
-//                        range.add(tile);
-//                    }
-//                }
-//            }
-//        } else if (move.equals("leap")) {
-//            // Range: Circle radius 3
-//            for (int dx = -3; dx <= 3; dx++) {
-//                for (int dy = -3; dy <= 3; dy++) {
-//                    if (Math.abs(dx) == 3 && Math.abs(dy) == 3) {
-//                        continue;
-//                    }
-//                    Tile tile = repo.findTile(centerX + dx, centerY + dy);
-//                    if (tile != null && tile != center && tile.isFloor()) {
-//                        range.add(tile);
-//                    }
-//                }
-//            }
-//        }
-//        for (Tile tile : range) {
-//            tile.toggleHighlighted();
-//        }
-    }
-
-    public void removeRangeDisplay() {
-//        for (Tile tile : range) {
-//            tile.toggleHighlighted();
-//        }
-//        moveDisplayed = false;
+        if (definition.equals("lunge")) {
+            // Range: 2 tiles cardinal
+            for (int dx = -2; dx <= 2; dx++) {
+                Tile tile = repo.findTile(centerX + dx, centerY);
+                if (tile != null && tile != center && tile.isFloor()) {
+                    range.add(tile);
+                }
+            }
+            for (int dy = -2; dy <= 2; dy++) {
+                Tile tile = repo.findTile(centerX, centerY + dy);
+                if (tile != null && tile != center && tile.isFloor()) {
+                    range.add(tile);
+                }
+            }
+        } else if (definition.equals("roll")) {
+            // Range: 2 tiles diagonal
+            for (int dx = -2; dx <= 2; dx++) {
+                for (int dy = -2; dy <= 2; dy++) {
+                    if (Math.abs(dx) != Math.abs(dy)) {
+                        continue;
+                    }
+                    Tile tile = repo.findTile(centerX + dx, centerY + dy);
+                    if (tile != null && tile != center && tile.isFloor()) {
+                        range.add(tile);
+                    }
+                }
+            }
+        } else if (definition.equals("bash")) {
+            // Range: 1 tile all
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    Tile tile = repo.findTile(centerX + dx, centerY + dy);
+                    if (tile != null && tile != center && tile.isFloor()) {
+                        range.add(tile);
+                    }
+                }
+            }
+        } else if (definition.equals("leap")) {
+            // Range: Donut radius 3
+            for (int dx = -3; dx <= 3; dx++) {
+                for (int dy = -3; dy <= 3; dy++) {
+                    if (Math.abs(dx) == 3 && Math.abs(dy) == 3) {
+                        continue;
+                    }
+                    if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
+                        continue;
+                    }
+                    Tile tile = repo.findTile(centerX + dx, centerY + dy);
+                    if (tile != null && tile != center && tile.isFloor()) {
+                        range.add(tile);
+                    }
+                }
+            }
+        }
     }
 
     public void finalizeMove(Entity entity, Entity targetEntity, Tile targetTile) {

@@ -4,6 +4,7 @@ import galenscovell.things.entities.Entity;
 import galenscovell.world.Tile;
 
 public interface Action {
+    public void define(String definition);
     public boolean initialized(Entity entity, Tile target);
     public boolean act(Entity entity, Tile target);
     public void resolve(Entity entity);

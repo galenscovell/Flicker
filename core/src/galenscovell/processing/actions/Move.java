@@ -14,6 +14,10 @@ public class Move implements Action {
         this.pathfinder = new Pathfinder();
     }
 
+    public void define(String definition) {
+
+    }
+
     public boolean initialized(Entity entity, Tile targetTile) {
         int convertX = entity.getX() / Constants.TILESIZE;
         int convertY = entity.getY() / Constants.TILESIZE;

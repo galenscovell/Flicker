@@ -22,6 +22,7 @@ public class ActionState implements State {
     }
 
     public void exit() {
+        repo.clearEvents();
         System.out.println("\tLeaving ACTION state.");
     }
 
@@ -70,7 +71,7 @@ public class ActionState implements State {
         }
     }
 
-    public void handleInterfaceEvent(String event) {
+    public void handleInterfaceEvent(String definition) {
 
     }
 
@@ -88,7 +89,7 @@ public class ActionState implements State {
                     repo.removeEvent(previousEvent);
                 }
                 // Create new entity event with entity behaviors
-                Event npcEvent = null;
+                Event npcEvent;
                 if (entity.isAggressive()) {
                     // TODO: Aggressive behavior depending on entity
                     Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
@@ -98,7 +99,7 @@ public class ActionState implements State {
                     Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
                     npcEvent = new Event(entity, targetTile, new Move(repo));
                 }
-                if (npcEvent != null && npcEvent.start()) {
+                if (npcEvent.start()) {
                     repo.addEvent(npcEvent);
                 }
             }

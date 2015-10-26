@@ -37,6 +37,9 @@ public class Repository {
     }
 
     public void clearEvents() {
+        for (Event event : events) {
+            event.finish();
+        }
         this.events = new ArrayList<Event>();
     }
 
