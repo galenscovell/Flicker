@@ -24,6 +24,7 @@ public class MenuState implements State {
 
     public void exit() {
         repo.resolveEvents();
+        root.closeSkillMenu();
         System.out.println("\tLeaving MENU state.");
     }
 
@@ -42,9 +43,9 @@ public class MenuState implements State {
         }
     }
 
-    public void handleInterfaceEvent(String definition) {
+    public void handleInterfaceEvent(int moveType) {
         Skill skill = new Skill(repo);
-        skill.define(definition);
+        skill.define(moveType);
         Event newEvent = new Event(hero, null, skill);
         if (newEvent.start()) {
             // If event currently being processed, replace old user event with new event

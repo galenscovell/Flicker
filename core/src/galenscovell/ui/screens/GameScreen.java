@@ -80,8 +80,8 @@ public class GameScreen extends AbstractScreen {
         state.handleInput(x, y);
     }
 
-    public void passInterfaceEventToState(String event) {
-        state.handleInterfaceEvent(event);
+    public void passInterfaceEventToState(int moveType) {
+        state.handleInterfaceEvent(moveType);
     }
 
     public void screenZoom(float zoom) {
@@ -94,6 +94,10 @@ public class GameScreen extends AbstractScreen {
 
     public void toMainMenu() {
         root.setScreen(root.mainMenuScreen);
+    }
+
+    public void closeSkillMenu() {
+        stage.getRoot().findActor("skillMenu").remove();
     }
 
     private void setupInputProcessor() {

@@ -12,4 +12,9 @@ public class Constants {
     public static final int TILESIZE = 4;
 
     public static final int MAPSIZE = 64;
+
+    public static final int LUNGE_TYPE = 0;
+    public static final int ROLL_TYPE = 1;
+    public static final int BASH_TYPE = 2;
+    public static final int LEAP_TYPE = 3;
 }

@@ -14,7 +14,7 @@ import galenscovell.util.ResourceManager;
 public class HudStage extends Stage {
     private GameScreen game;
     private ProgressBar health;
-    private Table examinePopup, infoPopup, inventoryMenu, optionsMenu, skillMenu;
+    public Table examinePopup, infoPopup, inventoryMenu, optionsMenu, skillMenu;
 
     public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
@@ -107,7 +107,6 @@ public class HudStage extends Stage {
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (skillMenu.hasParent()) {
-                    selectAttackMove("clear");
                     game.changeState(StateType.ACTION);
                 } else {
                     game.changeState(StateType.MENU);
@@ -136,8 +135,8 @@ public class HudStage extends Stage {
         game.toMainMenu();
     }
 
-    public void selectAttackMove(String event) {
-        game.passInterfaceEventToState(event);
+    public void selectAttackMove(int moveType) {
+        game.passInterfaceEventToState(moveType);
     }
 
     public void updateHealth(int val) {

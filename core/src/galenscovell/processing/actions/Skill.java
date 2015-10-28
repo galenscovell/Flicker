@@ -11,7 +11,7 @@ public class Skill implements Action {
     private Repository repo;
     private Pathfinder pathfinder;
     private List<Tile> range;
-    private String definition;
+    private int type;
 
     public Skill(Repository repo) {
         this.repo = repo;
@@ -19,8 +19,8 @@ public class Skill implements Action {
         this.range = new ArrayList<Tile>();
     }
 
-    public void define(String definition) {
-        this.definition = definition;
+    public void define(int type) {
+        this.type = type;
     }
 
     public boolean initialized(Entity entity, Tile target) {
@@ -30,13 +30,13 @@ public class Skill implements Action {
     }
 
     public boolean act(Entity entity, Tile target) {
-        if (definition.equals("lunge")) {
+        if (type == Constants.LUNGE_TYPE) {
             return lunge(entity, target);
-        } else if (definition.equals("roll")) {
+        } else if (type == Constants.ROLL_TYPE) {
             return roll(entity, target);
-        } else if (definition.equals("bash")) {
+        } else if (type == Constants.BASH_TYPE) {
             return bash(entity, target);
-        } else if (definition.equals("leap")) {
+        } else if (type == Constants.LEAP_TYPE) {
             return leap(entity, target);
         }
         return false;
@@ -57,7 +57,7 @@ public class Skill implements Action {
         int centerY = entity.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
-        if (definition.equals("lunge")) {
+        if (type == Constants.LUNGE_TYPE) {
             // Range: 2 tiles cardinal
             for (int dx = -2; dx <= 2; dx++) {
                 Tile tile = repo.findTile(centerX + dx, centerY);
@@ -71,7 +71,7 @@ public class Skill implements Action {
                     range.add(tile);
                 }
             }
-        } else if (definition.equals("roll")) {
+        } else if (type == Constants.ROLL_TYPE) {
             // Range: 2 tiles diagonal
             for (int dx = -2; dx <= 2; dx++) {
                 for (int dy = -2; dy <= 2; dy++) {
@@ -84,7 +84,7 @@ public class Skill implements Action {
                     }
                 }
             }
-        } else if (definition.equals("bash")) {
+        } else if (type == Constants.BASH_TYPE) {
             // Range: 1 tile all
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dy = -1; dy <= 1; dy++) {
@@ -94,7 +94,7 @@ public class Skill implements Action {
                     }
                 }
             }
-        } else if (definition.equals("leap")) {
+        } else if (type == Constants.LEAP_TYPE) {
             // Range: Donut radius 3
             for (int dx = -3; dx <= 3; dx++) {
                 for (int dy = -3; dy <= 3; dy++) {
@@ -124,28 +124,83 @@ public class Skill implements Action {
         int targetEntityY = (targetEntity.getY() / Constants.TILESIZE);
         int newX = entityX + ((targetEntityX - entityX) / 2);
         int newY = entityY + ((targetEntityY - entityY) / 2);
-        return finalizeSkill(entity, newX, newY);
+        return finalizeLunge(entity, newX, newY);
+    }
+
+    private boolean finalizeLunge(Entity entity, int newX, int newY) {
+        Move skillMovement = new Move(repo);
+        Tile skillTarget = repo.findTile(newX, newY);
+        if (skillMovement.initialized(entity, skillTarget)) {
+            Point finalPoint = null;
+            while (!entity.pathStackEmpty()) {
+                finalPoint = entity.nextPathPoint();
+            }
+            entity.pushToPathStack(finalPoint);
+            return skillMovement.act(entity, skillTarget);
+        } else {
+            return false;
+        }
     }
 
     public boolean roll(Entity entity, Tile target) {
         if (!range.contains(target) || target.isOccupied()) {
             return false;
         }
-        return finalizeSkill(entity, target.x, target.y);
+        return finalizeRoll(entity, target.x, target.y);
+    }
+
+    private boolean finalizeRoll(Entity entity, int newX, int newY) {
+        Move skillMovement = new Move(repo);
+        Tile skillTarget = repo.findTile(newX, newY);
+        if (skillMovement.initialized(entity, skillTarget)) {
+            Point finalPoint = null;
+            while (!entity.pathStackEmpty()) {
+                finalPoint = entity.nextPathPoint();
+            }
+            entity.pushToPathStack(finalPoint);
+            return skillMovement.act(entity, skillTarget);
+        } else {
+            return false;
+        }
     }
 
     public boolean bash(Entity entity, Tile target) {
-        return false;
+        Entity targetEntity = repo.findEntity(target.x, target.y);
+        if (!range.contains(target) || targetEntity == null) {
+            return false;
+        }
+        int entityX = (entity.getX() / Constants.TILESIZE);
+        int entityY = (entity.getY() / Constants.TILESIZE);
+        int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
+        int targetEntityY = (targetEntity.getY() / Constants.TILESIZE);
+        int newX = entityX + ((targetEntityX - entityX) / 2);
+        int newY = entityY + ((targetEntityY - entityY) / 2);
+        return finalizeBash(entity, newX, newY);
+    }
+
+    private boolean finalizeBash(Entity entity, int newX, int newY) {
+        Move skillMovement = new Move(repo);
+        Tile skillTarget = repo.findTile(newX, newY);
+        if (skillMovement.initialized(entity, skillTarget)) {
+            Point finalPoint = null;
+            while (!entity.pathStackEmpty()) {
+                finalPoint = entity.nextPathPoint();
+            }
+            entity.pushToPathStack(finalPoint);
+            return skillMovement.act(entity, skillTarget);
+        } else {
+            return false;
+        }
     }
 
     public boolean leap(Entity entity, Tile target) {
         if (!range.contains(target) || target.isOccupied()) {
             return false;
         }
-        return finalizeSkill(entity, target.x, target.y);
+        return finalizeLeap(entity, target.x, target.y);
     }
 
-    private boolean finalizeSkill(Entity entity, int newX, int newY) {
+    private boolean finalizeLeap(Entity entity, int newX, int newY) {
         Move skillMovement = new Move(repo);
         Tile skillTarget = repo.findTile(newX, newY);
         if (skillMovement.initialized(entity, skillTarget)) {

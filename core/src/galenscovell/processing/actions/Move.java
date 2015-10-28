@@ -14,7 +14,7 @@ public class Move implements Action {
         this.pathfinder = new Pathfinder();
     }
 
-    public void define(String definition) {
+    public void define(int moveType) {
 
     }
 

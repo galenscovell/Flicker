@@ -74,7 +74,7 @@ public class ActionState implements State {
         }
     }
 
-    public void handleInterfaceEvent(String definition) {
+    public void handleInterfaceEvent(int moveType) {
 
     }
 
