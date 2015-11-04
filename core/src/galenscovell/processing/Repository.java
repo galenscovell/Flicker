@@ -13,10 +13,16 @@ public class Repository {
     public List<Entity> entities;
     public List<Inanimate> inanimates;
     public List<Event> events;
+    public RayCaster rayCaster;
 
     public Repository(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
         this.events = new ArrayList<Event>();
+        this.rayCaster = new RayCaster(tiles);
+    }
+
+    public void updateResistanceMap() {
+        rayCaster.updateResistanceMap();
     }
 
     public void addActors(List<Entity> entities, List<Inanimate> inanimates) {

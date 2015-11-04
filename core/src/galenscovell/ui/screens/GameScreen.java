@@ -117,6 +117,7 @@ public class GameScreen extends AbstractScreen {
         Lighting lighting = new Lighting(repo);
         level.placeInanimates(lighting);
         level.placeEntities(hero);
+        repo.updateResistanceMap();
         repo.addActors(level.getEntities(), level.getInanimates());
 
         renderer = new Renderer(hero, lighting, root.spriteBatch, repo);

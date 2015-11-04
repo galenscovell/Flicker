@@ -16,7 +16,6 @@ public class Skill implements Action {
     public Skill(Repository repo) {
         this.repo = repo;
         this.pathfinder = new Pathfinder();
-        this.range = new ArrayList<Tile>();
     }
 
     public void define(int type) {
@@ -53,26 +52,27 @@ public class Skill implements Action {
     }
 
     private void setRange(Entity entity) {
+        List<Tile> pattern = new ArrayList<Tile>();
         int centerX = entity.getX() / Constants.TILESIZE;
         int centerY = entity.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
         if (type == Constants.LUNGE_TYPE) {
-            // Range: 2 tiles cardinal
+            // pattern: 2 tiles cardinal
             for (int dx = -2; dx <= 2; dx++) {
                 Tile tile = repo.findTile(centerX + dx, centerY);
                 if (tile != null && tile != center && tile.isFloor()) {
-                    range.add(tile);
+                    pattern.add(tile);
                 }
             }
             for (int dy = -2; dy <= 2; dy++) {
                 Tile tile = repo.findTile(centerX, centerY + dy);
                 if (tile != null && tile != center && tile.isFloor()) {
-                    range.add(tile);
+                    pattern.add(tile);
                 }
             }
         } else if (type == Constants.ROLL_TYPE) {
-            // Range: 2 tiles diagonal
+            // pattern: 2 tiles diagonal
             for (int dx = -2; dx <= 2; dx++) {
                 for (int dy = -2; dy <= 2; dy++) {
                     if (Math.abs(dx) != Math.abs(dy)) {
@@ -80,22 +80,22 @@ public class Skill implements Action {
                     }
                     Tile tile = repo.findTile(centerX + dx, centerY + dy);
                     if (tile != null && tile != center && tile.isFloor()) {
-                        range.add(tile);
+                        pattern.add(tile);
                     }
                 }
             }
         } else if (type == Constants.BASH_TYPE) {
-            // Range: 1 tile all
+            // pattern: 1 tile all
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dy = -1; dy <= 1; dy++) {
                     Tile tile = repo.findTile(centerX + dx, centerY + dy);
                     if (tile != null && tile != center && tile.isFloor()) {
-                        range.add(tile);
+                        pattern.add(tile);
                     }
                 }
             }
         } else if (type == Constants.LEAP_TYPE) {
-            // Range: Donut radius 3
+            // pattern: donut radius 3
             for (int dx = -3; dx <= 3; dx++) {
                 for (int dy = -3; dy <= 3; dy++) {
                     if (Math.abs(dx) == 3 && Math.abs(dy) == 3) {
@@ -106,11 +106,12 @@ public class Skill implements Action {
                     }
                     Tile tile = repo.findTile(centerX + dx, centerY + dy);
                     if (tile != null && tile != center && tile.isFloor()) {
-                        range.add(tile);
+                        pattern.add(tile);
                     }
                 }
             }
         }
+        this.range = repo.rayCaster.instantiate(entity, pattern, 5);
     }
 
     public boolean lunge(Entity entity, Tile target) {

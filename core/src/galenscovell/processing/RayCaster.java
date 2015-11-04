@@ -1,43 +1,62 @@
 package galenscovell.processing;
 
-import galenscovell.things.entities.Hero;
+import galenscovell.things.entities.Entity;
+import galenscovell.util.Constants;
+import galenscovell.world.Tile;
+
+import java.util.*;
 
 public class RayCaster {
     private int radius, centerX, centerY;
     private int[][] mult;
-    private float[][] resistanceMap;
+    private int[][] resistanceMap;
+    private int[][] rangeMap;
+    private Map<Integer, Tile> tiles;
 
-    public RayCaster(float[][] resistanceMap, Hero hero) {
-        this.radius = 3;
+    public RayCaster(Map<Integer, Tile> tiles) {
+        this.tiles = tiles;
         this.mult = new int[][]{
             {1, 0, 0, -1, -1, 0, 0, 1},
             {0, 1, -1, 0, 0, -1, 1, 0},
             {0, 1, 1, 0, 0, -1, -1, 0},
             {1, 0, 0, 1, -1, 0, 0, -1}
         };
+        updateResistanceMap();
+    }
+
+    public void updateResistanceMap() {
+        int[][] resistanceMap = new int[Constants.MAPSIZE][Constants.MAPSIZE];
+        for (Tile tile : tiles.values()) {
+            int resistance = tile.isBlocking() ? 1 : 0;
+            resistanceMap[tile.y][tile.x] = resistance;
+        }
         this.resistanceMap = resistanceMap;
     }
 
-    public void instantiate(Hero hero, int tileSize) {
-        centerX = hero.getX() / tileSize;
-        centerY = hero.getY() / tileSize;
+    public List<Tile> instantiate(Entity entity, List<Tile> pattern, int radius) {
+        this.radius = radius;
+        this.centerX = entity.getX() / Constants.TILESIZE;
+        this.centerY = entity.getY() / Constants.TILESIZE;
+        this.rangeMap = new int[Constants.MAPSIZE][Constants.MAPSIZE];
         for (int i = 0; i < 8; i++) {
             castRay(1, 1.0f, 0.0f, mult[0][i], mult[1][i], mult[2][i], mult[3][i]);
         }
+        return drawLine(pattern);
     }
 
-    public void drawLine(int minX, int maxX, int minY, int maxY, int tileSize) {
-        minX /= tileSize;
-        minY /= tileSize;
-        maxX /= tileSize;
-        maxY /= tileSize;
-        for (int x = 0; x < resistanceMap[0].length; x++) {
-            for (int y = 0; y < resistanceMap.length; y++) {
-                if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-
+    public List<Tile> drawLine(List<Tile> pattern) {
+        List<Tile> range = new ArrayList<Tile>();
+        for (int x = 0; x < rangeMap[0].length; x++) {
+            for (int y = 0; y < rangeMap.length; y++) {
+                if (rangeMap[y][x] == 1) {
+                    Tile tile = tiles.get(x * Constants.MAPSIZE + y);
+                    if (tile != null) {
+                        range.add(tile);
+                    }
                 }
             }
         }
+        return range;
     }
 
     private void castRay(int row, float startSlope, float endSlope, int xx, int xy, int yx, int yy) {
@@ -55,22 +74,24 @@ public class RayCaster {
                 float leftSlope = (dx - 0.5f) / (dy + 0.5f);
                 float rightSlope = (dx + 0.5f) / (dy - 0.5f);
 
-                if (!(currentX >= 0 && currentY >= 0 && currentX < resistanceMap[0].length && currentY < resistanceMap.length) || startSlope < rightSlope) {
+                if (!(currentX >= 0 && currentY >= 0 &&
+                        currentX < resistanceMap[0].length &&
+                        currentY < resistanceMap.length) ||
+                        (startSlope < rightSlope)) {
                     continue;
                 } else if (endSlope > leftSlope) {
                     break;
                 }
 
-                // Check if in lightable area and light if needed
+                // Check if in desired range and not blocked, add to range display map
                 float radiusCircle = (float) Math.sqrt(dx * dx + dy * dy);
-                if (radiusCircle < radius) {
-                    float brightness = (1.0f - (radiusCircle / radius));
-                    resistanceMap[currentY][currentX] = brightness;
+                if (radiusCircle < radius && resistanceMap[currentY][currentX] != 1) {
+                    rangeMap[currentY][currentX] = 1;
                 }
 
                 // Previous cell was blocking
                 if (blocked) {
-                    if (resistanceMap[currentY][currentX] >= 1) {
+                    if (resistanceMap[currentY][currentX] == 1) {
                         newStart = rightSlope;
                         continue;
                     } else {
@@ -78,22 +99,14 @@ public class RayCaster {
                         startSlope = newStart;
                     }
                 } else {
-                    // Hit wall within sight line
-                    if (resistanceMap[currentY][currentX] >= 1 && distance < radius) {
+                    // Hit blocking object
+                    if ((resistanceMap[currentY][currentX] == 1) && (distance < radius)) {
                         blocked = true;
                         castRay(distance + 1, startSlope, leftSlope, xx, xy, yx, yy);
                         newStart = rightSlope;
                     }
                 }
             }
-        }
-    }
-
-    public void updateResistanceMap(int x, int y, boolean blocking) {
-        if (blocking) {
-            resistanceMap[y][x] = 2.0f;
-        } else {
-            resistanceMap[y][x] = 0.0f;
         }
     }
 }
