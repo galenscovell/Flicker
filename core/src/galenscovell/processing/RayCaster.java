@@ -56,6 +56,7 @@ public class RayCaster {
                 }
             }
         }
+        range.retainAll(pattern);
         return range;
     }
 

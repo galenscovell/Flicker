@@ -115,6 +115,9 @@ public class Skill implements Action {
     }
 
     public boolean lunge(Entity entity, Tile target) {
+        if (target == null) {
+            return false;
+        }
         Entity targetEntity = repo.findEntity(target.x, target.y);
         if (!range.contains(target) || targetEntity == null) {
             return false;
@@ -144,7 +147,7 @@ public class Skill implements Action {
     }
 
     public boolean roll(Entity entity, Tile target) {
-        if (!range.contains(target) || target.isOccupied()) {
+        if (target == null || !range.contains(target) || target.isOccupied()) {
             return false;
         }
         return finalizeRoll(entity, target.x, target.y);
@@ -166,6 +169,9 @@ public class Skill implements Action {
     }
 
     public boolean bash(Entity entity, Tile target) {
+        if (target == null) {
+            return false;
+        }
         Entity targetEntity = repo.findEntity(target.x, target.y);
         if (!range.contains(target) || targetEntity == null) {
             return false;
@@ -195,7 +201,7 @@ public class Skill implements Action {
     }
 
     public boolean leap(Entity entity, Tile target) {
-        if (!range.contains(target) || target.isOccupied()) {
+        if (target == null || !range.contains(target) || target.isOccupied()) {
             return false;
         }
         return finalizeLeap(entity, target.x, target.y);
