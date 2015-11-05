@@ -1,6 +1,6 @@
 package galenscovell.graphics;
 
-import box2dLight.*;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -13,51 +13,44 @@ import java.util.*;
 public class Lighting {
     private World world;
     private RayHandler rayHandler;
-    private PointLight torch;
+    private List<Torch> torches;
+    private Torch playerTorch;
     private Map<Integer, Body> bodies;
     private Repository repo;
-    private int torchFrame;
     // private Box2DDebugRenderer debug;
 
     public Lighting(Repository repo) {
         this.world = new World(new Vector2(0, 0), true);
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
-        rayHandler.setAmbientLight(0, 0.1f, 0.1f, 1);
-        this.torch = new PointLight(rayHandler, 40, new Color(0.98f, 0.9f, 0.9f, 1), 27, 0, 0);
-        torch.setSoftnessLength(4);
+        rayHandler.setAmbientLight(0, 0.025f, 0.025f, 1);
         rayHandler.setCulling(false);
-        torch.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
+        this.torches = new ArrayList<Torch>();
+        this.playerTorch = new Torch(27, rayHandler, 0.98f, 0.9f, 0.9f, 1);
         this.repo = repo;
-        this.torchFrame = 0;
         // debug = new Box2DDebugRenderer();
         createTileBodies();
     }
 
     public void update(float x, float y, OrthographicCamera camera) {
-        torch.setPosition(x, y);
         rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
         rayHandler.updateAndRender();
-        animateTorch();
+        animateTorches(x, y);
         // debug.render(world, camera.combined);
     }
 
-    public void animateTorch() {
-        torchFrame++;
-        if (torchFrame == 6) {
-            torch.setDistance(26.5f);
-        } else if (torchFrame == 12) {
-            torch.setDistance(26);
-        } else if (torchFrame == 18) {
-            torch.setDistance(25.5f);
-        } else if (torchFrame == 24) {
-            torch.setDistance(26);
-        } else if (torchFrame == 30) {
-            torch.setDistance(26.5f);
-        } else if (torchFrame == 36) {
-            torch.setDistance(27);
-            torchFrame = 0;
+    public void animateTorches(float x, float y) {
+        playerTorch.setPosition(x, y);
+        playerTorch.animate();
+        for (Torch torch : torches) {
+            torch.animate();
         }
+    }
+
+    public void placeTorch(int x, int y, int size, float r, float g, float b, float a) {
+        Torch newTorch = new Torch(size, rayHandler, r, g, b, a);
+        newTorch.setPosition(x, y);
+        torches.add(newTorch);
     }
 
     public void createTileBodies() {

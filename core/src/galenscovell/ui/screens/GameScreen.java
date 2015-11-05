@@ -119,6 +119,10 @@ public class GameScreen extends AbstractScreen {
         level.placeEntities(hero);
         repo.updateResistanceMap();
         repo.addActors(level.getEntities(), level.getInanimates());
+        lighting.placeTorch(20, 10, 20, 0.5f, 1.0f, 0.5f, 1);
+        lighting.placeTorch(40, 20, 20, 1.0f, 0.5f, 0.5f, 1);
+        lighting.placeTorch(60, 10, 20, 0.5f, 0.5f, 1.0f, 1);
+        lighting.placeTorch(80, 20, 20, 0.98f, 0.9f, 0.9f, 1);
 
         renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
         actionState = new ActionState(this, hero, repo);
