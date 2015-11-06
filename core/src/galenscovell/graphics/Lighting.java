@@ -1,7 +1,7 @@
 package galenscovell.graphics;
 
 import box2dLight.RayHandler;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import galenscovell.processing.Repository;
