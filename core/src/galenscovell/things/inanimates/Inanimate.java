@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.g2d.*;
 import galenscovell.world.Tile;
 
 public interface Inanimate {
-    public Sprite getSprite();
-    public int getX();
-    public int getY();
-    public String interact(Tile tile);
-    public String examine();
-    public void draw(SpriteBatch batch, int tileSize);
+    Sprite getSprite();
+    int getX();
+    int getY();
+    void displayEvent();
+    String interact(Tile tile);
+    String examine();
+    void draw(SpriteBatch batch, int tileSize);
 }

@@ -1,9 +1,9 @@
 package galenscovell.processing.states;
 
 public interface State {
-    public void enter();
-    public void exit();
-    public void update(float delta);
-    public void handleInput(float x, float y);
-    public void handleInterfaceEvent(int moveType);
+    void enter();
+    void exit();
+    void update(float delta);
+    void handleInput(float x, float y);
+    void handleInterfaceEvent(int moveType);
 }

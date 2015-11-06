@@ -33,6 +33,10 @@ public class Dead implements Inanimate {
         return y;
     }
 
+    public void displayEvent() {
+
+    }
+
     public String examine() {
         return "A corpse lies here.";
     }

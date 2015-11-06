@@ -37,6 +37,10 @@ public class Door implements Inanimate {
         return y;
     }
 
+    public void displayEvent() {
+
+    }
+
     public String examine() {
         return "A closed door.";
     }
@@ -47,16 +51,20 @@ public class Door implements Inanimate {
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = false;
-            lighting.updateTileBody(tile.x, tile.y);
+            updateTileBody(tile);
             return "The door opens.";
         } else {
             this.sprite = sprites[0];
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = true;
-            lighting.updateTileBody(tile.x, tile.y);
+            updateTileBody(tile);
             return "The door closes.";
         }
+    }
+
+    public void updateTileBody(Tile tile) {
+        lighting.updateTileBody(tile.x, tile.y);
     }
 
     public void draw(SpriteBatch batch, int tileSize) {

@@ -29,6 +29,10 @@ public class Stairs implements Inanimate {
         return y;
     }
 
+    public void displayEvent() {
+
+    }
+
     public String examine() {
         return "Stairs descend deeper.";
     }

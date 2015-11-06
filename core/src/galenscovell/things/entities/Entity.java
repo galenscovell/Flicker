@@ -6,31 +6,31 @@ import galenscovell.processing.Point;
 import java.util.Stack;
 
 public interface Entity {
-    public String examine();
-    public int getStat(String key);
-    public Sprite getSprite();
+    String examine();
+    int getStat(String key);
+    Sprite getSprite();
 
-    public void setPosition(int newX, int newY);
-    public int getX();
-    public int getY();
-    public float getCurrentX();
-    public float getCurrentY();
+    void setPosition(int newX, int newY);
+    int getX();
+    int getY();
+    float getCurrentX();
+    float getCurrentY();
 
-    public void toggleAggressive();
-    public boolean isAggressive();
-    public boolean movementTimer();
-    public void setBeingAttacked();
-    public void setAttacking();
+    void toggleAggressive();
+    boolean isAggressive();
+    boolean movementTimer();
+    void setBeingAttacked();
+    void setAttacking();
 
-    public void populatePathStack(Stack<Point> path);
-    public void pushToPathStack(Point p);
-    public Point nextPathPoint();
-    public boolean pathStackEmpty();
+    void populatePathStack(Stack<Point> path);
+    void pushToPathStack(Point p);
+    Point nextPathPoint();
+    boolean pathStackEmpty();
 
-    public void move(int dx, int dy, boolean possible);
-    public void turn(int dx, int dy);
-    public void attack(double interpolation, Entity entity);
-    public void interpolate(double interpolation);
-    public void animate(double interpolation);
-    public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
+    void move(int dx, int dy, boolean possible);
+    void turn(int dx, int dy);
+    void attack(double interpolation, Entity entity);
+    void interpolate(double interpolation);
+    void animate(double interpolation);
+    void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);
 }
