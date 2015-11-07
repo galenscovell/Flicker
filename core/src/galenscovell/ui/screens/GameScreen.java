@@ -108,7 +108,6 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(input);
     }
 
-
     private void createNewLevel() {
         Level level = new Level();
         // level.testPrint();

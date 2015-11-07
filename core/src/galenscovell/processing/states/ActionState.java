@@ -3,11 +3,12 @@ package galenscovell.processing.states;
 import galenscovell.processing.Repository;
 import galenscovell.processing.actions.*;
 import galenscovell.things.entities.*;
+import galenscovell.things.inanimates.Inanimate;
 import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
-import java.util.Stack;
+import java.util.*;
 
 public class ActionState implements State {
     private GameScreen root;
@@ -57,6 +58,27 @@ public class ActionState implements State {
                 // Once heroEvent is unable to act, resolve it and clear event list
                 heroEvent.finish();
                 repo.clearEvents();
+                heroAdjacentCheck();
+            }
+        }
+    }
+
+    private void heroAdjacentCheck() {
+        List<Tile> adjacentTiles = new ArrayList<Tile>(4);
+        int heroTileX = hero.getX() / Constants.TILESIZE;
+        int heroTileY = hero.getY() / Constants.TILESIZE;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 || dy == 0) {
+                    Tile tile = repo.findTile(heroTileX + dx, heroTileY + dy);
+                    adjacentTiles.add(tile);
+                }
+            }
+        }
+        for (Tile tile : adjacentTiles) {
+            Inanimate thing = repo.findInanimate(tile.x, tile.y);
+            if (thing != null) {
+                System.out.println(thing);
             }
         }
     }
