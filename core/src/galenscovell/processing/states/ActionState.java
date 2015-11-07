@@ -64,21 +64,16 @@ public class ActionState implements State {
     }
 
     private void heroAdjacentCheck() {
-        List<Tile> adjacentTiles = new ArrayList<Tile>(4);
         int heroTileX = hero.getX() / Constants.TILESIZE;
         int heroTileY = hero.getY() / Constants.TILESIZE;
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 if (dx == 0 || dy == 0) {
-                    Tile tile = repo.findTile(heroTileX + dx, heroTileY + dy);
-                    adjacentTiles.add(tile);
+                    Inanimate thing = repo.findInanimate(heroTileX + dx, heroTileY + dy);
+                    if (thing != null) {
+                        System.out.println(thing);
+                    }
                 }
-            }
-        }
-        for (Tile tile : adjacentTiles) {
-            Inanimate thing = repo.findInanimate(tile.x, tile.y);
-            if (thing != null) {
-                System.out.println(thing);
             }
         }
     }
