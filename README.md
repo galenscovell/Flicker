@@ -5,7 +5,7 @@ Flicker-libgdx
 
 Flicker is an Android game about exploration and mystery with strategic combat similar to Chess and Hoplite.
 
-See the Trello board [here](https://trello.com/b/pDYWdLzZ/flicker) for a high level overview of planned changes.
+See the Trello board [here](https://trello.com/b/pDYWdLzZ/flicker) for the game's development roadmap and making feature requests.
 
 <b>Current Features:</b>
 ======
