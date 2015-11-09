@@ -10,20 +10,20 @@ import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 public class Renderer {
-    private OrthographicCamera camera;
-    private FitViewport viewport;
-    private SpriteBatch spriteBatch;
-    private Repository repo;
-    private Hero hero;
-    private Lighting lighting;
-    private Fog fog;
+    private final OrthographicCamera camera;
+    private final FitViewport viewport;
+    private final SpriteBatch spriteBatch;
+    private final Repository repo;
+    private final Hero hero;
+    private final Lighting lighting;
+    private final Fog fog;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
     public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch, Repository repo) {
         // Uses custom units (48, 80) rather than exact pixels (480, 800)
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
-        this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
-        camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
+        this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, this.camera);
+        this.camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
         this.spriteBatch = spriteBatch;
         this.repo = repo;
         this.hero = hero;
@@ -32,67 +32,67 @@ public class Renderer {
     }
 
     public void render(double interpolation) {
-        findCameraBounds();
-        spriteBatch.setProjectionMatrix(camera.combined);
-        spriteBatch.begin();
+        this.findCameraBounds();
+        this.spriteBatch.setProjectionMatrix(this.camera.combined);
+        this.spriteBatch.begin();
         // Tile rendering: [x, y] are in Tiles, convert to custom units
-        for (Tile tile : repo.tiles.values()) {
+        for (Tile tile : this.repo.tiles.values()) {
             if (inViewport(tile.x * Constants.TILESIZE, tile.y * Constants.TILESIZE)) {
-                tile.draw(spriteBatch, Constants.TILESIZE);
+                tile.draw(this.spriteBatch, Constants.TILESIZE);
             }
         }
         // Object rendering: [x, y] are in Tiles, convert to custom units
-        for (Inanimate inanimate : repo.inanimates) {
+        for (Inanimate inanimate : this.repo.inanimates) {
             if (inViewport(inanimate.getX() * Constants.TILESIZE, inanimate.getY() * Constants.TILESIZE)) {
-                inanimate.draw(spriteBatch, Constants.TILESIZE);
+                inanimate.draw(this.spriteBatch, Constants.TILESIZE);
             }
         }
         // Entity rendering: [x, y] are in custom units
-        for (Entity entity : repo.entities) {
-            entity.draw(spriteBatch, Constants.TILESIZE, interpolation, hero);
+        for (Entity entity : this.repo.entities) {
+            entity.draw(this.spriteBatch, Constants.TILESIZE, interpolation, hero);
         }
         // Player rendering: [x, y] are in custom units
-        hero.draw(spriteBatch, Constants.TILESIZE, interpolation, null);
+        this.hero.draw(this.spriteBatch, Constants.TILESIZE, interpolation, null);
         // Background effect rendering
-        fog.draw(spriteBatch);
-        spriteBatch.end();
+        this.fog.draw(this.spriteBatch);
+        this.spriteBatch.end();
         // Lighting rendering
-        lighting.update(hero.getCurrentX() + (Constants.TILESIZE / 2), hero.getCurrentY() + (Constants.TILESIZE / 2), camera);
+        this.lighting.update(this.hero.getCurrentX() + (Constants.TILESIZE / 2), this.hero.getCurrentY() + (Constants.TILESIZE / 2), this.camera);
     }
 
     public OrthographicCamera getCamera() {
-        return camera;
+        return this.camera;
     }
 
     public void zoom(float value) {
         value /= 10000;
-        if (camera.zoom + value > 1.5 || camera.zoom + value < 0.5) {
+        if (this.camera.zoom + value > 1.5 || this.camera.zoom + value < 0.5) {
             return;
         }
-        camera.zoom += value;
+        this.camera.zoom += value;
     }
 
     public void pan(float dx, float dy) {
-        camera.translate(-dx / (Constants.TILESIZE * 3), -dy / (Constants.TILESIZE * 3), 0);
+        this.camera.translate(-dx / (Constants.TILESIZE * 3), -dy / (Constants.TILESIZE * 3), 0);
     }
 
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
-        centerOnPlayer();
+        this.viewport.update(width, height, true);
+        this.centerOnPlayer();
     }
 
     private void centerOnPlayer() {
-        camera.position.set(hero.getCurrentX(), hero.getCurrentY(), 0);
+        this.camera.position.set(this.hero.getCurrentX(), this.hero.getCurrentY(), 0);
     }
 
     private void findCameraBounds() {
         // Find camera upper left coordinates
-        minCamX = camera.position.x - (camera.viewportWidth / 2) * camera.zoom;
-        minCamY = camera.position.y - (camera.viewportHeight / 2) * camera.zoom;
+        minCamX = this.camera.position.x - (this.camera.viewportWidth / 2) * this.camera.zoom;
+        minCamY = this.camera.position.y - (this.camera.viewportHeight / 2) * this.camera.zoom;
         // Find camera lower right coordinates
-        maxCamX = minCamX + camera.viewportWidth * camera.zoom;
-        maxCamY = minCamY + camera.viewportHeight * camera.zoom;
-        camera.update();
+        maxCamX = minCamX + this.camera.viewportWidth * this.camera.zoom;
+        maxCamY = minCamY + this.camera.viewportHeight * this.camera.zoom;
+        this.camera.update();
     }
 
     private boolean inViewport(int x, int y) {
@@ -100,6 +100,6 @@ public class Renderer {
     }
 
     public void dispose() {
-        lighting.dispose();
+        this.lighting.dispose();
     }
 }
