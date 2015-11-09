@@ -6,68 +6,76 @@ import galenscovell.util.ResourceManager;
 import galenscovell.world.Tile;
 
 public class Door implements Inanimate {
-    private int x, y;
+    private final int x;
+    private final int y;
     private Sprite sprite;
-    private Sprite[] sprites;
+    private final Sprite[] sprites;
     private boolean blocking;
-    private Lighting lighting;
+    private final Lighting lighting;
 
     public Door(int x, int y, String type, Lighting lighting) {
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
         this.sprites[0] = new Sprite(ResourceManager.inanimateAtlas.createSprite("door" + type + "0"));
-        sprites[0].flip(false, true);
+        this.sprites[0].flip(false, true);
         this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.createSprite("door" + type + "1"));
-        sprites[1].flip(false, true);
-        this.sprite = sprites[0];
+        this.sprites[1].flip(false, true);
+        this.sprite = this.sprites[0];
         this.blocking = true;
         this.lighting = lighting;
     }
 
+    @Override
     public Sprite getSprite() {
-        return sprite;
+        return this.sprite;
     }
 
+    @Override
     public int getX() {
-        return x;
+        return this.x;
     }
 
+    @Override
     public int getY() {
-        return y;
+        return this.y;
     }
 
+    @Override
     public void displayEvent() {
 
     }
 
+    @Override
     public String examine() {
         return "A closed door.";
     }
 
+    @Override
     public String interact(Tile tile) {
-        if (blocking) {
-            this.sprite = sprites[1];
+        if (this.blocking) {
+            this.sprite = this.sprites[1];
             tile.toggleBlocking();
             tile.toggleOccupied();
-            blocking = false;
-            updateTileBody(tile);
+            this.blocking = false;
+            this.updateTileBody(tile);
             return "The door opens.";
         } else {
-            this.sprite = sprites[0];
+            this.sprite = this.sprites[0];
             tile.toggleBlocking();
             tile.toggleOccupied();
-            blocking = true;
-            updateTileBody(tile);
+            this.blocking = true;
+            this.updateTileBody(tile);
             return "The door closes.";
         }
     }
 
     public void updateTileBody(Tile tile) {
-        lighting.updateTileBody(tile.x, tile.y);
+        this.lighting.updateTileBody(tile.x, tile.y);
     }
 
+    @Override
     public void draw(SpriteBatch batch, int tileSize) {
-        batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
+        batch.draw(this.sprite, this.x * tileSize, this.y * tileSize, tileSize, tileSize);
     }
 }

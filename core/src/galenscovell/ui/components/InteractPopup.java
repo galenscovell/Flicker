@@ -1,23 +1,26 @@
 package galenscovell.ui.components;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import galenscovell.ui.HudStage;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import galenscovell.things.inanimates.Inanimate;
 import galenscovell.util.ResourceManager;
 
 public class InteractPopup extends Table {
-    private HudStage root;
+    private final Stage root;
     private Table mainTable;
 
-    public InteractPopup(HudStage root) {
+    public InteractPopup(Stage root, Inanimate inanimate) {
         this.root = root;
-        create();
+        this.create(inanimate);
     }
 
-    public void create() {
+    public void create(Inanimate inanimate) {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ResourceManager.frameUp);
+        this.mainTable.setBackground(ResourceManager.frameUp);
+        Image inanimateSprite = new Image(inanimate.getSprite());
+        this.mainTable.add(inanimateSprite).expand().fillY();
 
-        this.add(mainTable).width(60).height(60).expand().right();
+        this.add(this.mainTable).width(74).height(80).expand().left();
     }
 }
