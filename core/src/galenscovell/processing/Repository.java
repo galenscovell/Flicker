@@ -22,7 +22,7 @@ public class Repository {
     }
 
     public void updateResistanceMap() {
-        rayCaster.updateResistanceMap();
+        this.rayCaster.updateResistanceMap();
     }
 
     public void addActors(List<Entity> entities, List<Inanimate> inanimates) {
@@ -31,24 +31,24 @@ public class Repository {
     }
 
     public boolean eventsEmpty() {
-        return events.isEmpty();
+        return this.events.isEmpty();
     }
 
     public void addEvent(Event event) {
-        events.add(event);
+        this.events.add(event);
     }
 
     public void removeEvent(Event event) {
-        events.remove(event);
+        this.events.remove(event);
     }
 
     public void clearEvents() {
-        resolveEvents();
+        this.resolveEvents();
         this.events = new ArrayList<Event>();
     }
 
     public void resolveEvents() {
-        for (Event event : events) {
+        for (Event event : this.events) {
             event.finish();
         }
     }
@@ -58,13 +58,13 @@ public class Repository {
     }
 
     public Event getFirstEvent() {
-        return events.get(0);
+        return this.events.get(0);
     }
 
     public Entity findEntity(int x, int y) {
         Entity target = null;
-        for (Entity entity : entities) {
-            if ((entity.getX() / Constants.TILESIZE) == x && (entity.getY() / Constants.TILESIZE) == y) {
+        for (Entity entity : this.entities) {
+            if (entity.getX() / Constants.TILESIZE == x && entity.getY() / Constants.TILESIZE == y) {
                 target = entity;
             }
         }
@@ -73,7 +73,7 @@ public class Repository {
 
     public Inanimate findInanimate(int x, int y) {
         Inanimate inanimate = null;
-        for (Inanimate object : inanimates) {
+        for (Inanimate object : this.inanimates) {
             if (object.getX() == x && object.getY() == y) {
                 inanimate = object;
             }
@@ -82,7 +82,7 @@ public class Repository {
     }
 
     public Tile findTile(int x, int y) {
-        return tiles.get(x * Constants.MAPSIZE + y);
+        return this.tiles.get(x * Constants.MAPSIZE + y);
     }
 
     public Tile findRandomTile() {
@@ -90,7 +90,7 @@ public class Repository {
         while (true) {
             int choiceY = random.nextInt(Constants.MAPSIZE);
             int choiceX = random.nextInt(Constants.MAPSIZE);
-            Tile tile = findTile(choiceX, choiceY);
+            Tile tile = this.findTile(choiceX, choiceY);
             if (tile != null && tile.isFloor()) {
                 if (tile.isOccupied()) {
                     continue;

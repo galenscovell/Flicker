@@ -13,33 +13,33 @@ public class Torch {
         this.size = size;
         this.frame = 0;
         this.outerLight = new PointLight(rayHandler, 40, new Color(r, g, b, a), size, 0, 0);
-        outerLight.setSoftnessLength(4);
-        outerLight.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
+        this.outerLight.setSoftnessLength(4);
+        Light.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
         this.innerLight = new PointLight(rayHandler, 40, new Color(0.95f, 0.95f, 0.95f, 0.95f), size - 4, 0, 0);
-        innerLight.setSoftnessLength(4);
-        innerLight.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
+        this.innerLight.setSoftnessLength(4);
+        Light.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
     }
 
     public void setPosition(float x, float y) {
-        outerLight.setPosition(x, y);
-        innerLight.setPosition(x, y);
+        this.outerLight.setPosition(x, y);
+        this.innerLight.setPosition(x, y);
     }
 
     public void animate() {
-        frame++;
-        if (frame == 6) {
-            outerLight.setDistance(size - 0.5f);
-        } else if (frame == 12) {
-            outerLight.setDistance(size - 1);
-        } else if (frame == 18) {
-            outerLight.setDistance(size - 1.5f);
-        } else if (frame == 24) {
-            outerLight.setDistance(size - 1);
-        } else if (frame == 30) {
-            outerLight.setDistance(size - 0.5f);
-        } else if (frame == 36) {
-            outerLight.setDistance(size);
-            frame = 0;
+        this.frame++;
+        if (this.frame == 6) {
+            this.outerLight.setDistance(this.size - 0.5f);
+        } else if (this.frame == 12) {
+            this.outerLight.setDistance(this.size - 1);
+        } else if (this.frame == 18) {
+            this.outerLight.setDistance(this.size - 1.5f);
+        } else if (this.frame == 24) {
+            this.outerLight.setDistance(this.size - 1);
+        } else if (this.frame == 30) {
+            this.outerLight.setDistance(this.size - 0.5f);
+        } else if (this.frame == 36) {
+            this.outerLight.setDistance(this.size);
+            this.frame = 0;
         }
     }
 }

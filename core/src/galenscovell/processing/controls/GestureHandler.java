@@ -1,10 +1,10 @@
 package galenscovell.processing.controls;
 
-import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import galenscovell.ui.screens.GameScreen;
 
-public class GestureHandler extends GestureDetector.GestureAdapter {
-    private GameScreen game;
+public class GestureHandler extends GestureAdapter {
+    private final GameScreen game;
 
     public GestureHandler(GameScreen game) {
         this.game = game;
@@ -12,13 +12,13 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean zoom (float initialDistance, float endDistance){
-        game.screenZoom(endDistance - initialDistance);
+        this.game.screenZoom(endDistance - initialDistance);
         return true;
     }
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
-        game.screenPan(deltaX, deltaY);
+        this.game.screenPan(deltaX, deltaY);
         return true;
     }
 }

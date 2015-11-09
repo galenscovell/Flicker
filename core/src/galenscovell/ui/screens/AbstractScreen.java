@@ -19,21 +19,21 @@ public class AbstractScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(delta);
-        stage.draw();
+        this.stage.act(delta);
+        this.stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        if (stage != null) {
-            stage.getViewport().update(width, height);
+        if (this.stage != null) {
+            this.stage.getViewport().update(width, height);
         }
     }
 
     @Override
     public void show() {
-        create();
-        Gdx.input.setInputProcessor(stage);
+        this.create();
+        Gdx.input.setInputProcessor(this.stage);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class AbstractScreen implements Screen {
 
     @Override
     public void dispose() {
-        if (stage != null) {
-            stage.dispose();
+        if (this.stage != null) {
+            this.stage.dispose();
         }
     }
 }

@@ -1,8 +1,10 @@
 package galenscovell.ui;
 
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -12,14 +14,14 @@ import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.ResourceManager;
 
 public class HudStage extends Stage {
-    private GameScreen game;
+    private final GameScreen game;
     private ProgressBar health;
-    public Table examinePopup, infoPopup, inventoryMenu, optionsMenu, skillMenu;
+    public Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
 
-    public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
+    public HudStage(GameScreen game, SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
         this.game = game;
-        create();
+        this.create();
     }
 
     public void create() {
@@ -48,15 +50,16 @@ public class HudStage extends Stage {
         Table topRight = new Table();
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "scroll", 32, 0.5f);
+        this.setIcon(optionsButton, "scroll", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
+            @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (optionsMenu.hasParent()) {
-                    game.changeState(StateType.ACTION);
+                if (HudStage.this.optionsMenu.hasParent()) {
+                    HudStage.this.game.changeState(StateType.ACTION);
                 } else {
-                    game.changeState(StateType.MENU);
+                    HudStage.this.game.changeState(StateType.MENU);
                 }
-                menuOperation(optionsMenu);
+                HudStage.this.menuOperation(HudStage.this.optionsMenu);
             }
         });
         topRight.add(optionsButton).width(48).height(48).expand().fill().top().right();
@@ -73,27 +76,29 @@ public class HudStage extends Stage {
         // Bottom left
         Table bottomLeft = new Table();
         Button inventoryButton = new Button(ResourceManager.panelStyle);
-        setIcon(inventoryButton, "inventory", 48, 1);
+        this.setIcon(inventoryButton, "inventory", 48, 1);
         inventoryButton.addListener(new ClickListener() {
+            @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (inventoryMenu.hasParent()) {
-                    game.changeState(StateType.ACTION);
+                if (HudStage.this.inventoryMenu.hasParent()) {
+                    HudStage.this.game.changeState(StateType.ACTION);
                 } else {
-                    game.changeState(StateType.MENU);
+                    HudStage.this.game.changeState(StateType.MENU);
                 }
-                menuOperation(inventoryMenu);
+                HudStage.this.menuOperation(HudStage.this.inventoryMenu);
             }
         });
         Button examineButton = new Button(ResourceManager.panelStyle);
-        setIcon(examineButton, "examine", 48, 1);
+        this.setIcon(examineButton, "examine", 48, 1);
         examineButton.addListener(new ClickListener() {
+            @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (examinePopup.hasParent()) {
-                    game.changeState(StateType.ACTION);
+                if (HudStage.this.examinePopup.hasParent()) {
+                    HudStage.this.game.changeState(StateType.ACTION);
                 } else {
-                    game.changeState(StateType.MENU);
+                    HudStage.this.game.changeState(StateType.MENU);
                 }
-                menuOperation(examinePopup);
+                HudStage.this.menuOperation(HudStage.this.examinePopup);
             }
         });
         bottomLeft.add(inventoryButton).width(80).height(64).expand().left().padRight(4);
@@ -103,15 +108,16 @@ public class HudStage extends Stage {
         // Bottom right
         Table bottomRight = new Table();
         Button attackButton = new Button(ResourceManager.panelStyle);
-        setIcon(attackButton, "tome", 48, 1);
+        this.setIcon(attackButton, "tome", 48, 1);
         attackButton.addListener(new ClickListener() {
+            @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (skillMenu.hasParent()) {
-                    game.changeState(StateType.ACTION);
+                if (HudStage.this.skillMenu.hasParent()) {
+                    HudStage.this.game.changeState(StateType.ACTION);
                 } else {
-                    game.changeState(StateType.MENU);
+                    HudStage.this.game.changeState(StateType.MENU);
                 }
-                menuOperation(skillMenu);
+                HudStage.this.menuOperation(HudStage.this.skillMenu);
             }
         });
         bottomRight.add(attackButton).width(80).height(64).expand().right();
@@ -123,28 +129,29 @@ public class HudStage extends Stage {
         this.addActor(mainTable);
     }
 
+    @Override
     public void dispose() {
-        this.addActor(examinePopup);
-        this.addActor(inventoryMenu);
-        this.addActor(optionsMenu);
-        this.addActor(skillMenu);
+        this.addActor(this.examinePopup);
+        this.addActor(this.inventoryMenu);
+        this.addActor(this.optionsMenu);
+        this.addActor(this.skillMenu);
     }
 
     public void returnToMainMenu() {
-        optionsMenu.remove();
-        game.toMainMenu();
+        this.optionsMenu.remove();
+        this.game.toMainMenu();
     }
 
     public void selectAttackMove(int moveType) {
-        game.passInterfaceEventToState(moveType);
+        this.game.passInterfaceEventToState(moveType);
     }
 
     public void updateHealth(int val) {
-        health.setValue(health.getValue() + val);
+        this.health.setValue(this.health.getValue() + val);
     }
 
     public void setIcon(Table table, String name, int height, float opacity) {
-        Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
+        Image icon = new Image(new AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fillY);
         icon.setColor(1, 1, 1, opacity);
         table.add(icon).height(height).expand().fill().center();
@@ -153,7 +160,7 @@ public class HudStage extends Stage {
     private ProgressBar createBar(String path) {
         TextureRegionDrawable fill = new TextureRegionDrawable(ResourceManager.uiAtlas.findRegion(path));
         TextureRegionDrawable empty = new TextureRegionDrawable(ResourceManager.uiAtlas.findRegion("barEmpty"));
-        ProgressBar.ProgressBarStyle barStyle = new ProgressBar.ProgressBarStyle(empty, fill);
+        ProgressBarStyle barStyle = new ProgressBarStyle(empty, fill);
         ProgressBar bar = new ProgressBar(0, 260, 1, false, barStyle);
         barStyle.knobBefore = fill;
         bar.setValue(260);
@@ -165,12 +172,12 @@ public class HudStage extends Stage {
         if (menu.hasParent()) {
             menu.remove();
         } else {
-            if (optionsMenu != menu && optionsMenu.hasParent()) {
-                optionsMenu.remove();
-            } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
-                inventoryMenu.remove();
-            } else if (skillMenu != menu && skillMenu.hasParent()) {
-                skillMenu.remove();
+            if (this.optionsMenu != menu && this.optionsMenu.hasParent()) {
+                this.optionsMenu.remove();
+            } else if (this.inventoryMenu != menu && this.inventoryMenu.hasParent()) {
+                this.inventoryMenu.remove();
+            } else if (this.skillMenu != menu && this.skillMenu.hasParent()) {
+                this.skillMenu.remove();
             }
             this.addActor(menu);
         }

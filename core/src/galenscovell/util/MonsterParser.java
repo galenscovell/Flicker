@@ -27,12 +27,12 @@ public class MonsterParser {
     }
 
     public Monster spawn(int level) {
-        List<Monster> monsterList = createMonsterList();
+        List<Monster> monsterList = this.createMonsterList();
         Random random = new Random();
         while (true) {
             int selection = random.nextInt(monsterList.size());
             Monster selected = monsterList.get(selection);
-            if (selected.level == level || selected.level == (level - 1)) {
+            if (selected.level == level || selected.level == level - 1) {
                 selected.setup();
                 return selected;
             }

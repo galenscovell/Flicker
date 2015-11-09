@@ -5,21 +5,21 @@ import galenscovell.ui.HudStage;
 import galenscovell.util.ResourceManager;
 
 public class InventoryMenu extends Table {
-    private HudStage root;
+    private final HudStage root;
     private Table mainTable;
 
     public InventoryMenu(HudStage root) {
         this.root = root;
-        create();
+        this.create();
     }
 
     public void create() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        mainTable.setBackground(ResourceManager.frameUpDec);
+        this.mainTable.setBackground(ResourceManager.frameUpDec);
 
 
-        this.add(mainTable).width(300).height(400).expand().center();
+        this.add(this.mainTable).width(300).height(400).expand().center();
     }
 }
 

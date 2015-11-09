@@ -25,75 +25,75 @@ public class Tile {
     }
 
     public boolean isEmpty() {
-        return type == TileType.EMPTY;
+        return this.type == TileType.EMPTY;
     }
 
     public void becomeEmpty() {
-        type = TileType.EMPTY;
+        this.type = TileType.EMPTY;
     }
 
     public boolean isFloor() {
-        return type == TileType.FLOOR;
+        return this.type == TileType.FLOOR;
     }
 
     public void becomeFloor() {
-        type = TileType.FLOOR;
+        this.type = TileType.FLOOR;
     }
 
     public boolean isWall() {
-        return type == TileType.WALL;
+        return this.type == TileType.WALL;
     }
 
     public void becomeWall() {
-        type = TileType.WALL;
+        this.type = TileType.WALL;
     }
 
     public boolean isWater() {
-        return type == TileType.WATER;
+        return this.type == TileType.WATER;
     }
 
     public void becomeWater() {
-        type = TileType.WATER;
+        this.type = TileType.WATER;
     }
 
     public boolean hasDoor() {
-        return door;
+        return this.door;
     }
 
     public void toggleDoor() {
-        door = !door;
+        this.door = !this.door;
     }
 
     public boolean isHighlighted() {
-        return highlighted;
+        return this.highlighted;
     }
 
     public void toggleHighlighted() {
-        highlighted = !highlighted;
+        this.highlighted = !this.highlighted;
     }
 
     public boolean isOccupied() {
-        return occupied;
+        return this.occupied;
     }
 
     public void toggleOccupied() {
-        occupied = !occupied;
+        this.occupied = !this.occupied;
     }
 
     public boolean isBlocking() {
-        return blocking;
+        return this.blocking;
     }
 
     public void toggleBlocking() {
-        blocking = !blocking;
+        this.blocking = !this.blocking;
     }
 
     public void setFloorNeighbors(int value) {
-        floorNeighbors = value;
+        this.floorNeighbors = value;
     }
 
     public int getFloorNeighbors() {
-        return floorNeighbors;
+        return this.floorNeighbors;
     }
 
     public void setNeighbors(List<Point> points) {
@@ -101,46 +101,46 @@ public class Tile {
     }
 
     public List<Point> getNeighbors() {
-        return neighborTilePoints;
+        return this.neighborTilePoints;
     }
 
     public void setBitmask(short value) {
-        bitmask = value;
+        this.bitmask = value;
     }
 
     public short getBitmask() {
-        return bitmask;
+        return this.bitmask;
     }
 
     public void findSprite() {
         this.sprites = new Sprite[2];
-        if (isWall()) {
-            sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("wall" + bitmask));
-            sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("wall" + bitmask));
-        } else if (isFloor()) {
-            sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("floor" + bitmask));
-            sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("floor" + bitmask));
-        } else if (isWater()) {
-            sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("waterA" + bitmask));
-            sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("waterB" + bitmask));
+        if (this.isWall()) {
+            this.sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("wall" + this.bitmask));
+            this.sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("wall" + this.bitmask));
+        } else if (this.isFloor()) {
+            this.sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("floor" + this.bitmask));
+            this.sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("floor" + this.bitmask));
+        } else if (this.isWater()) {
+            this.sprites[0] = new Sprite(ResourceManager.tileAtlas.createSprite("waterA" + this.bitmask));
+            this.sprites[1] = new Sprite(ResourceManager.tileAtlas.createSprite("waterB" + this.bitmask));
         }
-        sprites[0].flip(false, true);
-        sprites[1].flip(false, true);
+        this.sprites[0].flip(false, true);
+        this.sprites[1].flip(false, true);
     }
 
     public void draw(SpriteBatch batch, int tileSize) {
-        if (frames == 60) {
-            if (currentFrame == 0) {
-                currentFrame++;
-            } else if (currentFrame == 1) {
-                currentFrame--;
+        if (this.frames == 60) {
+            if (this.currentFrame == 0) {
+                this.currentFrame++;
+            } else if (this.currentFrame == 1) {
+                this.currentFrame--;
             }
-            frames -= frames;
+            this.frames -= this.frames;
         }
-        batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
-        if (highlighted) {
-            batch.draw(ResourceManager.highlight, x * tileSize, y * tileSize, tileSize, tileSize);
+        batch.draw(this.sprites[this.currentFrame], this.x * tileSize, this.y * tileSize, tileSize, tileSize);
+        if (this.highlighted) {
+            batch.draw(ResourceManager.highlight, this.x * tileSize, this.y * tileSize, tileSize, tileSize);
         }
-        frames++;
+        this.frames++;
     }
 }

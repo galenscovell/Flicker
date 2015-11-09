@@ -16,13 +16,13 @@ public class FlickerMain extends Game {
         this.spriteBatch = new SpriteBatch();
         this.loadingScreen = new LoadScreen(this);
         this.mainMenuScreen = new MainMenuScreen(this);
-        setScreen(loadingScreen);
+        this.setScreen(this.loadingScreen);
     }
 
     public void newGame() {
-        loadingScreen.dispose();
+        this.loadingScreen.dispose();
         this.gameScreen = new GameScreen(this);
-        setScreen(gameScreen);
+        this.setScreen(this.gameScreen);
     }
 
     public void continueGame() {
@@ -31,9 +31,9 @@ public class FlickerMain extends Game {
 
     @Override
     public void dispose() {
-        mainMenuScreen.dispose();
-        if (gameScreen != null) {
-            gameScreen.dispose();
+        this.mainMenuScreen.dispose();
+        if (this.gameScreen != null) {
+            this.gameScreen.dispose();
         }
         ResourceManager.dispose();
     }

@@ -6,7 +6,7 @@ import galenscovell.world.Tile;
 public class Event {
     public Entity entity;
     public Tile target;
-    private Action action;
+    private final Action action;
 
     public Event(Entity entity, Tile target, Action action) {
         this.entity = entity;
@@ -19,14 +19,14 @@ public class Event {
     }
 
     public boolean start() {
-        return action.initialized(entity, target);
+        return this.action.initialized(this.entity, this.target);
     }
 
     public boolean step() {
-        return action.act(entity, target);
+        return this.action.act(this.entity, this.target);
     }
 
     public void finish() {
-        action.resolve(entity);
+        this.action.resolve(this.entity);
     }
 }

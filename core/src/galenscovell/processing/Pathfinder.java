@@ -27,10 +27,10 @@ public class Pathfinder {
 
         while (!open.isEmpty()) {
             // Consider node with best score in open list
-            Node a = chooseNode(open, endNode);
+            Node a = this.chooseNode(open, endNode);
             // If node tile is end tile, trace path and finish
             if (a.self == end) {
-                return tracePath(a);
+                return this.tracePath(a);
             } else {
                 // Don't repeat ourselves
                 open.remove(a);
@@ -72,7 +72,7 @@ public class Pathfinder {
 
         for (Node n : open) {
             double costFromStart = n.cost;
-            double costToEnd = estimateDistance(n, end);
+            double costToEnd = this.estimateDistance(n, end);
             double totalCost = costFromStart + costToEnd;
             if (minCost > totalCost) {
                 minCost = totalCost;

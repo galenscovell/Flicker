@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 
 public class Fog {
-    private Sprite sprite;
+    private final Sprite sprite;
     private float x, y;
     private int frame;
 
@@ -18,23 +18,23 @@ public class Fog {
 
     public void draw(SpriteBatch spriteBatch) {
         spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.05f);
-        spriteBatch.draw(sprite, x, y, 512, 512);
+        spriteBatch.draw(this.sprite, this.x, this.y, 512, 512);
         spriteBatch.setColor(1, 1, 1, 1);
 
-        if (frame == 0) {
-            animate();
-            frame = 3;
+        if (this.frame == 0) {
+            this.animate();
+            this.frame = 3;
         } else {
-            frame--;
+            this.frame--;
         }
     }
 
     private void animate() {
-        x -= 0.1f;
-        y -= 0.1f;
-        if ((x < -128)) {
-            x = -64;
-            y = -64;
+        this.x -= 0.1f;
+        this.y -= 0.1f;
+        if (this.x < -128) {
+            this.x = -64;
+            this.y = -64;
         }
     }
 }

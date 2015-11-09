@@ -8,38 +8,39 @@ import galenscovell.util.*;
 import galenscovell.world.generation.*;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class Level {
-    private DungeonBuilder builder;
-    private Map<Integer, Tile> tiles;
+    private final DungeonBuilder builder;
+    private final Map<Integer, Tile> tiles;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
 
     public Level() {
         this.builder = new DungeonBuilder();
-        this.tiles = builder.getTiles();
-        optimize();
-        placeWater();
-        setFloorNeighbors();
-        skin();
+        this.tiles = this.builder.getTiles();
+        this.optimize();
+        this.placeWater();
+        this.setFloorNeighbors();
+        this.skin();
     }
 
     public Map<Integer, Tile> getTiles() {
-        return tiles;
+        return this.tiles;
     }
 
     public List<Entity> getEntities() {
-        return entities;
+        return this.entities;
     }
 
     public List<Inanimate> getInanimates() {
-        return inanimates;
+        return this.inanimates;
     }
 
     public void optimize() {
         // Prune unused Tiles and ensure Walls are set to blocking
         List<Integer> pruned = new ArrayList<Integer>();
-        for (Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
+        for (Entry<Integer, Tile> entry : this.tiles.entrySet()) {
             if (entry.getValue().isEmpty()) {
                 pruned.add(entry.getKey());
             } else if (entry.getValue().isWall()) {
@@ -47,7 +48,7 @@ public class Level {
                 // If wall has no wall neighbors, make it floor
                 // If all of its neighbors are also walls, remove it
                 for (Point p : entry.getValue().getNeighbors()) {
-                    Tile neighbor = getTile(p.x, p.y);
+                    Tile neighbor = this.getTile(p.x, p.y);
                     if (neighbor.isWall()) {
                         wallNeighbors++;
                     }
@@ -62,7 +63,7 @@ public class Level {
             }
         }
         for (int key : pruned) {
-            tiles.remove(key);
+            this.tiles.remove(key);
         }
     }
 
@@ -72,17 +73,17 @@ public class Level {
         List<Tile> waterTiles = new ArrayList<Tile>();
         // Place water spawn points randomly
         for (int i = 0; i < waterPoints; i++) {
-            Tile waterTile = findRandomTile();
+            Tile waterTile = this.findRandomTile();
             waterTile.becomeWater();
             waterTiles.add(waterTile);
             // Expand each point out one layer initially
-            expandWater(waterTile, waterTiles);
+            this.expandWater(waterTile, waterTiles);
         }
         // Randomly expand water tiles
         List<Tile> addedTiles = new ArrayList<Tile>();
         for (Tile tile : waterTiles) {
             if (generator.nextInt(20) < 10) {
-                expandWater(tile, addedTiles);
+                this.expandWater(tile, addedTiles);
             }
         }
         // Add expanded water tiles to water tile list
@@ -94,7 +95,7 @@ public class Level {
     private void expandWater(Tile tile, List<Tile> waterTiles) {
         List<Point> neighbors = tile.getNeighbors();
         for (Point point : neighbors) {
-            Tile neighborTile = tiles.get(point.x * Constants.MAPSIZE + point.y);
+            Tile neighborTile = this.tiles.get(point.x * Constants.MAPSIZE + point.y);
             if (neighborTile != null && neighborTile.isFloor()) {
                 neighborTile.becomeWater();
                 waterTiles.add(neighborTile);
@@ -104,17 +105,17 @@ public class Level {
 
     private void skin() {
         Bitmasker bitmasker = new Bitmasker();
-        for (Tile tile : tiles.values()) {
-            tile.setBitmask(bitmasker.findBitmask(tile, tiles));
+        for (Tile tile : this.tiles.values()) {
+            tile.setBitmask(bitmasker.findBitmask(tile, this.tiles));
             tile.findSprite();
         }
     }
 
     private void setFloorNeighbors() {
-        for (Tile tile : tiles.values()) {
+        for (Tile tile : this.tiles.values()) {
             int floorNeighbors = 0;
             for (Point neighborPoint : tile.getNeighbors()) {
-                Tile neighbor = tiles.get(neighborPoint.x * Constants.MAPSIZE + neighborPoint.y);
+                Tile neighbor = this.tiles.get(neighborPoint.x * Constants.MAPSIZE + neighborPoint.y);
                 if (neighbor != null && neighbor.isFloor()) {
                     floorNeighbors++;
                 }
@@ -128,7 +129,7 @@ public class Level {
         while (true) {
             int choiceY = random.nextInt(Constants.MAPSIZE);
             int choiceX = random.nextInt(Constants.MAPSIZE);
-            Tile tile = getTile(choiceX, choiceY);
+            Tile tile = this.getTile(choiceX, choiceY);
             if (tile != null && tile.isFloor() && !tile.isOccupied() && !tile.hasDoor()) {
                 return tile;
             }
@@ -136,38 +137,38 @@ public class Level {
     }
 
     private Tile getTile(int x, int y) {
-        return tiles.get(x * Constants.MAPSIZE + y);
+        return this.tiles.get(x * Constants.MAPSIZE + y);
     }
 
     public void testPrint() {
-        builder.print();
+        this.builder.print();
     }
 
     public void placeEntities(Hero hero) {
         this.entities = new ArrayList<Entity>();
-        placePlayer(hero);
+        this.placePlayer(hero);
         MonsterParser monsterParser = new MonsterParser();
         // TODO: Modify monster placement
         for (int i = 0; i < 3; i++) {
-            placeMonsters(monsterParser);
+            this.placeMonsters(monsterParser);
         }
     }
 
     public void placeInanimates(Lighting lighting) {
         // Place doors on floors with hallway bitmask, no adjacent doors, and more than 2 adjacent floor neighbors
         this.inanimates = new ArrayList<Inanimate>();
-        for (Tile tile : tiles.values()) {
+        for (Tile tile : this.tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
-                if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
+                if (tile.getBitmask() == 5 && this.suitableForDoor(tile)) {
                     Door newDoor = new Door(tile.x, tile.y, "h", lighting);
-                    inanimates.add(newDoor);
+                    this.inanimates.add(newDoor);
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
                     newDoor.updateTileBody(tile);
-                } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
+                } else if (tile.getBitmask() == 10 && this.suitableForDoor(tile)) {
                     Door newDoor = new Door(tile.x, tile.y, "v", lighting);
-                    inanimates.add(newDoor);
+                    this.inanimates.add(newDoor);
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
@@ -179,7 +180,7 @@ public class Level {
 
     private boolean suitableForDoor(Tile tile) {
         for (Point p : tile.getNeighbors()) {
-            Tile n = tiles.get(p.x * Constants.MAPSIZE + p.y);
+            Tile n = this.tiles.get(p.x * Constants.MAPSIZE + p.y);
             if (n != null && (n.isWater() || n.hasDoor())) {
                 return false;
             }
@@ -188,16 +189,16 @@ public class Level {
     }
 
     private void placePlayer(Hero hero) {
-        Tile randomTile = findRandomTile();
+        Tile randomTile = this.findRandomTile();
         hero.setPosition(randomTile.x * Constants.TILESIZE, randomTile.y * Constants.TILESIZE);
         randomTile.toggleOccupied();
     }
 
     private void placeMonsters(MonsterParser parser) {
-        Tile randomTile = findRandomTile();
+        Tile randomTile = this.findRandomTile();
         Entity monster = parser.spawn(2);
         monster.setPosition(randomTile.x * Constants.TILESIZE, randomTile.y * Constants.TILESIZE);
-        entities.add(monster);
+        this.entities.add(monster);
         randomTile.toggleOccupied();
     }
 }
