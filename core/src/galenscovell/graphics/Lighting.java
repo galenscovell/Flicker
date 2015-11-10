@@ -11,13 +11,13 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class Lighting {
-    private World world;
-    private RayHandler rayHandler;
+    private final World world;
+    private final RayHandler rayHandler;
+    private final Torch playerTorch;
+    private final Repository repo;
+    // private final Box2DDebugRenderer debug;
     private List<Torch> torches;
-    private Torch playerTorch;
     private Map<Integer, Body> bodies;
-    private Repository repo;
-    // private Box2DDebugRenderer debug;
 
     public Lighting(Repository repo) {
         this.world = new World(new Vector2(0, 0), true);

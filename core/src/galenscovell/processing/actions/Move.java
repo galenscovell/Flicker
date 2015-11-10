@@ -6,18 +6,20 @@ import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 public class Move implements Action {
-    private Repository repo;
-    private Pathfinder pathfinder;
+    private final Repository repo;
+    private final Pathfinder pathfinder;
 
     public Move(Repository repo) {
         this.repo = repo;
         this.pathfinder = new Pathfinder();
     }
 
+    @Override
     public void define(int moveType) {
 
     }
 
+    @Override
     public boolean initialized(Entity entity, Tile targetTile) {
         int convertX = entity.getX() / Constants.TILESIZE;
         int convertY = entity.getY() / Constants.TILESIZE;
@@ -30,6 +32,7 @@ public class Move implements Action {
         }
     }
 
+    @Override
     public boolean act(Entity entity, Tile target) {
         if (entity.pathStackEmpty()) {
             return false;
@@ -51,6 +54,7 @@ public class Move implements Action {
         }
     }
 
+    @Override
     public void resolve(Entity entity) {
 
     }

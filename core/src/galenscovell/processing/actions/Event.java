@@ -4,9 +4,9 @@ import galenscovell.things.entities.Entity;
 import galenscovell.world.Tile;
 
 public class Event {
-    public Entity entity;
-    public Tile target;
-    private Action action;
+    private final Entity entity;
+    private final Action action;
+    private Tile target;
 
     public Event(Entity entity, Tile target, Action action) {
         this.entity = entity;
@@ -28,5 +28,9 @@ public class Event {
 
     public void finish() {
         action.resolve(entity);
+    }
+
+    public Entity getEntity() {
+        return entity;
     }
 }

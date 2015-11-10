@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Pathfinder {
 
-    private class Node {
+    private static class Node {
         Node parent;
         Tile self;
         double cost;

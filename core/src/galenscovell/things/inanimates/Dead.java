@@ -7,8 +7,8 @@ import galenscovell.world.Tile;
 import java.util.Random;
 
 public class Dead implements Inanimate {
+    private final Sprite sprite;
     private int x, y;
-    private Sprite sprite;
     private boolean blocking;
 
     public Dead(int x, int y) {
@@ -21,30 +21,37 @@ public class Dead implements Inanimate {
         this.blocking = false;
     }
 
+    @Override
     public Sprite getSprite() {
         return sprite;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }
 
+    @Override
     public void displayEvent() {
 
     }
 
+    @Override
     public String examine() {
         return "A corpse lies here.";
     }
 
+    @Override
     public String interact(Tile tile) {
         return "Searching corpse...";
     }
 
+    @Override
     public void draw(SpriteBatch batch, int tileSize) {
         batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
     }

@@ -6,7 +6,6 @@ import galenscovell.util.ResourceManager;
 public class Hero extends Creature {
 
     public Hero() {
-        super();
         setSprites();
         title = "Hero";
         description = "Hero";

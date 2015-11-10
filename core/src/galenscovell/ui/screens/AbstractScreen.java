@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import galenscovell.flicker.FlickerMain;
 
 public class AbstractScreen implements Screen {
-    protected FlickerMain root;
+    protected final FlickerMain root;
     protected Stage stage;
 
     public AbstractScreen(FlickerMain root) {

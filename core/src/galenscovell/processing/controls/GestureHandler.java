@@ -4,7 +4,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import galenscovell.ui.screens.GameScreen;
 
 public class GestureHandler extends GestureDetector.GestureAdapter {
-    private GameScreen game;
+    private final GameScreen game;
 
     public GestureHandler(GameScreen game) {
         this.game = game;

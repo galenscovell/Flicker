@@ -7,31 +7,36 @@ import java.util.*;
 
 public class Creature implements Entity {
     private int x, y, prevX, prevY;
+    private int moveTimer, animateFrames, frame;
     private float currentX, currentY;
     private Stack<Point> pathStack;
-    private int moveTimer, animateFrames, frame;
     private boolean aggressive, attacking, beingAttacked;
 
     protected Sprite[] currentSet, leftSprites, rightSprites;
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
 
+    @Override
     public String toString() {
         return title;
     }
 
+    @Override
     public String examine() {
         return description;
     }
 
+    @Override
     public Sprite getSprite() {
         return currentSet[0];
     }
 
+    @Override
     public int getStat(String key) {
         return stats.get(key);
     }
 
+    @Override
     public void setPosition(int newX, int newY) {
         prevX = newX;
         prevY = newY;
@@ -41,18 +46,22 @@ public class Creature implements Entity {
         currentY = (float) newY;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }
 
+    @Override
     public float getCurrentX() {
         return currentX;
     }
 
+    @Override
     public float getCurrentY() {
         return currentY;
     }
@@ -61,10 +70,12 @@ public class Creature implements Entity {
         aggressive = !aggressive;
     }
 
+    @Override
     public boolean isAggressive() {
         return aggressive;
     }
 
+    @Override
     public boolean movementTimer() {
         if (moveTimer == stats.get("speed")) {
             moveTimer = 0;
@@ -74,30 +85,37 @@ public class Creature implements Entity {
         return false;
     }
 
+    @Override
     public void setBeingAttacked() {
         beingAttacked = true;
     }
 
+    @Override
     public void setAttacking() {
         attacking = true;
     }
 
+    @Override
     public void populatePathStack(Stack<Point> path) {
         this.pathStack = path;
     }
 
+    @Override
     public void pushToPathStack(Point p) {
         pathStack.push(p);
     }
 
+    @Override
     public Point nextPathPoint() {
         return pathStack.pop();
     }
 
+    @Override
     public boolean pathStackEmpty() {
         return pathStack == null || pathStack.isEmpty();
     }
 
+    @Override
     public void move(int dx, int dy, boolean possible) {
         turn(dx, dy);
         if (possible) {
@@ -106,6 +124,7 @@ public class Creature implements Entity {
         }
     }
 
+    @Override
     public void turn(int dx, int dy) {
         if (dx < 0 && currentSet != leftSprites) {
             currentSet = leftSprites;
@@ -114,10 +133,12 @@ public class Creature implements Entity {
         }
     }
 
+    @Override
     public void attack(double interpolation, Entity entity) {
 
     }
 
+    @Override
     public void interpolate(double interpolation) {
         animate(interpolation);
         currentX = (float) (prevX + ((x - prevX) * interpolation));
@@ -131,6 +152,7 @@ public class Creature implements Entity {
         }
     }
 
+    @Override
     public void animate(double interpolation) {
         if (animateFrames == 30) {
             if (frame == 0) {
@@ -144,6 +166,7 @@ public class Creature implements Entity {
         }
     }
 
+    @Override
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
         float offsetTileHeight = currentY - (tileSize / 3);
         interpolate(interpolation);

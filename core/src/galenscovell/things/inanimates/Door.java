@@ -8,10 +8,10 @@ import galenscovell.world.Tile;
 public class Door implements Inanimate {
     private final int x;
     private final int y;
-    private Sprite sprite;
     private final Sprite[] sprites;
-    private boolean blocking;
     private final Lighting lighting;
+    private Sprite sprite;
+    private boolean blocking;
 
     public Door(int x, int y, String type, Lighting lighting) {
         this.x = x;
@@ -21,7 +21,7 @@ public class Door implements Inanimate {
         this.sprites[0].flip(false, true);
         this.sprites[1] = new Sprite(ResourceManager.inanimateAtlas.createSprite("door" + type + "1"));
         this.sprites[1].flip(false, true);
-        this.sprite = this.sprites[0];
+        this.sprite = sprites[0];
         this.blocking = true;
         this.lighting = lighting;
     }

@@ -8,9 +8,9 @@ import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 public class MenuState implements State {
-    private GameScreen root;
-    private Hero hero;
-    private Repository repo;
+    private final GameScreen root;
+    private final Hero hero;
+    private final Repository repo;
 
     public MenuState(GameScreen root, Hero hero, Repository repo) {
         this.root = root;
@@ -18,20 +18,24 @@ public class MenuState implements State {
         this.repo = repo;
     }
 
+    @Override
     public void enter() {
         System.out.println("\tEntering MENU state.");
     }
 
+    @Override
     public void exit() {
         repo.resolveEvents();
         root.closeSkillMenu();
         System.out.println("\tLeaving MENU state.");
     }
 
+    @Override
     public void update(float delta) {
 
     }
 
+    @Override
     public void handleInput(float x, float y) {
         if (!repo.eventsEmpty()) {
             Event heroEvent = repo.getFirstEvent();  // Hero event is always first in event list
@@ -43,6 +47,7 @@ public class MenuState implements State {
         }
     }
 
+    @Override
     public void handleInterfaceEvent(int moveType) {
         Skill skill = new Skill(repo);
         skill.define(moveType);

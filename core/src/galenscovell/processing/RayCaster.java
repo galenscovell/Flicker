@@ -7,11 +7,11 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class RayCaster {
+    private final int[][] mult;
+    private final Map<Integer, Tile> tiles;
     private int centerX, centerY;
-    private int[][] mult;
     private int[][] resistanceMap;
     private int[][] rangeMap;
-    private Map<Integer, Tile> tiles;
 
     public RayCaster(Map<Integer, Tile> tiles) {
         this.tiles = tiles;

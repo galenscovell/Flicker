@@ -11,7 +11,7 @@ public class Monster extends Creature {
     private int vit, intel, vision, speed, evade, defense, attacks, damage, poison;
 
     public Monster() {
-        super();
+
     }
 
     public void setup() {

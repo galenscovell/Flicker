@@ -15,107 +15,106 @@ import galenscovell.ui.components.InteractPopup;
 import galenscovell.world.Level;
 
 public class GameScreen extends AbstractScreen {
+    private final int timestep = 20;
     private Renderer renderer;
     private State state, actionState, menuState;
     private InputMultiplexer input;
-
-    private final int timestep = 20;
     private int accumulator;
 
     public GameScreen(FlickerMain root) {
         super(root);
-        this.create();
+        create();
     }
 
     @Override
     public void create() {
         this.stage = new HudStage(this, this.root.spriteBatch);
-        this.createNewLevel();
+        createNewLevel();
     }
 
     @Override
     public void render(float delta) {
         // Update
-        if (this.accumulator > this.timestep) {
-            this.accumulator = 0;
-            this.state.update(delta);
+        if (accumulator > this.timestep) {
+            accumulator = 0;
+            state.update(delta);
         }
-        this.stage.act(delta);
-        this.accumulator++;
+        stage.act(delta);
+        accumulator++;
         // Render
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        this.renderer.render((double) this.accumulator / this.timestep);
-        this.stage.draw();
+        renderer.render((double) accumulator / timestep);
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        this.renderer.resize(width, height);
-        this.stage.getViewport().update(width, height, true);
+        renderer.resize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(this.input);
+        Gdx.input.setInputProcessor(input);
     }
 
     @Override
     public void dispose() {
-        this.stage.dispose();
-        this.renderer.dispose();
+        stage.dispose();
+        renderer.dispose();
     }
 
     public void changeState(StateType stateType) {
         this.state.exit();
         if (stateType == StateType.ACTION) {
-            this.state = this.actionState;
+            state = actionState;
         } else {
-            this.state = this.menuState;
+            state = menuState;
         }
-        this.state.enter();
+        state.enter();
     }
 
     public void passInputToState(float x, float y) {
-        this.state.handleInput(x, y);
+        state.handleInput(x, y);
     }
 
     public void passInterfaceEventToState(int moveType) {
-        this.state.handleInterfaceEvent(moveType);
+        state.handleInterfaceEvent(moveType);
     }
 
     public void displayInanimateBox(Inanimate inanimate) {
         InteractPopup box = new InteractPopup(this.stage, inanimate);
         box.setName("eventBox");
-        this.stage.addActor(box);
+        stage.addActor(box);
     }
 
     public void clearInanimateBoxes() {
-        this.stage.getRoot().findActor("eventBox").remove();
+        stage.getRoot().findActor("eventBox").remove();
     }
 
     public void screenZoom(float zoom) {
-        this.renderer.zoom(zoom);
+        renderer.zoom(zoom);
     }
 
     public void screenPan(float dx, float dy) {
-        this.renderer.pan(dx, dy);
+        renderer.pan(dx, dy);
     }
 
     public void toMainMenu() {
-        this.root.setScreen(this.root.mainMenuScreen);
+        root.setScreen(root.mainMenuScreen);
     }
 
     public void closeSkillMenu() {
-        this.stage.getRoot().findActor("skillMenu").remove();
+        stage.getRoot().findActor("skillMenu").remove();
     }
 
     private void setupInputProcessor() {
         this.input = new InputMultiplexer();
-        this.input.addProcessor(this.stage);
-        this.input.addProcessor(new InputHandler(this, this.renderer.getCamera()));
-        this.input.addProcessor(new GestureDetector(new GestureHandler(this)));
-        Gdx.input.setInputProcessor(this.input);
+        input.addProcessor(stage);
+        input.addProcessor(new InputHandler(this, renderer.getCamera()));
+        input.addProcessor(new GestureDetector(new GestureHandler(this)));
+        Gdx.input.setInputProcessor(input);
     }
 
     private void createNewLevel() {
@@ -134,11 +133,11 @@ public class GameScreen extends AbstractScreen {
         lighting.placeTorch(60, 10, 20, 0.5f, 0.5f, 1.0f, 1);
         lighting.placeTorch(80, 20, 20, 0.98f, 0.9f, 0.9f, 1);
 
-        this.renderer = new Renderer(hero, lighting, this.root.spriteBatch, repo);
+        this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
         this.actionState = new ActionState(this, hero, repo);
         this.menuState = new MenuState(this, hero, repo);
-        this.state = this.actionState;
+        this.state = actionState;
 
-        this.setupInputProcessor();
+        setupInputProcessor();
     }
 }

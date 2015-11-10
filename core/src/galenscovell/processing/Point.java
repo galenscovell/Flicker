@@ -1,7 +1,7 @@
 package galenscovell.processing;
 
 public class Point {
-    public int x, y;
+    public final int x, y;
 
     public Point(int x, int y) {
         this.x = x;

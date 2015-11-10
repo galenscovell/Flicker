@@ -5,7 +5,7 @@ import galenscovell.ui.HudStage;
 import galenscovell.util.ResourceManager;
 
 public class InventoryMenu extends Table {
-    private HudStage root;
+    private final HudStage root;
     private Table mainTable;
 
     public InventoryMenu(HudStage root) {

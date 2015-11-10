@@ -10,8 +10,8 @@ import galenscovell.world.generation.*;
 import java.util.*;
 
 public class Level {
-    private DungeonBuilder builder;
-    private Map<Integer, Tile> tiles;
+    private final DungeonBuilder builder;
+    private final Map<Integer, Tile> tiles;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
 

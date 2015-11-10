@@ -7,7 +7,7 @@ import galenscovell.ui.HudStage;
 import galenscovell.util.ResourceManager;
 
 public class ExamineInfo extends Table {
-    private HudStage root;
+    private final HudStage root;
 
     public ExamineInfo(HudStage root, String info, Sprite target) {
         this.root = root;

@@ -10,13 +10,13 @@ import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 public class Renderer {
-    private OrthographicCamera camera;
-    private FitViewport viewport;
-    private SpriteBatch spriteBatch;
-    private Repository repo;
-    private Hero hero;
-    private Lighting lighting;
-    private Fog fog;
+    private final OrthographicCamera camera;
+    private final FitViewport viewport;
+    private final SpriteBatch spriteBatch;
+    private final Repository repo;
+    private final Hero hero;
+    private final Lighting lighting;
+    private final Fog fog;
     private float minCamX, minCamY, maxCamX, maxCamY;
 
     public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch, Repository repo) {

@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 import galenscovell.ui.screens.GameScreen;
 
 public class InputHandler extends InputAdapter {
-    private GameScreen game;
-    private OrthographicCamera camera;
+    private final GameScreen game;
+    private final OrthographicCamera camera;
     private int startX, startY;
 
     public InputHandler(GameScreen game, OrthographicCamera camera) {

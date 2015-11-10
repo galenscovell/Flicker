@@ -9,11 +9,11 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class Repository {
-    public Map<Integer, Tile> tiles;
+    public final Map<Integer, Tile> tiles;
+    public final RayCaster rayCaster;
+    public List<Event> events;
     public List<Entity> entities;
     public List<Inanimate> inanimates;
-    public List<Event> events;
-    public RayCaster rayCaster;
 
     public Repository(Map<Integer, Tile> tiles) {
         this.tiles = tiles;

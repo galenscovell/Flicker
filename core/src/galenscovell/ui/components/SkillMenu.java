@@ -7,7 +7,7 @@ import galenscovell.ui.HudStage;
 import galenscovell.util.*;
 
 public class SkillMenu extends Table {
-    private HudStage root;
+    private final HudStage root;
     private Table mainTable;
 
     public SkillMenu(HudStage root) {

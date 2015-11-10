@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 
 public class Fog {
-    private Sprite sprite;
+    private final Sprite sprite;
     private float x, y;
     private int frame;
 

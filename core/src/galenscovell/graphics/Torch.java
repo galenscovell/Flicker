@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import galenscovell.util.Constants;
 
 public class Torch {
-    public int size;
-    private int frame;
-    public PointLight outerLight, innerLight;
+    private final PointLight outerLight, innerLight;
+    private int size, frame;
 
     public Torch(int size, RayHandler rayHandler, float r, float g, float b, float a) {
         this.size = size;

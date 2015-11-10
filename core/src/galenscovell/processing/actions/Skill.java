@@ -8,8 +8,8 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class Skill implements Action {
-    private Repository repo;
-    private Pathfinder pathfinder;
+    private final Repository repo;
+    private final Pathfinder pathfinder;
     private List<Tile> range;
     private int type;
 
@@ -18,16 +18,19 @@ public class Skill implements Action {
         this.pathfinder = new Pathfinder();
     }
 
+    @Override
     public void define(int type) {
         this.type = type;
     }
 
+    @Override
     public boolean initialized(Entity entity, Tile target) {
         setRange(entity);
         toggleRangeDisplay();
         return true;
     }
 
+    @Override
     public boolean act(Entity entity, Tile target) {
         if (type == Constants.LUNGE_TYPE) {
             return lunge(entity, target);
@@ -41,6 +44,7 @@ public class Skill implements Action {
         return false;
     }
 
+    @Override
     public void resolve(Entity entity) {
         toggleRangeDisplay();
     }
