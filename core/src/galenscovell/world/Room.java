@@ -21,7 +21,7 @@ public class Room {
     }
 
     public void setType(String newType) {
-        this.type = newType;
+        type = newType;
     }
 
     public String getType() {
@@ -29,10 +29,10 @@ public class Room {
     }
 
     public void addConnection(Room room) {
-        this.connections.add(room);
+        connections.add(room);
     }
 
     public ArrayList<Room> getConnections() {
-        return this.connections;
+        return connections;
     }
 }

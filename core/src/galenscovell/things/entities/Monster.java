@@ -11,27 +11,28 @@ public class Monster extends Creature {
     private int vit, intel, vision, speed, evade, defense, attacks, damage, poison;
 
     public Monster() {
+        super();
     }
 
     public void setup() {
-        this.setSprites();
-        this.setFlags();
-        this.setStats();
+        setSprites();
+        setFlags();
+        setStats();
     }
 
     private void setStats() {
-        this.title = this.type;
-        this.description = this.desc;
-        this.stats.put("level", this.level);
-        this.stats.put("vit", this.vit);
-        this.stats.put("int", this.intel);
-        this.stats.put("vision", this.vision);
-        this.stats.put("speed", this.speed);
-        this.stats.put("evade", this.evade);
-        this.stats.put("defense", this.defense);
-        this.stats.put("attacks", this.attacks);
-        this.stats.put("damage", this.damage);
-        this.stats.put("poison", this.poison);
+        title = type;
+        description = desc;
+        stats.put("level", level);
+        stats.put("vit", vit);
+        stats.put("int", intel);
+        stats.put("vision", vision);
+        stats.put("speed", speed);
+        stats.put("evade", evade);
+        stats.put("defense", defense);
+        stats.put("attacks", attacks);
+        stats.put("damage", damage);
+        stats.put("poison", poison);
     }
 
     private void setFlags() {
@@ -41,45 +42,45 @@ public class Monster extends Creature {
             int flag = random.nextInt(5);
             if (flag == 0) {
                 // TOUGH
-                this.vit += 4;
-                this.defense += 4;
-                this.desc += " Looks like it can take a beating.";
+                vit += 4;
+                defense += 4;
+                desc += " Looks like it can take a beating.";
             } else if (flag == 1) {
                 // AGILE
-                this.evade += 2;
-                this.attacks++;
-                this.damage--;
-                this.desc += " Appears agile.";
+                evade += 2;
+                attacks++;
+                damage--;
+                desc += " Appears agile.";
             } else if (flag == 2) {
                 // BRUISER
-                this.damage += 4;
-                this.desc += " Wouldn't want to be hit by this one.";
+                damage += 4;
+                desc += " Wouldn't want to be hit by this one.";
             } else if (flag == 3) {
                 // WOUNDED
-                this.vit -= 2;
-                this.vision++;
-                this.speed -= 1.0f;
-                this.desc += " Has some cuts and bruises.";
+                vit -= 2;
+                vision++;
+                speed -= 1.0f;
+                desc += " Has some cuts and bruises.";
             } else if (flag == 4) {
                 // CAPABLE
-                this.vit += 2;
-                this.evade += 2;
-                this.defense += 2;
-                this.damage++;
-                this.desc += " Seems confident.";
+                vit += 2;
+                evade += 2;
+                defense += 2;
+                damage++;
+                desc += " Seems confident.";
             }
         }
     }
 
     private void setSprites() {
-        this.rightSprites = new Sprite[2];
-        this.leftSprites = new Sprite[2];
+        rightSprites = new Sprite[2];
+        leftSprites = new Sprite[2];
         for (int i = 0; i < 2; i++) {
-            this.rightSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(this.spriteLocation + i));
-            this.rightSprites[i].flip(false, true);
-            this.leftSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(this.spriteLocation + i));
-            this.leftSprites[i].flip(true, true);
+            rightSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(spriteLocation + i));
+            rightSprites[i].flip(false, true);
+            leftSprites[i] = new Sprite(ResourceManager.organicAtlas.createSprite(spriteLocation + i));
+            leftSprites[i].flip(true, true);
         }
-        this.currentSet = this.leftSprites;
+        currentSet = leftSprites;
     }
 }

@@ -17,168 +17,145 @@ public class Creature implements Entity {
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
 
     public String toString() {
-        return this.title;
+        return title;
     }
 
-    @Override
     public String examine() {
-        return this.description;
+        return description;
     }
 
-    @Override
     public Sprite getSprite() {
-        return this.currentSet[0];
+        return currentSet[0];
     }
 
-    @Override
     public int getStat(String key) {
-        return this.stats.get(key);
+        return stats.get(key);
     }
 
-    @Override
     public void setPosition(int newX, int newY) {
-        this.prevX = newX;
-        this.prevY = newY;
-        this.x = newX;
-        this.y = newY;
-        this.currentX = (float) newX;
-        this.currentY = (float) newY;
+        prevX = newX;
+        prevY = newY;
+        x = newX;
+        y = newY;
+        currentX = (float) newX;
+        currentY = (float) newY;
     }
 
-    @Override
     public int getX() {
-        return this.x;
+        return x;
     }
 
-    @Override
     public int getY() {
-        return this.y;
+        return y;
     }
 
-    @Override
     public float getCurrentX() {
-        return this.currentX;
+        return currentX;
     }
 
-    @Override
     public float getCurrentY() {
-        return this.currentY;
+        return currentY;
     }
 
-    @Override
     public void toggleAggressive() {
-        this.aggressive = !this.aggressive;
+        aggressive = !aggressive;
     }
 
-    @Override
     public boolean isAggressive() {
-        return this.aggressive;
+        return aggressive;
     }
 
-    @Override
     public boolean movementTimer() {
-        if (this.moveTimer == this.stats.get("speed")) {
-            this.moveTimer = 0;
+        if (moveTimer == stats.get("speed")) {
+            moveTimer = 0;
             return true;
         }
-        this.moveTimer++;
+        moveTimer++;
         return false;
     }
 
-    @Override
     public void setBeingAttacked() {
-        this.beingAttacked = true;
+        beingAttacked = true;
     }
 
-    @Override
     public void setAttacking() {
-        this.attacking = true;
+        attacking = true;
     }
 
-    @Override
     public void populatePathStack(Stack<Point> path) {
         this.pathStack = path;
     }
 
-    @Override
     public void pushToPathStack(Point p) {
-        this.pathStack.push(p);
+        pathStack.push(p);
     }
 
-    @Override
     public Point nextPathPoint() {
-        return this.pathStack.pop();
+        return pathStack.pop();
     }
 
-    @Override
     public boolean pathStackEmpty() {
-        return this.pathStack == null || this.pathStack.isEmpty();
+        return pathStack == null || pathStack.isEmpty();
     }
 
-    @Override
     public void move(int dx, int dy, boolean possible) {
-        this.turn(dx, dy);
+        turn(dx, dy);
         if (possible) {
-            this.x += dx;
-            this.y += dy;
+            x += dx;
+            y += dy;
         }
     }
 
-    @Override
     public void turn(int dx, int dy) {
-        if (dx < 0 && this.currentSet != this.leftSprites) {
-            this.currentSet = this.leftSprites;
-        } else if (dx > 0 && this.currentSet != this.rightSprites) {
-            this.currentSet = this.rightSprites;
+        if (dx < 0 && currentSet != leftSprites) {
+            currentSet = leftSprites;
+        } else if (dx > 0 && currentSet != rightSprites) {
+            currentSet = rightSprites;
         }
     }
 
-    @Override
     public void attack(double interpolation, Entity entity) {
 
     }
 
-    @Override
     public void interpolate(double interpolation) {
-        this.animate(interpolation);
-        this.currentX = (float) (this.prevX + (this.x - this.prevX) * interpolation);
-        this.currentY = (float) (this.prevY + (this.y - this.prevY) * interpolation);
-        if (this.currentX == (float) this.x && this.currentY == (float) this.y) {
-            this.prevX = this.x;
-            this.prevY = this.y;
+        animate(interpolation);
+        currentX = (float) (prevX + ((x - prevX) * interpolation));
+        currentY = (float) (prevY + ((y - prevY) * interpolation));
+        if (currentX == (float) x && currentY == (float) y) {
+            prevX = x;
+            prevY = y;
         }
         if (interpolation == 1) {
-            this.beingAttacked = false;
+            beingAttacked = false;
         }
     }
 
-    @Override
     public void animate(double interpolation) {
-        if (this.animateFrames == 30) {
-            if (this.frame == 0) {
-                this.frame = 1;
+        if (animateFrames == 30) {
+            if (frame == 0) {
+                frame = 1;
             } else {
-                this.frame = 0;
+                frame = 0;
             }
-            this.animateFrames = 0;
+            animateFrames = 0;
         } else {
-            this.animateFrames++;
+            animateFrames++;
         }
     }
 
-    @Override
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
-        float offsetTileHeight = this.currentY - tileSize / 3;
-        this.interpolate(interpolation);
-        if (this.attacking) {
-            this.attack(interpolation, entity);
+        float offsetTileHeight = currentY - (tileSize / 3);
+        interpolate(interpolation);
+        if (attacking) {
+            attack(interpolation, entity);
         }
-        if (this.beingAttacked) {
+        if (beingAttacked) {
             batch.setColor(1, (float) interpolation, (float) interpolation, 1);
-            batch.draw(this.currentSet[this.frame], this.currentX, offsetTileHeight, tileSize, tileSize);
+            batch.draw(currentSet[frame], currentX, offsetTileHeight, tileSize, tileSize);
             batch.setColor(1, 1, 1, 1);
         } else {
-            batch.draw(this.currentSet[this.frame], this.currentX, offsetTileHeight, tileSize, tileSize);
+            batch.draw(currentSet[frame], currentX, offsetTileHeight, tileSize, tileSize);
         }
     }
 }

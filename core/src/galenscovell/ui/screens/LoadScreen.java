@@ -18,7 +18,7 @@ public class LoadScreen extends AbstractScreen {
 
     @Override
     public void create() {
-        this.stage = new Stage(new FitViewport(240, 400), this.root.spriteBatch);
+        this.stage = new Stage(new FitViewport(240, 400), root.spriteBatch);
         Table loadingMain = new Table();
         loadingMain.setFillParent(true);
 
@@ -27,33 +27,32 @@ public class LoadScreen extends AbstractScreen {
         labelTable.add(loadingImage).width(200).height(50).expand().fill();
         loadingMain.add(labelTable).expand().fill();
 
-        this.stage.addActor(loadingMain);
+        stage.addActor(loadingMain);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        this.stage.act(delta);
-        this.stage.draw();
+        stage.act(delta);
+        stage.draw();
         if (ResourceManager.assetManager.update()) {
             ResourceManager.done();
-            this.stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.4f), this.toMainMenuScreen));
+            stage.getRoot().addAction(Actions.sequence(Actions.fadeOut(0.4f), toMainMenuScreen));
         }
     }
 
     @Override
     public void show() {
         ResourceManager.create();
-        this.create();
-        this.stage.getRoot().getColor().a = 0;
-        this.stage.getRoot().addAction(Actions.sequence(Actions.fadeIn(0.4f)));
+        create();
+        stage.getRoot().getColor().a = 0;
+        stage.getRoot().addAction(Actions.sequence(Actions.fadeIn(0.4f)));
     }
 
     Action toMainMenuScreen = new Action() {
-        @Override
         public boolean act(float delta) {
-            LoadScreen.this.root.setScreen(LoadScreen.this.root.mainMenuScreen);
+            root.setScreen(root.mainMenuScreen);
             return true;
         }
     };

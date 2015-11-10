@@ -1,6 +1,7 @@
 package galenscovell.ui.screens;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
@@ -19,7 +20,7 @@ public class MainMenuScreen extends AbstractScreen {
 
     @Override
     public void create() {
-        this.stage = new Stage(new FitViewport(480, 800), this.root.spriteBatch);
+        this.stage = new Stage(new FitViewport(480, 800), root.spriteBatch);
         this.optionMenu = new OptionMenu(this);
 
         Table mainTable = new Table();
@@ -32,11 +33,10 @@ public class MainMenuScreen extends AbstractScreen {
          **********************************/
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        this.setIcon(optionsButton, "scroll", 32, 0.5f);
+        setIcon(optionsButton, "scroll", 32, 0.5f);
         optionsButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
-                MainMenuScreen.this.stage.addActor(MainMenuScreen.this.optionMenu);
+                stage.addActor(optionMenu);
             }
         });
         mainTable.add(optionsButton).width(48).height(48).expand().fill().top().right();
@@ -58,14 +58,12 @@ public class MainMenuScreen extends AbstractScreen {
         centerTable.background(ResourceManager.frameUpDec);
         TextButton newGameButton = new TextButton("New Game", ResourceManager.buttonStyle);
         newGameButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
-                MainMenuScreen.this.root.newGame();
+                root.newGame();
             }
         });
         TextButton continueButton = new TextButton("Continue", ResourceManager.buttonStyle);
         continueButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Continue previous game
             }
@@ -81,15 +79,15 @@ public class MainMenuScreen extends AbstractScreen {
         mainTable.add(detailLabel).width(150).fill().padTop(20).padBottom(10);
         mainTable.pack();
 
-        this.stage.addActor(mainTable);
+        stage.addActor(mainTable);
     }
 
     public void closeOptions() {
-        this.optionMenu.remove();
+        optionMenu.remove();
     }
 
     private void setIcon(Table table, String name, int height, float opacity) {
-        Image icon = new Image(new AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
+        Image icon = new Image(new TextureAtlas.AtlasRegion(ResourceManager.uiAtlas.findRegion(name)));
         icon.setScaling(Scaling.fillY);
         icon.setColor(1, 1, 1, opacity);
         table.add(icon).height(height).expand().fill().center();

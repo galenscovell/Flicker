@@ -6,11 +6,11 @@ import galenscovell.ui.HudStage;
 import galenscovell.util.ResourceManager;
 
 public class ExaminePopup extends Table {
-    private final HudStage root;
+    private HudStage root;
 
     public ExaminePopup(HudStage root) {
         this.root = root;
-        this.create();
+        create();
     }
 
     public void create() {

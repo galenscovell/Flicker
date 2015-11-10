@@ -15,23 +15,22 @@ public class OptionMenu extends Table {
 
     public OptionMenu(HudStage root) {
         this.root = root;
-        this.createGameVersion();
+        createGameVersion();
     }
 
     public OptionMenu(MainMenuScreen mainMenu) {
         this.mainMenu = mainMenu;
-        this.createMainVersion();
+        createMainVersion();
     }
 
     public void createGameVersion() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        this.mainTable.setBackground(ResourceManager.frameUpDec);
+        mainTable.setBackground(ResourceManager.frameUpDec);
 
         TextButton sfxButton = new TextButton("Sound", ResourceManager.toggleButtonStyle);
         sfxButton.setChecked(ResourceManager.prefs.getBoolean("sfx"));
         sfxButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (ResourceManager.prefs.getBoolean("sfx")) {
                     ResourceManager.prefs.putBoolean("sfx", false);
@@ -43,7 +42,6 @@ public class OptionMenu extends Table {
         TextButton musicButton = new TextButton("Music", ResourceManager.toggleButtonStyle);
         musicButton.setChecked(ResourceManager.prefs.getBoolean("music"));
         musicButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (ResourceManager.prefs.getBoolean("music")) {
                     ResourceManager.prefs.putBoolean("music", false);
@@ -54,39 +52,36 @@ public class OptionMenu extends Table {
         });
         TextButton mainMenuButton = new TextButton("Main Menu", ResourceManager.buttonStyle);
         mainMenuButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
-                OptionMenu.this.root.returnToMainMenu();
+                root.returnToMainMenu();
             }
         });
         TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.buttonStyle);
         quitButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
-        this.mainTable.add(sfxButton).width(260).height(80).padBottom(8).expand().fill();
-        this.mainTable.row();
-        this.mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
-        this.mainTable.row();
-        this.mainTable.add(mainMenuButton).width(260).height(80).padBottom(8).expand().fill();
-        this.mainTable.row();
-        this.mainTable.add(quitButton).width(260).height(80).expand().fill();
+        mainTable.add(sfxButton).width(260).height(80).padBottom(8).expand().fill();
+        mainTable.row();
+        mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
+        mainTable.row();
+        mainTable.add(mainMenuButton).width(260).height(80).padBottom(8).expand().fill();
+        mainTable.row();
+        mainTable.add(quitButton).width(260).height(80).expand().fill();
 
-        this.add(this.mainTable).width(340).height(400).expand().center();
+        this.add(mainTable).width(340).height(400).expand().center();
     }
 
     public void createMainVersion() {
         this.setFillParent(true);
         this.mainTable = new Table();
-        this.mainTable.setBackground(ResourceManager.frameUpDec);
+        mainTable.setBackground(ResourceManager.frameUpDec);
 
         TextButton sfxButton = new TextButton("Sound", ResourceManager.toggleButtonStyle);
         sfxButton.setChecked(ResourceManager.prefs.getBoolean("sfx"));
         sfxButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (ResourceManager.prefs.getBoolean("sfx")) {
                     ResourceManager.prefs.putBoolean("sfx", false);
@@ -98,7 +93,6 @@ public class OptionMenu extends Table {
         TextButton musicButton = new TextButton("Music", ResourceManager.toggleButtonStyle);
         musicButton.setChecked(ResourceManager.prefs.getBoolean("music"));
         musicButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (ResourceManager.prefs.getBoolean("music")) {
                     ResourceManager.prefs.putBoolean("music", false);
@@ -109,18 +103,17 @@ public class OptionMenu extends Table {
         });
         TextButton returnButton = new TextButton("Return", ResourceManager.buttonStyle);
         returnButton.addListener(new ClickListener() {
-            @Override
             public void clicked(InputEvent event, float x, float y) {
-                OptionMenu.this.mainMenu.closeOptions();
+                mainMenu.closeOptions();
             }
         });
 
-        this.mainTable.add(sfxButton).width(260).height(80).padBottom(8).expand().fill();
-        this.mainTable.row();
-        this.mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
-        this.mainTable.row();
-        this.mainTable.add(returnButton).width(260).height(80).expand().fill();
+        mainTable.add(sfxButton).width(260).height(80).padBottom(8).expand().fill();
+        mainTable.row();
+        mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
+        mainTable.row();
+        mainTable.add(returnButton).width(260).height(80).expand().fill();
 
-        this.add(this.mainTable).width(340).height(360).expand().center();
+        this.add(mainTable).width(340).height(360).expand().center();
     }
 }
