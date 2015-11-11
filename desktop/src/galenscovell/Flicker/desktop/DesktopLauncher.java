@@ -1,14 +1,7 @@
 package galenscovell.flicker.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-
+import com.badlogic.gdx.backends.lwjgl.*;
 import galenscovell.flicker.FlickerMain;
-
-/**
- * DESKTOP LAUNCHER
- *
- */
 
 public class DesktopLauncher {
 
