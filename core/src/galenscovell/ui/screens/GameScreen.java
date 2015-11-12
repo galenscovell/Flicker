@@ -11,8 +11,8 @@ import galenscovell.processing.states.*;
 import galenscovell.things.entities.Hero;
 import galenscovell.things.inanimates.Inanimate;
 import galenscovell.ui.HudStage;
-import galenscovell.ui.components.InteractPopup;
-import galenscovell.world.Level;
+import galenscovell.ui.components.*;
+import galenscovell.world.*;
 
 public class GameScreen extends AbstractScreen {
     private final int timestep = 20;
@@ -20,10 +20,13 @@ public class GameScreen extends AbstractScreen {
     private State state, actionState, menuState;
     private InputMultiplexer input;
     private int accumulator;
+    public InteractionVerticalGroup interactionVerticalGroup;
 
     public GameScreen(FlickerMain root) {
         super(root);
         create();
+        this.interactionVerticalGroup = new InteractionVerticalGroup();
+        stage.addActor(interactionVerticalGroup);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void changeState(StateType stateType) {
-        this.state.exit();
+        state.exit();
         if (stateType == StateType.ACTION) {
             state = actionState;
         } else {
@@ -83,14 +86,12 @@ public class GameScreen extends AbstractScreen {
         state.handleInterfaceEvent(moveType);
     }
 
-    public void displayInanimateBox(Inanimate inanimate) {
-        InteractPopup box = new InteractPopup(this.stage, inanimate);
-        box.setName("eventBox");
-        stage.addActor(box);
+    public void displayInanimateBox(Inanimate inanimate, Tile tile) {
+        interactionVerticalGroup.addBox(inanimate, tile);
     }
 
     public void clearInanimateBoxes() {
-        stage.getRoot().findActor("eventBox").remove();
+        interactionVerticalGroup.clearBoxes();
     }
 
     public void screenZoom(float zoom) {

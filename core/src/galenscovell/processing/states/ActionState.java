@@ -81,7 +81,8 @@ public class ActionState implements State {
                     Inanimate thing = repo.findInanimate(heroTileX + dx, heroTileY + dy);
                     if (thing != null) {
                         adjacentThings.add(thing);
-                        root.displayInanimateBox(thing);
+                        Tile thingTile = repo.findTile(heroTileX + dx, heroTileY + dy);
+                        root.displayInanimateBox(thing, thingTile);
                     }
                 }
             }

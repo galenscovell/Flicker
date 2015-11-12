@@ -28,17 +28,17 @@ public class Door implements Inanimate {
 
     @Override
     public Sprite getSprite() {
-        return this.sprite;
+        return sprite;
     }
 
     @Override
     public int getX() {
-        return this.x;
+        return x;
     }
 
     @Override
     public int getY() {
-        return this.y;
+        return y;
     }
 
     @Override
@@ -53,29 +53,29 @@ public class Door implements Inanimate {
 
     @Override
     public String interact(Tile tile) {
-        if (this.blocking) {
-            this.sprite = this.sprites[1];
+        if (blocking) {
+            sprite = sprites[1];
             tile.toggleBlocking();
             tile.toggleOccupied();
-            this.blocking = false;
-            this.updateTileBody(tile);
+            blocking = false;
+            updateTileBody(tile);
             return "The door opens.";
         } else {
-            this.sprite = this.sprites[0];
+            sprite = sprites[0];
             tile.toggleBlocking();
             tile.toggleOccupied();
-            this.blocking = true;
-            this.updateTileBody(tile);
+            blocking = true;
+            updateTileBody(tile);
             return "The door closes.";
         }
     }
 
     public void updateTileBody(Tile tile) {
-        this.lighting.updateTileBody(tile.x, tile.y);
+        lighting.updateTileBody(tile.x, tile.y);
     }
 
     @Override
     public void draw(SpriteBatch batch, int tileSize) {
-        batch.draw(this.sprite, this.x * tileSize, this.y * tileSize, tileSize, tileSize);
+        batch.draw(sprite, x * tileSize, y * tileSize, tileSize, tileSize);
     }
 }

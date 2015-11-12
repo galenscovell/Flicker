@@ -14,7 +14,7 @@ import galenscovell.util.ResourceManager;
 public class HudStage extends Stage {
     private final GameScreen game;
     private ProgressBar health;
-    public Table examinePopup, infoPopup, inventoryMenu, optionsMenu, skillMenu;
+    public Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
 
     public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
