@@ -6,4 +6,5 @@ public interface State {
     void update(float delta);
     void handleInput(float x, float y);
     void handleInterfaceEvent(int moveType);
+    StateType getStateType();
 }

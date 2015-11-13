@@ -16,11 +16,11 @@ import galenscovell.world.*;
 
 public class GameScreen extends AbstractScreen {
     private final int timestep = 20;
-    private Renderer renderer;
-    private State state, actionState, menuState;
-    private InputMultiplexer input;
     private int accumulator;
-    public InteractionVerticalGroup interactionVerticalGroup;
+    private State state, actionState, menuState;
+    private Renderer renderer;
+    private InputMultiplexer input;
+    private InteractionVerticalGroup interactionVerticalGroup;
 
     public GameScreen(FlickerMain root) {
         super(root);
@@ -68,6 +68,10 @@ public class GameScreen extends AbstractScreen {
         renderer.dispose();
     }
 
+    public StateType getState() {
+        return state.getStateType();
+    }
+
     public void changeState(StateType stateType) {
         state.exit();
         if (stateType == StateType.ACTION) {
@@ -87,11 +91,11 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void displayInanimateBox(Inanimate inanimate, Tile tile) {
-        interactionVerticalGroup.addBox(inanimate, tile);
+        interactionVerticalGroup.addActor(new InteractButton(this, inanimate, tile));
     }
 
     public void clearInanimateBoxes() {
-        interactionVerticalGroup.clearBoxes();
+        interactionVerticalGroup.clear();
     }
 
     public void screenZoom(float zoom) {

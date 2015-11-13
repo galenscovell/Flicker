@@ -19,6 +19,11 @@ public class MenuState implements State {
     }
 
     @Override
+    public StateType getStateType() {
+        return StateType.MENU;
+    }
+
+    @Override
     public void enter() {
         System.out.println("\tEntering MENU state.");
     }

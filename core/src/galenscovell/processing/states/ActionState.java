@@ -24,6 +24,11 @@ public class ActionState implements State {
     }
 
     @Override
+    public StateType getStateType() {
+        return StateType.ACTION;
+    }
+
+    @Override
     public void enter() {
         System.out.println("\tEntering ACTION state.");
     }
