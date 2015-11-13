@@ -91,6 +91,10 @@ public class GameScreen extends AbstractScreen {
         state.handleInterfaceEvent(moveType);
     }
 
+    public void toggleInteractionBoxes() {
+        interactionVerticalGroup.toggle();
+    }
+
     public void displayInanimateBox(Inanimate inanimate, Tile tile) {
         interactionVerticalGroup.addActor(new InteractButton(this, inanimate, tile));
     }

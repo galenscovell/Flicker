@@ -14,7 +14,8 @@ import galenscovell.util.ResourceManager;
 public class HudStage extends Stage {
     private final GameScreen game;
     private ProgressBar health;
-    public Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
+    private Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
+    private Button inventoryButton, examineButton, attackButton;
 
     public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
@@ -52,8 +53,10 @@ public class HudStage extends Stage {
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (optionsMenu.hasParent()) {
+                    toggleButtons(false);
                     game.changeState(StateType.ACTION);
                 } else {
+                    toggleButtons(true);
                     game.changeState(StateType.MENU);
                 }
                 menuOperation(optionsMenu);
@@ -72,7 +75,7 @@ public class HudStage extends Stage {
 
         // Bottom left
         Table bottomLeft = new Table();
-        Button inventoryButton = new Button(ResourceManager.panelStyle);
+        this.inventoryButton = new Button(ResourceManager.panelStyle);
         setIcon(inventoryButton, "inventory", 48, 1);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -84,7 +87,7 @@ public class HudStage extends Stage {
                 menuOperation(inventoryMenu);
             }
         });
-        Button examineButton = new Button(ResourceManager.panelStyle);
+        this.examineButton = new Button(ResourceManager.panelStyle);
         setIcon(examineButton, "examine", 48, 1);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -102,7 +105,7 @@ public class HudStage extends Stage {
 
         // Bottom right
         Table bottomRight = new Table();
-        Button attackButton = new Button(ResourceManager.panelStyle);
+        this.attackButton = new Button(ResourceManager.panelStyle);
         setIcon(attackButton, "tome", 48, 1);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -128,6 +131,19 @@ public class HudStage extends Stage {
         this.addActor(inventoryMenu);
         this.addActor(optionsMenu);
         this.addActor(skillMenu);
+    }
+
+    public void toggleButtons(boolean on) {
+        if (on) {
+            inventoryButton.setTouchable(Touchable.disabled);
+            examineButton.setTouchable(Touchable.disabled);
+            attackButton.setTouchable(Touchable.disabled);
+        } else {
+            inventoryButton.setTouchable(Touchable.enabled);
+            examineButton.setTouchable(Touchable.enabled);
+            attackButton.setTouchable(Touchable.enabled);
+        }
+        game.toggleInteractionBoxes();
     }
 
     public void returnToMainMenu() {
