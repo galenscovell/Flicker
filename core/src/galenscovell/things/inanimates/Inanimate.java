@@ -7,8 +7,7 @@ public interface Inanimate {
     Sprite getSprite();
     int getX();
     int getY();
-    void displayEvent();
-    String interact(Tile tile);
+    void interact(Tile tile);
     String examine();
     void draw(SpriteBatch batch, int tileSize);
 }

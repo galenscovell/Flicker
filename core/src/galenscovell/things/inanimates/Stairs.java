@@ -33,18 +33,13 @@ public class Stairs implements Inanimate {
     }
 
     @Override
-    public void displayEvent() {
-
-    }
-
-    @Override
     public String examine() {
         return "Stairs descend deeper.";
     }
 
     @Override
-    public String interact(Tile tile) {
-        return "Descending stairs...";
+    public void interact(Tile tile) {
+
     }
 
     @Override

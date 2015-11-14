@@ -42,31 +42,26 @@ public class Door implements Inanimate {
     }
 
     @Override
-    public void displayEvent() {
-
-    }
-
-    @Override
     public String examine() {
         return "A closed door.";
     }
 
     @Override
-    public String interact(Tile tile) {
+    public void interact(Tile tile) {
         if (blocking) {
             sprite = sprites[1];
             tile.toggleBlocking();
             tile.toggleOccupied();
             blocking = false;
             updateTileBody(tile);
-            return "The door opens.";
         } else {
-            sprite = sprites[0];
-            tile.toggleBlocking();
-            tile.toggleOccupied();
-            blocking = true;
-            updateTileBody(tile);
-            return "The door closes.";
+            if (!tile.isOccupied()) {
+                sprite = sprites[0];
+                tile.toggleBlocking();
+                tile.toggleOccupied();
+                blocking = true;
+                updateTileBody(tile);
+            }
         }
     }
 

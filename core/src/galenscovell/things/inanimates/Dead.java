@@ -37,18 +37,13 @@ public class Dead implements Inanimate {
     }
 
     @Override
-    public void displayEvent() {
-
-    }
-
-    @Override
     public String examine() {
         return "A corpse lies here.";
     }
 
     @Override
-    public String interact(Tile tile) {
-        return "Searching corpse...";
+    public void interact(Tile tile) {
+
     }
 
     @Override
