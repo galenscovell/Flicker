@@ -54,12 +54,13 @@ public class HudStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (optionsMenu.hasParent()) {
                     toggleButtons(false);
+                    optionsMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
                     toggleButtons(true);
+                    menuOperation(optionsMenu);
                     game.changeState(StateType.MENU);
                 }
-                menuOperation(optionsMenu);
             }
         });
         topRight.add(optionsButton).width(48).height(48).expand().fill().top().right();
@@ -80,11 +81,12 @@ public class HudStage extends Stage {
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (inventoryMenu.hasParent()) {
+                    inventoryMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
+                    menuOperation(inventoryMenu);
                     game.changeState(StateType.MENU);
                 }
-                menuOperation(inventoryMenu);
             }
         });
         this.examineButton = new Button(ResourceManager.panelStyle);
@@ -92,11 +94,12 @@ public class HudStage extends Stage {
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (examinePopup.hasParent()) {
+                    examinePopup.remove();
                     game.changeState(StateType.ACTION);
                 } else {
+                    menuOperation(examinePopup);
                     game.changeState(StateType.MENU);
                 }
-                menuOperation(examinePopup);
             }
         });
         bottomLeft.add(inventoryButton).width(80).height(64).expand().left().padRight(4);
@@ -110,11 +113,12 @@ public class HudStage extends Stage {
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (skillMenu.hasParent()) {
+                    skillMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
+                    menuOperation(skillMenu);
                     game.changeState(StateType.MENU);
                 }
-                menuOperation(skillMenu);
             }
         });
         bottomRight.add(attackButton).width(80).height(64).expand().right();
@@ -178,17 +182,13 @@ public class HudStage extends Stage {
     }
 
     private void menuOperation(Table menu) {
-        if (menu.hasParent()) {
-            menu.remove();
-        } else {
-            if (optionsMenu != menu && optionsMenu.hasParent()) {
-                optionsMenu.remove();
-            } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
-                inventoryMenu.remove();
-            } else if (skillMenu != menu && skillMenu.hasParent()) {
-                skillMenu.remove();
-            }
-            this.addActor(menu);
+        if (optionsMenu != menu && optionsMenu.hasParent()) {
+            optionsMenu.remove();
+        } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
+            inventoryMenu.remove();
+        } else if (skillMenu != menu && skillMenu.hasParent()) {
+            skillMenu.remove();
         }
+        this.addActor(menu);
     }
 }
