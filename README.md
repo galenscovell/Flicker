@@ -1,28 +1,10 @@
-<img src='http://galenscovell.github.io/css/pics/flicker.png' width=500px />
+<img src='https://trello-attachments.s3.amazonaws.com/563992fc21a20221b074bffd/467x405/4afc4f81440e177dd06b4ebab76a8e5a/skill_ranges_pattern.png' width=500px />
 
-Flicker-libgdx
+Flicker
 ======
 
-Flicker is an Android game about exploration and mystery with strategic combat similar to Chess and Hoplite.
+Flicker is a dungeon crawler for Android. It incorporates strategic combat similar to Chess and Hoplite with many Roguelike features for emergent gameplay.
 
-See the Trello board [here](https://trello.com/b/pDYWdLzZ/flicker) for the game's development roadmap and making feature requests.
-
-<b>Current Features:</b>
-======
-<b>Mechanics</b>
-* Procedurally generated levels, entities, items and events
-* Viewport rendering with orthographic camera and zoom pinching
-* Efficient game-loop with clear separation of rendering and logic
-* Smooth player input on touch devices
-* Entity and player pathfinding with advanced creature behavior
-* Turn-based gameplay
-* JSON data deserialization for procedurally spawned entities and items with unique attributes
-* Clean package organization utilizing interfaces, inheritance and DRY principles
-
-<b>Graphics</b>
-* Scaling graphics for accurate display on all devices/resolutions
-* Sprites: loading and rendering, animation, linear interpolation
-* Box2D lighting with collision detection
-* Tile bitmasking: comprehensive world skinning
-* GUI/HUD
+## Development Info ##
+See the game's Trello board [here](https://trello.com/b/pDYWdLzZ/flicker) for the development roadmap. Once a release candidate is reached I will also be accepting feature requests via this board.
 
