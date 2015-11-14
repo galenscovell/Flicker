@@ -3,7 +3,6 @@ package galenscovell.ui.screens;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.graphics.Lighting;
 import galenscovell.processing.*;
@@ -18,7 +17,7 @@ import galenscovell.world.*;
 public class GameScreen extends AbstractScreen {
     private final int timestep = 20;
     private int accumulator;
-    private State state, actionState, menuState;
+    private State state, actionState, menuState, examineState;
     private Renderer renderer;
     private InputMultiplexer input;
     private InteractionVerticalGroup interactionVerticalGroup;
@@ -77,8 +76,10 @@ public class GameScreen extends AbstractScreen {
         state.exit();
         if (stateType == StateType.ACTION) {
             state = actionState;
-        } else {
+        } else if (stateType == StateType.MENU) {
             state = menuState;
+        } else {
+            state = examineState;
         }
         state.enter();
     }
@@ -115,13 +116,6 @@ public class GameScreen extends AbstractScreen {
         root.setScreen(root.mainMenuScreen);
     }
 
-    public void closeSkillMenu() {
-        Actor skillMenu = stage.getRoot().findActor("skillMenu");
-        if (skillMenu != null) {
-            skillMenu.remove();
-        }
-    }
-
     private void setupInputProcessor() {
         this.input = new InputMultiplexer();
         input.addProcessor(stage);
@@ -141,14 +135,11 @@ public class GameScreen extends AbstractScreen {
         level.placeEntities(hero);
         repo.updateResistanceMap();
         repo.addActors(level.getEntities(), level.getInanimates());
-        lighting.placeTorch(20, 10, 20, 0.5f, 1.0f, 0.5f, 1);
-        lighting.placeTorch(40, 20, 20, 1.0f, 0.5f, 0.5f, 1);
-        lighting.placeTorch(60, 10, 20, 0.5f, 0.5f, 1.0f, 1);
-        lighting.placeTorch(80, 20, 20, 0.98f, 0.9f, 0.9f, 1);
 
         this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
         this.actionState = new ActionState(this, hero, repo);
         this.menuState = new MenuState(this, hero, repo);
+        this.examineState = new ExamineState(this, hero, repo);
         this.state = actionState;
 
         setupInputProcessor();

@@ -16,7 +16,6 @@ public class SkillMenu extends Table {
     }
 
     public void create() {
-        this.setName("skillMenu");
         this.setFillParent(true);
         this.mainTable = new Table();
         Button lungeButton = new Button(ResourceManager.frameStyle);

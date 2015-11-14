@@ -57,8 +57,9 @@ public class HudStage extends Stage {
                     optionsMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
+                    clearMenus();
                     toggleButtons(true);
-                    menuOperation(optionsMenu);
+                    addToStage(optionsMenu);
                     game.changeState(StateType.MENU);
                 }
             }
@@ -84,7 +85,7 @@ public class HudStage extends Stage {
                     inventoryMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
-                    menuOperation(inventoryMenu);
+                    addToStage(inventoryMenu);
                     game.changeState(StateType.MENU);
                 }
             }
@@ -97,8 +98,8 @@ public class HudStage extends Stage {
                     examinePopup.remove();
                     game.changeState(StateType.ACTION);
                 } else {
-                    menuOperation(examinePopup);
-                    game.changeState(StateType.MENU);
+                    addToStage(examinePopup);
+                    game.changeState(StateType.EXAMINE);
                 }
             }
         });
@@ -116,7 +117,7 @@ public class HudStage extends Stage {
                     skillMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
-                    menuOperation(skillMenu);
+                    addToStage(skillMenu);
                     game.changeState(StateType.MENU);
                 }
             }
@@ -135,19 +136,6 @@ public class HudStage extends Stage {
         this.addActor(inventoryMenu);
         this.addActor(optionsMenu);
         this.addActor(skillMenu);
-    }
-
-    public void toggleButtons(boolean on) {
-        if (on) {
-            inventoryButton.setTouchable(Touchable.disabled);
-            examineButton.setTouchable(Touchable.disabled);
-            attackButton.setTouchable(Touchable.disabled);
-        } else {
-            inventoryButton.setTouchable(Touchable.enabled);
-            examineButton.setTouchable(Touchable.enabled);
-            attackButton.setTouchable(Touchable.enabled);
-        }
-        game.toggleInteractionBoxes();
     }
 
     public void returnToMainMenu() {
@@ -181,14 +169,32 @@ public class HudStage extends Stage {
         return bar;
     }
 
-    private void menuOperation(Table menu) {
-        if (optionsMenu != menu && optionsMenu.hasParent()) {
-            optionsMenu.remove();
-        } else if (inventoryMenu != menu && inventoryMenu.hasParent()) {
+    private void addToStage(Table menu) {
+        this.addActor(menu);
+    }
+
+    private void toggleButtons(boolean on) {
+        if (on) {
+            inventoryButton.setTouchable(Touchable.disabled);
+            examineButton.setTouchable(Touchable.disabled);
+            attackButton.setTouchable(Touchable.disabled);
+        } else {
+            inventoryButton.setTouchable(Touchable.enabled);
+            examineButton.setTouchable(Touchable.enabled);
+            attackButton.setTouchable(Touchable.enabled);
+        }
+        game.toggleInteractionBoxes();
+    }
+
+    private void clearMenus() {
+        if (inventoryMenu.hasParent()) {
             inventoryMenu.remove();
-        } else if (skillMenu != menu && skillMenu.hasParent()) {
+        }
+        if (skillMenu.hasParent()) {
             skillMenu.remove();
         }
-        this.addActor(menu);
+        if (examinePopup.hasParent()) {
+            examinePopup.remove();
+        }
     }
 }
