@@ -32,16 +32,17 @@ public class Skill implements Action {
 
     @Override
     public boolean act(Entity entity, Tile target) {
+        boolean success = false;
         if (type == Constants.LUNGE_TYPE) {
-            return lunge(entity, target);
+            success = lunge(entity, target);
         } else if (type == Constants.ROLL_TYPE) {
-            return roll(entity, target);
+            success = roll(entity, target);
         } else if (type == Constants.BASH_TYPE) {
-            return bash(entity, target);
+            success = bash(entity, target);
         } else if (type == Constants.LEAP_TYPE) {
-            return leap(entity, target);
+            success = leap(entity, target);
         }
-        return false;
+        return success;
     }
 
     @Override
