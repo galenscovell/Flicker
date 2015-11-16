@@ -13,9 +13,9 @@ public class InteractionVerticalGroup extends VerticalGroup {
 
     public void create() {
         this.active = true;
-        this.setWidth(100);
-        this.setHeight(300);
-        this.align(Align.left);
+        this.setWidth(90);
+        this.setHeight(340);
+        this.setPosition(0, 80);
     }
 
     public void toggle() {

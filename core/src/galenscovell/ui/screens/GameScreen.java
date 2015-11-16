@@ -139,7 +139,7 @@ public class GameScreen extends AbstractScreen {
         this.renderer = new Renderer(hero, lighting, root.spriteBatch, repo);
         this.actionState = new ActionState(this, hero, repo);
         this.menuState = new MenuState(this, hero, repo);
-        this.examineState = new ExamineState(this, hero, repo);
+        this.examineState = new ExamineState(stage, hero, repo);
         this.state = actionState;
 
         setupInputProcessor();

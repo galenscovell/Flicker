@@ -25,13 +25,13 @@ public class MenuState implements State {
 
     @Override
     public void enter() {
-        System.out.println("\tEntering MENU state.");
+        System.out.println("\tEntering MENU state");
     }
 
     @Override
     public void exit() {
         repo.resolveEvents();
-        System.out.println("\tLeaving MENU state.");
+        System.out.println("\tLeaving MENU state\n");
     }
 
     @Override

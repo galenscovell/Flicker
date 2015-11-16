@@ -24,6 +24,14 @@ public class Tile {
         this.door = false;
     }
 
+    public String examine() {
+        return "Empty space";
+    }
+
+    public Sprite getSprite() {
+        return sprites[0];
+    }
+
     public boolean isEmpty() {
         return type == TileType.EMPTY;
     }

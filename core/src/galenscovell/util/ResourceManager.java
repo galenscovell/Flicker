@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 public class ResourceManager {
     public static AssetManager assetManager;
     public static TextureAtlas uiAtlas, tileAtlas, organicAtlas, inanimateAtlas;
-    public static Label.LabelStyle detailStyle, mediumStyle, menuStyle, titleStyle;
-    public static NinePatchDrawable buttonUp, buttonDown, panelUp, panelDown, frameUp, frameDown, frameUpDec;
+    public static Label.LabelStyle tinyStyle, detailStyle, mediumStyle, menuStyle, titleStyle;
+    public static NinePatchDrawable buttonUp, buttonDown, panelUp, panelDown, frameUp, frameDown, frameUpDec, panelViewport;
     public static TextButton.TextButtonStyle buttonStyle, panelStyle, frameStyle, toggleButtonStyle;
     public static Sprite highlight;
     public static TextureRegion mainMenuBG;
@@ -34,6 +34,14 @@ public class ResourceManager {
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter tinyParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        tinyParams.fontFileName = "ui/nevis.ttf";
+        tinyParams.fontParameters.size = 14;
+        tinyParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
+        tinyParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        tinyParams.fontParameters.color = Color.WHITE;
+        assetManager.load("tinyFont.ttf", BitmapFont.class, tinyParams);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallParams.fontFileName = "ui/nevis.ttf";
@@ -73,6 +81,7 @@ public class ResourceManager {
         organicAtlas = assetManager.get("atlas/organicAtlas.pack", TextureAtlas.class);
         inanimateAtlas = assetManager.get("atlas/inanimateAtlas.pack", TextureAtlas.class);
 
+        tinyStyle = new Label.LabelStyle(assetManager.get("tinyFont.ttf", BitmapFont.class), Color.WHITE);
         detailStyle = new Label.LabelStyle(assetManager.get("smallFont.ttf", BitmapFont.class), Color.WHITE);
         mediumStyle = new Label.LabelStyle(assetManager.get("mediumFont.ttf", BitmapFont.class), Color.WHITE);
         menuStyle = new Label.LabelStyle(assetManager.get("largeFont.ttf", BitmapFont.class), Color.WHITE);
@@ -96,6 +105,8 @@ public class ResourceManager {
         panelStyle.pressedOffsetY = -2;
 
         frameUpDec = new NinePatchDrawable(uiAtlas.createPatch("frameup_dec_brown"));
+
+        panelViewport = new NinePatchDrawable(uiAtlas.createPatch("panelViewport"));
 
         highlight = new Sprite(uiAtlas.createSprite("highlight"));
         highlight.flip(false, true);
