@@ -1,7 +1,8 @@
 package galenscovell.processing.states;
 
 import galenscovell.processing.Repository;
-import galenscovell.processing.actions.*;
+import galenscovell.processing.actions.Event;
+import galenscovell.processing.actions.Skills.*;
 import galenscovell.things.entities.Hero;
 import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.Constants;
@@ -53,9 +54,16 @@ public class MenuState implements State {
 
     @Override
     public void handleInterfaceEvent(int moveType) {
-        Skill skill = new Skill(repo);
-        skill.define(moveType);
-        Event newEvent = new Event(hero, null, skill);
+        Event newEvent;
+        if (moveType == Constants.LUNGE_TYPE) {
+            newEvent = new Event(hero, null, new Lunge(repo));
+        } else if (moveType == Constants.ROLL_TYPE) {
+            newEvent = new Event(hero, null, new Roll(repo));
+        } else if (moveType == Constants.BASH_TYPE) {
+            newEvent = new Event(hero, null, new Bash(repo));
+        } else {
+            newEvent = new Event(hero, null, new Leap(repo));
+        }
         if (newEvent.start()) {
             // If event currently being processed, replace old user event with new event
             if (!repo.eventsEmpty()) {

@@ -15,11 +15,6 @@ public class Move implements Action {
     }
 
     @Override
-    public void define(int moveType) {
-
-    }
-
-    @Override
     public boolean initialized(Entity entity, Tile targetTile) {
         int convertX = entity.getX() / Constants.TILESIZE;
         int convertY = entity.getY() / Constants.TILESIZE;
