@@ -8,7 +8,8 @@ import java.util.Random;
 public class Monster extends Creature {
     private String type, desc, spriteLocation;
     public int level;
-    private int vit, intel, vision, speed, evade, defense, attacks, damage, poison;
+    private int STR, CON, AGI, INT, WIS, LCK;
+    private int HP, vision;
 
     public Monster() {
 
@@ -23,51 +24,43 @@ public class Monster extends Creature {
     private void setStats() {
         title = type;
         description = desc;
-        stats.put("level", level);
-        stats.put("vit", vit);
-        stats.put("int", intel);
+
+        stats.put("STR", STR);
+        stats.put("CON", CON);
+        stats.put("AGI", AGI);
+        stats.put("INT", INT);
+        stats.put("WIS", WIS);
+        stats.put("LCK", LCK);
         stats.put("vision", vision);
-        stats.put("speed", speed);
-        stats.put("evade", evade);
-        stats.put("defense", defense);
-        stats.put("attacks", attacks);
-        stats.put("damage", damage);
-        stats.put("poison", poison);
+
+        stats.put("level", level);
+        stats.put("HP", level * CON);
+        stats.put("EXP", 0);
     }
 
     private void setFlags() {
         Random random = new Random();
         int flagChance = random.nextInt(100);
         if (flagChance > 90) {
-            int flag = random.nextInt(5);
+            int flag = random.nextInt(4);
             if (flag == 0) {
                 // TOUGH
-                vit += 4;
-                defense += 4;
-                desc += " Looks like it can take a beating.";
+                CON++;
+                desc += "Looks like it can take a beating.";
             } else if (flag == 1) {
                 // AGILE
-                evade += 2;
-                attacks++;
-                damage--;
-                desc += " Appears agile.";
+                AGI++;
+                desc += "Appears agile.";
             } else if (flag == 2) {
                 // BRUISER
-                damage += 4;
-                desc += " Wouldn't want to be hit by this one.";
+                STR++;
+                desc += "Wouldn't want to be hit by this one.";
             } else if (flag == 3) {
-                // WOUNDED
-                vit -= 2;
+                // BRIGHT
+                INT++;
+                WIS++;
                 vision++;
-                speed -= 1.0f;
-                desc += " Has some cuts and bruises.";
-            } else if (flag == 4) {
-                // CAPABLE
-                vit += 2;
-                evade += 2;
-                defense += 2;
-                damage++;
-                desc += " Seems confident.";
+                desc += "Has a sharp look in its eyes.";
             }
         }
     }
