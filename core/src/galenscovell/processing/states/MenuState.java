@@ -32,6 +32,7 @@ public class MenuState implements State {
     @Override
     public void exit() {
         repo.resolveEvents();
+        root.clearStageSkillMenu();
         System.out.println("\tLeaving MENU state\n");
     }
 

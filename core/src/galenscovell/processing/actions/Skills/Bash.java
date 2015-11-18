@@ -11,6 +11,7 @@ import java.util.*;
 public class Bash implements Action {
     private final Repository repo;
     private List<Tile> range;
+    private Entity target;
 
     public Bash(Repository repo) {
         this.repo = repo;
@@ -28,7 +29,7 @@ public class Bash implements Action {
         return bash(entity, target);
     }
 
-    protected void setRange(Entity entity) {
+    private void setRange(Entity entity) {
         List<Tile> pattern = new ArrayList<Tile>();
         int centerX = entity.getX() / Constants.TILESIZE;
         int centerY = entity.getY() / Constants.TILESIZE;
@@ -60,6 +61,7 @@ public class Bash implements Action {
         if (!range.contains(target) || targetEntity == null) {
             return false;
         }
+        this.target = targetEntity;
         int entityX = (entity.getX() / Constants.TILESIZE);
         int entityY = (entity.getY() / Constants.TILESIZE);
         int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
@@ -87,6 +89,9 @@ public class Bash implements Action {
     @Override
     public void resolve(Entity entity) {
         toggleRangeDisplay();
+        if (target != null) {
+            target.setBeingAttacked();
+        }
     }
 }
 

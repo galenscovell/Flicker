@@ -20,7 +20,6 @@ public interface Entity {
     boolean isAggressive();
     boolean movementTimer();
     void setBeingAttacked();
-    void setAttacking();
 
     void populatePathStack(Stack<Point> path);
     void pushToPathStack(Point p);
@@ -29,7 +28,7 @@ public interface Entity {
 
     void move(int dx, int dy, boolean possible);
     void turn(int dx, int dy);
-    void attack(double interpolation, Entity entity);
+    void attack(Entity entity);
     void interpolate(double interpolation);
     void animate(double interpolation);
     void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity);

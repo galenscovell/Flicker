@@ -10,7 +10,7 @@ public class Creature implements Entity {
     private int moveTimer, animateFrames, frame;
     private float currentX, currentY;
     private Stack<Point> pathStack;
-    private boolean aggressive, attacking, beingAttacked;
+    private boolean aggressive, beingAttacked;
 
     protected Sprite[] currentSet, leftSprites, rightSprites;
     protected String title, description;
@@ -42,8 +42,8 @@ public class Creature implements Entity {
         prevY = newY;
         x = newX;
         y = newY;
-        currentX = (float) newX;
-        currentY = (float) newY;
+        currentX = newX;
+        currentY = newY;
     }
 
     @Override
@@ -91,11 +91,6 @@ public class Creature implements Entity {
     }
 
     @Override
-    public void setAttacking() {
-        attacking = true;
-    }
-
-    @Override
     public void populatePathStack(Stack<Point> path) {
         this.pathStack = path;
     }
@@ -134,8 +129,8 @@ public class Creature implements Entity {
     }
 
     @Override
-    public void attack(double interpolation, Entity entity) {
-
+    public void attack(Entity entity) {
+        entity.setBeingAttacked();
     }
 
     @Override
@@ -143,7 +138,7 @@ public class Creature implements Entity {
         animate(interpolation);
         currentX = (float) (prevX + ((x - prevX) * interpolation));
         currentY = (float) (prevY + ((y - prevY) * interpolation));
-        if (currentX == (float) x && currentY == (float) y) {
+        if (currentX == x && currentY == y) {
             prevX = x;
             prevY = y;
         }
@@ -170,9 +165,6 @@ public class Creature implements Entity {
     public void draw(SpriteBatch batch, int tileSize, double interpolation, Entity entity) {
         float offsetTileHeight = currentY - (tileSize / 3);
         interpolate(interpolation);
-        if (attacking) {
-            attack(interpolation, entity);
-        }
         if (beingAttacked) {
             batch.setColor(1, (float) interpolation, (float) interpolation, 1);
             batch.draw(currentSet[frame], currentX, offsetTileHeight, tileSize, tileSize);

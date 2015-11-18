@@ -28,7 +28,7 @@ public class Leap implements Action {
         return leap(entity, target);
     }
 
-    protected void setRange(Entity entity) {
+    private void setRange(Entity entity) {
         List<Tile> pattern = new ArrayList<Tile>();
         int centerX = entity.getX() / Constants.TILESIZE;
         int centerY = entity.getY() / Constants.TILESIZE;

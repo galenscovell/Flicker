@@ -104,6 +104,10 @@ public class GameScreen extends AbstractScreen {
         interactionVerticalGroup.clear();
     }
 
+    public void clearStageSkillMenu() {
+        stage.getRoot().findActor("skillMenu").remove();
+    }
+
     public void screenZoom(float zoom) {
         renderer.zoom(zoom);
     }

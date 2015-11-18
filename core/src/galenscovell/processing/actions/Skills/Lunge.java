@@ -11,6 +11,7 @@ import java.util.*;
 public class Lunge implements Action {
     private final Repository repo;
     private List<Tile> range;
+    private Entity target;
 
     public Lunge(Repository repo) {
         this.repo = repo;
@@ -28,7 +29,7 @@ public class Lunge implements Action {
         return lunge(entity, target);
     }
 
-    protected void setRange(Entity entity) {
+    private void setRange(Entity entity) {
         List<Tile> pattern = new ArrayList<Tile>();
         int centerX = entity.getX() / Constants.TILESIZE;
         int centerY = entity.getY() / Constants.TILESIZE;
@@ -64,6 +65,7 @@ public class Lunge implements Action {
         if (!range.contains(target) || targetEntity == null) {
             return false;
         }
+        this.target = targetEntity;
         int entityX = (entity.getX() / Constants.TILESIZE);
         int entityY = (entity.getY() / Constants.TILESIZE);
         int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
@@ -91,5 +93,8 @@ public class Lunge implements Action {
     @Override
     public void resolve(Entity entity) {
         toggleRangeDisplay();
+        if (target != null) {
+            target.setBeingAttacked();
+        }
     }
 }

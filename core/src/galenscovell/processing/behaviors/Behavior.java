@@ -5,11 +5,7 @@ import galenscovell.things.inanimates.Inanimate;
 import galenscovell.world.Tile;
 
 public interface Behavior {
-    void setEntityTarget(Entity entity);
-    void setInanimateTarget(Inanimate inanimate);
-    void setTileTarget(Tile tile);
-    void updatePriority();
-
-    void setMoveRange(int[][] pattern);
-    boolean isAggressive();
+    void setTargetTile(Tile tile);
+    void setTargetEntity(Entity entity);
+    void setTargetInanimate(Inanimate inanimate);
 }
