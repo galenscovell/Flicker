@@ -22,18 +22,33 @@ public class Creature implements Entity {
     }
 
     @Override
-    public String examine() {
-        return description;
-    }
-
-    @Override
     public Sprite getSprite() {
         return currentSet[0];
     }
 
     @Override
+    public String examine() {
+        return description;
+    }
+
+    @Override
     public int getStat(String key) {
         return stats.get(key);
+    }
+
+    @Override
+    public int doPhysicalDamage() {
+        return getStat("STR");
+    }
+
+    @Override
+    public void takePhysicalDamage(int damage) {
+        stats.put("HP", getStat("HP") - damage);
+    }
+
+    @Override
+    public boolean isDead() {
+        return getStat("HP") <= 0;
     }
 
     @Override
@@ -77,7 +92,7 @@ public class Creature implements Entity {
 
     @Override
     public boolean movementTimer() {
-        if (moveTimer == stats.get("speed")) {
+        if (moveTimer == 2) {
             moveTimer = 0;
             return true;
         }

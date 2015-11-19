@@ -2,7 +2,7 @@ package galenscovell.processing;
 
 import galenscovell.processing.actions.Event;
 import galenscovell.things.entities.Entity;
-import galenscovell.things.inanimates.Inanimate;
+import galenscovell.things.inanimates.*;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
@@ -59,6 +59,25 @@ public class Repository {
 
     public Event getFirstEvent() {
         return events.get(0);
+    }
+
+    public void placeRemains(Entity entity) {
+        int entityX = entity.getX() / Constants.TILESIZE;
+        int entityY = entity.getY() / Constants.TILESIZE;
+        Tile entityTile = findTile(entityX, entityY);
+        entityTile.toggleOccupied();
+        Event removedEvent = null;
+        for (Event event : getEvents()) {
+            if (event.getEntity() == entity) {
+                removedEvent = event;
+            }
+        }
+        if (removedEvent != null) {
+            events.remove(removedEvent);
+        }
+        entities.remove(entity);
+        Dead remains = new Dead(entityX, entityY);
+        inanimates.add(remains);
     }
 
     public Entity findEntity(int x, int y) {

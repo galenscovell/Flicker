@@ -95,6 +95,10 @@ public class Lunge implements Action {
         toggleRangeDisplay();
         if (target != null) {
             target.setBeingAttacked();
+            target.takePhysicalDamage(entity.doPhysicalDamage());
+            if (target.isDead()) {
+                repo.placeRemains(target);
+            }
         }
     }
 }

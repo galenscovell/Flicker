@@ -6,9 +6,12 @@ import galenscovell.processing.Point;
 import java.util.Stack;
 
 public interface Entity {
+    Sprite getSprite();
     String examine();
     int getStat(String key);
-    Sprite getSprite();
+    int doPhysicalDamage();
+    void takePhysicalDamage(int damage);
+    boolean isDead();
 
     void setPosition(int newX, int newY);
     int getX();
