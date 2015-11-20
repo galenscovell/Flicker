@@ -11,7 +11,7 @@ import java.util.*;
 public class Lunge implements Action {
     private final Repository repo;
     private List<Tile> range;
-    private Entity target;
+    private Entity targettedEntity;
 
     public Lunge(Repository repo) {
         this.repo = repo;
@@ -65,11 +65,11 @@ public class Lunge implements Action {
         if (!range.contains(target) || targetEntity == null) {
             return false;
         }
-        this.target = targetEntity;
-        int entityX = (entity.getX() / Constants.TILESIZE);
-        int entityY = (entity.getY() / Constants.TILESIZE);
-        int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
-        int targetEntityY = (targetEntity.getY() / Constants.TILESIZE);
+        this.targettedEntity = targetEntity;
+        int entityX = entity.getX() / Constants.TILESIZE;
+        int entityY = entity.getY() / Constants.TILESIZE;
+        int targetEntityX = targetEntity.getX() / Constants.TILESIZE;
+        int targetEntityY = targetEntity.getY() / Constants.TILESIZE;
         int newX = entityX + ((targetEntityX - entityX) / 2);
         int newY = entityY + ((targetEntityY - entityY) / 2);
         return finalizeLunge(entity, newX, newY);
@@ -93,11 +93,11 @@ public class Lunge implements Action {
     @Override
     public void resolve(Entity entity) {
         toggleRangeDisplay();
-        if (target != null) {
-            target.setBeingAttacked();
-            target.takePhysicalDamage(entity.doPhysicalDamage());
-            if (target.isDead()) {
-                repo.placeRemains(target);
+        if (targettedEntity != null) {
+            targettedEntity.setBeingAttacked();
+            targettedEntity.takePhysicalDamage(entity.doPhysicalDamage());
+            if (targettedEntity.isDead()) {
+                repo.placeRemains(targettedEntity);
             }
         }
     }

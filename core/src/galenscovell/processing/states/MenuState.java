@@ -31,7 +31,6 @@ public class MenuState implements State {
 
     @Override
     public void exit() {
-        repo.resolveEvents();
         root.clearStageSkillMenu();
         System.out.println("\tLeaving MENU state\n");
     }
@@ -44,11 +43,11 @@ public class MenuState implements State {
     @Override
     public void handleInput(float x, float y) {
         if (!repo.eventsEmpty()) {
-            Event heroEvent = repo.getFirstEvent();  // Hero event is always first in event list
+            Event heroSkillEvent = repo.getFirstEvent();  // Hero event is always first in event list
             int convertX = (int) (x / Constants.TILESIZE);
             int convertY = (int) (y / Constants.TILESIZE);
             Tile target = repo.findTile(convertX, convertY);
-            heroEvent.setTarget(target);
+            heroSkillEvent.setTarget(target);
             root.changeState(StateType.ACTION);
         }
     }

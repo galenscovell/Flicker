@@ -11,7 +11,8 @@ import java.util.*;
 public class Bash implements Action {
     private final Repository repo;
     private List<Tile> range;
-    private Entity target;
+    private Entity targettedEntity;
+    private int dx, dy;
 
     public Bash(Repository repo) {
         this.repo = repo;
@@ -61,13 +62,15 @@ public class Bash implements Action {
         if (!range.contains(target) || targetEntity == null) {
             return false;
         }
-        this.target = targetEntity;
-        int entityX = (entity.getX() / Constants.TILESIZE);
-        int entityY = (entity.getY() / Constants.TILESIZE);
-        int targetEntityX = (targetEntity.getX() / Constants.TILESIZE);
-        int targetEntityY = (targetEntity.getY() / Constants.TILESIZE);
-        int newX = entityX + ((targetEntityX - entityX) / 2);
-        int newY = entityY + ((targetEntityY - entityY) / 2);
+        this.targettedEntity = targetEntity;
+        int entityX = entity.getX() / Constants.TILESIZE;
+        int entityY = entity.getY() / Constants.TILESIZE;
+        int targetEntityX = targetEntity.getX() / Constants.TILESIZE;
+        int targetEntityY = targetEntity.getY() / Constants.TILESIZE;
+        this.dx = targetEntityX - entityX;
+        this.dy = targetEntityY - entityY;
+        int newX = entityX + dx;
+        int newY = entityY + dy;
         return finalizeBash(entity, newX, newY);
     }
 
@@ -89,8 +92,12 @@ public class Bash implements Action {
     @Override
     public void resolve(Entity entity) {
         toggleRangeDisplay();
-        if (target != null) {
-            target.setBeingAttacked();
+        if (targettedEntity != null) {
+            targettedEntity.setBeingAttacked();
+            targettedEntity.takePhysicalDamage(entity.doPhysicalDamage());
+            if (targettedEntity.isDead()) {
+                repo.placeRemains(targettedEntity);
+            }
         }
     }
 }
