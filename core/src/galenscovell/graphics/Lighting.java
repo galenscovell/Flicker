@@ -62,7 +62,7 @@ public class Lighting {
         FixtureDef tileFixture = new FixtureDef();
         tileFixture.shape = tileShape;
 
-        for (Tile tile : repo.tiles.values()) {
+        for (Tile tile : repo.getTiles().values()) {
             if (tile.isBlocking()) {
                 tileFixture.filter.groupIndex = Constants.BIT_GROUP;
             } else {

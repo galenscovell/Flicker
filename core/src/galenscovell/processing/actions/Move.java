@@ -8,8 +8,8 @@ import galenscovell.world.Tile;
 public class Move implements Action {
     private final Repository repo;
     private final Pathfinder pathfinder;
+    private final Entity user;
     private Tile targettedTile;
-    private Entity user;
 
     public Move(Entity user, Repository repo) {
         this.user = user;

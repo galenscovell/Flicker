@@ -10,8 +10,8 @@ import java.util.*;
 
 public class Lunge implements Action {
     private final Repository repo;
+    private final Entity user;
     private List<Tile> range;
-    private Entity user;
     private Tile targettedTile;
     private Entity targettedEntity;
 
@@ -61,7 +61,7 @@ public class Lunge implements Action {
                 pattern.add(tile);
             }
         }
-        this.range = repo.rayCaster.instantiate(user, pattern, 5);
+        this.range = repo.getRayCaster().instantiate(user, pattern, 5);
     }
 
     private void enableRangeDisplay() {

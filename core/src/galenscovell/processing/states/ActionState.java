@@ -59,7 +59,6 @@ public class ActionState implements State {
                     }
                     // If an action is unable to act, resolve it and add it to finished action
                     if (!action.act()) {
-                        action.resolve();
                         finishedActions.push(action);
                     }
                 }
@@ -114,7 +113,7 @@ public class ActionState implements State {
     }
 
     private void npcTurn() {
-        for (Entity entity : repo.entities) {
+        for (Entity entity : repo.getEntities()) {
             if (entity.movementTimer()) {
                 // Check if entity has another action in action list and remove it
                 Action previousAction = null;

@@ -10,11 +10,11 @@ import java.util.*;
 
 public class Bash implements Action {
     private final Repository repo;
+    private final Entity user;
     private List<Tile> range;
-    private int dx, dy;
-    private Entity user;
     private Tile targettedTile;
     private Entity targettedEntity;
+    private int dx, dy;
 
     public Bash(Entity user, Repository repo) {
         this.user = user;
@@ -58,7 +58,7 @@ public class Bash implements Action {
                 }
             }
         }
-        this.range = repo.rayCaster.instantiate(user, pattern, 5);
+        this.range = repo.getRayCaster().instantiate(user, pattern, 5);
     }
 
     private void enableRangeDisplay() {

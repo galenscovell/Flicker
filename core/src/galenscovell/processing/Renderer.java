@@ -36,19 +36,19 @@ public class Renderer {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         // Tile rendering: [x, y] are in Tiles, convert to custom units
-        for (Tile tile : repo.tiles.values()) {
+        for (Tile tile : repo.getTiles().values()) {
             if (inViewport(tile.x * Constants.TILESIZE, tile.y * Constants.TILESIZE)) {
                 tile.draw(spriteBatch, Constants.TILESIZE);
             }
         }
         // Object rendering: [x, y] are in Tiles, convert to custom units
-        for (Inanimate inanimate : repo.inanimates) {
+        for (Inanimate inanimate : repo.getInanimates()) {
             if (inViewport(inanimate.getX() * Constants.TILESIZE, inanimate.getY() * Constants.TILESIZE)) {
                 inanimate.draw(spriteBatch, Constants.TILESIZE);
             }
         }
         // Entity rendering: [x, y] are in custom units
-        for (Entity entity : repo.entities) {
+        for (Entity entity : repo.getEntities()) {
             entity.draw(spriteBatch, Constants.TILESIZE, interpolation, hero);
         }
         // Player rendering: [x, y] are in custom units

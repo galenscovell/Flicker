@@ -15,7 +15,7 @@
   {
     "type": "Juvenile Salamander",
     "desc": "A juvenile salamander. Starting to get less cute.",
-    "level": 2,
+    "level": 1,
     "spriteLocation": "salamander1",
     "STR": 2,
     "CON": 2,
@@ -28,7 +28,7 @@
   {
     "type": "Adult Salamander",
     "desc": "An adult salamander. Having shed its juvenile skin, it glows respendlent emerald.",
-    "level": 3,
+    "level": 1,
     "spriteLocation": "salamander2",
     "STR": 3,
     "CON": 3,
@@ -41,7 +41,7 @@
   {
     "type": "Elder Salamander",
     "desc": "An elder salamander. What are these things eating?",
-    "level": 4,
+    "level": 1,
     "spriteLocation": "salamander3",
     "STR": 3,
     "CON": 3,
