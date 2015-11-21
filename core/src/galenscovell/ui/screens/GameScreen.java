@@ -3,6 +3,7 @@ package galenscovell.ui.screens;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import galenscovell.flicker.FlickerMain;
 import galenscovell.graphics.Lighting;
 import galenscovell.processing.*;
@@ -105,7 +106,10 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void clearStageSkillMenu() {
-        stage.getRoot().findActor("skillMenu").remove();
+        Actor skillMenu = stage.getRoot().findActor("skillMenu");
+        if (skillMenu != null) {
+            skillMenu.remove();
+        }
     }
 
     public void screenZoom(float zoom) {
