@@ -2,6 +2,7 @@
   {
     "type": "Newt",
     "desc": "A salamander youngling. Cute.",
+    "tier": 1,
     "level": 1,
     "spriteLocation": "salamander0",
     "STR": 1,
@@ -15,6 +16,7 @@
   {
     "type": "Juvenile Salamander",
     "desc": "A juvenile salamander. Starting to get less cute.",
+    "tier": 2,
     "level": 1,
     "spriteLocation": "salamander1",
     "STR": 2,
@@ -28,6 +30,7 @@
   {
     "type": "Adult Salamander",
     "desc": "An adult salamander. Having shed its juvenile skin, it glows respendlent emerald.",
+    "tier": 3,
     "level": 1,
     "spriteLocation": "salamander2",
     "STR": 3,
@@ -41,6 +44,7 @@
   {
     "type": "Elder Salamander",
     "desc": "An elder salamander. What are these things eating?",
+    "tier": 4,
     "level": 1,
     "spriteLocation": "salamander3",
     "STR": 3,

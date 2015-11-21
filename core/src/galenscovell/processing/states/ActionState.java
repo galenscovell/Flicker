@@ -30,12 +30,12 @@ public class ActionState implements State {
 
     @Override
     public void enter() {
-        System.out.println("\tEntering ACTION state");
+        // System.out.println("\tEntering ACTION state");
     }
 
     @Override
     public void exit() {
-        System.out.println("\tLeaving ACTION state\n");
+        // System.out.println("\tLeaving ACTION state\n");
     }
 
     @Override

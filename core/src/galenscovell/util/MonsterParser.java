@@ -26,13 +26,13 @@ public class MonsterParser {
         return monsterList;
     }
 
-    public Monster spawn(int level) {
+    public Monster spawn(int tier) {
         List<Monster> monsterList = createMonsterList();
         Random random = new Random();
         while (true) {
             int selection = random.nextInt(monsterList.size());
             Monster selected = monsterList.get(selection);
-            if (selected.level == level || selected.level == (level - 1)) {
+            if (selected.tier == tier || selected.tier == (tier - 1)) {
                 selected.setup();
                 return selected;
             }

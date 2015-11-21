@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Monster extends Creature {
     private String type, desc, spriteLocation;
-    public int level;
+    public int tier, level;
     private int STR, CON, AGI, INT, WIS, LCK;
     private int HP, vision;
 

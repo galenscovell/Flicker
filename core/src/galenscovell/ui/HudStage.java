@@ -117,6 +117,7 @@ public class HudStage extends Stage {
                     skillMenu.remove();
                     game.changeState(StateType.ACTION);
                 } else {
+                    removeExaminePopup();
                     addToStage(skillMenu);
                     game.changeState(StateType.MENU);
                 }
@@ -193,6 +194,12 @@ public class HudStage extends Stage {
         if (skillMenu.hasParent()) {
             skillMenu.remove();
         }
+        if (examinePopup.hasParent()) {
+            examinePopup.remove();
+        }
+    }
+
+    private void removeExaminePopup() {
         if (examinePopup.hasParent()) {
             examinePopup.remove();
         }
