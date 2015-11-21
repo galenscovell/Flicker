@@ -5,13 +5,13 @@ import galenscovell.things.entities.Entity;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
-public class Move implements Action {
+public class Slide implements Action {
     private final Repository repo;
     private final Pathfinder pathfinder;
     private final Entity user;
     private Tile targettedTile;
 
-    public Move(Entity user, Repository repo) {
+    public Slide(Entity user, Repository repo) {
         this.user = user;
         this.repo = repo;
         this.pathfinder = new Pathfinder();
@@ -53,11 +53,11 @@ public class Move implements Action {
         Tile nextTile = repo.findTile(targetPoint.x, targetPoint.y);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
             repo.findTile(entityX, entityY).toggleOccupied();
-            user.move(diffX * Constants.TILESIZE, diffY * Constants.TILESIZE, true, false);
+            user.move(diffX * Constants.TILESIZE, diffY * Constants.TILESIZE, true, true);
             nextTile.toggleOccupied();
             return true;
         } else {
-            user.move(diffX, diffY, false, false);
+            user.move(diffX, diffY, false, true);
             return false;
         }
     }

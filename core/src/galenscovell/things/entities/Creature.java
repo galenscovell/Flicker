@@ -16,6 +16,10 @@ public class Creature implements Entity {
     protected String title, description;
     protected Map<String, Integer> stats = new HashMap<String, Integer>();
 
+
+    /***************************************************
+     * Stats and Description
+     */
     @Override
     public String toString() {
         return title;
@@ -51,6 +55,10 @@ public class Creature implements Entity {
         return getStat("HP") <= 0;
     }
 
+
+    /***************************************************
+     * Location
+     */
     @Override
     public void setPosition(int newX, int newY) {
         prevX = newX;
@@ -81,6 +89,10 @@ public class Creature implements Entity {
         return currentY;
     }
 
+
+    /***************************************************
+     * State
+     */
     public void toggleAggressive() {
         aggressive = !aggressive;
     }
@@ -91,6 +103,20 @@ public class Creature implements Entity {
     }
 
     @Override
+    public void setBeingAttacked() {
+        beingAttacked = true;
+    }
+
+    @Override
+    public void attack(Entity entity) {
+        entity.setBeingAttacked();
+    }
+
+
+    /***************************************************
+     * Movement
+     */
+    @Override
     public boolean movementTimer() {
         if (moveTimer == 2) {
             moveTimer = 0;
@@ -98,11 +124,6 @@ public class Creature implements Entity {
         }
         moveTimer++;
         return false;
-    }
-
-    @Override
-    public void setBeingAttacked() {
-        beingAttacked = true;
     }
 
     @Override
@@ -126,8 +147,10 @@ public class Creature implements Entity {
     }
 
     @Override
-    public void move(int dx, int dy, boolean possible) {
-        turn(dx, dy);
+    public void move(int dx, int dy, boolean possible, boolean slide) {
+        if (!slide) {
+            turn(dx, dy);
+        }
         if (possible) {
             x += dx;
             y += dy;
@@ -143,11 +166,10 @@ public class Creature implements Entity {
         }
     }
 
-    @Override
-    public void attack(Entity entity) {
-        entity.setBeingAttacked();
-    }
 
+    /***************************************************
+     * Rendering
+     */
     @Override
     public void interpolate(double interpolation) {
         animate(interpolation);

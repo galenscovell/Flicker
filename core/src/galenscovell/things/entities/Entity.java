@@ -29,7 +29,7 @@ public interface Entity {
     Point nextPathPoint();
     boolean pathStackEmpty();
 
-    void move(int dx, int dy, boolean possible);
+    void move(int dx, int dy, boolean possible, boolean slide);
     void turn(int dx, int dy);
     void attack(Entity entity);
     void interpolate(double interpolation);

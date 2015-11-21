@@ -115,6 +115,12 @@ public class Bash implements Action {
         if (targettedEntity != null) {
             targettedEntity.setBeingAttacked();
             targettedEntity.takePhysicalDamage(user.doPhysicalDamage());
+            int newX = (targettedEntity.getX() / Constants.TILESIZE) + dx;
+            int newY = (targettedEntity.getY() / Constants.TILESIZE) + dy;
+            Action slide = new Slide(targettedEntity, repo);
+            slide.setTarget(repo.findTile(newX, newY));
+            slide.initialize();
+            slide.act();
             if (targettedEntity.isDead()) {
                 repo.placeRemains(targettedEntity);
             }

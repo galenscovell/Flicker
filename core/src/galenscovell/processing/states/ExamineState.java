@@ -26,13 +26,13 @@ public class ExamineState implements State {
 
     @Override
     public void enter() {
-        System.out.println("\tEntering EXAMINE state");
+        // System.out.println("\tEntering EXAMINE state");
     }
 
     @Override
     public void exit() {
         clearExamineBox();
-        System.out.println("\tLeaving EXAMINE state\n");
+        // System.out.println("\tLeaving EXAMINE state\n");
     }
 
     @Override

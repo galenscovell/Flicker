@@ -59,6 +59,7 @@ public class ActionState implements State {
                     }
                     // If an action is unable to act, resolve it and add it to finished action
                     if (!action.act()) {
+                        action.resolve();
                         finishedActions.push(action);
                     }
                 }
