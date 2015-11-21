@@ -76,8 +76,12 @@ public class Tile {
         return highlighted;
     }
 
-    public void toggleHighlighted() {
-        highlighted = !highlighted;
+    public void enableHighlight() {
+        highlighted = true;
+    }
+
+    public void disableHighlight() {
+        highlighted = false;
     }
 
     public boolean isOccupied() {

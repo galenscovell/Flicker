@@ -20,7 +20,7 @@ public class Lunge implements Action {
     @Override
     public boolean initialized(Entity entity, Tile target) {
         setRange(entity);
-        toggleRangeDisplay();
+        enableRangeDisplay();
         return true;
     }
 
@@ -51,9 +51,15 @@ public class Lunge implements Action {
         this.range = repo.rayCaster.instantiate(entity, pattern, 5);
     }
 
-    private void toggleRangeDisplay() {
+    private void enableRangeDisplay() {
         for (Tile tile : range) {
-            tile.toggleHighlighted();
+            tile.enableHighlight();
+        }
+    }
+
+    private void disableRangeDisplay() {
+        for (Tile tile : range) {
+            tile.disableHighlight();
         }
     }
 
@@ -65,6 +71,7 @@ public class Lunge implements Action {
         if (!range.contains(target) || targetEntity == null) {
             return false;
         }
+        disableRangeDisplay();
         this.targettedEntity = targetEntity;
         int entityX = entity.getX() / Constants.TILESIZE;
         int entityY = entity.getY() / Constants.TILESIZE;
@@ -92,7 +99,6 @@ public class Lunge implements Action {
 
     @Override
     public void resolve(Entity entity) {
-        toggleRangeDisplay();
         if (targettedEntity != null) {
             targettedEntity.setBeingAttacked();
             targettedEntity.takePhysicalDamage(entity.doPhysicalDamage());

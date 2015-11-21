@@ -35,7 +35,6 @@ public class ActionState implements State {
 
     @Override
     public void exit() {
-        repo.clearEvents();
         System.out.println("\tLeaving ACTION state\n");
     }
 

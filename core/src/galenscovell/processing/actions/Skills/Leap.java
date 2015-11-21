@@ -19,7 +19,7 @@ public class Leap implements Action {
     @Override
     public boolean initialized(Entity entity, Tile target) {
         setRange(entity);
-        toggleRangeDisplay();
+        enableRangeDisplay();
         return true;
     }
 
@@ -52,9 +52,15 @@ public class Leap implements Action {
         this.range = repo.rayCaster.instantiate(entity, pattern, 5);
     }
 
-    private void toggleRangeDisplay() {
+    private void enableRangeDisplay() {
         for (Tile tile : range) {
-            tile.toggleHighlighted();
+            tile.enableHighlight();
+        }
+    }
+
+    private void disableRangeDisplay() {
+        for (Tile tile : range) {
+            tile.disableHighlight();
         }
     }
 
@@ -62,6 +68,7 @@ public class Leap implements Action {
         if (target == null || !range.contains(target) || target.isOccupied()) {
             return false;
         }
+        disableRangeDisplay();
         return finalizeLeap(entity, target.x, target.y);
     }
 
@@ -82,7 +89,7 @@ public class Leap implements Action {
 
     @Override
     public void resolve(Entity entity) {
-        toggleRangeDisplay();
+
     }
 }
 

@@ -19,7 +19,7 @@ public class Roll implements Action {
     @Override
     public boolean initialized(Entity entity, Tile target) {
         setRange(entity);
-        toggleRangeDisplay();
+        enableRangeDisplay();
         return true;
     }
 
@@ -49,9 +49,15 @@ public class Roll implements Action {
         this.range = repo.rayCaster.instantiate(entity, pattern, 5);
     }
 
-    private void toggleRangeDisplay() {
+    private void enableRangeDisplay() {
         for (Tile tile : range) {
-            tile.toggleHighlighted();
+            tile.enableHighlight();
+        }
+    }
+
+    private void disableRangeDisplay() {
+        for (Tile tile : range) {
+            tile.disableHighlight();
         }
     }
 
@@ -59,6 +65,7 @@ public class Roll implements Action {
         if (target == null || !range.contains(target) || target.isOccupied()) {
             return false;
         }
+        disableRangeDisplay();
         return finalizeRoll(entity, target.x, target.y);
     }
 
@@ -79,7 +86,7 @@ public class Roll implements Action {
 
     @Override
     public void resolve(Entity entity) {
-        toggleRangeDisplay();
+
     }
 }
 
