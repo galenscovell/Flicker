@@ -40,37 +40,37 @@ public class ActionState implements State {
 
     @Override
     public void update(float delta) {
-        if (repo.eventsEmpty()) {
+        if (repo.actionsEmpty()) {
             return;
         } else {
             if (!adjacentThings.isEmpty()) {
                 adjacentThings.clear();
                 root.clearInanimateBoxes();
             }
-            Stack<Event> finishedEvents = new Stack<Event>();
-            Event heroEvent = repo.getFirstEvent();  // Hero event is always first in event list
-            if (heroEvent.step()) {
+            Stack<Action> finishedActions = new Stack<Action>();
+            Action heroAction = repo.getFirstAction();  // Hero action is always first in action list
+            if (heroAction.act()) {
                 npcTurn();
-                // Iterate through each event and step one act forward
-                for (Event event : repo.getEvents()) {
-                    // Skip first event (Hero event has already acted)
-                    if (event == heroEvent) {
+                // Iterate through each action and step one act forward
+                for (Action action : repo.getActions()) {
+                    // Skip first action (Hero action has already acted)
+                    if (action == heroAction) {
                         continue;
                     }
-                    // If an event is unable to act, resolve it and add it to finished events
-                    if (!event.step()) {
-                        event.finish();
-                        finishedEvents.push(event);
+                    // If an action is unable to act, resolve it and add it to finished action
+                    if (!action.act()) {
+                        action.resolve();
+                        finishedActions.push(action);
                     }
                 }
-                // Remove all finished events from event list
-                while (!finishedEvents.isEmpty()) {
-                    repo.removeEvent(finishedEvents.pop());
+                // Remove all finished actions from action list
+                while (!finishedActions.isEmpty()) {
+                    repo.removeAction(finishedActions.pop());
                 }
             } else {
-                // Once heroEvent is unable to act, resolve it and clear event list
-                heroEvent.finish();
-                repo.clearEvents();
+                // Once heroAction is unable to act, resolve it and clear action list
+                heroAction.resolve();
+                repo.clearActions();
                 heroAdjacentCheck();
             }
         }
@@ -97,13 +97,14 @@ public class ActionState implements State {
     public void handleInput(float x, float y) {
         int convertX = (int) (x / Constants.TILESIZE);
         int convertY = (int) (y / Constants.TILESIZE);
-        Event newEvent = new Event(hero, repo.findTile(convertX, convertY), new Move(repo));
-        if (newEvent.start()) {
-            // If event currently being processed, replace old user event with new event
-            if (!repo.eventsEmpty()) {
-                repo.clearEvents();
+        Move heroMove = new Move(hero, repo);
+        heroMove.setTarget(repo.findTile(convertX, convertY));
+        if (heroMove.initialize()) {
+            // If action currently being processed, replace old user action with new
+            if (!repo.actionsEmpty()) {
+                repo.clearActions();
             }
-            repo.addEvent(newEvent);
+            repo.addAction(heroMove);
         }
     }
 
@@ -115,29 +116,31 @@ public class ActionState implements State {
     private void npcTurn() {
         for (Entity entity : repo.entities) {
             if (entity.movementTimer()) {
-                // Check if entity has another event in event list and remove it
-                Event previousEvent = null;
-                for (Event event : repo.getEvents()) {
-                    if (event.getEntity() == entity) {
-                        previousEvent = event;
+                // Check if entity has another action in action list and remove it
+                Action previousAction = null;
+                for (Action action : repo.getActions()) {
+                    if (action.getUser() == entity) {
+                        previousAction = action;
                     }
                 }
-                if (previousEvent != null) {
-                    repo.removeEvent(previousEvent);
+                if (previousAction != null) {
+                    repo.removeAction(previousAction);
                 }
-                // Create new entity event with entity behaviors
-                Event npcEvent;
+                // Create new entity action with entity behaviors
+                Action npcAction;
                 if (entity.isAggressive()) {
                     // TODO: Aggressive behavior depending on entity
                     Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                    npcEvent = new Event(entity, targetTile, new Move(repo));
+                    npcAction = new Move(entity, repo);
+                    npcAction.setTarget(targetTile);
                 } else {
                     // TODO: Passive behavior depending on entity
                     Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                    npcEvent = new Event(entity, targetTile, new Move(repo));
+                    npcAction = new Move(entity, repo);
+                    npcAction.setTarget(targetTile);
                 }
-                if (npcEvent.start()) {
-                    repo.addEvent(npcEvent);
+                if (npcAction.initialize()) {
+                    repo.addAction(npcAction);
                 }
             }
         }

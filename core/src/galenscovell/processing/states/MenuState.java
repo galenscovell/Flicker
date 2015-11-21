@@ -1,7 +1,7 @@
 package galenscovell.processing.states;
 
 import galenscovell.processing.Repository;
-import galenscovell.processing.actions.Event;
+import galenscovell.processing.actions.*;
 import galenscovell.processing.actions.Skills.*;
 import galenscovell.things.entities.Hero;
 import galenscovell.ui.screens.GameScreen;
@@ -42,34 +42,34 @@ public class MenuState implements State {
 
     @Override
     public void handleInput(float x, float y) {
-        if (!repo.eventsEmpty()) {
-            Event heroSkillEvent = repo.getFirstEvent();  // Hero event is always first in event list
+        if (!repo.actionsEmpty()) {
+            Action heroSkillAction = repo.getFirstAction();  // Hero action is always first in action list
             int convertX = (int) (x / Constants.TILESIZE);
             int convertY = (int) (y / Constants.TILESIZE);
             Tile target = repo.findTile(convertX, convertY);
-            heroSkillEvent.setTarget(target);
+            heroSkillAction.setTarget(target);
             root.changeState(StateType.ACTION);
         }
     }
 
     @Override
     public void handleInterfaceEvent(int moveType) {
-        Event newEvent;
+        Action newAction;
         if (moveType == Constants.LUNGE_TYPE) {
-            newEvent = new Event(hero, null, new Lunge(repo));
+            newAction = new Lunge(hero, repo);
         } else if (moveType == Constants.ROLL_TYPE) {
-            newEvent = new Event(hero, null, new Roll(repo));
+            newAction = new Roll(hero, repo);
         } else if (moveType == Constants.BASH_TYPE) {
-            newEvent = new Event(hero, null, new Bash(repo));
+            newAction = new Bash(hero, repo);
         } else {
-            newEvent = new Event(hero, null, new Leap(repo));
+            newAction = new Leap(hero, repo);
         }
-        if (newEvent.start()) {
-            // If event currently being processed, replace old user event with new event
-            if (!repo.eventsEmpty()) {
-                repo.clearEvents();
+        if (newAction.initialize()) {
+            // If action currently being processed, replace old user action with new
+            if (!repo.actionsEmpty()) {
+                repo.clearActions();
             }
-            repo.addEvent(newEvent);
+            repo.addAction(newAction);
         }
     }
 }

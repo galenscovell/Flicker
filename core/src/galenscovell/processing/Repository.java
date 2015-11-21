@@ -1,6 +1,6 @@
 package galenscovell.processing;
 
-import galenscovell.processing.actions.Event;
+import galenscovell.processing.actions.Action;
 import galenscovell.things.entities.Entity;
 import galenscovell.things.inanimates.*;
 import galenscovell.util.Constants;
@@ -11,13 +11,13 @@ import java.util.*;
 public class Repository {
     public final Map<Integer, Tile> tiles;
     public final RayCaster rayCaster;
-    public List<Event> events;
+    public List<Action> actions;
     public List<Entity> entities;
     public List<Inanimate> inanimates;
 
     public Repository(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
-        this.events = new ArrayList<Event>();
+        this.actions = new ArrayList<Action>();
         this.rayCaster = new RayCaster(tiles);
     }
 
@@ -30,35 +30,35 @@ public class Repository {
         this.inanimates = inanimates;
     }
 
-    public boolean eventsEmpty() {
-        return events.isEmpty();
+    public boolean actionsEmpty() {
+        return actions.isEmpty();
     }
 
-    public void addEvent(Event event) {
-        events.add(event);
+    public void addAction(Action action) {
+        actions.add(action);
     }
 
-    public void removeEvent(Event event) {
-        events.remove(event);
+    public void removeAction(Action action) {
+        actions.remove(action);
     }
 
-    public void clearEvents() {
-        resolveEvents();
-        this.events = new ArrayList<Event>();
+    public void clearActions() {
+        resolveActions();
+        this.actions = new ArrayList<Action>();
     }
 
-    public void resolveEvents() {
-        for (Event event : events) {
-            event.finish();
+    public void resolveActions() {
+        for (Action action : actions) {
+            action.resolve();
         }
     }
 
-    public List<Event> getEvents() {
-        return this.events;
+    public List<Action> getActions() {
+        return this.actions;
     }
 
-    public Event getFirstEvent() {
-        return events.get(0);
+    public Action getFirstAction() {
+        return actions.get(0);
     }
 
     public void placeRemains(Entity entity) {
@@ -66,14 +66,14 @@ public class Repository {
         int entityY = entity.getY() / Constants.TILESIZE;
         Tile entityTile = findTile(entityX, entityY);
         entityTile.toggleOccupied();
-        Event removedEvent = null;
-        for (Event event : getEvents()) {
-            if (event.getEntity() == entity) {
-                removedEvent = event;
+        Action removedAction = null;
+        for (Action action : getActions()) {
+            if (action.getUser() == entity) {
+                removedAction = action;
             }
         }
-        if (removedEvent != null) {
-            events.remove(removedEvent);
+        if (removedAction != null) {
+            actions.remove(removedAction);
         }
         entities.remove(entity);
         Dead remains = new Dead(entityX, entityY);

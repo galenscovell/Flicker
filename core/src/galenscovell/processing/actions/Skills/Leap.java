@@ -11,27 +11,41 @@ import java.util.*;
 public class Leap implements Action {
     private final Repository repo;
     private List<Tile> range;
+    private Entity user;
+    private Tile targettedTile;
+    private Entity targettedEntity;
 
-    public Leap(Repository repo) {
+    public Leap(Entity user, Repository repo) {
+        this.user = user;
         this.repo = repo;
     }
 
     @Override
-    public boolean initialized(Entity entity, Tile target) {
-        setRange(entity);
+    public void setTarget(Tile tile) {
+        this.targettedTile = tile;
+    }
+
+    @Override
+    public Entity getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean initialize() {
+        setRange();
         enableRangeDisplay();
         return true;
     }
 
     @Override
-    public boolean act(Entity entity, Tile target) {
-        return leap(entity, target);
+    public boolean act() {
+        return leap();
     }
 
-    private void setRange(Entity entity) {
+    private void setRange() {
         List<Tile> pattern = new ArrayList<Tile>();
-        int centerX = entity.getX() / Constants.TILESIZE;
-        int centerY = entity.getY() / Constants.TILESIZE;
+        int centerX = user.getX() / Constants.TILESIZE;
+        int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
         // pattern: donut radius 3
@@ -49,7 +63,7 @@ public class Leap implements Action {
                 }
             }
         }
-        this.range = repo.rayCaster.instantiate(entity, pattern, 5);
+        this.range = repo.rayCaster.instantiate(user, pattern, 5);
     }
 
     private void enableRangeDisplay() {
@@ -64,31 +78,32 @@ public class Leap implements Action {
         }
     }
 
-    private boolean leap(Entity entity, Tile target) {
-        if (target == null || !range.contains(target) || target.isOccupied()) {
+    private boolean leap() {
+        if (targettedTile == null || !range.contains(targettedTile) || targettedTile.isOccupied()) {
             return false;
         }
         disableRangeDisplay();
-        return finalizeLeap(entity, target.x, target.y);
+        return finalizeLeap(targettedTile.x, targettedTile.y);
     }
 
-    private boolean finalizeLeap(Entity entity, int newX, int newY) {
-        Move skillMovement = new Move(repo);
+    private boolean finalizeLeap(int newX, int newY) {
+        Move skillMovement = new Move(user, repo);
         Tile skillTarget = repo.findTile(newX, newY);
-        if (skillMovement.initialized(entity, skillTarget)) {
+        skillMovement.setTarget(skillTarget);
+        if (skillMovement.initialize()) {
             Point finalPoint = null;
-            while (!entity.pathStackEmpty()) {
-                finalPoint = entity.nextPathPoint();
+            while (!user.pathStackEmpty()) {
+                finalPoint = user.nextPathPoint();
             }
-            entity.pushToPathStack(finalPoint);
-            return skillMovement.act(entity, skillTarget);
+            user.pushToPathStack(finalPoint);
+            return skillMovement.act();
         } else {
             return false;
         }
     }
 
     @Override
-    public void resolve(Entity entity) {
+    public void resolve() {
 
     }
 }

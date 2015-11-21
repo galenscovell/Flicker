@@ -8,49 +8,62 @@ import galenscovell.world.Tile;
 public class Move implements Action {
     private final Repository repo;
     private final Pathfinder pathfinder;
+    private Tile targettedTile;
+    private Entity user;
 
-    public Move(Repository repo) {
+    public Move(Entity user, Repository repo) {
+        this.user = user;
         this.repo = repo;
         this.pathfinder = new Pathfinder();
     }
 
     @Override
-    public boolean initialized(Entity entity, Tile targetTile) {
-        int convertX = entity.getX() / Constants.TILESIZE;
-        int convertY = entity.getY() / Constants.TILESIZE;
+    public void setTarget(Tile tile) {
+        this.targettedTile = tile;
+    }
+
+    @Override
+    public Entity getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean initialize() {
+        int convertX = user.getX() / Constants.TILESIZE;
+        int convertY = user.getY() / Constants.TILESIZE;
         Tile startTile = repo.findTile(convertX, convertY);
-        if (targetTile == null || startTile == targetTile) {
+        if (targettedTile == null || startTile == targettedTile) {
             return false;
         } else {
-            entity.populatePathStack(pathfinder.findPath(startTile, targetTile, repo));
+            user.populatePathStack(pathfinder.findPath(startTile, targettedTile, repo));
             return true;
         }
     }
 
     @Override
-    public boolean act(Entity entity, Tile target) {
-        if (entity.pathStackEmpty()) {
+    public boolean act() {
+        if (user.pathStackEmpty()) {
             return false;
         }
-        Point targetPoint = entity.nextPathPoint();
-        int entityX = entity.getX() / Constants.TILESIZE;
-        int entityY = entity.getY() / Constants.TILESIZE;
+        Point targetPoint = user.nextPathPoint();
+        int entityX = user.getX() / Constants.TILESIZE;
+        int entityY = user.getY() / Constants.TILESIZE;
         int diffX = targetPoint.x - entityX;
         int diffY = targetPoint.y - entityY;
         Tile nextTile = repo.findTile(targetPoint.x, targetPoint.y);
         if (nextTile.isFloor() && !nextTile.isOccupied()) {
             repo.findTile(entityX, entityY).toggleOccupied();
-            entity.move(diffX * Constants.TILESIZE, diffY * Constants.TILESIZE, true);
+            user.move(diffX * Constants.TILESIZE, diffY * Constants.TILESIZE, true);
             nextTile.toggleOccupied();
             return true;
         } else {
-            entity.move(diffX, diffY, false);
+            user.move(diffX, diffY, false);
             return false;
         }
     }
 
     @Override
-    public void resolve(Entity entity) {
+    public void resolve() {
 
     }
 }

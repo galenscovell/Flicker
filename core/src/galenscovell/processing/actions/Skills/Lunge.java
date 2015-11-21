@@ -11,28 +11,41 @@ import java.util.*;
 public class Lunge implements Action {
     private final Repository repo;
     private List<Tile> range;
+    private Entity user;
+    private Tile targettedTile;
     private Entity targettedEntity;
 
-    public Lunge(Repository repo) {
+    public Lunge(Entity user, Repository repo) {
+        this.user = user;
         this.repo = repo;
     }
 
     @Override
-    public boolean initialized(Entity entity, Tile target) {
-        setRange(entity);
+    public void setTarget(Tile tile) {
+        this.targettedTile = tile;
+    }
+
+    @Override
+    public Entity getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean initialize() {
+        setRange();
         enableRangeDisplay();
         return true;
     }
 
     @Override
-    public boolean act(Entity entity, Tile target) {
-        return lunge(entity, target);
+    public boolean act() {
+        return lunge();
     }
 
-    private void setRange(Entity entity) {
+    private void setRange() {
         List<Tile> pattern = new ArrayList<Tile>();
-        int centerX = entity.getX() / Constants.TILESIZE;
-        int centerY = entity.getY() / Constants.TILESIZE;
+        int centerX = user.getX() / Constants.TILESIZE;
+        int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
         // pattern: 2 tiles cardinal
@@ -48,7 +61,7 @@ public class Lunge implements Action {
                 pattern.add(tile);
             }
         }
-        this.range = repo.rayCaster.instantiate(entity, pattern, 5);
+        this.range = repo.rayCaster.instantiate(user, pattern, 5);
     }
 
     private void enableRangeDisplay() {
@@ -63,45 +76,46 @@ public class Lunge implements Action {
         }
     }
 
-    private boolean lunge(Entity entity, Tile target) {
-        if (target == null) {
+    private boolean lunge() {
+        if (targettedTile == null) {
             return false;
         }
-        Entity targetEntity = repo.findEntity(target.x, target.y);
-        if (!range.contains(target) || targetEntity == null) {
+        Entity targetEntity = repo.findEntity(targettedTile.x, targettedTile.y);
+        if (!range.contains(targettedTile) || targetEntity == null) {
             return false;
         }
         disableRangeDisplay();
         this.targettedEntity = targetEntity;
-        int entityX = entity.getX() / Constants.TILESIZE;
-        int entityY = entity.getY() / Constants.TILESIZE;
+        int entityX = user.getX() / Constants.TILESIZE;
+        int entityY = user.getY() / Constants.TILESIZE;
         int targetEntityX = targetEntity.getX() / Constants.TILESIZE;
         int targetEntityY = targetEntity.getY() / Constants.TILESIZE;
         int newX = entityX + ((targetEntityX - entityX) / 2);
         int newY = entityY + ((targetEntityY - entityY) / 2);
-        return finalizeLunge(entity, newX, newY);
+        return finalizeLunge(newX, newY);
     }
 
-    private boolean finalizeLunge(Entity entity, int newX, int newY) {
-        Move skillMovement = new Move(repo);
+    private boolean finalizeLunge(int newX, int newY) {
+        Move skillMovement = new Move(user, repo);
         Tile skillTarget = repo.findTile(newX, newY);
-        if (skillMovement.initialized(entity, skillTarget)) {
+        skillMovement.setTarget(skillTarget);
+        if (skillMovement.initialize()) {
             Point finalPoint = null;
-            while (!entity.pathStackEmpty()) {
-                finalPoint = entity.nextPathPoint();
+            while (!user.pathStackEmpty()) {
+                finalPoint = user.nextPathPoint();
             }
-            entity.pushToPathStack(finalPoint);
-            return skillMovement.act(entity, skillTarget);
+            user.pushToPathStack(finalPoint);
+            return skillMovement.act();
         } else {
             return false;
         }
     }
 
     @Override
-    public void resolve(Entity entity) {
+    public void resolve() {
         if (targettedEntity != null) {
             targettedEntity.setBeingAttacked();
-            targettedEntity.takePhysicalDamage(entity.doPhysicalDamage());
+            targettedEntity.takePhysicalDamage(user.doPhysicalDamage());
             if (targettedEntity.isDead()) {
                 repo.placeRemains(targettedEntity);
             }

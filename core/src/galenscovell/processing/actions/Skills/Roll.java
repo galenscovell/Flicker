@@ -11,27 +11,41 @@ import java.util.*;
 public class Roll implements Action {
     private final Repository repo;
     private List<Tile> range;
+    private Entity user;
+    private Tile targettedTile;
+    private Entity targettedEntity;
 
-    public Roll(Repository repo) {
+    public Roll(Entity user, Repository repo) {
+        this.user = user;
         this.repo = repo;
     }
 
     @Override
-    public boolean initialized(Entity entity, Tile target) {
-        setRange(entity);
+    public void setTarget(Tile tile) {
+        this.targettedTile = tile;
+    }
+
+    @Override
+    public Entity getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean initialize() {
+        setRange();
         enableRangeDisplay();
         return true;
     }
 
     @Override
-    public boolean act(Entity entity, Tile target) {
-        return roll(entity, target);
+    public boolean act() {
+        return roll();
     }
 
-    private void setRange(Entity entity) {
+    private void setRange() {
         List<Tile> pattern = new ArrayList<Tile>();
-        int centerX = entity.getX() / Constants.TILESIZE;
-        int centerY = entity.getY() / Constants.TILESIZE;
+        int centerX = user.getX() / Constants.TILESIZE;
+        int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
         // pattern: 2 tiles diagonal
@@ -46,7 +60,7 @@ public class Roll implements Action {
                 }
             }
         }
-        this.range = repo.rayCaster.instantiate(entity, pattern, 5);
+        this.range = repo.rayCaster.instantiate(user, pattern, 5);
     }
 
     private void enableRangeDisplay() {
@@ -61,31 +75,31 @@ public class Roll implements Action {
         }
     }
 
-    private boolean roll(Entity entity, Tile target) {
-        if (target == null || !range.contains(target) || target.isOccupied()) {
+    private boolean roll() {
+        if (targettedTile == null || !range.contains(targettedTile) || targettedTile.isOccupied()) {
             return false;
         }
         disableRangeDisplay();
-        return finalizeRoll(entity, target.x, target.y);
+        return finalizeRoll(targettedTile.x, targettedTile.y);
     }
 
-    private boolean finalizeRoll(Entity entity, int newX, int newY) {
-        Move skillMovement = new Move(repo);
+    private boolean finalizeRoll(int newX, int newY) {
+        Move skillMovement = new Move(user, repo);
         Tile skillTarget = repo.findTile(newX, newY);
-        if (skillMovement.initialized(entity, skillTarget)) {
+        if (skillMovement.initialize()) {
             Point finalPoint = null;
-            while (!entity.pathStackEmpty()) {
-                finalPoint = entity.nextPathPoint();
+            while (!user.pathStackEmpty()) {
+                finalPoint = user.nextPathPoint();
             }
-            entity.pushToPathStack(finalPoint);
-            return skillMovement.act(entity, skillTarget);
+            user.pushToPathStack(finalPoint);
+            return skillMovement.act();
         } else {
             return false;
         }
     }
 
     @Override
-    public void resolve(Entity entity) {
+    public void resolve() {
 
     }
 }
