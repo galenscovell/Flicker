@@ -35,44 +35,23 @@ public class ResourceManager {
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter tinyParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        tinyParams.fontFileName = "ui/nevis.ttf";
-        tinyParams.fontParameters.size = 14;
-        tinyParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
-        tinyParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
-        tinyParams.fontParameters.color = Color.WHITE;
-        assetManager.load("tinyFont.ttf", BitmapFont.class, tinyParams);
+        generateFont("ui/nevis.ttf", 14, 0, Color.WHITE, Color.BLACK, "tinyFont.ttf");
+        generateFont("ui/nevis.ttf", 18, 0, Color.DARK_GRAY, Color.BLACK, "smallFont.ttf");
+        generateFont("ui/nevis.ttf", 26, 0, new Color(0.9f, 0.7f, 0.41f, 1), Color.BLACK, "mediumFont.ttf");
+        generateFont("ui/nevis.ttf", 48, 0, Color.WHITE, Color.BLACK, "largeFont.ttf");
+        generateFont("ui/nevis.ttf", 72, 4, new Color(0.35f, 0.28f, 0.16f, 1), new Color(0.9f, 0.7f, 0.41f, 1), "extraLargeFont.ttf");
+    }
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        smallParams.fontFileName = "ui/nevis.ttf";
-        smallParams.fontParameters.size = 18;
-        smallParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
-        smallParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
-        smallParams.fontParameters.color = Color.DARK_GRAY;
-        assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
-
-        FreetypeFontLoader.FreeTypeFontLoaderParameter mediumParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        mediumParams.fontFileName = "ui/nevis.ttf";
-        mediumParams.fontParameters.size = 26;
-        mediumParams.fontParameters.color = new Color(0.9f, 0.7f, 0.41f, 1);
-        mediumParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
-        mediumParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
-        assetManager.load("mediumFont.ttf", BitmapFont.class, mediumParams);
-
-        FreetypeFontLoader.FreeTypeFontLoaderParameter largeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        largeParams.fontFileName = "ui/nevis.ttf";
-        largeParams.fontParameters.size = 48;
-        largeParams.fontParameters.magFilter = Texture.TextureFilter.Linear;
-        largeParams.fontParameters.minFilter = Texture.TextureFilter.Linear;
-        assetManager.load("largeFont.ttf", BitmapFont.class, largeParams);
-
-        FreetypeFontLoader.FreeTypeFontLoaderParameter extraLargeParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        extraLargeParams.fontFileName = "ui/nevis.ttf";
-        extraLargeParams.fontParameters.size = 72;
-        extraLargeParams.fontParameters.borderWidth = 4;
-        extraLargeParams.fontParameters.borderColor = new Color(0.35f, 0.28f, 0.16f, 1);
-        extraLargeParams.fontParameters.color = new Color(0.9f, 0.7f, 0.41f, 1);
-        assetManager.load("extraLargeFont.ttf", BitmapFont.class, extraLargeParams);
+    private static void generateFont(String fontName, int size, int borderWidth, Color fontColor, Color borderColor, String outName) {
+        FreetypeFontLoader.FreeTypeFontLoaderParameter params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        params.fontFileName = fontName;
+        params.fontParameters.size = size;
+        params.fontParameters.borderWidth = borderWidth;
+        params.fontParameters.borderColor = borderColor;
+        params.fontParameters.color = fontColor;
+        params.fontParameters.magFilter = Texture.TextureFilter.Linear;
+        params.fontParameters.minFilter = Texture.TextureFilter.Linear;
+        assetManager.load(outName, BitmapFont.class, params);
     }
 
     public static void done() {
@@ -126,6 +105,5 @@ public class ResourceManager {
         tileAtlas.dispose();
         organicAtlas.dispose();
         inanimateAtlas.dispose();
-        // plantAtlas.dispose();
     }
 }
