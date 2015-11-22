@@ -2,7 +2,6 @@ package galenscovell.ui.components;
 
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.utils.Align;
 
 public class InteractionVerticalGroup extends VerticalGroup {
     private boolean active;

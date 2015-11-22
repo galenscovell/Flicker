@@ -97,6 +97,18 @@ public class GameScreen extends AbstractScreen {
         interactionVerticalGroup.toggle();
     }
 
+    public void displaySkillInfo(String[] info) {
+        SkillInfo infoBox = new SkillInfo(info);
+        stage.addActor(infoBox);
+    }
+
+    public void clearSkillInfo() {
+        Actor skillInfo = stage.getRoot().findActor("skillInfo");
+        if (skillInfo != null) {
+            skillInfo.remove();
+        }
+    }
+
     public void displayInanimateBox(Inanimate inanimate, Tile tile) {
         interactionVerticalGroup.addActor(new InteractButton(this, inanimate, tile));
     }

@@ -22,6 +22,11 @@ public class Bash implements Action {
     }
 
     @Override
+    public String[] getInfo() {
+        return new String[]{"Bash", "Hit adjacent target and knock it back."};
+    }
+
+    @Override
     public void setTarget(Tile tile) {
         this.targettedTile = tile;
     }

@@ -21,6 +21,11 @@ public class Leap implements Action {
     }
 
     @Override
+    public String[] getInfo() {
+        return new String[]{"Leap", "Leap up to three spaces away."};
+    }
+
+    @Override
     public void setTarget(Tile tile) {
         this.targettedTile = tile;
     }

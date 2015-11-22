@@ -21,6 +21,11 @@ public class Lunge implements Action {
     }
 
     @Override
+    public String[] getInfo() {
+        return new String[]{"Lunge", "Hit target one space away in a cardinal direction."};
+    }
+
+    @Override
     public void setTarget(Tile tile) {
         this.targettedTile = tile;
     }

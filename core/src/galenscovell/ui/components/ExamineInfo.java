@@ -12,7 +12,7 @@ public class ExamineInfo extends Table {
     }
 
     public void create(String info, Sprite target) {
-        this.setName("examineBox");
+        this.setName("examineInfo");
         this.setFillParent(true);
         this.setPosition(0, 300);
         Table mainTable = new Table();

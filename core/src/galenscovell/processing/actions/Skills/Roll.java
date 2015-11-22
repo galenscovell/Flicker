@@ -21,6 +21,11 @@ public class Roll implements Action {
     }
 
     @Override
+    public String[] getInfo() {
+        return new String[]{"Roll", "Roll two spaces diagonally."};
+    }
+
+    @Override
     public void setTarget(Tile tile) {
         this.targettedTile = tile;
     }

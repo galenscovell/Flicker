@@ -9,12 +9,12 @@ import galenscovell.util.Constants;
 import galenscovell.world.Tile;
 
 public class MenuState implements State {
-    private final GameScreen root;
+    private final GameScreen gameScreen;
     private final Hero hero;
     private final Repository repo;
 
-    public MenuState(GameScreen root, Hero hero, Repository repo) {
-        this.root = root;
+    public MenuState(GameScreen gameScreen, Hero hero, Repository repo) {
+        this.gameScreen = gameScreen;
         this.hero = hero;
         this.repo = repo;
     }
@@ -31,7 +31,12 @@ public class MenuState implements State {
 
     @Override
     public void exit() {
-        root.clearStageSkillMenu();
+        gameScreen.clearStageSkillMenu();
+        if (!repo.actionsEmpty()) {
+            repo.getFirstAction().exit();
+            gameScreen.clearSkillInfo();
+            repo.clearActions();
+        }
         // System.out.println("\tLeaving MENU state\n");
     }
 
@@ -48,7 +53,8 @@ public class MenuState implements State {
             int convertY = (int) (y / Constants.TILESIZE);
             Tile target = repo.findTile(convertX, convertY);
             heroSkillAction.setTarget(target);
-            root.changeState(StateType.ACTION);
+            gameScreen.clearSkillInfo();
+            gameScreen.changeState(StateType.ACTION);
         }
     }
 
@@ -71,8 +77,10 @@ public class MenuState implements State {
         if (newAction.initialize()) {
             // If action currently being processed, replace old user action with new
             if (!repo.actionsEmpty()) {
+                gameScreen.clearSkillInfo();
                 repo.clearActions();
             }
+            gameScreen.displaySkillInfo(newAction.getInfo());
             repo.addAction(newAction);
         }
     }

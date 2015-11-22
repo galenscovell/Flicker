@@ -50,25 +50,41 @@ public class ActionState implements State {
                 gameScreen.clearInanimateBoxes();
             }
             Stack<Action> finishedActions = new Stack<Action>();
-            Action heroAction = repo.getFirstAction();  // Hero action is always first in action list
+            // Hero action is always first in action list
+            Action heroAction = repo.getFirstAction();
             if (heroAction.act()) {
+//                boolean entityEnteredSight = false;
+//                for (Entity entity : repo.getEntities()) {
+//                    if (seenEntities.contains(entity) && !inPlayerSight(entity)) {
+//                        seenEntities.remove(entity);
+//                    }
+//                    if (!seenEntities.contains(entity) && inPlayerSight(entity)) {
+//                        seenEntities.add(entity);
+//                        entityEnteredSight = true;
+//                    }
+//                }
+//                if (!entityEnteredSight) {
                 npcTurn();
                 // Iterate through each action and step one act forward
                 for (Action action : repo.getActions()) {
-                    // Skip Hero action
                     if (action == heroAction) {
                         continue;
                     }
-                    // If an action is unable to act, resolve it and add it to finished actions
+                    // If action is unable to act, resolve it and add it to finished actions
                     if (!action.act()) {
                         action.resolve();
                         finishedActions.push(action);
                     }
                 }
-                // Remove all finished actions from action list
+                // Remove all finished actions
                 while (!finishedActions.isEmpty()) {
                     repo.removeAction(finishedActions.pop());
                 }
+//                } else {
+//                    heroAction.resolve();
+//                    repo.clearActions();
+//                    heroAdjacentCheck();
+//                }
             } else {
                 // Once heroAction is unable to act, resolve it and clear action list
                 heroAction.resolve();
@@ -144,5 +160,14 @@ public class ActionState implements State {
                 repo.addAction(npcAction);
             }
         }
+    }
+
+    private boolean inPlayerSight(Entity entity) {
+        int diffX = Math.abs(entity.getX() - hero.getX());
+        int diffY = Math.abs(entity.getY() - hero.getY());
+        if ((diffX < 24 && diffY < 24)) {
+            System.out.println(diffX + ", " + diffY);
+        }
+        return (diffX < 24 && diffY < 24);
     }
 }

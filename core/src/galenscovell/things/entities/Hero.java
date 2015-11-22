@@ -21,8 +21,6 @@ public class Hero extends Creature {
         stats.put(Stats.WIS, 1);
         stats.put(Stats.LCK, 1);
 
-        stats.put(Stats.VISION, 4);
-
         stats.put(Stats.LEVEL, 1);
         stats.put(Stats.EXP, 0);
 

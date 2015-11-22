@@ -18,6 +18,11 @@ public class Move implements Action {
     }
 
     @Override
+    public String[] getInfo() {
+        return null;
+    }
+
+    @Override
     public void setTarget(Tile tile) {
         this.targettedTile = tile;
     }

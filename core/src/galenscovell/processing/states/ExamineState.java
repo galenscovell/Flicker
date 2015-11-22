@@ -71,7 +71,7 @@ public class ExamineState implements State {
     }
 
     private void clearExamineBox() {
-        Actor box = stage.getRoot().findActor("examineBox");
+        Actor box = stage.getRoot().findActor("examineInfo");
         if (box != null) {
             box.remove();
         }
