@@ -12,14 +12,14 @@ import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.ResourceManager;
 
 public class HudStage extends Stage {
-    private final GameScreen game;
+    private final GameScreen gameScreen;
     private ProgressBar health;
     private Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
     private Button inventoryButton, examineButton, attackButton;
 
-    public HudStage(GameScreen game,  SpriteBatch spriteBatch) {
+    public HudStage(GameScreen gameScreen,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
-        this.game = game;
+        this.gameScreen = gameScreen;
         create();
     }
 
@@ -55,12 +55,12 @@ public class HudStage extends Stage {
                 if (optionsMenu.hasParent()) {
                     toggleButtons(false);
                     optionsMenu.remove();
-                    game.changeState(StateType.ACTION);
+                    gameScreen.changeState(StateType.ACTION);
                 } else {
                     clearMenus();
                     toggleButtons(true);
                     addToStage(optionsMenu);
-                    game.changeState(StateType.MENU);
+                    gameScreen.changeState(StateType.MENU);
                 }
             }
         });
@@ -83,10 +83,10 @@ public class HudStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (inventoryMenu.hasParent()) {
                     inventoryMenu.remove();
-                    game.changeState(StateType.ACTION);
+                    gameScreen.changeState(StateType.ACTION);
                 } else {
                     addToStage(inventoryMenu);
-                    game.changeState(StateType.MENU);
+                    gameScreen.changeState(StateType.MENU);
                 }
             }
         });
@@ -96,10 +96,10 @@ public class HudStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (examinePopup.hasParent()) {
                     examinePopup.remove();
-                    game.changeState(StateType.ACTION);
+                    gameScreen.changeState(StateType.ACTION);
                 } else {
                     addToStage(examinePopup);
-                    game.changeState(StateType.EXAMINE);
+                    gameScreen.changeState(StateType.EXAMINE);
                 }
             }
         });
@@ -115,11 +115,11 @@ public class HudStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (skillMenu.hasParent()) {
                     skillMenu.remove();
-                    game.changeState(StateType.ACTION);
+                    gameScreen.changeState(StateType.ACTION);
                 } else {
                     removeExaminePopup();
                     addToStage(skillMenu);
-                    game.changeState(StateType.MENU);
+                    gameScreen.changeState(StateType.MENU);
                 }
             }
         });
@@ -141,11 +141,11 @@ public class HudStage extends Stage {
 
     public void returnToMainMenu() {
         optionsMenu.remove();
-        game.toMainMenu();
+        gameScreen.toMainMenu();
     }
 
     public void selectAttackMove(int moveType) {
-        game.passInterfaceEventToState(moveType);
+        gameScreen.passInterfaceEventToState(moveType);
     }
 
     public void updateHealth(int val) {
@@ -184,7 +184,7 @@ public class HudStage extends Stage {
             examineButton.setTouchable(Touchable.enabled);
             attackButton.setTouchable(Touchable.enabled);
         }
-        game.toggleInteractionBoxes();
+        gameScreen.toggleInteractionBoxes();
     }
 
     private void clearMenus() {

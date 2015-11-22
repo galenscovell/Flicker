@@ -11,14 +11,14 @@ import galenscovell.world.Tile;
 import java.util.*;
 
 public class ActionState implements State {
-    private final GameScreen root;
+    private final GameScreen gameScreen;
     private final Hero hero;
     private final Repository repo;
     private final List<Entity> seenEntities;
     private final List<Inanimate> adjacentThings;
 
-    public ActionState(GameScreen root, Hero hero, Repository repo) {
-        this.root = root;
+    public ActionState(GameScreen gameScreen, Hero hero, Repository repo) {
+        this.gameScreen = gameScreen;
         this.hero = hero;
         this.repo = repo;
         this.seenEntities = new ArrayList<Entity>();
@@ -47,7 +47,7 @@ public class ActionState implements State {
         } else {
             if (!adjacentThings.isEmpty()) {
                 adjacentThings.clear();
-                root.clearInanimateBoxes();
+                gameScreen.clearInanimateBoxes();
             }
             Stack<Action> finishedActions = new Stack<Action>();
             Action heroAction = repo.getFirstAction();  // Hero action is always first in action list
@@ -55,11 +55,11 @@ public class ActionState implements State {
                 npcTurn();
                 // Iterate through each action and step one act forward
                 for (Action action : repo.getActions()) {
-                    // Skip first action (Hero action has already acted)
+                    // Skip Hero action
                     if (action == heroAction) {
                         continue;
                     }
-                    // If an action is unable to act, resolve it and add it to finished action
+                    // If an action is unable to act, resolve it and add it to finished actions
                     if (!action.act()) {
                         action.resolve();
                         finishedActions.push(action);
@@ -88,7 +88,7 @@ public class ActionState implements State {
                     if (thing != null) {
                         adjacentThings.add(thing);
                         Tile thingTile = repo.findTile(heroTileX + dx, heroTileY + dy);
-                        root.displayInanimateBox(thing, thingTile);
+                        gameScreen.displayInanimateBox(thing, thingTile);
                     }
                 }
             }

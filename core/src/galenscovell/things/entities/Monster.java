@@ -25,17 +25,20 @@ public class Monster extends Creature {
         title = type;
         description = desc;
 
-        stats.put("STR", STR);
-        stats.put("CON", CON);
-        stats.put("AGI", AGI);
-        stats.put("INT", INT);
-        stats.put("WIS", WIS);
-        stats.put("LCK", LCK);
-        stats.put("vision", vision);
+        stats.put(Stats.STR, STR);
+        stats.put(Stats.CON, CON);
+        stats.put(Stats.AGI, AGI);
+        stats.put(Stats.INT, INT);
+        stats.put(Stats.WIS, WIS);
+        stats.put(Stats.LCK, LCK);
 
-        stats.put("level", level);
-        stats.put("HP", level * CON);
-        stats.put("EXP", 0);
+        stats.put(Stats.VISION, vision);
+
+        stats.put(Stats.LEVEL, level);
+        stats.put(Stats.EXP, 0);
+
+        stats.put(Stats.HP, level * CON);
+        stats.put(Stats.MP, level * INT);
     }
 
     private void setFlags() {

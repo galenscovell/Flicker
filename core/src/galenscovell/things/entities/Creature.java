@@ -7,14 +7,14 @@ import java.util.*;
 
 public class Creature implements Entity {
     private int x, y, prevX, prevY;
-    private int moveTimer, animateFrames, frame;
     private float currentX, currentY;
+    private int animateFrames, frame;
     private Stack<Point> pathStack;
     private boolean aggressive, beingAttacked;
 
     protected Sprite[] currentSet, leftSprites, rightSprites;
     protected String title, description;
-    protected Map<String, Integer> stats = new HashMap<String, Integer>();
+    protected Map<Stats, Integer> stats = new HashMap<Stats, Integer>();
 
 
     /***************************************************
@@ -36,23 +36,23 @@ public class Creature implements Entity {
     }
 
     @Override
-    public int getStat(String key) {
-        return stats.get(key);
+    public int getStat(Stats stat) {
+        return stats.get(stat);
     }
 
     @Override
     public int doPhysicalDamage() {
-        return getStat("STR");
+        return getStat(Stats.STR);
     }
 
     @Override
     public void takePhysicalDamage(int damage) {
-        stats.put("HP", getStat("HP") - damage);
+        stats.put(Stats.HP, getStat(Stats.HP) - damage);
     }
 
     @Override
     public boolean isDead() {
-        return getStat("HP") <= 0;
+        return getStat(Stats.HP) <= 0;
     }
 
 
@@ -105,11 +105,6 @@ public class Creature implements Entity {
     @Override
     public void setBeingAttacked() {
         beingAttacked = true;
-    }
-
-    @Override
-    public void attack(Entity entity) {
-        entity.setBeingAttacked();
     }
 
 

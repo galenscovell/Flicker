@@ -14,17 +14,20 @@ public class Hero extends Creature {
         title = "Hero";
         description = "Hero";
 
-        stats.put("STR", 1);
-        stats.put("CON", 1);
-        stats.put("AGI", 1);
-        stats.put("INT", 1);
-        stats.put("WIS", 1);
-        stats.put("LCK", 1);
-        stats.put("vision", 4);
+        stats.put(Stats.STR, 1);
+        stats.put(Stats.CON, 1);
+        stats.put(Stats.AGI, 1);
+        stats.put(Stats.INT, 1);
+        stats.put(Stats.WIS, 1);
+        stats.put(Stats.LCK, 1);
 
-        stats.put("level", 1);
-        stats.put("HP", 4);
-        stats.put("EXP", 0);
+        stats.put(Stats.VISION, 4);
+
+        stats.put(Stats.LEVEL, 1);
+        stats.put(Stats.EXP, 0);
+
+        stats.put(Stats.HP, 4);
+        stats.put(Stats.MP, 4);
     }
 
     private void setSprites() {

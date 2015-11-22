@@ -20,14 +20,14 @@ public class Renderer {
     private float minCamX, minCamY, maxCamX, maxCamY;
 
     public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch, Repository repo) {
-        // Uses custom units (48, 80) rather than exact pixels (480, 800)
+        this.hero = hero;
+        this.lighting = lighting;
+        this.spriteBatch = spriteBatch;
+        this.repo = repo;
+        // Camera custom units (48, 80) rather than exact pixels (480, 800)
         this.camera = new OrthographicCamera(Constants.SCREEN_X, Constants.SCREEN_Y);
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
-        this.spriteBatch = spriteBatch;
-        this.repo = repo;
-        this.hero = hero;
-        this.lighting = lighting;
         this.fog = new Fog();
     }
 
