@@ -39,6 +39,7 @@ public class Leap implements Action {
 
     @Override
     public boolean act() {
+        disableRangeDisplay();
         return leap();
     }
 
@@ -82,7 +83,6 @@ public class Leap implements Action {
         if (targettedTile == null || !range.contains(targettedTile) || targettedTile.isOccupied()) {
             return false;
         }
-        disableRangeDisplay();
         return finalizeLeap(targettedTile.x, targettedTile.y);
     }
 
@@ -105,6 +105,11 @@ public class Leap implements Action {
     @Override
     public void resolve() {
 
+    }
+
+    @Override
+    public void exit() {
+        disableRangeDisplay();
     }
 }
 

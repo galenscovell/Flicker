@@ -8,5 +8,6 @@ public interface Action {
     boolean initialize();
     boolean act();
     void resolve();
+    void exit();
     Entity getUser();
 }

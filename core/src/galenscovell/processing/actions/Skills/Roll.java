@@ -39,6 +39,7 @@ public class Roll implements Action {
 
     @Override
     public boolean act() {
+        disableRangeDisplay();
         return roll();
     }
 
@@ -48,9 +49,9 @@ public class Roll implements Action {
         int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
-        // pattern: 2 tiles diagonal
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dy = -2; dy <= 2; dy++) {
+        // pattern: second tile out, diagonal
+        for (int dx = -2; dx <= 2; dx += 4) {
+            for (int dy = -2; dy <= 2; dy += 4) {
                 if (Math.abs(dx) != Math.abs(dy)) {
                     continue;
                 }
@@ -79,13 +80,13 @@ public class Roll implements Action {
         if (targettedTile == null || !range.contains(targettedTile) || targettedTile.isOccupied()) {
             return false;
         }
-        disableRangeDisplay();
         return finalizeRoll(targettedTile.x, targettedTile.y);
     }
 
     private boolean finalizeRoll(int newX, int newY) {
         Move skillMovement = new Move(user, repo);
         Tile skillTarget = repo.findTile(newX, newY);
+        skillMovement.setTarget(skillTarget);
         if (skillMovement.initialize()) {
             Point finalPoint = null;
             while (!user.pathStackEmpty()) {
@@ -101,6 +102,11 @@ public class Roll implements Action {
     @Override
     public void resolve() {
 
+    }
+
+    @Override
+    public void exit() {
+        disableRangeDisplay();
     }
 }
 

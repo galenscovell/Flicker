@@ -14,12 +14,14 @@ public class ActionState implements State {
     private final GameScreen root;
     private final Hero hero;
     private final Repository repo;
-    private List<Inanimate> adjacentThings;
+    private final List<Entity> seenEntities;
+    private final List<Inanimate> adjacentThings;
 
     public ActionState(GameScreen root, Hero hero, Repository repo) {
         this.root = root;
         this.hero = hero;
         this.repo = repo;
+        this.seenEntities = new ArrayList<Entity>();
         this.adjacentThings = new ArrayList<Inanimate>();
     }
 
@@ -115,33 +117,31 @@ public class ActionState implements State {
 
     private void npcTurn() {
         for (Entity entity : repo.getEntities()) {
-            if (entity.movementTimer()) {
-                // Check if entity has another action in action list and remove it
-                Action previousAction = null;
-                for (Action action : repo.getActions()) {
-                    if (action.getUser() == entity) {
-                        previousAction = action;
-                    }
+            // Check if entity has another action in action list and remove it
+            Action previousAction = null;
+            for (Action action : repo.getActions()) {
+                if (action.getUser() == entity) {
+                    previousAction = action;
                 }
-                if (previousAction != null) {
-                    repo.removeAction(previousAction);
-                }
-                // Create new entity action with entity behaviors
-                Action npcAction;
-                if (entity.isAggressive()) {
-                    // TODO: Aggressive behavior depending on entity
-                    Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                    npcAction = new Move(entity, repo);
-                    npcAction.setTarget(targetTile);
-                } else {
-                    // TODO: Passive behavior depending on entity
-                    Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
-                    npcAction = new Move(entity, repo);
-                    npcAction.setTarget(targetTile);
-                }
-                if (npcAction.initialize()) {
-                    repo.addAction(npcAction);
-                }
+            }
+            if (previousAction != null) {
+                repo.removeAction(previousAction);
+            }
+            // Create new entity action with entity behaviors
+            Action npcAction;
+            if (entity.isAggressive()) {
+                // TODO: Aggressive behavior depending on entity
+                Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
+                npcAction = new Move(entity, repo);
+                npcAction.setTarget(targetTile);
+            } else {
+                // TODO: Passive behavior depending on entity
+                Tile targetTile = repo.findTile(hero.getX() / Constants.TILESIZE, hero.getY() / Constants.TILESIZE);
+                npcAction = new Move(entity, repo);
+                npcAction.setTarget(targetTile);
+            }
+            if (npcAction.initialize()) {
+                repo.addAction(npcAction);
             }
         }
     }

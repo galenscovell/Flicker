@@ -66,4 +66,9 @@ public class Slide implements Action {
     public void resolve() {
 
     }
+
+    @Override
+    public void exit() {
+
+    }
 }

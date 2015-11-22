@@ -40,6 +40,7 @@ public class Bash implements Action {
 
     @Override
     public boolean act() {
+        disableRangeDisplay();
         return bash();
     }
 
@@ -81,7 +82,6 @@ public class Bash implements Action {
         if (!range.contains(targettedTile) || targetEntity == null) {
             return false;
         }
-        disableRangeDisplay();
         this.targettedEntity = targetEntity;
         int entityX = user.getX() / Constants.TILESIZE;
         int entityY = user.getY() / Constants.TILESIZE;
@@ -125,6 +125,11 @@ public class Bash implements Action {
                 repo.placeRemains(targettedEntity);
             }
         }
+    }
+
+    @Override
+    public void exit() {
+        disableRangeDisplay();
     }
 }
 

@@ -66,4 +66,9 @@ public class Move implements Action {
     public void resolve() {
 
     }
+
+    @Override
+    public void exit() {
+
+    }
 }

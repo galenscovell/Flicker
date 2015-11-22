@@ -39,6 +39,7 @@ public class Lunge implements Action {
 
     @Override
     public boolean act() {
+        disableRangeDisplay();
         return lunge();
     }
 
@@ -48,14 +49,14 @@ public class Lunge implements Action {
         int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
 
-        // pattern: 2 tiles cardinal
-        for (int dx = -2; dx <= 2; dx++) {
+        // pattern: second tile out, cardinal
+        for (int dx = -2; dx <= 2; dx += 4) {
             Tile tile = repo.findTile(centerX + dx, centerY);
             if (tile != null && tile != center && tile.isFloor()) {
                 pattern.add(tile);
             }
         }
-        for (int dy = -2; dy <= 2; dy++) {
+        for (int dy = -2; dy <= 2; dy += 4) {
             Tile tile = repo.findTile(centerX, centerY + dy);
             if (tile != null && tile != center && tile.isFloor()) {
                 pattern.add(tile);
@@ -84,7 +85,6 @@ public class Lunge implements Action {
         if (!range.contains(targettedTile) || targetEntity == null) {
             return false;
         }
-        disableRangeDisplay();
         this.targettedEntity = targetEntity;
         int entityX = user.getX() / Constants.TILESIZE;
         int entityY = user.getY() / Constants.TILESIZE;
@@ -120,5 +120,10 @@ public class Lunge implements Action {
                 repo.placeRemains(targettedEntity);
             }
         }
+    }
+
+    @Override
+    public void exit() {
+        disableRangeDisplay();
     }
 }

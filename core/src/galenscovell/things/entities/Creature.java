@@ -117,16 +117,6 @@ public class Creature implements Entity {
      * Movement
      */
     @Override
-    public boolean movementTimer() {
-        if (moveTimer == 2) {
-            moveTimer = 0;
-            return true;
-        }
-        moveTimer++;
-        return false;
-    }
-
-    @Override
     public void populatePathStack(Stack<Point> path) {
         this.pathStack = path;
     }

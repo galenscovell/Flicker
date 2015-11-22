@@ -54,6 +54,10 @@ public class MenuState implements State {
 
     @Override
     public void handleInterfaceEvent(int moveType) {
+        if (!repo.actionsEmpty()) {
+            repo.getFirstAction().exit();
+            repo.clearActions();
+        }
         Action newAction;
         if (moveType == Constants.LUNGE_TYPE) {
             newAction = new Lunge(hero, repo);

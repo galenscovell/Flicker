@@ -21,7 +21,6 @@ public interface Entity {
 
     void toggleAggressive();
     boolean isAggressive();
-    boolean movementTimer();
     void setBeingAttacked();
 
     void populatePathStack(Stack<Point> path);
