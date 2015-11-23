@@ -4,6 +4,7 @@ import galenscovell.processing.Repository;
 import galenscovell.processing.actions.*;
 import galenscovell.things.entities.*;
 import galenscovell.things.inanimates.Inanimate;
+import galenscovell.ui.components.*;
 import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
@@ -32,12 +33,12 @@ public class ActionState implements State {
 
     @Override
     public void enter() {
-        // System.out.println("\tEntering ACTION state");
+
     }
 
     @Override
     public void exit() {
-        // System.out.println("\tLeaving ACTION state\n");
+        clearInanimateBoxes();
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ActionState implements State {
         } else {
             if (!adjacentThings.isEmpty()) {
                 adjacentThings.clear();
-                gameScreen.clearInanimateBoxes();
+                clearInanimateBoxes();
             }
             Stack<Action> finishedActions = new Stack<Action>();
             // Hero action is always first in action list
@@ -104,7 +105,7 @@ public class ActionState implements State {
                     if (thing != null) {
                         adjacentThings.add(thing);
                         Tile thingTile = repo.findTile(heroTileX + dx, heroTileY + dy);
-                        gameScreen.displayInanimateBox(thing, thingTile);
+                        displayInanimateBox(thing, thingTile);
                     }
                 }
             }
@@ -169,5 +170,19 @@ public class ActionState implements State {
             System.out.println(diffX + ", " + diffY);
         }
         return (diffX < 24 && diffY < 24);
+    }
+
+    private void displayInanimateBox(Inanimate inanimate, Tile tile) {
+        InteractionVerticalGroup interactionGroup = gameScreen.getStage().getRoot().findActor("interactionGroup");
+        if (interactionGroup != null) {
+            interactionGroup.addActor(new InteractButton(gameScreen, inanimate, tile));
+        }
+    }
+
+    private void clearInanimateBoxes() {
+        InteractionVerticalGroup interactionGroup = gameScreen.getStage().getRoot().findActor("interactionGroup");
+        if (interactionGroup != null) {
+            interactionGroup.clear();
+        }
     }
 }

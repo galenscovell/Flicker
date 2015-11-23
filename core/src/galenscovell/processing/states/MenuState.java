@@ -1,9 +1,11 @@
 package galenscovell.processing.states;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import galenscovell.processing.Repository;
-import galenscovell.processing.actions.*;
+import galenscovell.processing.actions.Action;
 import galenscovell.processing.actions.Skills.*;
 import galenscovell.things.entities.Hero;
+import galenscovell.ui.components.SkillInfo;
 import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
@@ -26,18 +28,17 @@ public class MenuState implements State {
 
     @Override
     public void enter() {
-        // System.out.println("\tEntering MENU state");
+
     }
 
     @Override
     public void exit() {
-        gameScreen.clearStageSkillMenu();
+        clearStageSkillMenu();
+        clearSkillInfo();
         if (!repo.actionsEmpty()) {
             repo.getFirstAction().exit();
-            gameScreen.clearSkillInfo();
             repo.clearActions();
         }
-        // System.out.println("\tLeaving MENU state\n");
     }
 
     @Override
@@ -53,7 +54,7 @@ public class MenuState implements State {
             int convertY = (int) (y / Constants.TILESIZE);
             Tile target = repo.findTile(convertX, convertY);
             heroSkillAction.setTarget(target);
-            gameScreen.clearSkillInfo();
+            clearSkillInfo();
             gameScreen.changeState(StateType.ACTION);
         }
     }
@@ -77,11 +78,30 @@ public class MenuState implements State {
         if (newAction.initialize()) {
             // If action currently being processed, replace old user action with new
             if (!repo.actionsEmpty()) {
-                gameScreen.clearSkillInfo();
+                clearSkillInfo();
                 repo.clearActions();
             }
-            gameScreen.displaySkillInfo(newAction.getInfo());
+            displaySkillInfo(newAction.getInfo());
             repo.addAction(newAction);
+        }
+    }
+
+    private void displaySkillInfo(String[] info) {
+        SkillInfo infoBox = new SkillInfo(info);
+        gameScreen.getStage().addActor(infoBox);
+    }
+
+    private void clearSkillInfo() {
+        Actor skillInfo = gameScreen.getStage().getRoot().findActor("skillInfo");
+        if (skillInfo != null) {
+            skillInfo.remove();
+        }
+    }
+
+    private void clearStageSkillMenu() {
+        Actor skillMenu = gameScreen.getStage().getRoot().findActor("skillMenu");
+        if (skillMenu != null) {
+            skillMenu.remove();
         }
     }
 }

@@ -13,6 +13,7 @@ import galenscovell.util.ResourceManager;
 
 public class HudStage extends Stage {
     private final GameScreen gameScreen;
+    private final InteractionVerticalGroup interactionVerticalGroup;
     private ProgressBar health;
     private Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
     private Button inventoryButton, examineButton, attackButton;
@@ -20,6 +21,8 @@ public class HudStage extends Stage {
     public HudStage(GameScreen gameScreen,  SpriteBatch spriteBatch) {
         super(new FitViewport(480, 800), spriteBatch);
         this.gameScreen = gameScreen;
+        this.interactionVerticalGroup = new InteractionVerticalGroup();
+        this.addActor(interactionVerticalGroup);
         create();
     }
 
@@ -184,7 +187,7 @@ public class HudStage extends Stage {
             examineButton.setTouchable(Touchable.enabled);
             attackButton.setTouchable(Touchable.enabled);
         }
-        gameScreen.toggleInteractionBoxes();
+        interactionVerticalGroup.toggle();
     }
 
     private void clearMenus() {

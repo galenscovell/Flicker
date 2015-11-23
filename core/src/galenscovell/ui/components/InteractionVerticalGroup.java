@@ -11,6 +11,7 @@ public class InteractionVerticalGroup extends VerticalGroup {
     }
 
     public void create() {
+        this.setName("interactionGroup");
         this.active = true;
         this.setWidth(90);
         this.setHeight(340);
