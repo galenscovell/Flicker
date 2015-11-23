@@ -33,6 +33,11 @@ public class Move implements Action {
     }
 
     @Override
+    public Tile getTarget() {
+        return targettedTile;
+    }
+
+    @Override
     public boolean initialize() {
         int convertX = user.getX() / Constants.TILESIZE;
         int convertY = user.getY() / Constants.TILESIZE;

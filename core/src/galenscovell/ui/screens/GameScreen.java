@@ -22,12 +22,12 @@ public class GameScreen extends AbstractScreen {
 
     public GameScreen(FlickerMain root) {
         super(root);
+        this.stage = new HudStage(this, this.root.spriteBatch);
         create();
     }
 
     @Override
     public void create() {
-        this.stage = new HudStage(this, this.root.spriteBatch);
         createNewLevel();
     }
 

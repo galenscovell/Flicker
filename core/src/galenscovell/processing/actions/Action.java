@@ -11,4 +11,5 @@ public interface Action {
     void resolve();
     void exit();
     Entity getUser();
+    Tile getTarget();
 }

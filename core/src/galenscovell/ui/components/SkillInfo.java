@@ -25,10 +25,10 @@ public class SkillInfo extends Table {
         skillLabel.setWrap(true);
         skillLabel.setAlignment(Align.center, Align.center);
 
-        mainTable.add(skillTitle).width(80).padLeft(5);
+        mainTable.add(skillTitle).width(80).padLeft(5).padRight(5);
         mainTable.add(skillLabel).expand().fill().padLeft(5).padRight(5);
 
-        this.add(mainTable).width(300).height(100).expand().center();
+        this.add(mainTable).width(300).height(110).expand().center();
     }
 }
 

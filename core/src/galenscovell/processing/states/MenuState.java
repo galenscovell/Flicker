@@ -36,8 +36,11 @@ public class MenuState implements State {
         clearStageSkillMenu();
         clearSkillInfo();
         if (!repo.actionsEmpty()) {
-            repo.getFirstAction().exit();
-            repo.clearActions();
+            Action skillAction = repo.getFirstAction();
+            if (skillAction.getTarget() == null) {
+                repo.getFirstAction().exit();
+                repo.clearActions();
+            }
         }
     }
 
@@ -54,7 +57,6 @@ public class MenuState implements State {
             int convertY = (int) (y / Constants.TILESIZE);
             Tile target = repo.findTile(convertX, convertY);
             heroSkillAction.setTarget(target);
-            clearSkillInfo();
             gameScreen.changeState(StateType.ACTION);
         }
     }
@@ -62,6 +64,7 @@ public class MenuState implements State {
     @Override
     public void handleInterfaceEvent(int moveType) {
         if (!repo.actionsEmpty()) {
+            clearSkillInfo();
             repo.getFirstAction().exit();
             repo.clearActions();
         }
@@ -79,6 +82,7 @@ public class MenuState implements State {
             // If action currently being processed, replace old user action with new
             if (!repo.actionsEmpty()) {
                 clearSkillInfo();
+                repo.getFirstAction().exit();
                 repo.clearActions();
             }
             displaySkillInfo(newAction.getInfo());

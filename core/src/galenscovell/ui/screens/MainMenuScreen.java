@@ -15,13 +15,12 @@ public class MainMenuScreen extends AbstractScreen {
 
     public MainMenuScreen(FlickerMain root){
         super(root);
+        this.stage = new Stage(new FitViewport(480, 800), root.spriteBatch);
     }
 
     @Override
     public void create() {
-        this.stage = new Stage(new FitViewport(480, 800), root.spriteBatch);
         this.optionMenu = new OptionMenu(this);
-
         Table mainTable = new Table();
         mainTable.setBackground(new TextureRegionDrawable(ResourceManager.mainMenuBG));
         mainTable.padBottom(4);

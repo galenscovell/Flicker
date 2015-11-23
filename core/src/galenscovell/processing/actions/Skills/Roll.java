@@ -36,6 +36,11 @@ public class Roll implements Action {
     }
 
     @Override
+    public Tile getTarget() {
+        return targettedTile;
+    }
+
+    @Override
     public boolean initialize() {
         setRange();
         enableRangeDisplay();

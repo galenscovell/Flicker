@@ -15,7 +15,7 @@ public class HudStage extends Stage {
     private final GameScreen gameScreen;
     private final InteractionVerticalGroup interactionVerticalGroup;
     private ProgressBar health;
-    private Table examinePopup, inventoryMenu, optionsMenu, skillMenu;
+    private Table examineNotice, inventoryMenu, optionsMenu, skillMenu;
     private Button inventoryButton, examineButton, attackButton;
 
     public HudStage(GameScreen gameScreen,  SpriteBatch spriteBatch) {
@@ -27,7 +27,7 @@ public class HudStage extends Stage {
     }
 
     public void create() {
-        this.examinePopup = new ExaminePopup(this);
+        this.examineNotice = new ExamineNotice(this);
         this.inventoryMenu = new InventoryMenu(this);
         this.optionsMenu = new OptionMenu(this);
         this.skillMenu = new SkillMenu(this);
@@ -88,6 +88,7 @@ public class HudStage extends Stage {
                     inventoryMenu.remove();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
+                    clearMenus();
                     addToStage(inventoryMenu);
                     gameScreen.changeState(StateType.MENU);
                 }
@@ -97,11 +98,12 @@ public class HudStage extends Stage {
         setIcon(examineButton, "examine", 48, 1);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                if (examinePopup.hasParent()) {
-                    examinePopup.remove();
+                if (examineNotice.hasParent()) {
+                    examineNotice.remove();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
-                    addToStage(examinePopup);
+                    clearMenus();
+                    addToStage(examineNotice);
                     gameScreen.changeState(StateType.EXAMINE);
                 }
             }
@@ -120,7 +122,7 @@ public class HudStage extends Stage {
                     skillMenu.remove();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
-                    removeExaminePopup();
+                    clearMenus();
                     addToStage(skillMenu);
                     gameScreen.changeState(StateType.MENU);
                 }
@@ -136,7 +138,7 @@ public class HudStage extends Stage {
     }
 
     public void dispose() {
-        this.addActor(examinePopup);
+        this.addActor(examineNotice);
         this.addActor(inventoryMenu);
         this.addActor(optionsMenu);
         this.addActor(skillMenu);
@@ -197,14 +199,8 @@ public class HudStage extends Stage {
         if (skillMenu.hasParent()) {
             skillMenu.remove();
         }
-        if (examinePopup.hasParent()) {
-            examinePopup.remove();
-        }
-    }
-
-    private void removeExaminePopup() {
-        if (examinePopup.hasParent()) {
-            examinePopup.remove();
+        if (examineNotice.hasParent()) {
+            examineNotice.remove();
         }
     }
 }

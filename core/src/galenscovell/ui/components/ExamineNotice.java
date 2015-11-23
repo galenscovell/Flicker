@@ -5,22 +5,26 @@ import com.badlogic.gdx.utils.Align;
 import galenscovell.ui.HudStage;
 import galenscovell.util.ResourceManager;
 
-public class ExaminePopup extends Table {
+public class ExamineNotice extends Table {
     private final HudStage root;
 
-    public ExaminePopup(HudStage root) {
+    public ExamineNotice(HudStage root) {
         this.root = root;
         create();
     }
 
     public void create() {
         this.setFillParent(true);
+        this.padBottom(80);
+
         Table popup = new Table();
-        this.padBottom(90);
         popup.setBackground(ResourceManager.frameUp);
-        Label examineLabel = new Label("Examine mode", ResourceManager.detailStyle);
+
+        Label examineLabel = new Label("Examine mode", ResourceManager.tinyStyle);
         examineLabel.setAlignment(Align.center);
-        popup.add(examineLabel).width(170).height(60).expand().fill().center();
-        this.add(popup).width(180).height(70).expand().bottom();
+
+        popup.add(examineLabel).width(140).height(50).expand().fill().center();
+
+        this.add(popup).width(150).height(60).expand().bottom();
     }
 }

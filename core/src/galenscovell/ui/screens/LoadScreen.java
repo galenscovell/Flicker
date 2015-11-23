@@ -10,20 +10,20 @@ import galenscovell.flicker.FlickerMain;
 import galenscovell.util.ResourceManager;
 
 public class LoadScreen extends AbstractScreen {
-    private ProgressBar loadingBar;
 
     public LoadScreen(FlickerMain root) {
         super(root);
+        this.stage = new Stage(new FitViewport(240, 400), root.spriteBatch);
     }
 
     @Override
     public void create() {
-        this.stage = new Stage(new FitViewport(240, 400), root.spriteBatch);
         Table loadingMain = new Table();
         loadingMain.setFillParent(true);
 
         Table labelTable = new Table();
         Image loadingImage = new Image(new Texture(Gdx.files.internal("textures/loading.png")));
+
         labelTable.add(loadingImage).width(200).height(50).expand().fill();
         loadingMain.add(labelTable).expand().fill();
 

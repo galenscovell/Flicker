@@ -13,7 +13,9 @@ public class AbstractScreen implements Screen {
         this.root = root;
     }
 
-    public void create() {}
+    public void create() {
+
+    }
 
     @Override
     public void render(float delta) {
@@ -42,10 +44,14 @@ public class AbstractScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+
+    }
 
     @Override
     public void dispose() {
