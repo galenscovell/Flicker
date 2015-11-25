@@ -56,15 +56,6 @@ public class ActionState implements State {
             // Hero action is always first in action list
             Action heroAction = repo.getFirstAction();
             if (!entityEnteredSight && heroAction.act()) {
-                for (Entity entity : repo.getEntities()) {
-                    if (seenEntities.contains(entity) && !inPlayerSight(entity)) {
-                        seenEntities.remove(entity);
-                    }
-                    if (!seenEntities.contains(entity) && inPlayerSight(entity)) {
-                        seenEntities.add(entity);
-                        entityEnteredSight = true;
-                    }
-                }
                 npcTurn();
                 // Iterate through each action and step one act forward
                 for (Action action : repo.getActions()) {
@@ -130,6 +121,14 @@ public class ActionState implements State {
 
     private void npcTurn() {
         for (Entity entity : repo.getEntities()) {
+            // Check if entity entered player sight this turn
+            if (seenEntities.contains(entity) && !inPlayerSight(entity)) {
+                seenEntities.remove(entity);
+            }
+            if (!seenEntities.contains(entity) && inPlayerSight(entity)) {
+                seenEntities.add(entity);
+                entityEnteredSight = true;
+            }
             // Check if entity has another action in action list and remove it
             Action previousAction = null;
             for (Action action : repo.getActions()) {
