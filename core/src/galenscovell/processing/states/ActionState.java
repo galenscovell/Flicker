@@ -17,6 +17,7 @@ public class ActionState implements State {
     private final Repository repo;
     private final List<Entity> seenEntities;
     private final List<Inanimate> adjacentThings;
+    private boolean entityEnteredSight;
 
     public ActionState(GameScreen gameScreen, Hero hero, Repository repo) {
         this.gameScreen = gameScreen;
@@ -24,6 +25,7 @@ public class ActionState implements State {
         this.repo = repo;
         this.seenEntities = new ArrayList<Entity>();
         this.adjacentThings = new ArrayList<Inanimate>();
+        this.entityEnteredSight = false;
     }
 
     @Override
@@ -53,18 +55,16 @@ public class ActionState implements State {
             Stack<Action> finishedActions = new Stack<Action>();
             // Hero action is always first in action list
             Action heroAction = repo.getFirstAction();
-            if (heroAction.act()) {
-//                boolean entityEnteredSight = false;
-//                for (Entity entity : repo.getEntities()) {
-//                    if (seenEntities.contains(entity) && !inPlayerSight(entity)) {
-//                        seenEntities.remove(entity);
-//                    }
-//                    if (!seenEntities.contains(entity) && inPlayerSight(entity)) {
-//                        seenEntities.add(entity);
-//                        entityEnteredSight = true;
-//                    }
-//                }
-//                if (!entityEnteredSight) {
+            if (!entityEnteredSight && heroAction.act()) {
+                for (Entity entity : repo.getEntities()) {
+                    if (seenEntities.contains(entity) && !inPlayerSight(entity)) {
+                        seenEntities.remove(entity);
+                    }
+                    if (!seenEntities.contains(entity) && inPlayerSight(entity)) {
+                        seenEntities.add(entity);
+                        entityEnteredSight = true;
+                    }
+                }
                 npcTurn();
                 // Iterate through each action and step one act forward
                 for (Action action : repo.getActions()) {
@@ -81,16 +81,12 @@ public class ActionState implements State {
                 while (!finishedActions.isEmpty()) {
                     repo.removeAction(finishedActions.pop());
                 }
-//                } else {
-//                    heroAction.resolve();
-//                    repo.clearActions();
-//                    heroAdjacentCheck();
-//                }
             } else {
-                // Once heroAction is unable to act, resolve it and clear action list
+                // Once heroAction is unable to act or entity entered sight, resolve and clear action list
                 heroAction.resolve();
                 repo.clearActions();
                 heroAdjacentCheck();
+                entityEnteredSight = false;
             }
         }
     }
