@@ -21,10 +21,10 @@ public class RayCaster {
             {0, 1, 1, 0, 0, -1, -1, 0},
             {1, 0, 0, 1, -1, 0, 0, -1}
         };
-        updateResistanceMap();
+        createResistanceMap();
     }
 
-    public void updateResistanceMap() {
+    public void createResistanceMap() {
         int[][] resistanceMap = new int[Constants.MAPSIZE][Constants.MAPSIZE];
         for (Tile tile : tiles.values()) {
             int resistance = tile.isBlocking() ? 1 : 0;

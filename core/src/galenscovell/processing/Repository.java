@@ -127,10 +127,6 @@ public class Repository {
     /***************************************************
      * Raycaster
      */
-    public void updateResistanceMap() {
-        rayCaster.updateResistanceMap();
-    }
-
     public void updateResistanceMapAtTile(Tile tile) {
         rayCaster.updateResistanceForTile(tile);
     }
