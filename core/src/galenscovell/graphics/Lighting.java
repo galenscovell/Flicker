@@ -28,8 +28,12 @@ public class Lighting {
         this.torches = new ArrayList<Torch>();
         this.playerTorch = new Torch(27, rayHandler, 0.98f, 0.9f, 0.9f, 1);
         this.repo = repo;
-        // debug = new Box2DDebugRenderer();
+        // this.debug = new Box2DDebugRenderer();
         createTileBodies();
+    }
+
+    public boolean isInLight(float x, float y) {
+        return rayHandler.pointAtLight(x, y);
     }
 
     public void update(float x, float y, OrthographicCamera camera) {

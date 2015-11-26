@@ -33,6 +33,11 @@ public class RayCaster {
         this.resistanceMap = resistanceMap;
     }
 
+    public void updateResistanceForTile(Tile tile) {
+        int resistance = tile.isBlocking() ? 1 : 0;
+        resistanceMap[tile.y][tile.x] = resistance;
+    }
+
     public List<Tile> instantiate(Entity entity, List<Tile> pattern, int radius) {
         this.centerX = entity.getX() / Constants.TILESIZE;
         this.centerY = entity.getY() / Constants.TILESIZE;

@@ -1,5 +1,6 @@
 package galenscovell.processing.states;
 
+import galenscovell.graphics.Lighting;
 import galenscovell.processing.Repository;
 import galenscovell.processing.actions.*;
 import galenscovell.things.entities.*;
@@ -13,14 +14,16 @@ import java.util.*;
 
 public class ActionState implements State {
     private final GameScreen gameScreen;
+    private final Lighting lighting;
     private final Hero hero;
     private final Repository repo;
     private final List<Entity> seenEntities;
     private final List<Inanimate> adjacentThings;
     private boolean entityEnteredSight;
 
-    public ActionState(GameScreen gameScreen, Hero hero, Repository repo) {
+    public ActionState(GameScreen gameScreen, Lighting lighting, Hero hero, Repository repo) {
         this.gameScreen = gameScreen;
+        this.lighting = lighting;
         this.hero = hero;
         this.repo = repo;
         this.seenEntities = new ArrayList<Entity>();
@@ -122,10 +125,10 @@ public class ActionState implements State {
     private void npcTurn() {
         for (Entity entity : repo.getEntities()) {
             // Check if entity entered player sight this turn
-            if (seenEntities.contains(entity) && !inPlayerSight(entity)) {
+            if (seenEntities.contains(entity) && !inIlluminated(entity)) {
                 seenEntities.remove(entity);
             }
-            if (!seenEntities.contains(entity) && inPlayerSight(entity)) {
+            if (!seenEntities.contains(entity) && inIlluminated(entity)) {
                 seenEntities.add(entity);
                 entityEnteredSight = true;
             }
@@ -158,13 +161,10 @@ public class ActionState implements State {
         }
     }
 
-    private boolean inPlayerSight(Entity entity) {
-        int diffX = Math.abs(entity.getX() - hero.getX());
-        int diffY = Math.abs(entity.getY() - hero.getY());
-        if ((diffX < 24 && diffY < 24)) {
-            System.out.println(diffX + ", " + diffY);
-        }
-        return (diffX < 24 && diffY < 24);
+    private boolean inIlluminated(Entity entity) {
+        boolean isInLight = lighting.isInLight(entity.getX(), entity.getY());
+        System.out.println(entity + ", is in light: " + isInLight + "\n");
+        return isInLight;
     }
 
     private void displayInanimateBox(Inanimate inanimate, Tile tile) {

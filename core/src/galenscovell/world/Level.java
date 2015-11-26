@@ -1,7 +1,7 @@
 package galenscovell.world;
 
 import galenscovell.graphics.Lighting;
-import galenscovell.processing.Point;
+import galenscovell.processing.*;
 import galenscovell.things.entities.*;
 import galenscovell.things.inanimates.*;
 import galenscovell.util.*;
@@ -148,25 +148,25 @@ public class Level {
         placePlayer(hero);
         MonsterParser monsterParser = new MonsterParser();
         // TODO: Modify monster placement
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 2; i++) {
             placeMonsters(monsterParser);
         }
     }
 
-    public void placeInanimates(Lighting lighting) {
+    public void placeInanimates(Lighting lighting, Repository repo) {
         // Place doors on floors with hallway bitmask, no adjacent doors, and more than 2 adjacent floor neighbors
         this.inanimates = new ArrayList<Inanimate>();
         for (Tile tile : tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
                 if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
-                    Door newDoor = new Door(tile.x, tile.y, "h", lighting);
+                    Door newDoor = new Door(tile.x, tile.y, "h", lighting, repo);
                     inanimates.add(newDoor);
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
                     newDoor.updateTileBody(tile);
                 } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
-                    Door newDoor = new Door(tile.x, tile.y, "v", lighting);
+                    Door newDoor = new Door(tile.x, tile.y, "v", lighting, repo);
                     inanimates.add(newDoor);
                     tile.toggleBlocking();
                     tile.toggleOccupied();

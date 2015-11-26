@@ -131,6 +131,10 @@ public class Repository {
         rayCaster.updateResistanceMap();
     }
 
+    public void updateResistanceMapAtTile(Tile tile) {
+        rayCaster.updateResistanceForTile(tile);
+    }
+
     public RayCaster getRayCaster() {
         return rayCaster;
     }
