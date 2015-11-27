@@ -24,15 +24,16 @@ public class Lighting {
         this.rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
         rayHandler.setAmbientLight(0, 0.025f, 0.025f, 1);
-        rayHandler.setCulling(false);
+        rayHandler.setCulling(true);
         this.torches = new ArrayList<Torch>();
-        this.playerTorch = new Torch(27, rayHandler, 0.98f, 0.9f, 0.9f, 1);
+        this.playerTorch = new Torch(27, rayHandler, 0.98f, 0.85f, 0.85f, 1);
         this.repo = repo;
         // this.debug = new Box2DDebugRenderer();
         createTileBodies();
     }
 
     public boolean isInLight(float x, float y) {
+        rayHandler.updateAndRender();
         return rayHandler.pointAtLight(x, y);
     }
 

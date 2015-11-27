@@ -11,11 +11,11 @@ public class Torch {
     public Torch(int size, RayHandler rayHandler, float r, float g, float b, float a) {
         this.size = size;
         this.frame = 0;
-        this.outerLight = new PointLight(rayHandler, 40, new Color(r, g, b, a), size, 0, 0);
-        outerLight.setSoftnessLength(4);
+        this.outerLight = new PointLight(rayHandler, 72, new Color(r, g, b, a), size, 0, 0);
+        outerLight.setSoftnessLength(0);
         outerLight.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
-        this.innerLight = new PointLight(rayHandler, 40, new Color(0.95f, 0.95f, 0.95f, 0.95f), size - 4, 0, 0);
-        innerLight.setSoftnessLength(4);
+        this.innerLight = new PointLight(rayHandler, 48, new Color(0.9f, 0.9f, 0.9f, 0.7f), size - 4, 0, 0);
+        innerLight.setSoftnessLength(6);
         innerLight.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
     }
 

@@ -125,10 +125,10 @@ public class ActionState implements State {
     private void npcTurn() {
         for (Entity entity : repo.getEntities()) {
             // Check if entity entered player sight this turn
-            if (seenEntities.contains(entity) && !inIlluminated(entity)) {
+            if (seenEntities.contains(entity) && !isIlluminated(entity)) {
                 seenEntities.remove(entity);
             }
-            if (!seenEntities.contains(entity) && inIlluminated(entity)) {
+            if (!seenEntities.contains(entity) && isIlluminated(entity)) {
                 seenEntities.add(entity);
                 entityEnteredSight = true;
             }
@@ -161,10 +161,10 @@ public class ActionState implements State {
         }
     }
 
-    private boolean inIlluminated(Entity entity) {
-        boolean isInLight = lighting.isInLight(entity.getX(), entity.getY());
-        System.out.println(entity + ", is in light: " + isInLight + "\n");
-        return isInLight;
+    private boolean isIlluminated(Entity entity) {
+        boolean illuminated = lighting.isInLight(entity.getX(), entity.getY());
+        // System.out.println(entity + " illuminated: " + illuminated);
+        return illuminated;
     }
 
     private void displayInanimateBox(Inanimate inanimate, Tile tile) {

@@ -148,7 +148,7 @@ public class Level {
         placePlayer(hero);
         MonsterParser monsterParser = new MonsterParser();
         // TODO: Modify monster placement
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 6; i++) {
             placeMonsters(monsterParser);
         }
     }
