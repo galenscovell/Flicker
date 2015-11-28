@@ -23,8 +23,9 @@ public class Move implements Action {
     }
 
     @Override
-    public void setTarget(Tile tile) {
+    public boolean setTarget(Tile tile) {
         this.targettedTile = tile;
+        return true;
     }
 
     @Override

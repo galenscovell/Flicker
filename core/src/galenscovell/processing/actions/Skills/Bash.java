@@ -27,8 +27,19 @@ public class Bash implements Action {
     }
 
     @Override
-    public void setTarget(Tile tile) {
-        this.targettedTile = tile;
+    public boolean setTarget(Tile tile) {
+        if (tile == null || !range.contains(tile)) {
+            return false;
+        } else {
+            Entity targetEntity = repo.findEntity(tile.x, tile.y);
+            if (targetEntity == null) {
+                return false;
+            } else {
+                this.targettedTile = tile;
+                this.targettedEntity = targetEntity;
+                return true;
+            }
+        }
     }
 
     @Override
@@ -85,26 +96,15 @@ public class Bash implements Action {
     }
 
     private boolean bash() {
-        if (targettedTile == null) {
-            return false;
-        }
-        Entity targetEntity = repo.findEntity(targettedTile.x, targettedTile.y);
-        if (!range.contains(targettedTile) || targetEntity == null) {
-            return false;
-        }
-        this.targettedEntity = targetEntity;
         int entityX = user.getX() / Constants.TILESIZE;
         int entityY = user.getY() / Constants.TILESIZE;
-        int targetEntityX = targetEntity.getX() / Constants.TILESIZE;
-        int targetEntityY = targetEntity.getY() / Constants.TILESIZE;
+        int targetEntityX = targettedEntity.getX() / Constants.TILESIZE;
+        int targetEntityY = targettedEntity.getY() / Constants.TILESIZE;
         this.dx = targetEntityX - entityX;
         this.dy = targetEntityY - entityY;
         int newX = entityX + dx;
         int newY = entityY + dy;
-        return finalizeBash(newX, newY);
-    }
 
-    private boolean finalizeBash(int newX, int newY) {
         Move skillMovement = new Move(user, repo);
         Tile skillTarget = repo.findTile(newX, newY);
         skillMovement.setTarget(skillTarget);

@@ -5,7 +5,7 @@ import galenscovell.world.Tile;
 
 public interface Action {
     String[] getInfo();
-    void setTarget(Tile tile);
+    boolean setTarget(Tile tile);
     boolean initialize();
     boolean act();
     void resolve();

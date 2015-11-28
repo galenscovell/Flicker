@@ -26,8 +26,13 @@ public class Leap implements Action {
     }
 
     @Override
-    public void setTarget(Tile tile) {
-        this.targettedTile = tile;
+    public boolean setTarget(Tile tile) {
+        if (tile == null || !range.contains(tile) || tile.isOccupied()) {
+            return false;
+        } else {
+            this.targettedTile = tile;
+            return true;
+        }
     }
 
     @Override
@@ -90,15 +95,8 @@ public class Leap implements Action {
     }
 
     private boolean leap() {
-        if (targettedTile == null || !range.contains(targettedTile) || targettedTile.isOccupied()) {
-            return false;
-        }
-        return finalizeLeap(targettedTile.x, targettedTile.y);
-    }
-
-    private boolean finalizeLeap(int newX, int newY) {
         Move skillMovement = new Move(user, repo);
-        Tile skillTarget = repo.findTile(newX, newY);
+        Tile skillTarget = repo.findTile(targettedTile.x, targettedTile.y);
         skillMovement.setTarget(skillTarget);
         if (skillMovement.initialize()) {
             Point finalPoint = null;

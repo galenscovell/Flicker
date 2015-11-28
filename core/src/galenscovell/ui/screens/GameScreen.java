@@ -14,7 +14,7 @@ import galenscovell.ui.HudStage;
 import galenscovell.world.Level;
 
 public class GameScreen extends AbstractScreen {
-    private final int timestep = 20;
+    private final int timestep = 15;
     private int accumulator;
     private State state, actionState, menuState, examineState;
     private Renderer renderer;

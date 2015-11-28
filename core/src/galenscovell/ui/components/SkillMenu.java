@@ -17,12 +17,13 @@ public class SkillMenu extends Table {
     }
 
     public Button setSkill(final int skillNumber, final int skillConstant, String iconName) {
-        Button skillBtn = new Button(ResourceManager.toggleButtonStyle);
+        final Button skillBtn = new Button(ResourceManager.toggleButtonStyle);
         root.setIcon(skillBtn, iconName, 48, 1);
         skillBtn.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.selectAttackMove(skillConstant);
                 clearSkills(skillNumber);
+                skillBtn.setChecked(true);
             }
         });
         return skillBtn;
