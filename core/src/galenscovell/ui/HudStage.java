@@ -15,7 +15,8 @@ public class HudStage extends Stage {
     private final GameScreen gameScreen;
     private final InteractionVerticalGroup interactionVerticalGroup;
     private ProgressBar health;
-    private Table examineNotice, inventoryMenu, optionsMenu, skillMenu;
+    private Table examineNotice, inventoryMenu, optionsMenu;
+    private SkillMenu skillMenu;
     private Button inventoryButton, examineButton, attackButton;
 
     public HudStage(GameScreen gameScreen,  SpriteBatch spriteBatch) {
@@ -57,7 +58,7 @@ public class HudStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (optionsMenu.hasParent()) {
                     toggleButtons(false);
-                    optionsMenu.remove();
+                    clearMenus();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
                     clearMenus();
@@ -85,7 +86,7 @@ public class HudStage extends Stage {
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (inventoryMenu.hasParent()) {
-                    inventoryMenu.remove();
+                    clearMenus();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
                     clearMenus();
@@ -99,7 +100,7 @@ public class HudStage extends Stage {
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (examineNotice.hasParent()) {
-                    examineNotice.remove();
+                    clearMenus();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
                     clearMenus();
@@ -119,7 +120,7 @@ public class HudStage extends Stage {
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (skillMenu.hasParent()) {
-                    skillMenu.remove();
+                    clearMenus();
                     gameScreen.changeState(StateType.ACTION);
                 } else {
                     clearMenus();
@@ -193,11 +194,15 @@ public class HudStage extends Stage {
     }
 
     private void clearMenus() {
+        if (optionsMenu.hasParent()) {
+            optionsMenu.remove();
+        }
         if (inventoryMenu.hasParent()) {
             inventoryMenu.remove();
         }
         if (skillMenu.hasParent()) {
             skillMenu.remove();
+            skillMenu.clearSkills(-1);
         }
         if (examineNotice.hasParent()) {
             examineNotice.remove();

@@ -9,52 +9,57 @@ import galenscovell.util.*;
 public class SkillMenu extends Table {
     private final HudStage root;
     private Table mainTable;
+    private Button skillBtnOne, skillBtnTwo, skillBtnThree, skillBtnFour;
 
     public SkillMenu(HudStage root) {
         this.root = root;
         create();
     }
 
+    public Button setSkill(final int skillNumber, final int skillConstant, String iconName) {
+        Button skillBtn = new Button(ResourceManager.toggleButtonStyle);
+        root.setIcon(skillBtn, iconName, 48, 1);
+        skillBtn.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                root.selectAttackMove(skillConstant);
+                clearSkills(skillNumber);
+            }
+        });
+        return skillBtn;
+    }
+
     public void create() {
         this.setName("skillMenu");
         this.setFillParent(true);
         this.mainTable = new Table();
-        Button lungeButton = new Button(ResourceManager.frameStyle);
-        root.setIcon(lungeButton, "spear", 48, 1);
-        lungeButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.selectAttackMove(Constants.LUNGE_TYPE);
-            }
-        });
-        Button rollButton = new Button(ResourceManager.frameStyle);
-        root.setIcon(rollButton, "horn", 48, 1);
-        rollButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.selectAttackMove(Constants.ROLL_TYPE);
-            }
-        });
-        Button bashButton = new Button(ResourceManager.frameStyle);
-        root.setIcon(bashButton, "shield", 48, 1);
-        bashButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.selectAttackMove(Constants.BASH_TYPE);
-            }
-        });
-        Button leapButton = new Button(ResourceManager.frameStyle);
-        root.setIcon(leapButton, "boot", 48, 1);
-        leapButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                root.selectAttackMove(Constants.LEAP_TYPE);
-            }
-        });
-        mainTable.add(lungeButton).width(74).height(80).expand().fill().center();
+        this.skillBtnOne = setSkill(0, Constants.LUNGE_TYPE, "spear");
+        this.skillBtnTwo = setSkill(1, Constants.BASH_TYPE, "shield");
+        this.skillBtnThree = setSkill(2, Constants.ROLL_TYPE, "horn");
+        this.skillBtnFour = setSkill(3, Constants.LEAP_TYPE, "boot");
+
+        mainTable.add(skillBtnOne).width(74).height(80).expand().fill().center();
         mainTable.row();
-        mainTable.add(rollButton).width(74).height(80).expand().fill().center();
+        mainTable.add(skillBtnTwo).width(74).height(80).expand().fill().center();
         mainTable.row();
-        mainTable.add(bashButton).width(74).height(80).expand().fill().center();
+        mainTable.add(skillBtnThree).width(74).height(80).expand().fill().center();
         mainTable.row();
-        mainTable.add(leapButton).width(74).height(80).expand().fill().center();
+        mainTable.add(skillBtnFour).width(74).height(80).expand().fill().center();
 
         this.add(mainTable).width(80).height(320).expand().bottom().right().padBottom(70);
+    }
+
+    public void clearSkills(int thisBtn) {
+        if (thisBtn != 0) {
+            skillBtnOne.setChecked(false);
+        }
+        if (thisBtn != 1) {
+            skillBtnTwo.setChecked(false);
+        }
+        if (thisBtn != 2) {
+            skillBtnThree.setChecked(false);
+        }
+        if (thisBtn != 3) {
+            skillBtnFour.setChecked(false);
+        }
     }
 }
