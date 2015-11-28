@@ -12,7 +12,7 @@ public class Constants {
     // Custom screen units
     public static final int SCREEN_X = 48;
     public static final int SCREEN_Y = 80;
-    public static final int TILESIZE = 4;
+    public static final int TILESIZE = 5;
     // Tile dimensions of map (MAPSIZExMAPSIZE)
     public static final int MAPSIZE = 64;
 

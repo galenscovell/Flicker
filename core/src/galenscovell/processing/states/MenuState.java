@@ -5,7 +5,7 @@ import galenscovell.processing.Repository;
 import galenscovell.processing.actions.Action;
 import galenscovell.processing.actions.Skills.*;
 import galenscovell.things.entities.Hero;
-import galenscovell.ui.components.SkillInfo;
+import galenscovell.ui.components.*;
 import galenscovell.ui.screens.GameScreen;
 import galenscovell.util.Constants;
 import galenscovell.world.Tile;
@@ -103,9 +103,10 @@ public class MenuState implements State {
     }
 
     private void clearStageSkillMenu() {
-        Actor skillMenu = gameScreen.getStage().getRoot().findActor("skillMenu");
+        SkillMenu skillMenu = gameScreen.getStage().getRoot().findActor("skillMenu");
         if (skillMenu != null) {
             skillMenu.remove();
+            skillMenu.clearSkills(-1);
         }
     }
 }

@@ -53,7 +53,7 @@ public class HudStage extends Stage {
         Table topRight = new Table();
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "scroll", 32, 0.5f);
+        setIcon(optionsButton, "scroll", 42, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 if (optionsMenu.hasParent()) {

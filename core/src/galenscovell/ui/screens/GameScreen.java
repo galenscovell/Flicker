@@ -78,7 +78,7 @@ public class GameScreen extends AbstractScreen {
             state = actionState;
         } else if (stateType == StateType.MENU) {
             state = menuState;
-        } else {
+        } else if (stateType == StateType.EXAMINE) {
             state = examineState;
         }
         state.enter();

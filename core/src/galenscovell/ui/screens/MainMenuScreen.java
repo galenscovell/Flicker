@@ -31,10 +31,14 @@ public class MainMenuScreen extends AbstractScreen {
          **********************************/
         Table optionsButton = new Table();
         optionsButton.setTouchable(Touchable.enabled);
-        setIcon(optionsButton, "scroll", 32, 0.5f);
+        setIcon(optionsButton, "scroll", 42, 0.5f);
         optionsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                stage.addActor(optionMenu);
+                if (optionMenu.hasParent()) {
+                    optionMenu.remove();
+                } else {
+                    stage.addActor(optionMenu);
+                }
             }
         });
         mainTable.add(optionsButton).width(48).height(48).expand().fill().top().right();
@@ -78,10 +82,6 @@ public class MainMenuScreen extends AbstractScreen {
         mainTable.pack();
 
         stage.addActor(mainTable);
-    }
-
-    public void closeOptions() {
-        optionMenu.remove();
     }
 
     private void setIcon(Table table, String name, int height, float opacity) {

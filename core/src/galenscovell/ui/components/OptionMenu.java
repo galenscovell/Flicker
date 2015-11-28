@@ -101,10 +101,10 @@ public class OptionMenu extends Table {
                 }
             }
         });
-        TextButton returnButton = new TextButton("Return", ResourceManager.buttonStyle);
-        returnButton.addListener(new ClickListener() {
+        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.buttonStyle);
+        quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                mainMenu.closeOptions();
+                Gdx.app.exit();
             }
         });
 
@@ -112,7 +112,7 @@ public class OptionMenu extends Table {
         mainTable.row();
         mainTable.add(musicButton).width(260).height(80).padBottom(8).expand().fill();
         mainTable.row();
-        mainTable.add(returnButton).width(260).height(80).expand().fill();
+        mainTable.add(quitButton).width(260).height(80).expand().fill();
 
         this.add(mainTable).width(340).height(360).expand().center();
     }
