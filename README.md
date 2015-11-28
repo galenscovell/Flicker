@@ -1,4 +1,4 @@
-<img src='https://trello-attachments.s3.amazonaws.com/563992fc21a20221b074bffd/467x405/4afc4f81440e177dd06b4ebab76a8e5a/skill_ranges_pattern.png' width=200px /> <img src='https://trello-attachments.s3.amazonaws.com/563adc0c0c991ca04a2a04d3/330x250/15125c773b5bf5399b940b94c1947e2d/inanimate_interactions.png' width=229px /> <img src='https://trello-attachments.s3.amazonaws.com/56477cb8d85df58fa603248b/425x280/552d2a11a8768a46a45f751a8bc0f19e/examine_boxes.png' width=264px />
+<img src='https://trello-attachments.s3.amazonaws.com/565213723e3de8e5ad9bf396/478x478/73e1a7c3f79b7295bcd2fdac15aad659/flicker_skill_info.png' width=500px />
 
 Flicker
 ======
