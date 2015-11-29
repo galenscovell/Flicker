@@ -14,7 +14,7 @@ public class Torch {
         this.outerLight = new PointLight(rayHandler, 72, new Color(r, g, b, a), size, 0, 0);
         outerLight.setSoftnessLength(0);
         outerLight.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
-        this.innerLight = new PointLight(rayHandler, 48, new Color(0.9f, 0.9f, 0.9f, 0.7f), size - 4, 0, 0);
+        this.innerLight = new PointLight(rayHandler, 48, new Color(0.9f, 0.9f, 0.9f, 0.7f), size - 8, 0, 0);
         innerLight.setSoftnessLength(6);
         innerLight.setContactFilter(Constants.BIT_LIGHT, Constants.BIT_GROUP, Constants.BIT_WALL);
     }

@@ -11,13 +11,14 @@ import java.util.*;
 public class Leap implements Action {
     private final Repository repo;
     private final Entity user;
-    private List<Tile> range;
+    private final List<Tile> range;
     private Tile targettedTile;
     private Entity targettedEntity;
 
     public Leap(Entity user, Repository repo) {
         this.user = user;
         this.repo = repo;
+        this.range = new ArrayList<Tile>();
     }
 
     @Override
@@ -27,7 +28,7 @@ public class Leap implements Action {
 
     @Override
     public boolean setTarget(Tile tile) {
-        if (tile == null || !range.contains(tile) || tile.isOccupied()) {
+        if (tile == null || !range.contains(tile) || tile.isOccupied() || !tile.isHighlightedOrange()) {
             return false;
         } else {
             this.targettedTile = tile;
@@ -48,7 +49,6 @@ public class Leap implements Action {
     @Override
     public boolean initialize() {
         setRange();
-        enableRangeDisplay();
         return true;
     }
 
@@ -59,7 +59,6 @@ public class Leap implements Action {
     }
 
     private void setRange() {
-        List<Tile> pattern = new ArrayList<Tile>();
         int centerX = user.getX() / Constants.TILESIZE;
         int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
@@ -75,16 +74,9 @@ public class Leap implements Action {
                 }
                 Tile tile = repo.findTile(centerX + dx, centerY + dy);
                 if (tile != null && tile != center && tile.isFloor()) {
-                    pattern.add(tile);
+                    range.add(tile);
                 }
             }
-        }
-        this.range = repo.getRayCaster().instantiate(user, pattern, 5);
-    }
-
-    private void enableRangeDisplay() {
-        for (Tile tile : range) {
-            tile.enableHighlight();
         }
     }
 

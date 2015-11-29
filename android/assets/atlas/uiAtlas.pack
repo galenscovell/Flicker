@@ -182,9 +182,16 @@ frameup_brown
   orig: 75, 79
   offset: 0, 0
   index: -1
-highlight
+highlight_blue
   rotate: false
   xy: 301, 243
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+highlight_orange
+  rotate: false
+  xy: 351, 262
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -206,56 +213,56 @@ inventory
   index: -1
 largebook
   rotate: false
-  xy: 351, 292
+  xy: 935, 378
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
 spear
   rotate: false
-  xy: 935, 378
+  xy: 118, 216
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
 tome
   rotate: false
-  xy: 118, 216
+  xy: 301, 223
   size: 16, 18
   orig: 16, 18
   offset: 0, 0
   index: -1
 boot
   rotate: false
-  xy: 301, 225
+  xy: 351, 244
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 examine
   rotate: false
-  xy: 28, 10
+  xy: 401, 294
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 horn
   rotate: false
-  xy: 978, 465
+  xy: 28, 10
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 scroll
   rotate: false
-  xy: 996, 485
+  xy: 978, 465
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 shield
   rotate: false
-  xy: 351, 274
+  xy: 996, 485
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

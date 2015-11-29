@@ -11,23 +11,24 @@ import java.util.*;
 public class Lunge implements Action {
     private final Repository repo;
     private final Entity user;
-    private List<Tile> range;
+    private final List<Tile> range;
     private Tile targettedTile;
     private Entity targettedEntity;
 
     public Lunge(Entity user, Repository repo) {
         this.user = user;
         this.repo = repo;
+        this.range = new ArrayList<Tile>();
     }
 
     @Override
     public String[] getInfo() {
-        return new String[]{"Lunge", "Hit target one space away in a cardinal direction."};
+        return new String[]{"Lunge", "Hit target two spaces away in a cardinal direction."};
     }
 
     @Override
     public boolean setTarget(Tile tile) {
-        if (tile == null || !range.contains(tile)) {
+        if (tile == null || !range.contains(tile) || !tile.isHighlightedOrange()) {
             return false;
         } else {
             Entity targetEntity = repo.findEntity(tile.x, tile.y);
@@ -54,42 +55,50 @@ public class Lunge implements Action {
     @Override
     public boolean initialize() {
         setRange();
-        enableRangeDisplay();
         return true;
+    }
+
+    private void setRange() {
+        int centerX = user.getX() / Constants.TILESIZE;
+        int centerY = user.getY() / Constants.TILESIZE;
+
+        // pattern: two tiles cardinal
+        for (int i = 0; i <= 3; i++) {
+            for (int delta = 1; delta <= 2; delta++) {
+                Tile tile;
+                if (i == 0) {
+                    tile = repo.findTile(centerX + delta, centerY);  // pos-horizontal
+                } else if (i == 1) {
+                    tile = repo.findTile(centerX - delta, centerY);  // neg-horizontal
+                } else if (i == 2) {
+                    tile = repo.findTile(centerX, centerY + delta);  // pos-vertical
+                } else {
+                    tile = repo.findTile(centerX, centerY - delta);  // neg-vertical
+                }
+
+                if (tile != null && tile.isFloor() && !tile.isBlocking()) {
+                    if (delta == 1) {
+                        if (tile.isOccupied()) {
+                            break;
+                        } else {
+                            tile.highlightBlue();
+                            range.add(tile);
+                        }
+                    } else {
+                        tile.highlightOrange();
+                        range.add(tile);
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public boolean act() {
         disableRangeDisplay();
         return lunge();
-    }
-
-    private void setRange() {
-        List<Tile> pattern = new ArrayList<Tile>();
-        int centerX = user.getX() / Constants.TILESIZE;
-        int centerY = user.getY() / Constants.TILESIZE;
-        Tile center = repo.findTile(centerX, centerY);
-
-        // pattern: second tile out, cardinal
-        for (int dx = -2; dx <= 2; dx += 4) {
-            Tile tile = repo.findTile(centerX + dx, centerY);
-            if (tile != null && tile != center && tile.isFloor()) {
-                pattern.add(tile);
-            }
-        }
-        for (int dy = -2; dy <= 2; dy += 4) {
-            Tile tile = repo.findTile(centerX, centerY + dy);
-            if (tile != null && tile != center && tile.isFloor()) {
-                pattern.add(tile);
-            }
-        }
-        this.range = repo.getRayCaster().instantiate(user, pattern, 5);
-    }
-
-    private void enableRangeDisplay() {
-        for (Tile tile : range) {
-            tile.enableHighlight();
-        }
     }
 
     private void disableRangeDisplay() {

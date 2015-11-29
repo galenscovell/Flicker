@@ -26,7 +26,7 @@ public class Lighting {
         rayHandler.setAmbientLight(0, 0.025f, 0.025f, 1);
         rayHandler.setCulling(true);
         this.torches = new ArrayList<Torch>();
-        this.playerTorch = new Torch(27, rayHandler, 0.98f, 0.85f, 0.85f, 1);
+        this.playerTorch = new Torch(36, rayHandler, 0.98f, 0.85f, 0.85f, 1);
         this.repo = repo;
         // this.debug = new Box2DDebugRenderer();
         createTileBodies();

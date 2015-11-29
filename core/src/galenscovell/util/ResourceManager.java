@@ -16,7 +16,7 @@ public class ResourceManager {
     public static Label.LabelStyle tinyStyle, detailStyle, mediumStyle, menuStyle, titleStyle;
     public static NinePatchDrawable buttonUp, buttonDown, panelUp, panelDown, frameUp, frameDown, frameUpDec, panelViewport;
     public static TextButton.TextButtonStyle buttonStyle, panelStyle, frameStyle, toggleButtonStyle;
-    public static Sprite highlight;
+    public static Sprite highlightBlue, highlightOrange;
     public static TextureRegion mainMenuBG;
     public static Preferences prefs;
 
@@ -87,8 +87,10 @@ public class ResourceManager {
 
         panelViewport = new NinePatchDrawable(uiAtlas.createPatch("panelViewport"));
 
-        highlight = new Sprite(uiAtlas.createSprite("highlight"));
-        highlight.flip(false, true);
+        highlightBlue = new Sprite(uiAtlas.createSprite("highlight_blue"));
+        highlightBlue.flip(false, true);
+        highlightOrange = new Sprite(uiAtlas.createSprite("highlight_orange"));
+        highlightOrange.flip(false, true);
 
         mainMenuBG = new TextureRegion(uiAtlas.findRegion("clouds_bg"));
 

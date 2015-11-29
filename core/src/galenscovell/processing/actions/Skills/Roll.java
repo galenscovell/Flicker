@@ -11,13 +11,14 @@ import java.util.*;
 public class Roll implements Action {
     private final Repository repo;
     private final Entity user;
-    private List<Tile> range;
+    private final List<Tile> range;
     private Tile targettedTile;
     private Entity targettedEntity;
 
     public Roll(Entity user, Repository repo) {
         this.user = user;
         this.repo = repo;
+        this.range = new ArrayList<Tile>();
     }
 
     @Override
@@ -27,7 +28,7 @@ public class Roll implements Action {
 
     @Override
     public boolean setTarget(Tile tile) {
-        if (tile == null || !range.contains(tile) || tile.isOccupied()) {
+        if (tile == null || !range.contains(tile) || tile.isOccupied()|| !tile.isHighlightedOrange()) {
             return false;
         } else {
             this.targettedTile = tile;
@@ -48,7 +49,6 @@ public class Roll implements Action {
     @Override
     public boolean initialize() {
         setRange();
-        enableRangeDisplay();
         return true;
     }
 
@@ -59,29 +59,39 @@ public class Roll implements Action {
     }
 
     private void setRange() {
-        List<Tile> pattern = new ArrayList<Tile>();
         int centerX = user.getX() / Constants.TILESIZE;
         int centerY = user.getY() / Constants.TILESIZE;
-        Tile center = repo.findTile(centerX, centerY);
 
-        // pattern: second tile out, diagonal
-        for (int dx = -2; dx <= 2; dx += 4) {
-            for (int dy = -2; dy <= 2; dy += 4) {
-                if (Math.abs(dx) != Math.abs(dy)) {
-                    continue;
+        // pattern: two tiles diagonal
+        for (int i = 0; i <= 3; i++) {
+            for (int delta = 1; delta <= 2; delta++) {
+                Tile tile;
+                if (i == 0) {
+                    tile = repo.findTile(centerX + delta, centerY + delta);  // up-right
+                } else if (i == 1) {
+                    tile = repo.findTile(centerX + delta, centerY - delta);  // down-right
+                } else if (i == 2) {
+                    tile = repo.findTile(centerX - delta, centerY - delta);  // down-left
+                } else {
+                    tile = repo.findTile(centerX - delta, centerY + delta);  // up-left
                 }
-                Tile tile = repo.findTile(centerX + dx, centerY + dy);
-                if (tile != null && tile != center && tile.isFloor()) {
-                    pattern.add(tile);
+
+                if (tile != null && tile.isFloor() && !tile.isBlocking()) {
+                    if (delta == 1) {
+                        if (tile.isOccupied()) {
+                            break;
+                        } else {
+                            tile.highlightBlue();
+                            range.add(tile);
+                        }
+                    } else {
+                        tile.highlightOrange();
+                        range.add(tile);
+                    }
+                } else {
+                    break;
                 }
             }
-        }
-        this.range = repo.getRayCaster().instantiate(user, pattern, 5);
-    }
-
-    private void enableRangeDisplay() {
-        for (Tile tile : range) {
-            tile.enableHighlight();
         }
     }
 

@@ -27,7 +27,7 @@ public class RayCaster {
     public void createResistanceMap() {
         int[][] resistanceMap = new int[Constants.MAPSIZE][Constants.MAPSIZE];
         for (Tile tile : tiles.values()) {
-            int resistance = tile.isBlocking() ? 1 : 0;
+            int resistance = (tile.isBlocking() || tile.isOccupied()) ? 1 : 0;
             resistanceMap[tile.y][tile.x] = resistance;
         }
         this.resistanceMap = resistanceMap;

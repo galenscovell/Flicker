@@ -13,7 +13,7 @@ public class Tile {
     private List<Point> neighborTilePoints;
     private short bitmask;
     private Sprite[] sprites;
-    private boolean occupied, blocking, door, highlighted;
+    private boolean occupied, blocking, door, highlightB, highlightO;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -72,16 +72,25 @@ public class Tile {
         door = !door;
     }
 
-    public boolean isHighlighted() {
-        return highlighted;
+    public boolean isHighlightedBlue() {
+        return highlightB;
     }
 
-    public void enableHighlight() {
-        highlighted = true;
+    public void highlightBlue() {
+        highlightB = true;
+    }
+
+    public boolean isHighlightedOrange() {
+        return highlightO;
+    }
+
+    public void highlightOrange() {
+        highlightO = true;
     }
 
     public void disableHighlight() {
-        highlighted = false;
+        highlightB = false;
+        highlightO = false;
     }
 
     public boolean isOccupied() {
@@ -150,8 +159,10 @@ public class Tile {
             frames -= frames;
         }
         batch.draw(sprites[currentFrame], x * tileSize, y * tileSize, tileSize, tileSize);
-        if (highlighted) {
-            batch.draw(ResourceManager.highlight, x * tileSize, y * tileSize, tileSize, tileSize);
+        if (highlightB) {
+            batch.draw(ResourceManager.highlightBlue, x * tileSize, y * tileSize, tileSize, tileSize);
+        } else if (highlightO) {
+            batch.draw(ResourceManager.highlightOrange, x * tileSize, y * tileSize, tileSize, tileSize);
         }
         frames++;
     }

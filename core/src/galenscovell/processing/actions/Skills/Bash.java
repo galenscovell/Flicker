@@ -11,14 +11,15 @@ import java.util.*;
 public class Bash implements Action {
     private final Repository repo;
     private final Entity user;
-    private List<Tile> range;
+    private final List<Tile> range;
     private Tile targettedTile;
     private Entity targettedEntity;
-    private int dx, dy;
+    private int slideX, slideY;
 
     public Bash(Entity user, Repository repo) {
         this.user = user;
         this.repo = repo;
+        this.range = new ArrayList<Tile>();
     }
 
     @Override
@@ -28,7 +29,7 @@ public class Bash implements Action {
 
     @Override
     public boolean setTarget(Tile tile) {
-        if (tile == null || !range.contains(tile)) {
+        if (tile == null || !range.contains(tile) || !tile.isHighlightedOrange()) {
             return false;
         } else {
             Entity targetEntity = repo.findEntity(tile.x, tile.y);
@@ -55,18 +56,10 @@ public class Bash implements Action {
     @Override
     public boolean initialize() {
         setRange();
-        enableRangeDisplay();
         return true;
     }
 
-    @Override
-    public boolean act() {
-        disableRangeDisplay();
-        return bash();
-    }
-
     private void setRange() {
-        List<Tile> pattern = new ArrayList<Tile>();
         int centerX = user.getX() / Constants.TILESIZE;
         int centerY = user.getY() / Constants.TILESIZE;
         Tile center = repo.findTile(centerX, centerY);
@@ -75,18 +68,18 @@ public class Bash implements Action {
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 Tile tile = repo.findTile(centerX + dx, centerY + dy);
-                if (tile != null && tile != center && tile.isFloor()) {
-                    pattern.add(tile);
+                if (tile != null && tile != center && tile.isFloor() && !tile.isBlocking()) {
+                    tile.highlightOrange();
+                    range.add(tile);
                 }
             }
         }
-        this.range = repo.getRayCaster().instantiate(user, pattern, 5);
     }
 
-    private void enableRangeDisplay() {
-        for (Tile tile : range) {
-            tile.enableHighlight();
-        }
+    @Override
+    public boolean act() {
+        disableRangeDisplay();
+        return bash();
     }
 
     private void disableRangeDisplay() {
@@ -100,10 +93,10 @@ public class Bash implements Action {
         int entityY = user.getY() / Constants.TILESIZE;
         int targetEntityX = targettedEntity.getX() / Constants.TILESIZE;
         int targetEntityY = targettedEntity.getY() / Constants.TILESIZE;
-        this.dx = targetEntityX - entityX;
-        this.dy = targetEntityY - entityY;
-        int newX = entityX + dx;
-        int newY = entityY + dy;
+        this.slideX = targetEntityX - entityX;
+        this.slideY = targetEntityY - entityY;
+        int newX = entityX + slideX;
+        int newY = entityY + slideY;
 
         Move skillMovement = new Move(user, repo);
         Tile skillTarget = repo.findTile(newX, newY);
@@ -125,8 +118,8 @@ public class Bash implements Action {
         if (targettedEntity != null) {
             targettedEntity.setBeingAttacked();
             targettedEntity.takePhysicalDamage(user.doPhysicalDamage());
-            int newX = (targettedEntity.getX() / Constants.TILESIZE) + dx;
-            int newY = (targettedEntity.getY() / Constants.TILESIZE) + dy;
+            int newX = (targettedEntity.getX() / Constants.TILESIZE) + slideX;
+            int newY = (targettedEntity.getY() / Constants.TILESIZE) + slideY;
             Action slide = new Slide(targettedEntity, repo);
             slide.setTarget(repo.findTile(newX, newY));
             slide.initialize();
