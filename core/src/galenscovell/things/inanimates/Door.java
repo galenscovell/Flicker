@@ -2,7 +2,6 @@ package galenscovell.things.inanimates;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import galenscovell.graphics.Lighting;
-import galenscovell.processing.Repository;
 import galenscovell.util.ResourceManager;
 import galenscovell.world.Tile;
 
@@ -11,11 +10,10 @@ public class Door implements Inanimate {
     private final int y;
     private final Sprite[] sprites;
     private final Lighting lighting;
-    private final Repository repo;
     private Sprite sprite;
     private boolean blocking;
 
-    public Door(int x, int y, String type, Lighting lighting, Repository repo) {
+    public Door(int x, int y, String type, Lighting lighting) {
         this.x = x;
         this.y = y;
         this.sprites = new Sprite[2];
@@ -26,7 +24,6 @@ public class Door implements Inanimate {
         this.sprite = sprites[0];
         this.blocking = true;
         this.lighting = lighting;
-        this.repo = repo;
     }
 
     @Override
@@ -70,7 +67,6 @@ public class Door implements Inanimate {
 
     public void updateTileBody(Tile tile) {
         lighting.updateTileBody(tile.x, tile.y);
-        repo.updateResistanceMapAtTile(tile);
     }
 
     @Override

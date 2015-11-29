@@ -159,14 +159,14 @@ public class Level {
         for (Tile tile : tiles.values()) {
             if (tile.isFloor() && tile.getFloorNeighbors() > 2) {
                 if (tile.getBitmask() == 5 && suitableForDoor(tile)) {
-                    Door newDoor = new Door(tile.x, tile.y, "h", lighting, repo);
+                    Door newDoor = new Door(tile.x, tile.y, "h", lighting);
                     inanimates.add(newDoor);
                     tile.toggleBlocking();
                     tile.toggleOccupied();
                     tile.toggleDoor();
                     newDoor.updateTileBody(tile);
                 } else if (tile.getBitmask() == 10 && suitableForDoor(tile)) {
-                    Door newDoor = new Door(tile.x, tile.y, "v", lighting, repo);
+                    Door newDoor = new Door(tile.x, tile.y, "v", lighting);
                     inanimates.add(newDoor);
                     tile.toggleBlocking();
                     tile.toggleOccupied();

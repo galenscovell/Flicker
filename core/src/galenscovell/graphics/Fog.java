@@ -13,28 +13,27 @@ public class Fog {
         this.sprite = new Sprite(new Texture(Gdx.files.internal("textures/fogAlpha.png")));
         this.x = -64;
         this.y = -64;
-        this.frame = 3;
+        this.frame = 4;
     }
 
     public void draw(SpriteBatch spriteBatch) {
-        spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.05f);
-        spriteBatch.draw(sprite, x, y, 512, 512);
+        spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.1f);
+        spriteBatch.draw(sprite, x, y, 768, 768);
         spriteBatch.setColor(1, 1, 1, 1);
-
-        if (frame == 0) {
-            animate();
-            frame = 3;
-        } else {
-            frame--;
-        }
+        animate();
     }
 
     private void animate() {
-        x -= 0.1f;
-        y -= 0.1f;
-        if ((x < -128)) {
-            x = -64;
-            y = -64;
+        if (frame == 0) {
+            x -= 0.1f;
+            y -= 0.1f;
+            if (x < -128) {
+                x = -64;
+                y = -64;
+            }
+            frame = 4;
+        } else {
+            frame--;
         }
     }
 }

@@ -117,7 +117,9 @@ public class Bash implements Action {
     public void resolve() {
         if (targettedEntity != null) {
             targettedEntity.setBeingAttacked();
-            targettedEntity.takePhysicalDamage(user.doPhysicalDamage());
+            int dmg = user.doPhysicalDamage();
+            targettedEntity.takePhysicalDamage(dmg);
+            repo.updateCombatText(targettedEntity, dmg);
             int newX = (targettedEntity.getX() / Constants.TILESIZE) + slideX;
             int newY = (targettedEntity.getY() / Constants.TILESIZE) + slideY;
             Action slide = new Slide(targettedEntity, repo);

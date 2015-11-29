@@ -1,5 +1,6 @@
 package galenscovell.processing;
 
+import galenscovell.graphics.CombatTexter;
 import galenscovell.processing.actions.Action;
 import galenscovell.things.entities.Entity;
 import galenscovell.things.inanimates.*;
@@ -10,15 +11,15 @@ import java.util.*;
 
 public class Repository {
     private final Map<Integer, Tile> tiles;
-    private final RayCaster rayCaster;
     private final List<Action> actions;
+    private final CombatTexter combatTexter;
     private List<Entity> entities;
     private List<Inanimate> inanimates;
 
     public Repository(Map<Integer, Tile> tiles) {
         this.tiles = tiles;
         this.actions = new ArrayList<Action>();
-        this.rayCaster = new RayCaster(tiles);
+        this.combatTexter = new CombatTexter();
     }
 
 
@@ -125,13 +126,13 @@ public class Repository {
 
 
     /***************************************************
-     * Raycaster
+     * Combat Text
      */
-    public void updateResistanceMapAtTile(Tile tile) {
-        rayCaster.updateResistanceForTile(tile);
+    public void updateCombatText(Entity entity, int val) {
+        combatTexter.addText(entity, val);
     }
 
-    public RayCaster getRayCaster() {
-        return rayCaster;
+    public CombatTexter getCombatTexter() {
+        return combatTexter;
     }
 }

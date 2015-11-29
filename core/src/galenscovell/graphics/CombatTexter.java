@@ -6,16 +6,16 @@ import galenscovell.util.Constants;
 
 import java.util.*;
 
-public class CombatText {
+public class CombatTexter {
     private final List<TextObject> displayed;
     private final Stack<TextObject> finished;
 
-    public CombatText() {
+    public CombatTexter() {
         this.displayed = new ArrayList<TextObject>();
         this.finished = new Stack<TextObject>();
     }
 
-    public void addText(int val, Entity entity) {
+    public void addText(Entity entity, int val) {
         int[] vals = new int[] {val, 0};
         displayed.add(new TextObject(entity, val));
     }

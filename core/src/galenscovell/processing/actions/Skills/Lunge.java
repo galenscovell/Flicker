@@ -134,7 +134,9 @@ public class Lunge implements Action {
     public void resolve() {
         if (targettedEntity != null) {
             targettedEntity.setBeingAttacked();
-            targettedEntity.takePhysicalDamage(user.doPhysicalDamage());
+            int dmg = user.doPhysicalDamage();
+            targettedEntity.takePhysicalDamage(dmg);
+            repo.updateCombatText(targettedEntity, dmg);
             if (targettedEntity.isDead()) {
                 repo.placeRemains(targettedEntity);
             }

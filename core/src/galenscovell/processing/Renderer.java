@@ -18,7 +18,6 @@ public class Renderer {
     private final Hero hero;
     private final Lighting lighting;
     private final Fog fog;
-    private final CombatText combatText;
     private final Vector3 lerpPos;
     private float minCamX, minCamY, maxCamX, maxCamY;
     private boolean cameraFollow;
@@ -33,8 +32,6 @@ public class Renderer {
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
         this.fog = new Fog();
-        this.combatText = new CombatText();
-        combatText.addText(5, hero);
         this.lerpPos = new Vector3(0, 0, 0);
     }
 
@@ -63,9 +60,9 @@ public class Renderer {
         }
         // Player rendering: [x, y] are in custom units
         hero.draw(spriteBatch, Constants.TILESIZE, interpolation, null);
-        // Background effect rendering
+        // Effect rendering
         fog.draw(spriteBatch);
-        combatText.draw(spriteBatch);
+        repo.getCombatTexter().draw(spriteBatch);
         spriteBatch.end();
         // Lighting rendering
         lighting.update(hero.getCurrentX() + (Constants.TILESIZE / 2), hero.getCurrentY() + (Constants.TILESIZE / 2), camera);

@@ -20,11 +20,11 @@ public class TextObject {
     }
 
     public float getX() {
-        return entity.getX() + Constants.TILESIZE / 2;
+        return entity.getCurrentX() + Constants.TILESIZE / 2;
     }
 
     public float getY() {
-        return entity.getY() - Constants.TILESIZE;
+        return entity.getCurrentY() - Constants.TILESIZE;
     }
 
     public boolean done() {
