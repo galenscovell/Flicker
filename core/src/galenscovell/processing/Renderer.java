@@ -2,6 +2,7 @@ package galenscovell.processing;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import galenscovell.graphics.*;
 import galenscovell.things.entities.*;
@@ -17,6 +18,7 @@ public class Renderer {
     private final Hero hero;
     private final Lighting lighting;
     private final Fog fog;
+    private final Vector3 lerpPos;
     private float minCamX, minCamY, maxCamX, maxCamY;
     private boolean cameraFollow;
 
@@ -30,6 +32,7 @@ public class Renderer {
         this.viewport = new FitViewport(Constants.SCREEN_X, Constants.SCREEN_Y, camera);
         camera.setToOrtho(true, Constants.SCREEN_X, Constants.SCREEN_Y);
         this.fog = new Fog();
+        this.lerpPos = new Vector3(0, 0, 0);
     }
 
     public void render(double interpolation) {
@@ -82,7 +85,7 @@ public class Renderer {
 
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        centerOnPlayer();
+        camera.position.set(hero.getCurrentX(), hero.getCurrentY(), 0);
     }
 
     public void setCameraFollow(boolean setting) {
@@ -90,7 +93,8 @@ public class Renderer {
     }
 
     private void centerOnPlayer() {
-        camera.position.set(hero.getCurrentX(), hero.getCurrentY(), 0);
+        lerpPos.set(hero.getCurrentX(), hero.getCurrentY(), 0);
+        camera.position.lerp(lerpPos, 0.05f);
     }
 
     private void findCameraBounds() {
