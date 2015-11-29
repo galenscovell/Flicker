@@ -74,6 +74,7 @@ public class Leap implements Action {
                 }
                 Tile tile = repo.findTile(centerX + dx, centerY + dy);
                 if (tile != null && tile != center && tile.isFloor()) {
+                    tile.highlightOrange();
                     range.add(tile);
                 }
             }

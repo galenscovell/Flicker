@@ -51,6 +51,7 @@ public class ActionState implements State {
         if (repo.actionsEmpty()) {
             return;
         } else {
+            gameScreen.setCameraFollow(true);
             if (!adjacentThings.isEmpty()) {
                 adjacentThings.clear();
                 clearInanimateBoxes();
@@ -81,6 +82,7 @@ public class ActionState implements State {
                 repo.clearActions();
                 heroAdjacentCheck();
                 entityEnteredSight = false;
+                gameScreen.setCameraFollow(false);
             }
         }
     }

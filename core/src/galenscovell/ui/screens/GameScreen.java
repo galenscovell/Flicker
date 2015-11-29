@@ -100,6 +100,10 @@ public class GameScreen extends AbstractScreen {
         renderer.pan(dx, dy);
     }
 
+    public void setCameraFollow(boolean setting) {
+        renderer.setCameraFollow(setting);
+    }
+
     public void toMainMenu() {
         root.setScreen(root.mainMenuScreen);
     }

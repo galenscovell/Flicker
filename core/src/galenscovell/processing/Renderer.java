@@ -18,6 +18,7 @@ public class Renderer {
     private final Lighting lighting;
     private final Fog fog;
     private float minCamX, minCamY, maxCamX, maxCamY;
+    private boolean cameraFollow;
 
     public Renderer(Hero hero, Lighting lighting, SpriteBatch spriteBatch, Repository repo) {
         this.hero = hero;
@@ -33,6 +34,9 @@ public class Renderer {
 
     public void render(double interpolation) {
         findCameraBounds();
+        if (cameraFollow) {
+            centerOnPlayer();
+        }
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
         // Tile rendering: [x, y] are in Tiles, convert to custom units
@@ -81,6 +85,10 @@ public class Renderer {
         centerOnPlayer();
     }
 
+    public void setCameraFollow(boolean setting) {
+        cameraFollow = setting;
+    }
+
     private void centerOnPlayer() {
         camera.position.set(hero.getCurrentX(), hero.getCurrentY(), 0);
     }
@@ -96,7 +104,10 @@ public class Renderer {
     }
 
     private boolean inViewport(int x, int y) {
-        return ((x + Constants.TILESIZE) >= minCamX && x <= maxCamX && (y + Constants.TILESIZE) >= minCamY && y <= maxCamY);
+        return ((x + Constants.TILESIZE) >= minCamX &&
+                x <= maxCamX &&
+                (y + Constants.TILESIZE) >= minCamY &&
+                y <= maxCamY);
     }
 
     public void dispose() {
