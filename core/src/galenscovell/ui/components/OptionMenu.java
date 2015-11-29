@@ -50,13 +50,13 @@ public class OptionMenu extends Table {
                 }
             }
         });
-        TextButton mainMenuButton = new TextButton("Main Menu", ResourceManager.buttonStyle);
+        TextButton mainMenuButton = new TextButton("Main Menu", ResourceManager.fullButtonStyle);
         mainMenuButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.returnToMainMenu();
             }
         });
-        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.buttonStyle);
+        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.fullButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
@@ -101,7 +101,7 @@ public class OptionMenu extends Table {
                 }
             }
         });
-        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.buttonStyle);
+        TextButton quitButton = new TextButton("Exit Flicker", ResourceManager.fullButtonStyle);
         quitButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();

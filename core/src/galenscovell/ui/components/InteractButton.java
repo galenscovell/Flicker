@@ -15,7 +15,7 @@ public class InteractButton extends Button {
     private final Table buttonTable;
 
     public InteractButton(GameScreen gameScreen, Inanimate inanimate, Tile tile) {
-        super(ResourceManager.frameStyle);
+        super(ResourceManager.frameButtonStyle);
         this.buttonTable = new Table();
         create(gameScreen, inanimate, tile);
     }

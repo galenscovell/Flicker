@@ -58,13 +58,13 @@ public class MainMenuScreen extends AbstractScreen {
          **********************************/
         Table centerTable = new Table();
         centerTable.background(ResourceManager.frameUpDec);
-        TextButton newGameButton = new TextButton("New Game", ResourceManager.buttonStyle);
+        TextButton newGameButton = new TextButton("New Game", ResourceManager.fullButtonStyle);
         newGameButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 root.newGame();
             }
         });
-        TextButton continueButton = new TextButton("Continue", ResourceManager.buttonStyle);
+        TextButton continueButton = new TextButton("Continue", ResourceManager.fullButtonStyle);
         continueButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: Continue previous game

@@ -81,7 +81,7 @@ public class HudStage extends Stage {
 
         // Bottom left
         Table bottomLeft = new Table();
-        this.inventoryButton = new Button(ResourceManager.panelStyle);
+        this.inventoryButton = new Button(ResourceManager.panelButtonStyle);
         setIcon(inventoryButton, "inventory", 48, 1);
         inventoryButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -95,7 +95,7 @@ public class HudStage extends Stage {
                 }
             }
         });
-        this.examineButton = new Button(ResourceManager.panelStyle);
+        this.examineButton = new Button(ResourceManager.panelButtonStyle);
         setIcon(examineButton, "examine", 48, 1);
         examineButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -115,7 +115,7 @@ public class HudStage extends Stage {
 
         // Bottom right
         Table bottomRight = new Table();
-        this.attackButton = new Button(ResourceManager.panelStyle);
+        this.attackButton = new Button(ResourceManager.panelButtonStyle);
         setIcon(attackButton, "tome", 48, 1);
         attackButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
