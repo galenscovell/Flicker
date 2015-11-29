@@ -38,7 +38,8 @@ public class ActionState implements State {
 
     @Override
     public void enter() {
-
+        clearAdjacentThings();
+        heroAdjacentCheck();
     }
 
     @Override
@@ -52,10 +53,7 @@ public class ActionState implements State {
             return;
         } else {
             gameScreen.setCameraFollow(true);
-            if (!adjacentThings.isEmpty()) {
-                adjacentThings.clear();
-                clearInanimateBoxes();
-            }
+            clearAdjacentThings();
             Stack<Action> finishedActions = new Stack<Action>();
             // Hero action is always first in action list
             Action heroAction = repo.getFirstAction();
@@ -164,9 +162,7 @@ public class ActionState implements State {
     }
 
     private boolean isIlluminated(Entity entity) {
-        boolean illuminated = lighting.isInLight(entity.getX(), entity.getY());
-        // System.out.println(entity + " illuminated: " + illuminated);
-        return illuminated;
+        return lighting.isInLight(entity.getX(), entity.getY());
     }
 
     private void displayInanimateBox(Inanimate inanimate, Tile tile) {
@@ -180,6 +176,13 @@ public class ActionState implements State {
         InteractionVerticalGroup interactionGroup = gameScreen.getStage().getRoot().findActor("interactionGroup");
         if (interactionGroup != null) {
             interactionGroup.clear();
+        }
+    }
+
+    private void clearAdjacentThings() {
+        if (!adjacentThings.isEmpty()) {
+            adjacentThings.clear();
+            clearInanimateBoxes();
         }
     }
 }
