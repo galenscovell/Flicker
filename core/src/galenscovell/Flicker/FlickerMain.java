@@ -2,8 +2,8 @@ package galenscovell.flicker;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import galenscovell.ui.screens.*;
-import galenscovell.util.ResourceManager;
+import galenscovell.flicker.ui.screens.*;
+import galenscovell.flicker.util.ResourceManager;
 
 public class FlickerMain extends Game {
     public SpriteBatch spriteBatch;
