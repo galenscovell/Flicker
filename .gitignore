@@ -6,6 +6,7 @@
 *.class
 *.idea
 *.iml
+*.jar
 *.gradle
 *.pro
 *.properties
@@ -13,8 +14,6 @@
 
 # Ignored directory names
 
-android
-libs
 android/libs
 android/build
 build
