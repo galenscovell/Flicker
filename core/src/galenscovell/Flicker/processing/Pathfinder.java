@@ -1,5 +1,6 @@
 package galenscovell.flicker.processing;
 
+import galenscovell.flicker.util.Constants;
 import galenscovell.flicker.world.Tile;
 
 import java.util.*;
@@ -10,8 +11,10 @@ public class Pathfinder {
         List<Node> openList = new ArrayList<Node>();
         List<Node> closedList = new ArrayList<Node>();
         Node startNode = new Node(startTile);
-        startNode.setCost(0);
         Node endNode = new Node(endTile);
+
+        startNode.setCostFromStart(0);
+        startNode.setTotalCost(startNode.getCostFromStart() + heuristic(startNode, endNode));
         openList.add(startNode);
 
         while (!openList.isEmpty()) {
@@ -27,18 +30,32 @@ public class Pathfinder {
             for (Point point : current.getTile().getNeighbors()) {
                 Tile neighborTile = repo.findTile(point.x, point.y);
 
+                // Force taxicab/manhattan pathfinding
+                if (!Constants.DIAGONAL_MOVEMENT) {
+                    Tile currentTile = current.getTile();
+                    int diffX = Math.abs(currentTile.x - neighborTile.x);
+                    int diffY = Math.abs(currentTile.y - neighborTile.y);
+
+                    if (diffX > 0 && diffY > 0) {
+                        continue;
+                    }
+                }
+
                 if (neighborTile != null && !neighborTile.isWater() && !neighborTile.isBlocking()) {
                     Node neighborNode = new Node(neighborTile);
 
-                    if (inList(neighborTile, openList) || inList(neighborTile, closedList)) {
-                        continue;
-                    } else {
-                        openList.add(neighborNode);
-                    }
-                    // If this is a new path or shorter than current, keep it
-                    if (current.getCost() + 1 < neighborNode.getCost()) {
-                        neighborNode.setParent(current);
-                        neighborNode.setCost(current.getCost() + 1);
+                    if (!inList(neighborTile, closedList)) {
+                        neighborNode.setTotalCost(current.getCostFromStart() + heuristic(neighborNode, endNode));
+
+                        if (!inList(neighborTile, openList)) {
+                            neighborNode.setParent(current);
+                            openList.add(neighborNode);
+                        } else {
+                            if (neighborNode.getCostFromStart() < current.getCostFromStart()) {
+                                neighborNode.setCostFromStart(neighborNode.getCostFromStart());
+                                neighborNode.setParent(neighborNode.getParent());
+                            }
+                        }
                     }
                 }
             }
@@ -60,18 +77,16 @@ public class Pathfinder {
         Node bestNode = null;
 
         for (Node node : openList) {
-            double costFromStart = node.getCost();
-            double costToEnd = estimateDistance(node, endNode);
-            double totalCoat = costFromStart + costToEnd;
-            if (minCost > totalCoat) {
-                minCost = totalCoat;
+            double totalCost = node.getCostFromStart() + heuristic(node, endNode);
+            if (minCost > totalCost) {
+                minCost = totalCost;
                 bestNode = node;
             }
         }
         return bestNode;
     }
 
-    private double estimateDistance(Node start, Node end) {
+    private double heuristic(Node start, Node end) {
         // Euclidean distance between nodes
         double xs = (start.getTile().x - end.getTile().x) * (start.getTile().x - end.getTile().x);
         double ys = (start.getTile().y - end.getTile().y) * (start.getTile().y - end.getTile().y);

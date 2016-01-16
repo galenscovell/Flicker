@@ -3,6 +3,9 @@ package galenscovell.flicker.util;
 public class Constants {
     private Constants() {}
 
+    // Base movement style
+    public static final boolean DIAGONAL_MOVEMENT = false;
+
     // Lighting designations
     public static final short BIT_LIGHT = 1;
     public static final short BIT_WALL = 2;
